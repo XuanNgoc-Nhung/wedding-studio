@@ -125,9 +125,14 @@
                 <div data-i18n="Trang phục">Trang phục</div>
               </a>
               <ul class="menu-sub">
-                <li class="menu-item {{ request()->is('admin/trang-phuc/kiem-kho') ? 'active' : '' }}">
-                  <a href="{{ url('admin/trang-phuc/kiem-kho') }}" class="menu-link">
-                    <div data-i18n="Kiểm kho">Kiểm kho</div>
+                <li class="menu-item {{ request()->is('admin/trang-phuc/san-pham') ? 'active' : '' }}">
+                  <a href="{{ url('admin/trang-phuc/san-pham') }}" class="menu-link">
+                    <div data-i18n="Sản phẩm">Sản phẩm</div>
+                  </a>
+                </li>
+                <li class="menu-item {{ request()->is('admin/trang-phuc/kho-hang') ? 'active' : '' }}">
+                  <a href="{{ url('admin/trang-phuc/kho-hang') }}" class="menu-link">
+                    <div data-i18n="Kho hàng">Kho hàng</div>
                   </a>
                 </li>
                 <li class="menu-item {{ request()->is('admin/trang-phuc/hop-dong') ? 'active' : '' }}">

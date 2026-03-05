@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController as Admin;
 use App\Http\Controllers\Admin\NhanSuController as AdminNhanSu;
 use App\Http\Controllers\Admin\DichVuController as AdminDichVu;
 use App\Http\Controllers\Admin\KhachHangController as AdminKhachHang;
+use App\Http\Controllers\Admin\TrangPhucController as AdminTrangPhuc;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,6 +29,18 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::post('/danh-sach', [AdminKhachHang::class, 'store'])->name('khach-hang.store');
         Route::put('/danh-sach/{khachHang}', [AdminKhachHang::class, 'update'])->name('khach-hang.update');
         Route::delete('/danh-sach/{khachHang}', [AdminKhachHang::class, 'destroy'])->name('khach-hang.destroy');
+    });
+    //Route cho trang phục
+    Route::group(['prefix' => 'trang-phuc'], function () {
+        Route::get('/', [AdminTrangPhuc::class, 'index'])->name('trang-phuc.index');
+        Route::get('/san-pham', [AdminTrangPhuc::class, 'sanPham'])->name('trang-phuc.san-pham');
+        Route::post('/san-pham', [AdminTrangPhuc::class, 'storeSanPham'])->name('trang-phuc.san-pham.store');
+        Route::put('/san-pham/{trangPhuc}', [AdminTrangPhuc::class, 'updateSanPham'])->name('trang-phuc.san-pham.update');
+        Route::delete('/san-pham/{trangPhuc}', [AdminTrangPhuc::class, 'destroySanPham'])->name('trang-phuc.san-pham.destroy');
+        Route::get('/kho-hang', [AdminTrangPhuc::class, 'khoHang'])->name('trang-phuc.kho-hang');
+        Route::post('/kho-hang', [AdminTrangPhuc::class, 'storeKhoHang'])->name('trang-phuc.store-kho-hang');
+        Route::put('/kho-hang/{khoHang}', [AdminTrangPhuc::class, 'updateKhoHang'])->name('trang-phuc.update-kho-hang');
+        Route::delete('/kho-hang/{khoHang}', [AdminTrangPhuc::class, 'destroyKhoHang'])->name('trang-phuc.destroy-kho-hang');
     });
     //route cho dịch vụ
     Route::group(['prefix' => 'dich-vu'], function () {
