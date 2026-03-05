@@ -30,6 +30,8 @@ class NhomDichVu extends Model
         'ma_nhom',
         'slug',
         'gia_tien',
+        'gia_goc',
+        'the',
         'ghi_chu',
         'mo_ta',
         'trang_thai',
@@ -45,6 +47,7 @@ class NhomDichVu extends Model
     {
         return [
             'gia_tien' => 'decimal:2',
+            'gia_goc' => 'decimal:2',
             'trang_thai' => 'integer',
         ];
     }

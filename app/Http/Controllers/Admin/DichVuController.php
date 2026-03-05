@@ -92,7 +92,8 @@ class DichVuController extends Controller
             $q = $request->input('search');
             $query->where(function ($qb) use ($q) {
                 $qb->where('ten_nhom', 'like', '%' . $q . '%')
-                    ->orWhere('ma_nhom', 'like', '%' . $q . '%');
+                    ->orWhere('ma_nhom', 'like', '%' . $q . '%')
+                    ->orWhere('the', 'like', '%' . $q . '%');
             });
         }
 
@@ -109,6 +110,7 @@ class DichVuController extends Controller
             'ten_nhom' => 'required|string|max:255',
             'ma_nhom' => 'nullable|string|max:50',
             'gia_tien' => 'nullable|numeric|min:0',
+            'the' => 'nullable|string',
             'ghi_chu' => 'nullable|string',
             'mo_ta' => 'nullable|string',
             'trang_thai' => 'nullable|integer|in:0,1',
@@ -116,17 +118,23 @@ class DichVuController extends Controller
             'dich_vu_le_ids.*' => 'integer|exists:dich_vu_le,id',
         ]);
 
+        $ids = array_map('intval', (array) $request->input('dich_vu_le_ids', []));
+        $giaGoc = empty($ids)
+            ? 0
+            : (float) DichVuLe::whereIn('id', $ids)->sum('gia_dich_vu');
+
         $nhomDichVu = NhomDichVu::create([
             'ten_nhom' => $request->input('ten_nhom'),
             'ma_nhom' => $request->input('ma_nhom'),
             'gia_tien' => $request->input('gia_tien'),
+            'gia_goc' => $giaGoc,
+            'the' => $request->input('the'),
             'ghi_chu' => $request->input('ghi_chu'),
             'mo_ta' => $request->input('mo_ta'),
             'trang_thai' => (int) $request->input('trang_thai', NhomDichVu::TRANG_THAI_HIEN_THI),
             'nguoi_tao_id' => $request->user()?->id,
         ]);
 
-        $ids = array_map('intval', (array) $request->input('dich_vu_le_ids', []));
         if (! empty($ids)) {
             $nhomDichVu->dichVuLe()->attach(collect($ids)->mapWithKeys(fn ($id) => [$id => ['so_luong' => 1]])->all());
         }
@@ -140,6 +148,7 @@ class DichVuController extends Controller
             'ten_nhom' => 'required|string|max:255',
             'ma_nhom' => 'nullable|string|max:50',
             'gia_tien' => 'nullable|numeric|min:0',
+            'the' => 'nullable|string',
             'ghi_chu' => 'nullable|string',
             'mo_ta' => 'nullable|string',
             'trang_thai' => 'nullable|integer|in:0,1',
@@ -147,16 +156,22 @@ class DichVuController extends Controller
             'dich_vu_le_ids.*' => 'integer|exists:dich_vu_le,id',
         ]);
 
+        $ids = array_map('intval', (array) $request->input('dich_vu_le_ids', []));
+        $giaGoc = empty($ids)
+            ? 0
+            : (float) DichVuLe::whereIn('id', $ids)->sum('gia_dich_vu');
+
         $nhomDichVu->update([
             'ten_nhom' => $request->input('ten_nhom'),
             'ma_nhom' => $request->input('ma_nhom'),
             'gia_tien' => $request->input('gia_tien'),
+            'gia_goc' => $giaGoc,
+            'the' => $request->input('the'),
             'ghi_chu' => $request->input('ghi_chu'),
             'mo_ta' => $request->input('mo_ta'),
             'trang_thai' => (int) $request->input('trang_thai', NhomDichVu::TRANG_THAI_HIEN_THI),
         ]);
 
-        $ids = array_map('intval', $request->input('dich_vu_le_ids', []));
         $nhomDichVu->dichVuLe()->sync(collect($ids)->mapWithKeys(fn ($id) => [$id => ['so_luong' => 1]])->all());
 
         return redirect()->route('admin.dich-vu.nhom-dich-vu')->with('success', 'Đã cập nhật nhóm dịch vụ thành công.');

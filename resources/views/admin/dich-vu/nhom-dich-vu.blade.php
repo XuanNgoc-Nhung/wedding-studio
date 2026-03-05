@@ -20,13 +20,13 @@
         <form action="{{ route('admin.dich-vu.nhom-dich-vu') }}" method="GET" class="mb-4">
             <div class="row g-3 align-items-end">
                 <div class="col-md-6 col-lg-4">
-                    <label class="form-label" for="search">Tên hoặc mã nhóm</label>
+                    <label class="form-label" for="search">Tên, mã nhóm hoặc thẻ</label>
                     <input type="text"
                            class="form-control"
                            id="search"
                            name="search"
                            value="{{ request('search') }}"
-                           placeholder="Nhập tên hoặc mã nhóm...">
+                           placeholder="Nhập tên, mã nhóm hoặc thẻ để tìm...">
                 </div>
                 <div class="col-auto">
                     <button type="submit" class="btn btn-primary">
@@ -58,10 +58,12 @@
                         <th>Mã nhóm</th>
                         <th>Danh sách dịch vụ</th>
                         <th class="text-end" style="width: 120px;">Giá tiền</th>
+                        <th class="text-end" style="width: 120px;">Giá gốc</th>
                         <th>Ghi chú</th>
                         <th>Mô tả</th>
                         <th class="text-center" style="width: 100px;">Trạng thái</th>
                         <th>Người tạo</th>
+                        <th>Thẻ</th>
                         <th class="text-center" style="width: 100px;">Thao tác</th>
                     </tr>
                 </thead>
@@ -84,12 +86,14 @@
                             @endif
                         </td>
                         <td class="text-end">{{ $item->gia_tien !== null ? number_format($item->gia_tien, 0, ',', '.') . ' đ' : '—' }}</td>
+                        <td class="text-end">{{ $item->gia_goc !== null ? number_format($item->gia_goc, 0, ',', '.') . ' đ' : '—' }}</td>
                         <td>{{ \Illuminate\Support\Str::limit($item->ghi_chu ?? '—', 40) }}</td>
                         <td>{{ \Illuminate\Support\Str::limit($item->mo_ta ?? '—', 50) }}</td>
                         <td class="text-center">
                             <span class="badge {{ $trangThaiBadge }}">{{ $trangThaiLabel }}</span>
                         </td>
                         <td>{{ $item->nguoiTao?->name ?? '—' }}</td>
+                        <td>{{ \Illuminate\Support\Str::limit($item->the ?? '—', 50) }}</td>
                         <td>
                             <div class="dropdown">
                                 <button type="button" class="btn btn-sm btn-icon btn-outline-secondary dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -104,6 +108,7 @@
                                        data-ten="{{ e($item->ten_nhom ?? '') }}"
                                        data-ma="{{ e($item->ma_nhom ?? '') }}"
                                        data-gia-tien="{{ $item->gia_tien ?? '' }}"
+                                       data-the="{{ e($item->the ?? '') }}"
                                        data-ghi-chu="{{ e($item->ghi_chu ?? '') }}"
                                        data-mo-ta="{{ e($item->mo_ta ?? '') }}"
                                        data-trang-thai="{{ (int)($item->trang_thai ?? 0) }}"
@@ -123,7 +128,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="10" class="text-center py-4 text-muted">Chưa có dữ liệu nhóm dịch vụ.</td>
+                        <td colspan="12" class="text-center py-4 text-muted">Chưa có dữ liệu nhóm dịch vụ.</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -175,6 +180,10 @@
                                 <option value="{{ \App\Models\NhomDichVu::TRANG_THAI_HIEN_THI }}" {{ old('trang_thai', \App\Models\NhomDichVu::TRANG_THAI_HIEN_THI) == \App\Models\NhomDichVu::TRANG_THAI_HIEN_THI ? 'selected' : '' }}>Hiển thị</option>
                                 <option value="{{ \App\Models\NhomDichVu::TRANG_THAI_AN }}" {{ old('trang_thai') == \App\Models\NhomDichVu::TRANG_THAI_AN ? 'selected' : '' }}>Ẩn</option>
                             </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="them_the">Thẻ</label>
+                            <input type="text" class="form-control" id="them_the" name="the" value="{{ old('the') }}" placeholder="Từ khóa, thẻ tìm kiếm (cách nhau bởi dấu phẩy)">
                         </div>
                         <div class="col-12">
                             <label class="form-label">Danh sách dịch vụ lẻ</label>
@@ -271,6 +280,10 @@
                                 <option value="{{ \App\Models\NhomDichVu::TRANG_THAI_HIEN_THI }}">Hiển thị</option>
                                 <option value="{{ \App\Models\NhomDichVu::TRANG_THAI_AN }}">Ẩn</option>
                             </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label" for="sua_the">Thẻ</label>
+                            <input type="text" class="form-control" id="sua_the" name="the" placeholder="Từ khóa, thẻ tìm kiếm (cách nhau bởi dấu phẩy)">
                         </div>
                         <div class="col-12">
                             <label class="form-label">Danh sách dịch vụ lẻ</label>
@@ -434,6 +447,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('sua_ten_nhom').value = btn.getAttribute('data-ten') || '';
             document.getElementById('sua_ma_nhom').value = btn.getAttribute('data-ma') || '';
             document.getElementById('sua_gia_tien').value = btn.getAttribute('data-gia-tien') || '';
+            document.getElementById('sua_the').value = btn.getAttribute('data-the') || '';
             document.getElementById('sua_trang_thai').value = btn.getAttribute('data-trang-thai') || '{{ \App\Models\NhomDichVu::TRANG_THAI_HIEN_THI }}';
             document.getElementById('sua_ghi_chu').value = btn.getAttribute('data-ghi-chu') || '';
             document.getElementById('sua_mo_ta').value = btn.getAttribute('data-mo-ta') || '';

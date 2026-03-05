@@ -50,24 +50,25 @@
             </li>
 
             <!-- Nhân sự -->
-            <li class="menu-item {{ request()->routeIs('admin.staff.*') ? 'active open' : '' }}">
+            @php $menuNhanSuOpen = request()->routeIs('admin.nhan-su.*'); @endphp
+            <li class="menu-item {{ $menuNhanSuOpen ? 'active open' : '' }}">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-users"></i>
                 <div data-i18n="Nhân sự">Nhân sự</div>
               </a>
               <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="{{ url('admin/nhan-su/danh-sach') }}" class="menu-link">
+                <li class="menu-item {{ request()->routeIs('admin.nhan-su.danh-sach') ? 'active' : '' }}">
+                  <a href="{{ route('admin.nhan-su.danh-sach') }}" class="menu-link">
                     <div data-i18n="Danh sách nhân sự">Danh sách nhân sự</div>
                   </a>
                 </li>
-                <li class="menu-item">
-                  <a href="{{ url('admin/nhan-su/phan-quyen') }}" class="menu-link">
+                <li class="menu-item {{ request()->routeIs('admin.nhan-su.phan-quyen') ? 'active' : '' }}">
+                  <a href="{{ route('admin.nhan-su.phan-quyen') }}" class="menu-link">
                     <div data-i18n="Phân quyền">Phân quyền</div>
                   </a>
                 </li>
-                <li class="menu-item">
-                  <a href="{{ url('admin/nhan-su/lich-lam-viec') }}" class="menu-link">
+                <li class="menu-item {{ request()->routeIs('admin.nhan-su.lich-lam-viec') ? 'active' : '' }}">
+                  <a href="{{ route('admin.nhan-su.lich-lam-viec') }}" class="menu-link">
                     <div data-i18n="Lịch làm việc">Lịch làm việc</div>
                   </a>
                 </li>
@@ -75,18 +76,19 @@
             </li>
 
             <!-- Khách hàng -->
-            <li class="menu-item {{ request()->routeIs('admin.customers.*') ? 'active open' : '' }}">
+            @php $menuKhachHangOpen = request()->is('admin/khach-hang*'); @endphp
+            <li class="menu-item {{ $menuKhachHangOpen ? 'active open' : '' }}">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-user-circle"></i>
                 <div data-i18n="Khách hàng">Khách hàng</div>
               </a>
               <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item {{ request()->is('admin/khach-hang/danh-sach') ? 'active' : '' }}">
                   <a href="{{ url('admin/khach-hang/danh-sach') }}" class="menu-link">
                     <div data-i18n="Danh sách khách hàng">Danh sách khách hàng</div>
                   </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {{ request()->is('admin/khach-hang/hop-dong') ? 'active' : '' }}">
                   <a href="{{ url('admin/khach-hang/hop-dong') }}" class="menu-link">
                     <div data-i18n="Hợp đồng">Hợp đồng</div>
                   </a>
@@ -95,18 +97,19 @@
             </li>
 
             <!-- Tài chính kế toán -->
-            <li class="menu-item {{ request()->routeIs('admin.finance.*') ? 'active open' : '' }}">
+            @php $menuTaiChinhOpen = request()->is('admin/tai-chinh*'); @endphp
+            <li class="menu-item {{ $menuTaiChinhOpen ? 'active open' : '' }}">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-cash"></i>
                 <div data-i18n="Tài chính kế toán">Tài chính kế toán</div>
               </a>
               <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item {{ request()->is('admin/tai-chinh/cong-no') ? 'active' : '' }}">
                   <a href="{{ url('admin/tai-chinh/cong-no') }}" class="menu-link">
                     <div data-i18n="Công nợ">Công nợ</div>
                   </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {{ request()->is('admin/tai-chinh/phieu-thu-chi') ? 'active' : '' }}">
                   <a href="{{ url('admin/tai-chinh/phieu-thu-chi') }}" class="menu-link">
                     <div data-i18n="Phiếu thu chi">Phiếu thu chi</div>
                   </a>
@@ -115,18 +118,19 @@
             </li>
 
             <!-- Trang phục -->
-            <li class="menu-item {{ request()->routeIs('admin.costumes.*') ? 'active open' : '' }}">
+            @php $menuTrangPhucOpen = request()->is('admin/trang-phuc*'); @endphp
+            <li class="menu-item {{ $menuTrangPhucOpen ? 'active open' : '' }}">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-shirt"></i>
                 <div data-i18n="Trang phục">Trang phục</div>
               </a>
               <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item {{ request()->is('admin/trang-phuc/kiem-kho') ? 'active' : '' }}">
                   <a href="{{ url('admin/trang-phuc/kiem-kho') }}" class="menu-link">
                     <div data-i18n="Kiểm kho">Kiểm kho</div>
                   </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {{ request()->is('admin/trang-phuc/hop-dong') ? 'active' : '' }}">
                   <a href="{{ url('admin/trang-phuc/hop-dong') }}" class="menu-link">
                     <div data-i18n="Hợp đồng">Hợp đồng</div>
                   </a>
@@ -135,19 +139,20 @@
             </li>
 
             <!-- Dịch vụ -->
-            <li class="menu-item {{ request()->routeIs('admin.services.*') ? 'active open' : '' }}">
+            @php $menuDichVuOpen = request()->routeIs('admin.dich-vu.*'); @endphp
+            <li class="menu-item {{ $menuDichVuOpen ? 'active open' : '' }}">
               <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base ti tabler-briefcase"></i>
                 <div data-i18n="Dịch vụ">Dịch vụ</div>
               </a>
               <ul class="menu-sub">
-                <li class="menu-item">
-                  <a href="{{ url('admin/dich-vu/dich-vu-le') }}" class="menu-link">
+                <li class="menu-item {{ request()->routeIs('admin.dich-vu.dich-vu-le') ? 'active' : '' }}">
+                  <a href="{{ route('admin.dich-vu.dich-vu-le') }}" class="menu-link">
                     <div data-i18n="Dịch vụ lẻ">Dịch vụ lẻ</div>
                   </a>
                 </li>
-                <li class="menu-item">
-                  <a href="{{ url('admin/dich-vu/nhom-dich-vu') }}" class="menu-link">
+                <li class="menu-item {{ request()->routeIs('admin.dich-vu.nhom-dich-vu') ? 'active' : '' }}">
+                  <a href="{{ route('admin.dich-vu.nhom-dich-vu') }}" class="menu-link">
                     <div data-i18n="Nhóm dịch vụ">Nhóm dịch vụ</div>
                   </a>
                 </li>
