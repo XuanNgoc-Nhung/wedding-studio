@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 
-class DichVuLe extends Model
+class NhomDichVu extends Model
 {
     use HasFactory;
 
-    protected $table = 'dich_vu_le';
+    protected $table = 'nhom_dich_vu';
 
     /** Trạng thái: ẩn */
     public const TRANG_THAI_AN = 0;
@@ -26,13 +26,13 @@ class DichVuLe extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'ten_dich_vu',
-        'ma_dich_vu',
+        'ten_nhom',
+        'ma_nhom',
         'slug',
+        'gia_tien',
+        'ghi_chu',
         'mo_ta',
         'trang_thai',
-        'ghi_chu',
-        'gia_dich_vu',
         'nguoi_tao_id',
     ];
 
@@ -44,29 +44,39 @@ class DichVuLe extends Model
     protected function casts(): array
     {
         return [
-            'gia_dich_vu' => 'decimal:2',
+            'gia_tien' => 'decimal:2',
             'trang_thai' => 'integer',
         ];
     }
 
     /**
-     * Boot: tự tạo slug từ tên dịch vụ nếu chưa có.
+     * Boot: tự tạo slug từ tên nhóm nếu chưa có.
      */
     protected static function boot(): void
     {
         parent::boot();
 
-        static::creating(function (DichVuLe $model) {
-            if (empty($model->slug) && ! empty($model->ten_dich_vu)) {
-                $model->slug = Str::slug($model->ten_dich_vu);
+        static::creating(function (NhomDichVu $model) {
+            if (empty($model->slug) && ! empty($model->ten_nhom)) {
+                $model->slug = Str::slug($model->ten_nhom);
             }
         });
 
-        static::updating(function (DichVuLe $model) {
-            if ($model->isDirty('ten_dich_vu') && empty($model->slug)) {
-                $model->slug = Str::slug($model->ten_dich_vu);
+        static::updating(function (NhomDichVu $model) {
+            if ($model->isDirty('ten_nhom') && empty($model->slug)) {
+                $model->slug = Str::slug($model->ten_nhom);
             }
         });
+    }
+
+    /**
+     * Danh sách dịch vụ lẻ thuộc nhóm (many-to-many).
+     */
+    public function dichVuLe(): BelongsToMany
+    {
+        return $this->belongsToMany(DichVuLe::class, 'dich_vu_le_nhom_dich_vu')
+            ->withPivot('so_luong')
+            ->withTimestamps();
     }
 
     /**
@@ -75,15 +85,5 @@ class DichVuLe extends Model
     public function nguoiTao(): BelongsTo
     {
         return $this->belongsTo(User::class, 'nguoi_tao_id');
-    }
-
-    /**
-     * Các nhóm dịch vụ chứa dịch vụ lẻ này (many-to-many).
-     */
-    public function nhomDichVu(): BelongsToMany
-    {
-        return $this->belongsToMany(NhomDichVu::class, 'dich_vu_le_nhom_dich_vu')
-            ->withPivot('so_luong')
-            ->withTimestamps();
     }
 }
