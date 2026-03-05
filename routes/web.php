@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController as Admin;
 use App\Http\Controllers\Admin\NhanSuController as AdminNhanSu;
 use App\Http\Controllers\Admin\DichVuController as AdminDichVu;
+use App\Http\Controllers\Admin\KhachHangController as AdminKhachHang;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,6 +21,15 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::get('/phan-quyen', [AdminNhanSu::class, 'phanQuyen'])->name('nhan-su.phan-quyen');
         Route::get('/lich-lam-viec', [AdminNhanSu::class, 'lichLamViec'])->name('nhan-su.lich-lam-viec');
     });
+    //Route cho khách hàng
+    Route::group(['prefix' => 'khach-hang'], function () {
+        Route::get('/', [AdminKhachHang::class, 'index'])->name('khach-hang.index');
+        Route::get('/danh-sach', [AdminKhachHang::class, 'danhSach'])->name('khach-hang.danh-sach');
+        Route::post('/danh-sach', [AdminKhachHang::class, 'store'])->name('khach-hang.store');
+        Route::put('/danh-sach/{khachHang}', [AdminKhachHang::class, 'update'])->name('khach-hang.update');
+        Route::delete('/danh-sach/{khachHang}', [AdminKhachHang::class, 'destroy'])->name('khach-hang.destroy');
+    });
+    //route cho dịch vụ
     Route::group(['prefix' => 'dich-vu'], function () {
         Route::get('/', [AdminDichVu::class, 'index'])->name('dich-vu.index');
         Route::get('/dich-vu-le', [AdminDichVu::class, 'dichVuLe'])->name('dich-vu.dich-vu-le');
