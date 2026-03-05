@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class TrangPhuc extends Model
 {
@@ -44,5 +45,13 @@ class TrangPhuc extends Model
             'gia_tri' => 'decimal:2',
             'trang_thai' => 'integer',
         ];
+    }
+
+    /**
+     * Thông tin kho hàng của sản phẩm (1-1).
+     */
+    public function khoHang(): HasOne
+    {
+        return $this->hasOne(KhoHang::class, 'trang_phuc_id', 'id');
     }
 }
