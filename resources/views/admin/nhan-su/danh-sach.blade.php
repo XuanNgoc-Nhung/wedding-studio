@@ -405,6 +405,27 @@
     </div>
 </div>
 
+{{-- Modal xác nhận xóa nhân sự --}}
+<div class="modal fade" id="modalXacNhanXoaNhanSu" tabindex="-1" aria-labelledby="modalXacNhanXoaNhanSuLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-confirm-xoa">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalXacNhanXoaNhanSuLabel">Xác nhận xóa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc muốn xóa nhân sự này?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="button" class="btn btn-danger" id="btnXacNhanXoaNhanSu">
+                    <i class="fa-solid fa-trash me-1"></i> Xóa
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @push('styles')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
 <style>
@@ -426,6 +447,10 @@
     #modalDoiMatKhau .modal-doi-mat-khau {
         max-width: 600px;
     }
+}
+#modalXacNhanXoaNhanSu .modal-confirm-xoa {
+    max-width: 90vw;
+    width: 400px;
 }
 .table-wrapper-bordered {
     border: 1px solid var(--bs-border-color, #dee2e6);
@@ -607,16 +632,35 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Xóa nhân sự: xác nhận rồi submit form
-    document.querySelectorAll('.btn-xoa-nhan-su').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-            var formId = this.getAttribute('data-form-id');
-            if (!formId) return;
-            if (!confirm('Bạn có chắc muốn xóa nhân sự này?')) return;
-            var form = document.getElementById(formId);
-            if (form) form.submit();
+    // Xóa nhân sự: mở modal Bootstrap xác nhận, sau đó submit form
+    var modalXoaNs = document.getElementById('modalXacNhanXoaNhanSu');
+    var btnXacNhanXoaNs = document.getElementById('btnXacNhanXoaNhanSu');
+    var formIdCanXoa = null;
+    if (modalXoaNs && btnXacNhanXoaNs) {
+        modalXoaNs.addEventListener('hidden.bs.modal', function() {
+            document.querySelectorAll('.modal-backdrop').forEach(function(el) { el.remove(); });
+            document.body.classList.remove('modal-open');
+            document.body.style.removeProperty('overflow');
+            document.body.style.removeProperty('padding-right');
         });
-    });
+        document.querySelectorAll('.btn-xoa-nhan-su').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                formIdCanXoa = this.getAttribute('data-form-id');
+                if (!formIdCanXoa) return;
+                var modal = bootstrap.Modal.getOrCreateInstance(modalXoaNs);
+                modal.show();
+            });
+        });
+        btnXacNhanXoaNs.addEventListener('click', function() {
+            if (formIdCanXoa) {
+                var form = document.getElementById(formIdCanXoa);
+                if (form) form.submit();
+            }
+            var inst = bootstrap.Modal.getInstance(modalXoaNs);
+            if (inst) inst.hide();
+            formIdCanXoa = null;
+        });
+    }
 });
 </script>
 @endpush

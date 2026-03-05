@@ -1,0 +1,78 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
+
+class DichVuLe extends Model
+{
+    use HasFactory;
+
+    protected $table = 'dich_vu_le';
+
+    /** Trạng thái: ẩn */
+    public const TRANG_THAI_AN = 0;
+
+    /** Trạng thái: hiển thị */
+    public const TRANG_THAI_HIEN_THI = 1;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'ten_dich_vu',
+        'ma_dich_vu',
+        'slug',
+        'mo_ta',
+        'trang_thai',
+        'ghi_chu',
+        'gia_dich_vu',
+        'nguoi_tao_id',
+    ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'gia_dich_vu' => 'decimal:2',
+            'trang_thai' => 'integer',
+        ];
+    }
+
+    /**
+     * Boot: tự tạo slug từ tên dịch vụ nếu chưa có.
+     */
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function (DichVuLe $model) {
+            if (empty($model->slug) && ! empty($model->ten_dich_vu)) {
+                $model->slug = Str::slug($model->ten_dich_vu);
+            }
+        });
+
+        static::updating(function (DichVuLe $model) {
+            if ($model->isDirty('ten_dich_vu') && empty($model->slug)) {
+                $model->slug = Str::slug($model->ten_dich_vu);
+            }
+        });
+    }
+
+    /**
+     * Người tạo (user).
+     */
+    public function nguoiTao(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'nguoi_tao_id');
+    }
+}
