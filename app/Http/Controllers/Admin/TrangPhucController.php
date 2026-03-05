@@ -49,7 +49,7 @@ class TrangPhucController extends Controller
             'slug' => 'nullable|string|max:255|unique:trang_phuc,slug',
             'mo_ta' => 'nullable|string',
             'ghi_chu' => 'nullable|string',
-            'trang_thai' => 'nullable|string|in:' . TrangPhuc::TRANG_THAI_ACTIVE . ',' . TrangPhuc::TRANG_THAI_INACTIVE,
+            'trang_thai' => 'nullable|in:0,1',
             'gia_tri' => 'nullable|numeric|min:0',
             'nha_cung_cap' => 'nullable|string|max:255',
         ]);
@@ -67,7 +67,7 @@ class TrangPhucController extends Controller
             'slug' => $slug,
             'mo_ta' => $validated['mo_ta'] ?? null,
             'ghi_chu' => $validated['ghi_chu'] ?? null,
-            'trang_thai' => $validated['trang_thai'] ?? TrangPhuc::TRANG_THAI_ACTIVE,
+            'trang_thai' => $validated['trang_thai'] ?? 1,
             'gia_tri' => $validated['gia_tri'] ?? 0,
             'nha_cung_cap' => $validated['nha_cung_cap'] ?? null,
         ]);
@@ -83,7 +83,7 @@ class TrangPhucController extends Controller
             'slug' => 'nullable|string|max:255|unique:trang_phuc,slug,' . $trangPhuc->id,
             'mo_ta' => 'nullable|string',
             'ghi_chu' => 'nullable|string',
-            'trang_thai' => 'nullable|string|in:' . TrangPhuc::TRANG_THAI_ACTIVE . ',' . TrangPhuc::TRANG_THAI_INACTIVE,
+            'trang_thai' => 'nullable|in:0,1',
             'gia_tri' => 'nullable|numeric|min:0',
             'nha_cung_cap' => 'nullable|string|max:255',
         ]);
@@ -101,7 +101,7 @@ class TrangPhucController extends Controller
             'slug' => $slug,
             'mo_ta' => $validated['mo_ta'] ?? null,
             'ghi_chu' => $validated['ghi_chu'] ?? null,
-            'trang_thai' => $validated['trang_thai'] ?? TrangPhuc::TRANG_THAI_ACTIVE,
+            'trang_thai' => $validated['trang_thai'] ?? 1,
             'gia_tri' => $validated['gia_tri'] ?? 0,
             'nha_cung_cap' => $validated['nha_cung_cap'] ?? null,
         ]);

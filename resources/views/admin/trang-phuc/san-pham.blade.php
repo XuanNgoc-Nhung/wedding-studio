@@ -60,7 +60,7 @@
                         <th>Slug</th>
                         <th>Nhà cung cấp</th>
                         <th>Mô tả</th>
-                        <th class="text-center" style="width: 110px;">Trạng thái</th>
+                        <th class="text-center" style="width: 90px;">Trạng thái</th>
                         <th>Ghi chú</th>
                         <th class="text-end" style="width: 130px;">Giá trị</th>
                         <th class="text-center" style="width: 100px;">Thao tác</th>
@@ -69,9 +69,9 @@
                 <tbody class="table-border-bottom-0">
                     @forelse($danhSach ?? [] as $index => $item)
                     @php
-                        $isActive = ($item->trang_thai ?? \App\Models\TrangPhuc::TRANG_THAI_ACTIVE) === \App\Models\TrangPhuc::TRANG_THAI_ACTIVE;
-                        $trangThaiLabel = $isActive ? 'Đang dùng' : 'Ngừng';
-                        $trangThaiBadge = $isActive ? 'bg-label-success' : 'bg-label-secondary';
+                        $isVisible = (int)($item->trang_thai ?? 0) === 1;
+                        $trangThaiLabel = $isVisible ? 'Hiển thị' : 'Ẩn';
+                        $trangThaiBadge = $isVisible ? 'bg-label-success' : 'bg-label-secondary';
                     @endphp
                     <tr>
                         <td>{{ ($danhSach->currentPage() - 1) * $danhSach->perPage() + $index + 1 }}</td>
@@ -103,7 +103,7 @@
                                        data-slug="{{ e($item->slug ?? '') }}"
                                        data-nha-cung-cap="{{ e($item->nha_cung_cap ?? '') }}"
                                        data-mo-ta="{{ e($item->mo_ta ?? '') }}"
-                                       data-trang-thai="{{ e($item->trang_thai ?? \App\Models\TrangPhuc::TRANG_THAI_ACTIVE) }}"
+                                       data-trang-thai="{{ e($item->trang_thai ?? 1) }}"
                                        data-ghi-chu="{{ e($item->ghi_chu ?? '') }}"
                                        data-gia-tri="{{ $item->gia_tri ?? '' }}">
                                         <i class="fa-solid fa-pen me-2"></i> Sửa
@@ -154,30 +154,30 @@
                 @endif
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-12 col-sm-6">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="them_ten_san_pham">Tên sản phẩm <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="them_ten_san_pham" name="ten_san_pham" value="{{ old('ten_san_pham') }}" placeholder="Nhập tên sản phẩm" required>
                         </div>
-                        <div class="col-12 col-sm-6">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="them_ma_san_pham">Mã sản phẩm <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="them_ma_san_pham" name="ma_san_pham" value="{{ old('ma_san_pham') }}" placeholder="Ví dụ: TP001" required>
                         </div>
-                        <div class="col-12 col-sm-6">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="them_slug">Slug</label>
                             <input type="text" class="form-control" id="them_slug" name="slug" value="{{ old('slug') }}" placeholder="Tự tạo từ tên nếu bỏ trống">
                         </div>
-                        <div class="col-12 col-sm-6">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="them_nha_cung_cap">Nhà cung cấp</label>
                             <input type="text" class="form-control" id="them_nha_cung_cap" name="nha_cung_cap" value="{{ old('nha_cung_cap') }}" placeholder="Ví dụ: Nhà may A...">
                         </div>
-                        <div class="col-12 col-sm-6">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="them_trang_thai">Trạng thái</label>
                             <select class="form-select" id="them_trang_thai" name="trang_thai">
-                                <option value="{{ \App\Models\TrangPhuc::TRANG_THAI_ACTIVE }}" {{ old('trang_thai', \App\Models\TrangPhuc::TRANG_THAI_ACTIVE) === \App\Models\TrangPhuc::TRANG_THAI_ACTIVE ? 'selected' : '' }}>Đang dùng</option>
-                                <option value="{{ \App\Models\TrangPhuc::TRANG_THAI_INACTIVE }}" {{ old('trang_thai') === \App\Models\TrangPhuc::TRANG_THAI_INACTIVE ? 'selected' : '' }}>Ngừng</option>
+                                <option value="1" {{ old('trang_thai', '1') == '1' ? 'selected' : '' }}>Hiển thị</option>
+                                <option value="0" {{ old('trang_thai') == '0' ? 'selected' : '' }}>Ẩn</option>
                             </select>
                         </div>
-                        <div class="col-12 col-sm-6">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="them_gia_tri">Giá trị</label>
                             <input type="number" class="form-control" id="them_gia_tri" name="gia_tri" value="{{ old('gia_tri') }}" placeholder="0" min="0" step="0.01">
                         </div>
@@ -226,30 +226,30 @@
                 @endif
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-12 col-sm-6">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="sua_ten_san_pham">Tên sản phẩm <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="sua_ten_san_pham" name="ten_san_pham" placeholder="Nhập tên sản phẩm" required>
                         </div>
-                        <div class="col-12 col-sm-6">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="sua_ma_san_pham">Mã sản phẩm <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="sua_ma_san_pham" name="ma_san_pham" placeholder="Ví dụ: TP001" required>
                         </div>
-                        <div class="col-12 col-sm-6">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="sua_slug">Slug</label>
                             <input type="text" class="form-control" id="sua_slug" name="slug" placeholder="Tự tạo từ tên nếu bỏ trống">
                         </div>
-                        <div class="col-12 col-sm-6">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="sua_nha_cung_cap">Nhà cung cấp</label>
                             <input type="text" class="form-control" id="sua_nha_cung_cap" name="nha_cung_cap" placeholder="Ví dụ: Nhà may A...">
                         </div>
-                        <div class="col-12 col-sm-6">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="sua_trang_thai">Trạng thái</label>
                             <select class="form-select" id="sua_trang_thai" name="trang_thai">
-                                <option value="{{ \App\Models\TrangPhuc::TRANG_THAI_ACTIVE }}">Đang dùng</option>
-                                <option value="{{ \App\Models\TrangPhuc::TRANG_THAI_INACTIVE }}">Ngừng</option>
+                                <option value="1">Hiển thị</option>
+                                <option value="0">Ẩn</option>
                             </select>
                         </div>
-                        <div class="col-12 col-sm-6">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="sua_gia_tri">Giá trị</label>
                             <input type="number" class="form-control" id="sua_gia_tri" name="gia_tri" placeholder="0" min="0" step="0.01">
                         </div>
@@ -328,6 +328,42 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    var slugify = function(str) {
+        if (!str) return '';
+        var s = String(str).trim().toLowerCase();
+        try {
+            s = s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        } catch (e) {}
+        s = s.replace(/đ/g, 'd').replace(/Đ/g, 'd');
+        s = s.replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+        return s;
+    };
+
+    var bindAutoSlug = function(nameInput, slugInput) {
+        if (!nameInput || !slugInput) return;
+
+        var markManual = function() {
+            slugInput.dataset.manuallyEdited = '1';
+        };
+
+        var isManual = function() {
+            return slugInput.dataset.manuallyEdited === '1';
+        };
+
+        nameInput.addEventListener('input', function() {
+            if (isManual()) return;
+            slugInput.value = slugify(nameInput.value);
+        });
+
+        slugInput.addEventListener('input', function() {
+            if (slugInput.value && slugInput.value.trim() !== '') {
+                markManual();
+            } else {
+                slugInput.dataset.manuallyEdited = '0';
+            }
+        });
+    };
+
     // Tooltip
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.map(function (el) { return new bootstrap.Tooltip(el); });
@@ -341,6 +377,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     @endif
 
+    // Auto slug: Thêm mới
+    var themTen = document.getElementById('them_ten_san_pham');
+    var themSlug = document.getElementById('them_slug');
+    if (themSlug) {
+        themSlug.dataset.manuallyEdited = (themSlug.value && themSlug.value.trim() !== '') ? '1' : '0';
+    }
+    bindAutoSlug(themTen, themSlug);
+
     // Modal Sửa: gán data vào form
     var modalSua = document.getElementById('modalSuaSanPham');
     var formSua = document.getElementById('formSuaSanPham');
@@ -352,14 +396,22 @@ document.addEventListener('DOMContentLoaded', function() {
             if (url) formSua.action = url;
             document.getElementById('sua_ten_san_pham').value = btn.getAttribute('data-ten') || '';
             document.getElementById('sua_ma_san_pham').value = btn.getAttribute('data-ma') || '';
-            document.getElementById('sua_slug').value = btn.getAttribute('data-slug') || '';
+            var suaSlugEl = document.getElementById('sua_slug');
+            if (suaSlugEl) {
+                suaSlugEl.value = btn.getAttribute('data-slug') || '';
+                // Modal sửa: luôn bật auto slug theo tên khi vừa mở modal
+                suaSlugEl.dataset.manuallyEdited = '0';
+            }
             document.getElementById('sua_nha_cung_cap').value = btn.getAttribute('data-nha-cung-cap') || '';
             document.getElementById('sua_mo_ta').value = btn.getAttribute('data-mo-ta') || '';
-            document.getElementById('sua_trang_thai').value = btn.getAttribute('data-trang-thai') || '{{ \App\Models\TrangPhuc::TRANG_THAI_ACTIVE }}';
+            document.getElementById('sua_trang_thai').value = btn.getAttribute('data-trang-thai') || '1';
             document.getElementById('sua_ghi_chu').value = btn.getAttribute('data-ghi-chu') || '';
             document.getElementById('sua_gia_tri').value = btn.getAttribute('data-gia-tri') || '';
         });
     }
+
+    // Auto slug: Sửa
+    bindAutoSlug(document.getElementById('sua_ten_san_pham'), document.getElementById('sua_slug'));
 
     // Xóa: mở modal xác nhận, sau đó submit form
     var modalXoa = document.getElementById('modalXacNhanXoaSanPham');

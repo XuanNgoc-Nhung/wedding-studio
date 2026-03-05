@@ -11,11 +11,11 @@ class TrangPhuc extends Model
 
     protected $table = 'trang_phuc';
 
-    /** Trạng thái: đang dùng / có sẵn */
-    public const TRANG_THAI_ACTIVE = 'active';
+    /** Trạng thái: hiển thị */
+    public const TRANG_THAI_ACTIVE = 1;
 
-    /** Trạng thái: ngừng / không dùng */
-    public const TRANG_THAI_INACTIVE = 'inactive';
+    /** Trạng thái: ẩn */
+    public const TRANG_THAI_INACTIVE = 0;
 
     /**
      * The attributes that are mass assignable.
@@ -42,6 +42,7 @@ class TrangPhuc extends Model
     {
         return [
             'gia_tri' => 'decimal:2',
+            'trang_thai' => 'integer',
         ];
     }
 }
