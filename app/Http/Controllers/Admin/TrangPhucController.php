@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\KhoHang;
 use App\Models\TrangPhuc;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -19,9 +20,22 @@ class TrangPhucController extends Controller
         return $this->danhSachSanPham(request());
     }
 
-    public function khoHang()
+    public function khoHang(Request $request)
     {
-        return view('admin.trang-phuc.kho-hang');
+        $query = KhoHang::query()->with('trangPhuc');
+
+        if ($request->filled('search')) {
+            $q = $request->input('search');
+            $query->whereHas('trangPhuc', function ($qb) use ($q) {
+                $qb->where('ten_san_pham', 'like', '%' . $q . '%')
+                    ->orWhere('ma_san_pham', 'like', '%' . $q . '%');
+            });
+        }
+
+        $danhSach = $query->orderByDesc('id')->paginate(15)->withQueryString();
+        $sanPhamChuaCoTrongKho = TrangPhuc::whereDoesntHave('khoHang')->orderBy('ten_san_pham')->get();
+
+        return view('admin.trang-phuc.kho-hang', compact('danhSach', 'sanPhamChuaCoTrongKho'));
     }
 
     public function danhSachSanPham(Request $request)
@@ -117,17 +131,50 @@ class TrangPhucController extends Controller
 
     public function storeKhoHang(Request $request)
     {
-        return redirect()->back()->with('error', 'Chức năng kho hàng đang được cập nhật.');
+        $validated = $request->validate([
+            'trang_phuc_id' => 'required|exists:trang_phuc,id|unique:kho_hang,trang_phuc_id',
+            'so_luong' => 'required|integer|min:0',
+            'gia_cho_thue' => 'nullable|numeric|min:0',
+            'ghi_chu' => 'nullable|string',
+            'trang_thai' => 'nullable|in:0,1',
+        ], [
+            'trang_phuc_id.unique' => 'Sản phẩm này đã có trong kho. Vui lòng cập nhật số lượng tại mục chỉnh sửa.',
+        ]);
+
+        KhoHang::create([
+            'trang_phuc_id' => $validated['trang_phuc_id'],
+            'so_luong' => $validated['so_luong'],
+            'gia_cho_thue' => $validated['gia_cho_thue'] ?? 0,
+            'ghi_chu' => $validated['ghi_chu'] ?? null,
+            'trang_thai' => $validated['trang_thai'] ?? 1,
+        ]);
+
+        return redirect()->route('admin.trang-phuc.kho-hang')->with('success', 'Đã thêm sản phẩm vào kho thành công.');
     }
 
-    public function updateKhoHang(Request $request, $khoHang)
+    public function updateKhoHang(Request $request, KhoHang $khoHang)
     {
-        return redirect()->back()->with('error', 'Chức năng kho hàng đang được cập nhật.');
+        $validated = $request->validate([
+            'so_luong' => 'required|integer|min:0',
+            'gia_cho_thue' => 'nullable|numeric|min:0',
+            'ghi_chu' => 'nullable|string',
+            'trang_thai' => 'nullable|in:0,1',
+        ]);
+
+        $khoHang->update([
+            'so_luong' => $validated['so_luong'],
+            'gia_cho_thue' => $validated['gia_cho_thue'] ?? 0,
+            'ghi_chu' => $validated['ghi_chu'] ?? null,
+            'trang_thai' => $validated['trang_thai'] ?? 1,
+        ]);
+
+        return redirect()->route('admin.trang-phuc.kho-hang')->with('success', 'Đã cập nhật kho hàng thành công.');
     }
 
-    public function destroyKhoHang($khoHang)
+    public function destroyKhoHang(KhoHang $khoHang)
     {
-        return redirect()->back()->with('error', 'Chức năng kho hàng đang được cập nhật.');
+        $khoHang->delete();
+        return redirect()->route('admin.trang-phuc.kho-hang')->with('success', 'Đã xóa khỏi kho hàng.');
     }
 
     private function uniqueSlug(string $slug, ?int $ignoreId = null): string
