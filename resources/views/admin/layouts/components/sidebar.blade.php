@@ -163,6 +163,14 @@
                 </li>
               </ul>
             </li>
+
+            <!-- Thông tin cá nhân -->
+            <li class="menu-item {{ request()->routeIs('admin.thong-tin-ca-nhan') ? 'active' : '' }}">
+              <a href="{{ route('admin.thong-tin-ca-nhan') }}" class="menu-link">
+                <i class="menu-icon icon-base ti tabler-user-circle"></i>
+                <div data-i18n="Thông tin cá nhân">Thông tin cá nhân</div>
+              </a>
+            </li>
           </ul>
         </aside>
 
