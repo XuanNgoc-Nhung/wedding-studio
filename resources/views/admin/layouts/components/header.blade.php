@@ -24,23 +24,28 @@
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
                     <li>
+                      <a class="dropdown-item" href="javascript:void(0);" data-language="vi" data-text-direction="ltr">
+                        <span>Tiếng Việt</span>
+                      </a>
+                    </li>
+                    <li>
                       <a class="dropdown-item" href="javascript:void(0);" data-language="en" data-text-direction="ltr">
-                        <span>English</span>
+                        <span>Tiếng Anh</span>
                       </a>
                     </li>
                     <li>
                       <a class="dropdown-item" href="javascript:void(0);" data-language="fr" data-text-direction="ltr">
-                        <span>French</span>
+                        <span>Tiếng Pháp</span>
                       </a>
                     </li>
                     <li>
                       <a class="dropdown-item" href="javascript:void(0);" data-language="ar" data-text-direction="rtl">
-                        <span>Arabic</span>
+                        <span>Tiếng Ả Rập</span>
                       </a>
                     </li>
                     <li>
                       <a class="dropdown-item" href="javascript:void(0);" data-language="de" data-text-direction="ltr">
-                        <span>German</span>
+                        <span>Tiếng Đức</span>
                       </a>
                     </li>
                   </ul>
@@ -55,7 +60,7 @@
                     href="javascript:void(0);"
                     data-bs-toggle="dropdown">
                     <i class="icon-base ti tabler-sun icon-22px theme-icon-active text-heading"></i>
-                    <span class="d-none ms-2" id="nav-theme-text">Toggle theme</span>
+                    <span class="d-none ms-2" id="nav-theme-text">Đổi giao diện</span>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-theme-text">
                     <li>
@@ -64,7 +69,7 @@
                         class="dropdown-item align-items-center active"
                         data-bs-theme-value="light"
                         aria-pressed="false">
-                        <span><i class="icon-base ti tabler-sun icon-22px me-3" data-icon="sun"></i>Light</span>
+                        <span><i class="icon-base ti tabler-sun icon-22px me-3" data-icon="sun"></i>Sáng</span>
                       </button>
                     </li>
                     <li>
@@ -75,7 +80,7 @@
                         aria-pressed="true">
                         <span
                           ><i class="icon-base ti tabler-moon-stars icon-22px me-3" data-icon="moon-stars"></i
-                          >Dark</span
+                          >Tối</span
                         >
                       </button>
                     </li>
@@ -89,7 +94,7 @@
                           ><i
                             class="icon-base ti tabler-device-desktop-analytics icon-22px me-3"
                             data-icon="device-desktop-analytics"></i
-                          >System</span
+                          >Hệ thống</span
                         >
                       </button>
                     </li>
@@ -110,13 +115,13 @@
                   <div class="dropdown-menu dropdown-menu-end p-0">
                     <div class="dropdown-menu-header border-bottom">
                       <div class="dropdown-header d-flex align-items-center py-3">
-                        <h6 class="mb-0 me-auto">Shortcuts</h6>
+                        <h6 class="mb-0 me-auto">Lối tắt</h6>
                         <a
                           href="javascript:void(0)"
                           class="dropdown-shortcuts-add py-2 btn btn-text-secondary rounded-pill btn-icon"
                           data-bs-toggle="tooltip"
                           data-bs-placement="top"
-                          title="Add shortcuts"
+                          title="Thêm lối tắt"
                           ><i class="icon-base ti tabler-plus icon-20px text-heading"></i
                         ></a>
                       </div>
@@ -127,15 +132,15 @@
                           <span class="dropdown-shortcuts-icon rounded-circle mb-3">
                             <i class="icon-base ti tabler-calendar icon-26px text-heading"></i>
                           </span>
-                          <a href="app-calendar.html" class="stretched-link">Calendar</a>
-                          <small>Appointments</small>
+                          <a href="app-calendar.html" class="stretched-link">Lịch</a>
+                          <small>Lịch hẹn</small>
                         </div>
                         <div class="dropdown-shortcuts-item col">
                           <span class="dropdown-shortcuts-icon rounded-circle mb-3">
                             <i class="icon-base ti tabler-file-dollar icon-26px text-heading"></i>
                           </span>
-                          <a href="app-invoice-list.html" class="stretched-link">Invoice App</a>
-                          <small>Manage Accounts</small>
+                          <a href="app-invoice-list.html" class="stretched-link">Hóa đơn</a>
+                          <small>Quản lý tài khoản</small>
                         </div>
                       </div>
                       <div class="row row-bordered overflow-visible g-0">
@@ -143,15 +148,15 @@
                           <span class="dropdown-shortcuts-icon rounded-circle mb-3">
                             <i class="icon-base ti tabler-user icon-26px text-heading"></i>
                           </span>
-                          <a href="app-user-list.html" class="stretched-link">User App</a>
-                          <small>Manage Users</small>
+                          <a href="app-user-list.html" class="stretched-link">Người dùng</a>
+                          <small>Quản lý người dùng</small>
                         </div>
                         <div class="dropdown-shortcuts-item col">
                           <span class="dropdown-shortcuts-icon rounded-circle mb-3">
                             <i class="icon-base ti tabler-users icon-26px text-heading"></i>
                           </span>
-                          <a href="app-access-roles.html" class="stretched-link">Role Management</a>
-                          <small>Permission</small>
+                          <a href="app-access-roles.html" class="stretched-link">Phân quyền</a>
+                          <small>Quyền hạn</small>
                         </div>
                       </div>
                       <div class="row row-bordered overflow-visible g-0">
@@ -159,15 +164,15 @@
                           <span class="dropdown-shortcuts-icon rounded-circle mb-3">
                             <i class="icon-base ti tabler-device-desktop-analytics icon-26px text-heading"></i>
                           </span>
-                          <a href="index.html" class="stretched-link">Dashboard</a>
-                          <small>User Dashboard</small>
+                          <a href="{{ route('admin.index') }}" class="stretched-link">Tổng quan</a>
+                          <small>Bảng điều khiển</small>
                         </div>
                         <div class="dropdown-shortcuts-item col">
                           <span class="dropdown-shortcuts-icon rounded-circle mb-3">
                             <i class="icon-base ti tabler-settings icon-26px text-heading"></i>
                           </span>
-                          <a href="pages-account-settings-account.html" class="stretched-link">Setting</a>
-                          <small>Account Settings</small>
+                          <a href="pages-account-settings-account.html" class="stretched-link">Cài đặt</a>
+                          <small>Cài đặt tài khoản</small>
                         </div>
                       </div>
                       <div class="row row-bordered overflow-visible g-0">
@@ -175,15 +180,15 @@
                           <span class="dropdown-shortcuts-icon rounded-circle mb-3">
                             <i class="icon-base ti tabler-help-circle icon-26px text-heading"></i>
                           </span>
-                          <a href="pages-faq.html" class="stretched-link">FAQs</a>
-                          <small>FAQs & Articles</small>
+                          <a href="pages-faq.html" class="stretched-link">Câu hỏi thường gặp</a>
+                          <small>FAQ & Bài viết</small>
                         </div>
                         <div class="dropdown-shortcuts-item col">
                           <span class="dropdown-shortcuts-icon rounded-circle mb-3">
                             <i class="icon-base ti tabler-square icon-26px text-heading"></i>
                           </span>
-                          <a href="modal-examples.html" class="stretched-link">Modals</a>
-                          <small>Useful Popups</small>
+                          <a href="modal-examples.html" class="stretched-link">Hộp thoại</a>
+                          <small>Cửa sổ popup</small>
                         </div>
                       </div>
                     </div>
@@ -207,15 +212,15 @@
                   <ul class="dropdown-menu dropdown-menu-end p-0">
                     <li class="dropdown-menu-header border-bottom">
                       <div class="dropdown-header d-flex align-items-center py-3">
-                        <h6 class="mb-0 me-auto">Notification</h6>
+                        <h6 class="mb-0 me-auto">Thông báo</h6>
                         <div class="d-flex align-items-center h6 mb-0">
-                          <span class="badge bg-label-primary me-2">8 New</span>
+                          <span class="badge bg-label-primary me-2">8 mới</span>
                           <a
                             href="javascript:void(0)"
                             class="dropdown-notifications-all p-2 btn btn-icon"
                             data-bs-toggle="tooltip"
                             data-bs-placement="top"
-                            title="Mark all as read"
+                            title="Đánh dấu đã đọc tất cả"
                             ><i class="icon-base ti tabler-mail-opened text-heading"></i
                           ></a>
                         </div>
@@ -231,9 +236,9 @@
                               </div>
                             </div>
                             <div class="flex-grow-1">
-                              <h6 class="small mb-1">Congratulation Lettie 🎉</h6>
-                              <small class="mb-1 d-block text-body">Won the monthly best seller gold badge</small>
-                              <small class="text-body-secondary">1h ago</small>
+                              <h6 class="small mb-1">Chúc mừng Lettie 🎉</h6>
+                              <small class="mb-1 d-block text-body">Đạt huy chương vàng bán chạy nhất tháng</small>
+                              <small class="text-body-secondary">1 giờ trước</small>
                             </div>
                             <div class="flex-shrink-0 dropdown-notifications-actions">
                               <a href="javascript:void(0)" class="dropdown-notifications-read"
@@ -254,8 +259,8 @@
                             </div>
                             <div class="flex-grow-1">
                               <h6 class="mb-1 small">Charles Franklin</h6>
-                              <small class="mb-1 d-block text-body">Accepted your connection</small>
-                              <small class="text-body-secondary">12hr ago</small>
+                              <small class="mb-1 d-block text-body">Đã chấp nhận kết nối của bạn</small>
+                              <small class="text-body-secondary">12 giờ trước</small>
                             </div>
                             <div class="flex-shrink-0 dropdown-notifications-actions">
                               <a href="javascript:void(0)" class="dropdown-notifications-read"
@@ -275,9 +280,9 @@
                               </div>
                             </div>
                             <div class="flex-grow-1">
-                              <h6 class="mb-1 small">New Message ✉️</h6>
-                              <small class="mb-1 d-block text-body">You have new message from Natalie</small>
-                              <small class="text-body-secondary">1h ago</small>
+                              <h6 class="mb-1 small">Tin nhắn mới ✉️</h6>
+                              <small class="mb-1 d-block text-body">Bạn có tin nhắn mới từ Natalie</small>
+                              <small class="text-body-secondary">1 giờ trước</small>
                             </div>
                             <div class="flex-shrink-0 dropdown-notifications-actions">
                               <a href="javascript:void(0)" class="dropdown-notifications-read"
@@ -299,9 +304,9 @@
                               </div>
                             </div>
                             <div class="flex-grow-1">
-                              <h6 class="mb-1 small">Whoo! You have new order 🛒</h6>
-                              <small class="mb-1 d-block text-body">ACME Inc. made new order $1,154</small>
-                              <small class="text-body-secondary">1 day ago</small>
+                              <h6 class="mb-1 small">Bạn có đơn hàng mới 🛒</h6>
+                              <small class="mb-1 d-block text-body">ACME Inc. đặt đơn mới $1,154</small>
+                              <small class="text-body-secondary">1 ngày trước</small>
                             </div>
                             <div class="flex-shrink-0 dropdown-notifications-actions">
                               <a href="javascript:void(0)" class="dropdown-notifications-read"
@@ -321,11 +326,11 @@
                               </div>
                             </div>
                             <div class="flex-grow-1">
-                              <h6 class="mb-1 small">Application has been approved 🚀</h6>
+                              <h6 class="mb-1 small">Đơn đã được duyệt 🚀</h6>
                               <small class="mb-1 d-block text-body"
-                                >Your ABC project application has been approved.</small
+                                >Đơn dự án ABC của bạn đã được phê duyệt.</small
                               >
-                              <small class="text-body-secondary">2 days ago</small>
+                              <small class="text-body-secondary">2 ngày trước</small>
                             </div>
                             <div class="flex-shrink-0 dropdown-notifications-actions">
                               <a href="javascript:void(0)" class="dropdown-notifications-read"
@@ -347,9 +352,9 @@
                               </div>
                             </div>
                             <div class="flex-grow-1">
-                              <h6 class="mb-1 small">Monthly report is generated</h6>
-                              <small class="mb-1 d-block text-body">July monthly financial report is generated </small>
-                              <small class="text-body-secondary">3 days ago</small>
+                              <h6 class="mb-1 small">Báo cáo tháng đã tạo</h6>
+                              <small class="mb-1 d-block text-body">Báo cáo tài chính tháng 7 đã được tạo</small>
+                              <small class="text-body-secondary">3 ngày trước</small>
                             </div>
                             <div class="flex-shrink-0 dropdown-notifications-actions">
                               <a href="javascript:void(0)" class="dropdown-notifications-read"
@@ -369,9 +374,9 @@
                               </div>
                             </div>
                             <div class="flex-grow-1">
-                              <h6 class="mb-1 small">Send connection request</h6>
-                              <small class="mb-1 d-block text-body">Peter sent you connection request</small>
-                              <small class="text-body-secondary">4 days ago</small>
+                              <h6 class="mb-1 small">Gửi yêu cầu kết nối</h6>
+                              <small class="mb-1 d-block text-body">Peter đã gửi cho bạn yêu cầu kết nối</small>
+                              <small class="text-body-secondary">4 ngày trước</small>
                             </div>
                             <div class="flex-shrink-0 dropdown-notifications-actions">
                               <a href="javascript:void(0)" class="dropdown-notifications-read"
@@ -391,9 +396,9 @@
                               </div>
                             </div>
                             <div class="flex-grow-1">
-                              <h6 class="mb-1 small">New message from Jane</h6>
-                              <small class="mb-1 d-block text-body">Your have new message from Jane</small>
-                              <small class="text-body-secondary">5 days ago</small>
+                              <h6 class="mb-1 small">Tin nhắn mới từ Jane</h6>
+                              <small class="mb-1 d-block text-body">Bạn có tin nhắn mới từ Jane</small>
+                              <small class="text-body-secondary">5 ngày trước</small>
                             </div>
                             <div class="flex-shrink-0 dropdown-notifications-actions">
                               <a href="javascript:void(0)" class="dropdown-notifications-read"
@@ -415,11 +420,11 @@
                               </div>
                             </div>
                             <div class="flex-grow-1">
-                              <h6 class="mb-1 small">CPU is running high</h6>
+                              <h6 class="mb-1 small">CPU đang chạy cao</h6>
                               <small class="mb-1 d-block text-body"
-                                >CPU Utilization Percent is currently at 88.63%,</small
+                                >Tỷ lệ sử dụng CPU hiện tại là 88,63%,</small
                               >
-                              <small class="text-body-secondary">5 days ago</small>
+                              <small class="text-body-secondary">5 ngày trước</small>
                             </div>
                             <div class="flex-shrink-0 dropdown-notifications-actions">
                               <a href="javascript:void(0)" class="dropdown-notifications-read"
@@ -436,7 +441,7 @@
                     <li class="border-top">
                       <div class="d-grid p-4">
                         <a class="btn btn-primary btn-sm d-flex" href="javascript:void(0);">
-                          <small class="align-middle">View all notifications</small>
+                          <small class="align-middle">Xem tất cả thông báo</small>
                         </a>
                       </div>
                     </li>
@@ -445,13 +450,18 @@
                 <!--/ Notification -->
 
                 <!-- User -->
+                @php $user = auth()->user(); @endphp
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                   <a
                     class="nav-link dropdown-toggle hide-arrow p-0"
                     href="javascript:void(0);"
                     data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
-                      <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" />
+                      @if($user->avatar ?? null)
+                        <img src="{{ asset($user->avatar) }}" alt="{{ $user->name }}" class="rounded-circle" />
+                      @else
+                        <span class="avatar-initial rounded-circle bg-label-primary">{{ strtoupper(mb_substr($user->name ?? 'U', 0, 1)) }}</span>
+                      @endif
                     </div>
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
@@ -460,12 +470,16 @@
                         <div class="d-flex align-items-center">
                           <div class="flex-shrink-0 me-2">
                             <div class="avatar avatar-online">
-                              <img src="../../assets/img/avatars/1.png" alt class="rounded-circle" />
+                              @if($user->avatar ?? null)
+                                <img src="{{ asset($user->avatar) }}" alt="{{ $user->name }}" class="rounded-circle" />
+                              @else
+                                <span class="avatar-initial rounded-circle bg-label-primary">{{ strtoupper(mb_substr($user->name ?? 'U', 0, 1)) }}</span>
+                              @endif
                             </div>
                           </div>
                           <div class="flex-grow-1">
-                            <h6 class="mb-0">John Doe</h6>
-                            <small class="text-body-secondary">Admin</small>
+                            <h6 class="mb-0">{{ $user->name ?? 'Người dùng' }}</h6>
+                            <small class="text-body-secondary">{{ $user->role_label ?? 'Người dùng' }}</small>
                           </div>
                         </div>
                       </a>
@@ -476,20 +490,20 @@
                     <li>
                       <a class="dropdown-item" href="pages-profile-user.html">
                         <i class="icon-base ti tabler-user me-3 icon-md"></i
-                        ><span class="align-middle">My Profile</span>
+                        ><span class="align-middle">Hồ sơ của tôi</span>
                       </a>
                     </li>
                     <li>
                       <a class="dropdown-item" href="pages-account-settings-account.html">
                         <i class="icon-base ti tabler-settings me-3 icon-md"></i
-                        ><span class="align-middle">Settings</span>
+                        ><span class="align-middle">Cài đặt</span>
                       </a>
                     </li>
                     <li>
                       <a class="dropdown-item" href="pages-account-settings-billing.html">
                         <span class="d-flex align-items-center align-middle">
                           <i class="flex-shrink-0 icon-base ti tabler-file-dollar me-3 icon-md"></i
-                          ><span class="flex-grow-1 align-middle">Billing</span>
+                          ><span class="flex-grow-1 align-middle">Thanh toán</span>
                           <span class="flex-shrink-0 badge bg-danger d-flex align-items-center justify-content-center"
                             >4</span
                           >
@@ -502,21 +516,24 @@
                     <li>
                       <a class="dropdown-item" href="pages-pricing.html">
                         <i class="icon-base ti tabler-currency-dollar me-3 icon-md"></i
-                        ><span class="align-middle">Pricing</span>
+                        ><span class="align-middle">Bảng giá</span>
                       </a>
                     </li>
                     <li>
                       <a class="dropdown-item" href="pages-faq.html">
                         <i class="icon-base ti tabler-question-mark me-3 icon-md"></i
-                        ><span class="align-middle">FAQ</span>
+                        ><span class="align-middle">Câu hỏi thường gặp</span>
                       </a>
                     </li>
                     <li>
                       <div class="d-grid px-2 pt-2 pb-1">
-                        <a class="btn btn-sm btn-danger d-flex" href="auth-login-cover.html" target="_blank">
-                          <small class="align-middle">Logout</small>
-                          <i class="icon-base ti tabler-logout ms-2 icon-14px"></i>
-                        </a>
+                        <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                          @csrf
+                          <button type="submit" class="btn btn-sm btn-danger d-flex w-100 justify-content-center align-items-center">
+                            <small class="align-middle">Đăng xuất</small>
+                            <i class="icon-base ti tabler-logout ms-2 icon-14px"></i>
+                          </button>
+                        </form>
                       </div>
                     </li>
                   </ul>

@@ -55,6 +55,19 @@ class User extends Authenticatable
     }
 
     /**
+     * Nhãn vai trò hiển thị (tiếng Việt).
+     */
+    public function getRoleLabelAttribute(): string
+    {
+        return match ((int) $this->role) {
+            self::ROLE_ADMIN => 'Quản trị viên',
+            self::ROLE_NHAN_VIEN => 'Nhân viên',
+            self::ROLE_NGUOI_DUNG => 'Người dùng',
+            default => 'Người dùng',
+        };
+    }
+
+    /**
      * Một user có thể có một hồ sơ nhân viên.
      */
     public function nhanVien(): HasOne
