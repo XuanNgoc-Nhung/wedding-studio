@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController as Admin;
 use App\Http\Controllers\Admin\NhanSuController as AdminNhanSu;
 use App\Http\Controllers\Admin\DichVuController as AdminDichVu;
@@ -11,7 +12,14 @@ use App\Http\Controllers\Admin\TaiChinhKeToanController as AdminTaiChinhKeToan;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+
+// Đăng nhập / Đăng xuất / Đăng ký (guest mới vào được login, register; auth mới vào được logout)
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login')->middleware('guest');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post')->middleware('guest');
+Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register')->middleware('guest');
+Route::post('/register', [AuthController::class, 'register'])->name('register.post')->middleware('guest');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], function () {
     Route::get('/', [Admin::class, 'index'])->name('index');
     Route::group(['prefix' => 'nhan-su'], function () {
         Route::get('/', [AdminNhanSu::class, 'index'])->name('nhan-su.index');
