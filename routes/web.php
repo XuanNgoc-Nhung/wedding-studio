@@ -21,6 +21,9 @@ Route::post('/register', [AuthController::class, 'register'])->name('register.po
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], function () {
     Route::get('/', [Admin::class, 'index'])->name('index');
+    Route::get('/thong-tin-ca-nhan', [Admin::class, 'thongTinCaNhan'])->name('thong-tin-ca-nhan');
+    Route::put('/thong-tin-ca-nhan', [Admin::class, 'capNhatThongTinCaNhan'])->name('thong-tin-ca-nhan.update');
+    Route::put('/doi-mat-khau', [Admin::class, 'doiMatKhau'])->name('doi-mat-khau');
     Route::group(['prefix' => 'nhan-su'], function () {
         Route::get('/', [AdminNhanSu::class, 'index'])->name('nhan-su.index');
         Route::get('/danh-sach', [AdminNhanSu::class, 'danhSach'])->name('nhan-su.danh-sach');

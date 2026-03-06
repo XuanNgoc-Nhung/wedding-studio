@@ -171,7 +171,7 @@
                           <span class="dropdown-shortcuts-icon rounded-circle mb-3">
                             <i class="icon-base ti tabler-settings icon-26px text-heading"></i>
                           </span>
-                          <a href="pages-account-settings-account.html" class="stretched-link">Cài đặt</a>
+                          <a href="{{ route('admin.thong-tin-ca-nhan') }}" class="stretched-link">Thông tin cá nhân</a>
                           <small>Cài đặt tài khoản</small>
                         </div>
                       </div>
@@ -466,7 +466,7 @@
                   </a>
                   <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                      <a class="dropdown-item mt-0" href="pages-account-settings-account.html">
+                      <a class="dropdown-item mt-0" href="{{ route('admin.thong-tin-ca-nhan') }}">
                         <div class="d-flex align-items-center">
                           <div class="flex-shrink-0 me-2">
                             <div class="avatar avatar-online">
@@ -494,9 +494,9 @@
                       </a>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="pages-account-settings-account.html">
-                        <i class="icon-base ti tabler-settings me-3 icon-md"></i
-                        ><span class="align-middle">Cài đặt</span>
+                      <a class="dropdown-item" href="{{ route('admin.thong-tin-ca-nhan') }}">
+                        <i class="icon-base ti tabler-user-circle me-3 icon-md"></i
+                        ><span class="align-middle">Thông tin cá nhân</span>
                       </a>
                     </li>
                     <li>

@@ -72,6 +72,6 @@ class User extends Authenticatable
      */
     public function nhanVien(): HasOne
     {
-        return $this->hasOne(NhanVien::class);
+        return $this->hasOne(NhanVien::class, 'user_id', 'id');
     }
 }
