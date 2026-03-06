@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\NhanSuController as AdminNhanSu;
 use App\Http\Controllers\Admin\DichVuController as AdminDichVu;
 use App\Http\Controllers\Admin\KhachHangController as AdminKhachHang;
 use App\Http\Controllers\Admin\TrangPhucController as AdminTrangPhuc;
+use App\Http\Controllers\Admin\TaiChinhKeToanController as AdminTaiChinhKeToan;
 
 Route::get('/', function () {
     return view('welcome');
@@ -59,5 +60,19 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::put('/nhom-dich-vu/{nhomDichVu}', [AdminDichVu::class, 'updateNhomDichVu'])->name('dich-vu.update-nhom-dich-vu');
         Route::delete('/nhom-dich-vu/{nhomDichVu}', [AdminDichVu::class, 'destroyNhomDichVu'])->name('dich-vu.destroy-nhom-dich-vu');
 
+    });
+    //Route cho tài chính kế toán (bao gồm công nợ và phiếu thu chi)
+    Route::group(['prefix' => 'tai-chinh'], function () {
+        Route::get('/', [AdminTaiChinhKeToan::class, 'index'])->name('tai-chinh.index');
+        Route::get('/cong-no', [AdminTaiChinhKeToan::class, 'congNo'])->name('tai-chinh.cong-no');
+        Route::post('/cong-no', [AdminTaiChinhKeToan::class, 'storeCongNo'])->name('tai-chinh.store-cong-no');
+        Route::put('/cong-no/{congNo}', [AdminTaiChinhKeToan::class, 'updateCongNo'])->name('tai-chinh.update-cong-no');
+        Route::delete('/cong-no/{congNo}', [AdminTaiChinhKeToan::class, 'destroyCongNo'])->name('tai-chinh.destroy-cong-no');
+        Route::get('/phieu-thu-chi', [AdminTaiChinhKeToan::class, 'phieuThuChi'])->name('tai-chinh.phieu-thu-chi');
+        Route::post('/phieu-thu-chi', [AdminTaiChinhKeToan::class, 'storePhieuThuChi'])->name('tai-chinh.store-phieu-thu-chi');
+        Route::put('/phieu-thu-chi/{phieuThuChi}', [AdminTaiChinhKeToan::class, 'updatePhieuThuChi'])->name('tai-chinh.update-phieu-thu-chi');
+        Route::put('/phieu-thu-chi/{phieuThuChi}/duyet', [AdminTaiChinhKeToan::class, 'duyetPhieuThuChi'])->name('tai-chinh.duyet-phieu-thu-chi');
+        Route::put('/phieu-thu-chi/{phieuThuChi}/huy', [AdminTaiChinhKeToan::class, 'huyPhieuThuChi'])->name('tai-chinh.huy-phieu-thu-chi');
+        Route::delete('/phieu-thu-chi/{phieuThuChi}', [AdminTaiChinhKeToan::class, 'destroyPhieuThuChi'])->name('tai-chinh.destroy-phieu-thu-chi');
     });
 });
