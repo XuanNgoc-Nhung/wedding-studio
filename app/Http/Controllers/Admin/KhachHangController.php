@@ -81,4 +81,14 @@ class KhachHangController extends Controller
         $khachHang->delete();
         return redirect()->route('admin.khach-hang.danh-sach')->with('success', 'Đã xóa khách hàng thành công.');
     }
+    public function hopDong()
+    {
+        return view('admin.khach-hang.hop-dong');
+    }
+    public function storeHopDong(Request $request)
+    {
+        $validated = $request->validate([
+            'khach_hang_id' => 'required|exists:khach_hang,id',
+        ]);
+    }
 }

@@ -41,6 +41,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
         Route::post('/danh-sach', [AdminKhachHang::class, 'store'])->name('khach-hang.store');
         Route::put('/danh-sach/{khachHang}', [AdminKhachHang::class, 'update'])->name('khach-hang.update');
         Route::delete('/danh-sach/{khachHang}', [AdminKhachHang::class, 'destroy'])->name('khach-hang.destroy');
+        Route::get('/hop-dong', [AdminKhachHang::class, 'hopDong'])->name('khach-hang.hop-dong');
+        Route::post('/hop-dong', [AdminKhachHang::class, 'storeHopDong'])->name('khach-hang.store-hop-dong');
+        Route::put('/hop-dong/{hopDong}', [AdminKhachHang::class, 'updateHopDong'])->name('khach-hang.update-hop-dong');
+        Route::delete('/hop-dong/{hopDong}', [AdminKhachHang::class, 'destroyHopDong'])->name('khach-hang.destroy-hop-dong');
     });
     //Route cho trang phục
     Route::group(['prefix' => 'trang-phuc'], function () {

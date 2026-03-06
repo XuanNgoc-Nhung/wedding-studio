@@ -200,4 +200,8 @@ class NhanSuController extends Controller
     {
         return view('admin.nhan-su.phan-quyen');
     }
+    public function lichLamViec()
+    {
+        return view('admin.nhan-su.lich-lam-viec');
+    }
 }
