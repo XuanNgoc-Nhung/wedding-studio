@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\HopDong;
 use App\Models\KhoHang;
 use App\Models\TrangPhuc;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -195,5 +197,110 @@ class TrangPhucController extends Controller
         }
 
         return $slug;
+    }
+    public function hopDong(Request $request)
+    {
+        $query = HopDong::query()->with(['trangPhuc', 'user']);
+
+        if ($request->filled('search')) {
+            $q = $request->input('search');
+            $query->where(function ($qb) use ($q) {
+                $qb->where('ten_khach_hang', 'like', '%' . $q . '%')
+                    ->orWhere('so_dien_thoai', 'like', '%' . $q . '%');
+            });
+        }
+
+        $danhSach = $query->orderByDesc('id')->paginate(15)->withQueryString();
+        $danhSachSanPham = TrangPhuc::orderBy('ten_san_pham')->get();
+        $stockByProduct = KhoHang::whereIn('trang_phuc_id', $danhSachSanPham->pluck('id'))->pluck('so_luong', 'trang_phuc_id');
+
+        return view('admin.trang-phuc.hop-dong', compact('danhSach', 'danhSachSanPham', 'stockByProduct'));
+    }
+
+    public function storeHopDong(Request $request)
+    {
+        $validated = $request->validate([
+            'ten_khach_hang' => 'required|string|max:255',
+            'so_dien_thoai' => 'required|string|max:20',
+            'trang_phuc_id' => 'required|exists:trang_phuc,id',
+            'so_luong_thue' => 'required|integer|min:1',
+            'gia_thue' => 'required|numeric|min:0',
+            'thoi_gian_thue_bat_dau' => 'required|date',
+            'thoi_gian_du_kien_tra' => 'required|date|after_or_equal:thoi_gian_thue_bat_dau',
+            'thoi_gian_tra_hang_thuc_te' => 'nullable|date',
+            'ghi_chu' => 'nullable|string',
+            'trang_thai' => 'nullable|in:0,1,2',
+        ]);
+
+        $stock = (int) (KhoHang::where('trang_phuc_id', $validated['trang_phuc_id'])->value('so_luong') ?? 0);
+        if ($validated['so_luong_thue'] > $stock) {
+            return redirect()->back()
+                ->withErrors(['so_luong_thue' => 'Số lượng thuê không được vượt quá số lượng trong kho (trong kho còn ' . $stock . ').'])
+                ->withInput();
+        }
+
+        HopDong::create([
+            'ten_khach_hang' => $validated['ten_khach_hang'],
+            'so_dien_thoai' => $validated['so_dien_thoai'] ?? null,
+            'trang_phuc_id' => $validated['trang_phuc_id'],
+            'so_luong_thue' => $validated['so_luong_thue'],
+            'gia_thue' => $validated['gia_thue'],
+            'thoi_gian_thue_bat_dau' => Carbon::parse($validated['thoi_gian_thue_bat_dau'])->startOfDay(),
+            'thoi_gian_du_kien_tra' => Carbon::parse($validated['thoi_gian_du_kien_tra'])->startOfDay(),
+            'thoi_gian_tra_hang_thuc_te' => isset($validated['thoi_gian_tra_hang_thuc_te']) ? Carbon::parse($validated['thoi_gian_tra_hang_thuc_te'])->startOfDay() : null,
+            'ghi_chu' => $validated['ghi_chu'] ?? null,
+            'trang_thai' => $validated['trang_thai'] ?? HopDong::TRANG_THAI_CHO_XU_LY,
+            'user_id' => $request->user()?->id,
+        ]);
+
+        return redirect()->route('admin.trang-phuc.hop-dong')->with('success', 'Đã thêm hợp đồng thành công.');
+    }
+
+    public function updateHopDong(Request $request, HopDong $hopDong)
+    {
+        $validated = $request->validate([
+            'ten_khach_hang' => 'required|string|max:255',
+            'so_dien_thoai' => 'nullable|string|max:20',
+            'trang_phuc_id' => 'required|exists:trang_phuc,id',
+            'so_luong_thue' => 'required|integer|min:1',
+            'gia_thue' => 'required|numeric|min:0',
+            'thoi_gian_thue_bat_dau' => 'required|date',
+            'thoi_gian_du_kien_tra' => 'required|date',
+            'thoi_gian_tra_hang_thuc_te' => 'nullable|date',
+            'ghi_chu' => 'nullable|string',
+            'trang_thai' => 'nullable|in:0,1,2',
+        ]);
+
+        $stock = (int) (KhoHang::where('trang_phuc_id', $validated['trang_phuc_id'])->value('so_luong') ?? 0);
+        $available = $stock;
+        if ((int) $hopDong->trang_phuc_id === (int) $validated['trang_phuc_id']) {
+            $available += $hopDong->so_luong_thue;
+        }
+        if ($validated['so_luong_thue'] > $available) {
+            return redirect()->back()
+                ->withErrors(['so_luong_thue' => 'Số lượng thuê không được vượt quá số lượng trong kho (trong kho còn ' . $stock . ', tối đa có thể thuê: ' . $available . ').'])
+                ->withInput();
+        }
+
+        $hopDong->update([
+            'ten_khach_hang' => $validated['ten_khach_hang'],
+            'so_dien_thoai' => $validated['so_dien_thoai'] ?? null,
+            'trang_phuc_id' => $validated['trang_phuc_id'],
+            'so_luong_thue' => $validated['so_luong_thue'],
+            'gia_thue' => $validated['gia_thue'],
+            'thoi_gian_thue_bat_dau' => Carbon::parse($validated['thoi_gian_thue_bat_dau'])->startOfDay(),
+            'thoi_gian_du_kien_tra' => Carbon::parse($validated['thoi_gian_du_kien_tra'])->startOfDay(),
+            'thoi_gian_tra_hang_thuc_te' => isset($validated['thoi_gian_tra_hang_thuc_te']) ? Carbon::parse($validated['thoi_gian_tra_hang_thuc_te'])->startOfDay() : null,
+            'ghi_chu' => $validated['ghi_chu'] ?? null,
+            'trang_thai' => $validated['trang_thai'] ?? $hopDong->trang_thai,
+        ]);
+
+        return redirect()->route('admin.trang-phuc.hop-dong')->with('success', 'Đã cập nhật hợp đồng thành công.');
+    }
+
+    public function destroyHopDong(HopDong $hopDong)
+    {
+        $hopDong->delete();
+        return redirect()->route('admin.trang-phuc.hop-dong')->with('success', 'Đã xóa hợp đồng.');
     }
 }

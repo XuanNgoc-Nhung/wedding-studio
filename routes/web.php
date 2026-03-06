@@ -41,6 +41,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::post('/kho-hang', [AdminTrangPhuc::class, 'storeKhoHang'])->name('trang-phuc.store-kho-hang');
         Route::put('/kho-hang/{khoHang}', [AdminTrangPhuc::class, 'updateKhoHang'])->name('trang-phuc.update-kho-hang');
         Route::delete('/kho-hang/{khoHang}', [AdminTrangPhuc::class, 'destroyKhoHang'])->name('trang-phuc.destroy-kho-hang');
+        Route::get('/hop-dong', [AdminTrangPhuc::class, 'hopDong'])->name('trang-phuc.hop-dong');
+        Route::post('/hop-dong', [AdminTrangPhuc::class, 'storeHopDong'])->name('trang-phuc.store-hop-dong');
+        Route::put('/hop-dong/{hopDong}', [AdminTrangPhuc::class, 'updateHopDong'])->name('trang-phuc.update-hop-dong');
+        Route::delete('/hop-dong/{hopDong}', [AdminTrangPhuc::class, 'destroyHopDong'])->name('trang-phuc.destroy-hop-dong');
     });
     //route cho dịch vụ
     Route::group(['prefix' => 'dich-vu'], function () {
