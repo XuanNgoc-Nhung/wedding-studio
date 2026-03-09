@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
 class NhanSuController extends Controller
@@ -206,10 +207,70 @@ class NhanSuController extends Controller
         }
     }
 
-    public function phanQuyen()
+    public function phanQuyen(Request $request)
     {
-        return view('admin.nhan-su.phan-quyen');
+        $search = $request->get('search');
+        $danhSach = User::query()
+            ->with('nhanVien')
+            ->when($search, function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%");
+            })
+            ->orderBy('id')
+            ->paginate(15)
+            ->withQueryString();
+
+        $routeDescriptions = config('route_descriptions', []);
+        $adminGetRoutes = collect(Route::getRoutes())
+            ->filter(function ($route) {
+                $name = $route->getName();
+                if (!$name || !str_starts_with($name, 'admin.')) {
+                    return false;
+                }
+                return in_array('GET', $route->methods());
+            })
+            ->map(function ($route) use ($routeDescriptions) {
+                $name = $route->getName();
+                return [
+                    'name' => $name,
+                    'uri' => $route->uri(),
+                    'description' => $routeDescriptions[$name] ?? '',
+                ];
+            })
+            ->values()
+            ->all();
+
+        return view('admin.nhan-su.phan-quyen', compact('danhSach', 'adminGetRoutes'));
     }
+
+    public function luuPhanQuyen(Request $request)
+    {
+        $validated = $request->validate([
+            'user_id' => 'required|exists:users,id',
+            'permissions' => 'nullable|array',
+            'permissions.*' => 'string|max:255',
+        ], [
+            'user_id.required' => 'Thiếu thông tin nhân sự.',
+            'user_id.exists' => 'Nhân sự không tồn tại.',
+        ]);
+
+        $user = User::findOrFail($request->user_id);
+        $dsMenu = $request->input('permissions', []);
+
+        $nhanVien = $user->nhanVien;
+        if (!$nhanVien) {
+            NhanVien::create([
+                'user_id' => $user->id,
+                'ds_menu' => $dsMenu,
+            ]);
+        } else {
+            $nhanVien->update(['ds_menu' => $dsMenu]);
+        }
+
+        return redirect()->back()->with('success', 'Đã lưu phân quyền thành công.');
+    }
+
     public function lichLamViec()
     {
         return view('admin.nhan-su.lich-lam-viec');

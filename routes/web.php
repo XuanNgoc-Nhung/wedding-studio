@@ -26,18 +26,17 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     Route::put('/thong-tin-ca-nhan', [Admin::class, 'capNhatThongTinCaNhan'])->name('thong-tin-ca-nhan.update');
     Route::put('/doi-mat-khau', [Admin::class, 'doiMatKhau'])->name('doi-mat-khau');
     Route::group(['prefix' => 'nhan-su'], function () {
-        Route::get('/', [AdminNhanSu::class, 'index'])->name('nhan-su.index');
         Route::get('/danh-sach', [AdminNhanSu::class, 'danhSach'])->name('nhan-su.danh-sach');
         Route::post('/danh-sach', [AdminNhanSu::class, 'store'])->name('nhan-su.store');
         Route::put('/danh-sach/{user}', [AdminNhanSu::class, 'update'])->name('nhan-su.update');
         Route::put('/doi-mat-khau/{user}', [AdminNhanSu::class, 'doiMatKhau'])->name('nhan-su.doi-mat-khau');
         Route::delete('/danh-sach/{user}', [AdminNhanSu::class, 'destroy'])->name('nhan-su.destroy');
         Route::get('/phan-quyen', [AdminNhanSu::class, 'phanQuyen'])->name('nhan-su.phan-quyen');
+        Route::post('/phan-quyen', [AdminNhanSu::class, 'luuPhanQuyen'])->name('nhan-su.luu-phan-quyen');
         Route::get('/lich-lam-viec', [AdminNhanSu::class, 'lichLamViec'])->name('nhan-su.lich-lam-viec');
     });
     //Route cho khách hàng
     Route::group(['prefix' => 'khach-hang'], function () {
-        Route::get('/', [AdminKhachHang::class, 'index'])->name('khach-hang.index');
         Route::get('/danh-sach', [AdminKhachHang::class, 'danhSach'])->name('khach-hang.danh-sach');
         Route::post('/danh-sach', [AdminKhachHang::class, 'store'])->name('khach-hang.store');
         Route::put('/danh-sach/{khachHang}', [AdminKhachHang::class, 'update'])->name('khach-hang.update');
@@ -49,7 +48,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     });
     //Route cho trang phục
     Route::group(['prefix' => 'trang-phuc'], function () {
-        Route::get('/', [AdminTrangPhuc::class, 'index'])->name('trang-phuc.index');
         Route::get('/san-pham', [AdminTrangPhuc::class, 'sanPham'])->name('trang-phuc.san-pham');
         Route::post('/san-pham', [AdminTrangPhuc::class, 'storeSanPham'])->name('trang-phuc.san-pham.store');
         Route::put('/san-pham/{trangPhuc}', [AdminTrangPhuc::class, 'updateSanPham'])->name('trang-phuc.san-pham.update');
@@ -65,7 +63,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     });
     //route cho dịch vụ
     Route::group(['prefix' => 'dich-vu'], function () {
-        Route::get('/', [AdminDichVu::class, 'index'])->name('dich-vu.index');
         Route::get('/dich-vu-le', [AdminDichVu::class, 'dichVuLe'])->name('dich-vu.dich-vu-le');
         Route::post('/dich-vu-le', [AdminDichVu::class, 'store'])->name('dich-vu.store');
         Route::put('/dich-vu-le/{dichVu}', [AdminDichVu::class, 'update'])->name('dich-vu.update');
@@ -79,7 +76,6 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
     });
     //Route cho tài chính kế toán (bao gồm công nợ và phiếu thu chi)
     Route::group(['prefix' => 'tai-chinh'], function () {
-        Route::get('/', [AdminTaiChinhKeToan::class, 'index'])->name('tai-chinh.index');
         Route::get('/cong-no', [AdminTaiChinhKeToan::class, 'congNo'])->name('tai-chinh.cong-no');
         Route::post('/cong-no', [AdminTaiChinhKeToan::class, 'storeCongNo'])->name('tai-chinh.store-cong-no');
         Route::put('/cong-no/{congNo}', [AdminTaiChinhKeToan::class, 'updateCongNo'])->name('tai-chinh.update-cong-no');
