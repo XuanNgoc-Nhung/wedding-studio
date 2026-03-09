@@ -16,14 +16,9 @@ class DiemDanhController extends Controller
 {
     public function diemDanh(Request $request)
     {
-        $query = DiemDanh::query()->with('user');
-
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->whereHas('user', function ($q) use ($search) {
-                $q->where('name', 'like', '%' . $search . '%');
-            });
-        }
+        $query = DiemDanh::query()
+            ->with('user')
+            ->where('user_id', Auth::id());
 
         if ($request->filled('tu_ngay')) {
             $query->whereDate('gio_vao', '>=', $request->tu_ngay);

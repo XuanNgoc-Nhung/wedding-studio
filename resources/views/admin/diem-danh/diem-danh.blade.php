@@ -19,15 +19,6 @@
         {{-- Bộ lọc + Chấm công --}}
         <form action="{{ route('admin.diem-danh.diem-danh') }}" method="GET" class="mb-4">
             <div class="row g-3 align-items-end">
-                <div class="col-md-4 col-lg-3">
-                    <label class="form-label" for="search">Họ tên</label>
-                    <input type="text"
-                           class="form-control"
-                           id="search"
-                           name="search"
-                           value="{{ request('search') }}"
-                           placeholder="Nhập họ tên...">
-                </div>
                 <div class="col-md-3 col-lg-2">
                     <label class="form-label" for="tu_ngay">Từ ngày</label>
                     <input type="date" class="form-control" id="tu_ngay" name="tu_ngay" value="{{ request('tu_ngay') }}">
@@ -40,7 +31,7 @@
                     <button type="submit" class="btn btn-primary">
                         <i class="fa-solid fa-magnifying-glass me-1"></i> Lọc
                     </button>
-                    @if(request('search') || request('tu_ngay') || request('den_ngay'))
+                    @if(request('tu_ngay') || request('den_ngay'))
                     <a href="{{ route('admin.diem-danh.diem-danh') }}" class="btn btn-outline-secondary">Bỏ lọc</a>
                     @endif
                 </div>
