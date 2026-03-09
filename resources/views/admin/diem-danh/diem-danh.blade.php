@@ -74,6 +74,10 @@
                         <th>Lý do</th>
                         <th class="text-center">Nghỉ phép</th>
                         <th>Loại phép</th>
+                        <th class="text-end">Giờ làm cơ bản</th>
+                        <th class="text-end">Giờ làm tăng ca</th>
+                        <th class="text-end">Lương cơ bản</th>
+                        <th class="text-end">Lương tăng ca</th>
                         <th>Ghi chú</th>
                     </tr>
                 </thead>
@@ -107,11 +111,15 @@
                             @endif
                         </td>
                         <td>{{ $item->loai_phep ?? '—' }}</td>
+                        <td class="text-end">{{ $item->gio_lam_co_ban !== null ? number_format($item->gio_lam_co_ban, 1) . ' h' : '—' }}</td>
+                        <td class="text-end">{{ $item->gio_lam_tang_ca !== null ? number_format($item->gio_lam_tang_ca, 1) . ' h' : '—' }}</td>
+                        <td class="text-end">{{ $item->luong_co_ban !== null ? number_format($item->luong_co_ban, 0, ',', '.') : '—' }}</td>
+                        <td class="text-end">{{ $item->luong_tang_ca !== null ? number_format($item->luong_tang_ca, 0, ',', '.') : '—' }}</td>
                         <td>{{ Str::limit($item->ghi_chu, 50) ?: '—' }}</td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="10" class="text-center py-4 text-muted">Chưa có dữ liệu điểm danh.</td>
+                        <td colspan="14" class="text-center py-4 text-muted">Chưa có dữ liệu điểm danh.</td>
                     </tr>
                     @endforelse
                 </tbody>

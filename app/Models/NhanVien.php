@@ -26,6 +26,8 @@ class NhanVien extends Model
         'vi_tri_lam_viec',
         'ngay_vao_cong_ty',
         'ngay_ky_hop_dong',
+        'luong_co_ban',
+        'luong_tang_ca',
         'ds_menu',
     ];
 
@@ -40,6 +42,8 @@ class NhanVien extends Model
             'ngay_sinh' => 'date',
             'ngay_vao_cong_ty' => 'date',
             'ngay_ky_hop_dong' => 'date',
+            'luong_co_ban' => 'integer',
+            'luong_tang_ca' => 'integer',
             'ds_menu' => 'array',
         ];
     }

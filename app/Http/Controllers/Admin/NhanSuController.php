@@ -50,6 +50,8 @@ class NhanSuController extends Controller
             'vi_tri_lam_viec' => 'nullable|string|max:255',
             'ngay_vao_cong_ty' => 'nullable|date',
             'ngay_ky_hop_dong' => 'nullable|date',
+            'luong_co_ban' => 'nullable|integer|min:0',
+            'luong_tang_ca' => 'nullable|integer|min:0',
             'hinh_anh' => 'nullable|image|max:2048',
         ], [
             'name.required' => 'Vui lòng nhập họ tên.',
@@ -87,6 +89,8 @@ class NhanSuController extends Controller
                 'vi_tri_lam_viec' => $request->input('vi_tri_lam_viec'),
                 'ngay_vao_cong_ty' => $request->input('ngay_vao_cong_ty'),
                 'ngay_ky_hop_dong' => $request->input('ngay_ky_hop_dong'),
+                'luong_co_ban' => $request->input('luong_co_ban', 50000),
+                'luong_tang_ca' => $request->input('luong_tang_ca', 80000),
             ]);
 
             DB::commit();
@@ -108,6 +112,8 @@ class NhanSuController extends Controller
             'vi_tri_lam_viec' => 'nullable|string|max:255',
             'ngay_vao_cong_ty' => 'nullable|date',
             'ngay_ky_hop_dong' => 'nullable|date',
+            'luong_co_ban' => 'nullable|integer|min:0',
+            'luong_tang_ca' => 'nullable|integer|min:0',
             'hinh_anh' => 'nullable|image|max:2048',
         ], [
             'name.required' => 'Vui lòng nhập họ tên.',
@@ -139,6 +145,8 @@ class NhanSuController extends Controller
                     'vi_tri_lam_viec' => $request->input('vi_tri_lam_viec'),
                     'ngay_vao_cong_ty' => $request->input('ngay_vao_cong_ty'),
                     'ngay_ky_hop_dong' => $request->input('ngay_ky_hop_dong'),
+                    'luong_co_ban' => $request->filled('luong_co_ban') ? (int) $request->input('luong_co_ban') : $nhanVien->luong_co_ban,
+                    'luong_tang_ca' => $request->filled('luong_tang_ca') ? (int) $request->input('luong_tang_ca') : $nhanVien->luong_tang_ca,
                 ]);
             } else {
                 NhanVien::create([
@@ -150,6 +158,8 @@ class NhanSuController extends Controller
                     'vi_tri_lam_viec' => $request->input('vi_tri_lam_viec'),
                     'ngay_vao_cong_ty' => $request->input('ngay_vao_cong_ty'),
                     'ngay_ky_hop_dong' => $request->input('ngay_ky_hop_dong'),
+                    'luong_co_ban' => $request->input('luong_co_ban', 50000),
+                    'luong_tang_ca' => $request->input('luong_tang_ca', 80000),
                 ]);
             }
 

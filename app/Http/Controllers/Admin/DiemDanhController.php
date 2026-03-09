@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ChamCong;
 use App\Models\DiemDanh;
+use App\Models\NhanVien;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -145,6 +146,8 @@ class DiemDanhController extends Controller
 
     /**
      * Ghi nhận giờ ra (check-out) cho user đăng nhập.
+     * Tính giờ làm cơ bản (từ giờ vào đến 21:00), giờ tăng ca (từ 21:00 đến giờ ra),
+     * và lương cơ bản, lương tăng ca theo đơn giá ở bảng nhan_vien.
      */
     public function checkOut(Request $request)
     {
@@ -162,8 +165,35 @@ class DiemDanhController extends Controller
             return redirect()->route('admin.diem-danh.diem-danh')->with('error', 'Chưa có bản ghi check-in hôm nay hoặc đã check-out rồi.');
         }
 
-        $record->update(['gio_ra' => now()]);
+        $gioRa = Carbon::now();
+        $gioVao = Carbon::parse($record->gio_vao);
+        $cuoiGioCoBan = Carbon::parse($gioVao->toDateString() . ' 21:00:00');
 
-        return redirect()->route('admin.diem-danh.diem-danh')->with('success', 'Check-out thành công lúc ' . now()->format('H:i d/m/Y') . '.');
+        // Giờ làm cơ bản: từ gio_vao đến min(gio_ra, 21:00). Nếu ra trước 21:00 thì toàn bộ là cơ bản.
+        if ($gioRa->lte($cuoiGioCoBan)) {
+            $gioLamCoBan = round($gioVao->diffInMinutes($gioRa) / 60, 2);
+            $gioLamTangCa = 0.0;
+        } else {
+            $gioLamCoBan = round($gioVao->diffInMinutes($cuoiGioCoBan) / 60, 2);
+            $gioLamTangCa = round($cuoiGioCoBan->diffInMinutes($gioRa) / 60, 2);
+        }
+
+        // Lấy đơn giá lương từ nhan_vien (theo user_id)
+        $nhanVien = NhanVien::query()->where('user_id', $record->user_id)->first();
+        $donGiaLuongCoBan = $nhanVien ? (float) $nhanVien->luong_co_ban : 0;
+        $donGiaLuongTangCa = $nhanVien ? (float) $nhanVien->luong_tang_ca : 0;
+
+        $luongCoBan = round($gioLamCoBan * $donGiaLuongCoBan, 2);
+        $luongTangCa = round($gioLamTangCa * $donGiaLuongTangCa, 2);
+
+        $record->update([
+            'gio_ra' => $gioRa,
+            'gio_lam_co_ban' => $gioLamCoBan,
+            'gio_lam_tang_ca' => $gioLamTangCa,
+            'luong_co_ban' => $luongCoBan,
+            'luong_tang_ca' => $luongTangCa,
+        ]);
+
+        return redirect()->route('admin.diem-danh.diem-danh')->with('success', 'Check-out thành công lúc ' . $gioRa->format('H:i d/m/Y') . '.');
     }
 }

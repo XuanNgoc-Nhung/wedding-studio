@@ -28,6 +28,10 @@ class DiemDanh extends Model
         'nghi_phep',
         'loai_phep',
         'ghi_chu',
+        'gio_lam_co_ban',
+        'gio_lam_tang_ca',
+        'luong_co_ban',
+        'luong_tang_ca',
     ];
 
     /**
@@ -43,6 +47,10 @@ class DiemDanh extends Model
             'di_muon' => 'boolean',
             'hop_le' => 'boolean',
             'nghi_phep' => 'boolean',
+            'gio_lam_co_ban' => 'decimal:2',
+            'gio_lam_tang_ca' => 'decimal:2',
+            'luong_co_ban' => 'decimal:2',
+            'luong_tang_ca' => 'decimal:2',
         ];
     }
 

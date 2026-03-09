@@ -65,6 +65,8 @@
                         <th>Vị trí làm việc</th>
                         <th>Ngày vào công ty</th>
                         <th>Ngày ký hợp đồng</th>
+                        <th>Lương cơ bản</th>
+                        <th>Lương tăng ca</th>
                         <th class="text-center" style="width: 100px;">Thao tác</th>
                     </tr>
                 </thead>
@@ -101,6 +103,8 @@
                         <td>{{ $nv?->vi_tri_lam_viec ?? '—' }}</td>
                         <td>{{ $nv?->ngay_vao_cong_ty ? $nv->ngay_vao_cong_ty->format('d/m/Y') : '—' }}</td>
                         <td>{{ $nv?->ngay_ky_hop_dong ? $nv->ngay_ky_hop_dong->format('d/m/Y') : '—' }}</td>
+                        <td>{{ $nv?->luong_co_ban !== null ? number_format($nv->luong_co_ban) : '—' }}</td>
+                        <td>{{ $nv?->luong_tang_ca !== null ? number_format($nv->luong_tang_ca) : '—' }}</td>
                         <td>
                             <div class="dropdown">
                                 <button type="button" class="btn btn-sm btn-icon btn-outline-secondary dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -122,6 +126,8 @@
                                        data-vi-tri="{{ e($nv?->vi_tri_lam_viec ?? '') }}"
                                        data-ngay-vao-cong-ty="{{ $nv?->ngay_vao_cong_ty?->format('Y-m-d') ?? '' }}"
                                        data-ngay-ky-hop-dong="{{ $nv?->ngay_ky_hop_dong?->format('Y-m-d') ?? '' }}"
+                                       data-luong-co-ban="{{ $nv?->luong_co_ban ?? '' }}"
+                                       data-luong-tang-ca="{{ $nv?->luong_tang_ca ?? '' }}"
                                        data-hinh-anh="{{ !empty($hinhAnh) ? asset('storage/' . $hinhAnh) : '' }}">
                                         <i class="fa-solid fa-pen me-2"></i> Sửa
                                     </a>
@@ -146,7 +152,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="13" class="text-center py-4 text-muted">Chưa có dữ liệu nhân sự.</td>
+                        <td colspan="15" class="text-center py-4 text-muted">Chưa có dữ liệu nhân sự.</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -286,6 +292,14 @@
                                     <label class="form-label" for="them_ngay_ky_hop_dong">Ngày ký hợp đồng</label>
                                     <input type="date" class="form-control" id="them_ngay_ky_hop_dong" name="ngay_ky_hop_dong" value="{{ old('ngay_ky_hop_dong') }}">
                                 </div>
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <label class="form-label" for="them_luong_co_ban">Lương cơ bản (VNĐ)</label>
+                                    <input type="number" class="form-control" id="them_luong_co_ban" name="luong_co_ban" value="{{ old('luong_co_ban', 50000) }}" placeholder="50000" min="0" step="1000">
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <label class="form-label" for="them_luong_tang_ca">Lương tăng ca (VNĐ)</label>
+                                    <input type="number" class="form-control" id="them_luong_tang_ca" name="luong_tang_ca" value="{{ old('luong_tang_ca', 80000) }}" placeholder="80000" min="0" step="1000">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -389,6 +403,14 @@
                                 <div class="col-12 col-sm-6 col-lg-4">
                                     <label class="form-label" for="sua_ngay_ky_hop_dong">Ngày ký hợp đồng</label>
                                     <input type="date" class="form-control" id="sua_ngay_ky_hop_dong" name="ngay_ky_hop_dong">
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <label class="form-label" for="sua_luong_co_ban">Lương cơ bản (VNĐ)</label>
+                                    <input type="number" class="form-control" id="sua_luong_co_ban" name="luong_co_ban" placeholder="50000" min="0" step="1000">
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <label class="form-label" for="sua_luong_tang_ca">Lương tăng ca (VNĐ)</label>
+                                    <input type="number" class="form-control" id="sua_luong_tang_ca" name="luong_tang_ca" placeholder="80000" min="0" step="1000">
                                 </div>
                             </div>
                         </div>
@@ -573,6 +595,8 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('sua_vi_tri').value = btn.getAttribute('data-vi-tri') || '';
             document.getElementById('sua_ngay_vao_cong_ty').value = btn.getAttribute('data-ngay-vao-cong-ty') || '';
             document.getElementById('sua_ngay_ky_hop_dong').value = btn.getAttribute('data-ngay-ky-hop-dong') || '';
+            document.getElementById('sua_luong_co_ban').value = btn.getAttribute('data-luong-co-ban') || '';
+            document.getElementById('sua_luong_tang_ca').value = btn.getAttribute('data-luong-tang-ca') || '';
             var imgSrc = btn.getAttribute('data-hinh-anh') || '';
             if (imgSrc) {
                 suaPreview.src = imgSrc;
