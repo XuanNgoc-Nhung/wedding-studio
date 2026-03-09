@@ -216,8 +216,8 @@
               </a>
             </div>
             <!-- /Logo -->
-            <h4 class="mb-1">Chào mừng đến với Wedding Studio! 👋</h4>
-            <p class="mb-6">Vui lòng nhập thông tin</p>
+            <h4 class="mb-1">Hệ thống Quản trị viên</h4>
+            <p class="mb-6">Vui lòng đăng nhập bằng tài khoản quản trị của bạn.</p>
 
             @if ($errors->any())
               <div class="alert alert-danger alert-dismissible mb-4" role="alert">
