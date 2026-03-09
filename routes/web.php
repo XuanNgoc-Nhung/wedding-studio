@@ -90,6 +90,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
         Route::put('/phieu-thu-chi/{phieuThuChi}/duyet', [AdminTaiChinhKeToan::class, 'duyetPhieuThuChi'])->name('tai-chinh.duyet-phieu-thu-chi');
         Route::put('/phieu-thu-chi/{phieuThuChi}/huy', [AdminTaiChinhKeToan::class, 'huyPhieuThuChi'])->name('tai-chinh.huy-phieu-thu-chi');
         Route::delete('/phieu-thu-chi/{phieuThuChi}', [AdminTaiChinhKeToan::class, 'destroyPhieuThuChi'])->name('tai-chinh.destroy-phieu-thu-chi');
+        // tính lương
+        Route::get('/tinh-luong', [AdminTaiChinhKeToan::class, 'tinhLuong'])->name('tai-chinh.tinh-luong');
+        Route::post('/tinh-luong', [AdminTaiChinhKeToan::class, 'storeTinhLuong'])->name('tai-chinh.store-tinh-luong');
+        Route::put('/tinh-luong/{tinhLuong}', [AdminTaiChinhKeToan::class, 'updateTinhLuong'])->name('tai-chinh.update-tinh-luong');
+        Route::delete('/tinh-luong/{tinhLuong}', [AdminTaiChinhKeToan::class, 'destroyTinhLuong'])->name('tai-chinh.destroy-tinh-luong');
     });
     //Route cho điểm danh
     Route::group(['prefix' => 'diem-danh'], function () {

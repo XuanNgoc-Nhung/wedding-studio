@@ -2,9 +2,9 @@
 
 @section('content')
 <div class="card">
-    <h5 class="card-header">Chấm công theo tháng</h5>
+    <h5 class="card-header">Tính lương theo tháng</h5>
     <div class="card-body">
-        <form method="GET" action="{{ route('admin.diem-danh.cham-cong') }}" class="mb-4">
+        <form method="GET" action="{{ route('admin.tai-chinh.tinh-luong') }}" class="mb-4">
             <div class="row g-3 align-items-end">
                 <div class="col-md-3 col-lg-2">
                     <label class="form-label" for="month">Tháng</label>
@@ -30,7 +30,7 @@
                     <button type="submit" class="btn btn-primary">
                         <i class="fa-solid fa-filter me-1"></i> Lọc
                     </button>
-                    <a href="{{ route('admin.diem-danh.cham-cong') }}" class="btn btn-outline-secondary">Tháng hiện tại</a>
+                    <a href="{{ route('admin.tai-chinh.tinh-luong') }}" class="btn btn-outline-secondary">Tháng hiện tại</a>
                 </div>
                 <div class="col-12 col-lg-auto ms-lg-auto">
                     <div class="text-muted">
@@ -45,14 +45,20 @@
             <table class="table table-bordered table-hover mb-0">
                 <thead class="table-light">
                     <tr>
-                        <th class="text-center align-middle" style="min-width: 48px;">STT</th>
-                        <th style="min-width: 220px;">Nhân viên</th>
+                        <th rowspan="2" class="align-middle text-center" style="min-width: 48px;">STT</th>
+                        <th rowspan="2" class="align-middle" style="min-width: 220px;">Nhân viên</th>
                         @foreach(($ngayTrongThang ?? []) as $day)
-                            <th class="text-center" style="min-width: 72px;">
+                            <th rowspan="2" class="text-center align-middle" style="min-width: 72px;">
                                 <div class="fw-semibold">{{ $day->format('d') }}</div>
                                 <div class="small text-muted">{{ $day->isoFormat('dd') }}</div>
                             </th>
                         @endforeach
+                        <th colspan="3" class="text-center text-nowrap" style="min-width: 1px;">Lương</th>
+                    </tr>
+                    <tr>
+                        <th class="text-center text-nowrap small" style="min-width: 90px;">Cơ bản</th>
+                        <th class="text-center text-nowrap small" style="min-width: 90px;">Tăng ca</th>
+                        <th class="text-center text-nowrap small" style="min-width: 90px;">Tổng</th>
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
@@ -84,10 +90,22 @@
                                     @endif
                                 </td>
                             @endforeach
+                            @php
+                                $luong = $bangLuongThang[$u->id] ?? ['luong_co_ban' => 0, 'luong_tang_ca' => 0, 'tong_luong' => 0];
+                            @endphp
+                            <td class="text-end align-middle">
+                                {{ number_format($luong['luong_co_ban'], 0, ',', '.') }} đ
+                            </td>
+                            <td class="text-end align-middle">
+                                {{ number_format($luong['luong_tang_ca'], 0, ',', '.') }} đ
+                            </td>
+                            <td class="text-end align-middle fw-semibold">
+                                {{ number_format($luong['tong_luong'], 0, ',', '.') }} đ
+                            </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="{{ 2 + count($ngayTrongThang ?? []) }}" class="text-center py-4 text-muted">
+                            <td colspan="{{ 2 + count($ngayTrongThang ?? []) + 3 }}" class="text-center py-4 text-muted">
                                 Chưa có nhân viên để hiển thị.
                             </td>
                         </tr>

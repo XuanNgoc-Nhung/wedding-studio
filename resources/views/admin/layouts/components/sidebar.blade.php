@@ -134,6 +134,11 @@
                     <div data-i18n="Phiếu thu chi">Phiếu thu chi</div>
                   </a>
                 </li>
+                <li class="menu-item {{ request()->is('admin/tai-chinh/tinh-luong') ? 'active' : '' }}">
+                  <a href="{{ url('admin/tai-chinh/tinh-luong') }}" class="menu-link">
+                    <div data-i18n="Tính lương">Tính lương</div>
+                  </a>
+                </li>
               </ul>
             </li>
 

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ChamCong;
 use App\Models\PhieuThuChi;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class TaiChinhKeToanController extends Controller
 {
@@ -106,5 +109,80 @@ class TaiChinhKeToanController extends Controller
             'ngay_duyet' => now(),
         ]);
         return redirect()->route('admin.tai-chinh.phieu-thu-chi')->with('success', 'Đã hủy phiếu thu chi.');
+    }
+    public function tinhLuong(Request $request)
+    {
+        $month = (int) $request->query('month', now()->month);
+        $year = (int) $request->query('year', now()->year);
+
+        if ($month < 1 || $month > 12) {
+            $month = now()->month;
+        }
+        if ($year < 2000 || $year > 2100) {
+            $year = now()->year;
+        }
+
+        $start = Carbon::create($year, $month, 1)->startOfMonth();
+        $end = (clone $start)->endOfMonth();
+
+        $ngayTrongThang = [];
+        for ($d = (clone $start); $d->lte($end); $d->addDay()) {
+            $ngayTrongThang[] = (clone $d);
+        }
+
+        $nhanVien = User::query()
+            ->where('role', User::ROLE_NHAN_VIEN)
+            ->orderBy('name')
+            ->get();
+
+        $chamCong = ChamCong::query()
+            ->with(['user', 'diemDanh'])
+            ->whereBetween('ngay_diem_danh', [$start->toDateString(), $end->toDateString()])
+            ->whereIn('user_id', $nhanVien->pluck('id'))
+            ->get();
+
+        $bangChamCong = [];
+        $bangLuongThang = [];
+        foreach ($nhanVien as $u) {
+            $bangLuongThang[$u->id] = [
+                'luong_co_ban' => 0,
+                'luong_tang_ca' => 0,
+                'tong_luong' => 0,
+            ];
+        }
+        foreach ($chamCong as $record) {
+            $dateKey = $record->ngay_diem_danh?->toDateString();
+            if (!$dateKey) {
+                continue;
+            }
+            $bangChamCong[$dateKey][$record->user_id] = $record;
+
+            $diemDanh = $record->diemDanh;
+            if ($diemDanh) {
+                $uid = $record->user_id;
+                $bangLuongThang[$uid]['luong_co_ban'] += (float) ($diemDanh->luong_co_ban ?? 0);
+                $bangLuongThang[$uid]['luong_tang_ca'] += (float) ($diemDanh->luong_tang_ca ?? 0);
+            }
+        }
+        foreach (array_keys($bangLuongThang) as $uid) {
+            $bangLuongThang[$uid]['tong_luong'] = $bangLuongThang[$uid]['luong_co_ban'] + $bangLuongThang[$uid]['luong_tang_ca'];
+        }
+
+        return view('admin.tai-chinh.tinh-luong', [
+            'month' => $month,
+            'year' => $year,
+            'start' => $start,
+            'end' => $end,
+            'ngayTrongThang' => $ngayTrongThang,
+            'nhanVien' => $nhanVien,
+            'bangChamCong' => $bangChamCong,
+            'bangLuongThang' => $bangLuongThang,
+        ]);
+    }
+    public function storeTinhLuong(Request $request)
+    {
+        $validated = $request->validate([
+            'thang' => 'required|integer|min:1|max:12',
+        ]);
     }
 }
