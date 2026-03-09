@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\DichVuController as AdminDichVu;
 use App\Http\Controllers\Admin\KhachHangController as AdminKhachHang;
 use App\Http\Controllers\Admin\TrangPhucController as AdminTrangPhuc;
 use App\Http\Controllers\Admin\TaiChinhKeToanController as AdminTaiChinhKeToan;
+use App\Http\Controllers\Admin\DiemDanhController as AdminDiemDanh;
 
 Route::get('/', function () {
     return view('welcome');
@@ -89,5 +90,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], 
         Route::put('/phieu-thu-chi/{phieuThuChi}/duyet', [AdminTaiChinhKeToan::class, 'duyetPhieuThuChi'])->name('tai-chinh.duyet-phieu-thu-chi');
         Route::put('/phieu-thu-chi/{phieuThuChi}/huy', [AdminTaiChinhKeToan::class, 'huyPhieuThuChi'])->name('tai-chinh.huy-phieu-thu-chi');
         Route::delete('/phieu-thu-chi/{phieuThuChi}', [AdminTaiChinhKeToan::class, 'destroyPhieuThuChi'])->name('tai-chinh.destroy-phieu-thu-chi');
+    });
+    //Route cho điểm danh
+    Route::group(['prefix' => 'diem-danh'], function () {
+        Route::get('/', [AdminDiemDanh::class, 'diemDanh'])->name('diem-danh.diem-danh');
+        Route::get('/cham-cong', [AdminDiemDanh::class, 'chamCong'])->name('diem-danh.cham-cong');
+        Route::get('/check-in', [AdminDiemDanh::class, 'checkIn'])->name('diem-danh.check-in');
+        Route::get('/check-out', [AdminDiemDanh::class, 'checkOut'])->name('diem-danh.check-out');
     });
 });

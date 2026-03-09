@@ -48,6 +48,26 @@
                 <div data-i18n="Tổng quan">Tổng quan</div>
               </a>
             </li>
+            <!-- Chấm công -->
+            @php $menuChamCongOpen = request()->routeIs('admin.diem-danh.*'); @endphp
+            <li class="menu-item {{ $menuChamCongOpen ? 'active open' : '' }}">
+              <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon icon-base ti tabler-clock"></i>
+                <div data-i18n="Chấm công">Chấm công</div>
+              </a>
+              <ul class="menu-sub">
+                <li class="menu-item {{ request()->routeIs('admin.diem-danh.diem-danh') ? 'active' : '' }}">
+                  <a href="{{ route('admin.diem-danh.diem-danh') }}" class="menu-link">
+                    <div data-i18n="Điểm danh">Điểm danh</div>
+                  </a>
+                </li>
+                <li class="menu-item {{ request()->routeIs('admin.diem-danh.cham-cong') ? 'active' : '' }}">
+                  <a href="{{ route('admin.diem-danh.cham-cong') }}" class="menu-link">
+                    <div data-i18n="Chấm công">Chấm công</div>
+                  </a>
+                </li>
+              </ul>
+            </li>
 
             <!-- Nhân sự -->
             @php $menuNhanSuOpen = request()->routeIs('admin.nhan-su.*'); @endphp

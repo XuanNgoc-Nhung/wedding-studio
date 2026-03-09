@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -73,5 +74,13 @@ class User extends Authenticatable
     public function nhanVien(): HasOne
     {
         return $this->hasOne(NhanVien::class, 'user_id', 'id');
+    }
+
+    /**
+     * Một user có nhiều bản ghi điểm danh.
+     */
+    public function diemDanh(): HasMany
+    {
+        return $this->hasMany(DiemDanh::class, 'user_id', 'id');
     }
 }
