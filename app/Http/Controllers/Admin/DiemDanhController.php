@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ChamCong;
 use App\Models\DiemDanh;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DiemDanhController extends Controller
 {
@@ -72,11 +74,23 @@ class DiemDanhController extends Controller
             return redirect()->route('admin.diem-danh.diem-danh')->with('error', 'Bạn đã điểm danh vào hôm nay rồi.');
         }
 
-        DiemDanh::create([
-            'user_id' => $userId,
-            'gio_vao' => now(),
-            'gio_ra' => null,
-        ]);
+        DB::transaction(function () use ($userId) {
+            $diemDanh = DiemDanh::create([
+                'user_id' => $userId,
+                'gio_vao' => now(),
+                'gio_ra' => null,
+            ]);
+
+            ChamCong::query()->updateOrCreate(
+                [
+                    'user_id' => $userId,
+                    'ngay_diem_danh' => today()->toDateString(),
+                ],
+                [
+                    'diem_danh_id' => $diemDanh->id,
+                ]
+            );
+        });
 
         return redirect()->route('admin.diem-danh.diem-danh')->with('success', 'Check-in thành công lúc ' . now()->format('H:i d/m/Y') . '.');
     }

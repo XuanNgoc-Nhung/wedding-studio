@@ -83,4 +83,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(DiemDanh::class, 'user_id', 'id');
     }
+
+    /**
+     * Một user có nhiều bản ghi chấm công.
+     */
+    public function chamCong(): HasMany
+    {
+        return $this->hasMany(ChamCong::class, 'user_id', 'id');
+    }
 }
