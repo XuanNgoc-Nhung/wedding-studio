@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ChamCong;
 use App\Models\DiemDanh;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 
 class DiemDanhController extends Controller
 {
@@ -49,9 +51,55 @@ class DiemDanhController extends Controller
         return view('admin.diem-danh.diem-danh', compact('danhSach', 'canCheckIn', 'canCheckOut'));
     }
 
-    public function chamCong()
+    public function chamCong(Request $request)
     {
-        return view('admin.diem-danh.cham-cong');
+        $month = (int) $request->query('month', now()->month);
+        $year = (int) $request->query('year', now()->year);
+
+        if ($month < 1 || $month > 12) {
+            $month = now()->month;
+        }
+        if ($year < 2000 || $year > 2100) {
+            $year = now()->year;
+        }
+
+        $start = Carbon::create($year, $month, 1)->startOfMonth();
+        $end = (clone $start)->endOfMonth();
+
+        $ngayTrongThang = [];
+        for ($d = (clone $start); $d->lte($end); $d->addDay()) {
+            $ngayTrongThang[] = (clone $d);
+        }
+
+        $nhanVien = User::query()
+            ->where('role', User::ROLE_NHAN_VIEN)
+            ->orderBy('name')
+            ->get();
+
+        $chamCong = ChamCong::query()
+            ->with(['user', 'diemDanh'])
+            ->whereBetween('ngay_diem_danh', [$start->toDateString(), $end->toDateString()])
+            ->whereIn('user_id', $nhanVien->pluck('id'))
+            ->get();
+
+        $bangChamCong = [];
+        foreach ($chamCong as $record) {
+            $dateKey = $record->ngay_diem_danh?->toDateString();
+            if (!$dateKey) {
+                continue;
+            }
+            $bangChamCong[$dateKey][$record->user_id] = $record;
+        }
+
+        return view('admin.diem-danh.cham-cong', [
+            'month' => $month,
+            'year' => $year,
+            'start' => $start,
+            'end' => $end,
+            'ngayTrongThang' => $ngayTrongThang,
+            'nhanVien' => $nhanVien,
+            'bangChamCong' => $bangChamCong,
+        ]);
     }
 
     /**
