@@ -116,6 +116,14 @@
                         <strong id="modalPhanQuyenUserName">—</strong>
                     </p>
                     <p class="small text-muted mb-2">Danh sách menu (route GET trong prefix admin):</p>
+                    <div class="d-flex align-items-center gap-3 mb-2 pb-2 border-bottom">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="permCheckAll" title="Chọn/bỏ chọn tất cả">
+                            <label class="form-check-label small fw-medium" for="permCheckAll">Chọn tất cả</label>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-primary" id="btnPermSelectAll">Chọn tất cả</button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary" id="btnPermDeselectAll">Bỏ chọn tất cả</button>
+                    </div>
                     <div class="list-group list-group-flush" style="max-height: 60vh; overflow-y: auto;">
                         @forelse($adminGetRoutes ?? [] as $route)
                         <div class="list-group-item list-group-item-action d-flex align-items-center py-2">
@@ -170,6 +178,49 @@
 document.addEventListener('DOMContentLoaded', function () {
     var modal = document.getElementById('modalPhanQuyen');
     if (!modal) return;
+
+    var checkAll = document.getElementById('permCheckAll');
+    var btnSelectAll = document.getElementById('btnPermSelectAll');
+    var btnDeselectAll = document.getElementById('btnPermDeselectAll');
+
+    function getPermCheckboxes() {
+        return modal.querySelectorAll('.perm-checkbox');
+    }
+
+    function updateCheckAllState() {
+        var boxes = getPermCheckboxes();
+        var total = boxes.length;
+        var checked = Array.from(boxes).filter(function (cb) { return cb.checked; }).length;
+        if (checkAll) {
+            checkAll.checked = total > 0 && checked === total;
+            checkAll.indeterminate = total > 0 && checked > 0 && checked < total;
+        }
+    }
+
+    function setAll(checked) {
+        getPermCheckboxes().forEach(function (cb) { cb.checked = checked; });
+        if (checkAll) checkAll.checked = checked;
+        if (checkAll) checkAll.indeterminate = false;
+    }
+
+    if (checkAll) {
+        checkAll.addEventListener('change', function () {
+            setAll(this.checked);
+        });
+    }
+    if (btnSelectAll) {
+        btnSelectAll.addEventListener('click', function () { setAll(true); });
+    }
+    if (btnDeselectAll) {
+        btnDeselectAll.addEventListener('click', function () { setAll(false); });
+    }
+
+    modal.addEventListener('change', function (e) {
+        if (e.target && e.target.classList.contains('perm-checkbox')) {
+            updateCheckAllState();
+        }
+    });
+
     modal.addEventListener('show.bs.modal', function (e) {
         var trigger = e.relatedTarget;
         if (trigger && trigger.classList.contains('btn-phan-quyen')) {
@@ -181,6 +232,7 @@ document.addEventListener('DOMContentLoaded', function () {
             modal.querySelectorAll('.perm-checkbox').forEach(function (cb) {
                 cb.checked = dsMenu.indexOf(cb.value) !== -1;
             });
+            updateCheckAllState();
         }
     });
 });

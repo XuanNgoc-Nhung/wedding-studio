@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Carbon;
 
 class DiemDanhController extends Controller
@@ -33,15 +34,18 @@ class DiemDanhController extends Controller
         $canCheckIn = false;
         $canCheckOut = false;
         if (Auth::check()) {
-            $recordToday = DiemDanh::query()
-                ->where('user_id', Auth::id())
+            $userId = Auth::id();
+            $hasAnyRecordToday = DiemDanh::query()
+                ->where('user_id', $userId)
                 ->whereDate('gio_vao', today())
-                ->first();
-            if (!$recordToday) {
-                $canCheckIn = true;
-            } elseif ($recordToday->gio_ra === null) {
-                $canCheckOut = true;
-            }
+                ->exists();
+            $hasOpenRecordToday = DiemDanh::query()
+                ->where('user_id', $userId)
+                ->whereDate('gio_vao', today())
+                ->whereNull('gio_ra')
+                ->exists();
+            $canCheckIn = !$hasAnyRecordToday;
+            $canCheckOut = $hasOpenRecordToday;
         }
 
         return view('admin.diem-danh.diem-danh', compact('danhSach', 'canCheckIn', 'canCheckOut'));
@@ -146,7 +150,10 @@ class DiemDanhController extends Controller
      */
     public function checkOut(Request $request)
     {
+        Log::info('Check-out: yêu cầu từ user', ['user_id' => Auth::id()]);
+
         if (!Auth::check()) {
+            Log::warning('Check-out: thất bại - chưa đăng nhập');
             return redirect()->route('admin.diem-danh.diem-danh')->with('error', 'Vui lòng đăng nhập.');
         }
 
@@ -157,6 +164,10 @@ class DiemDanhController extends Controller
             ->first();
 
         if (!$record) {
+            Log::warning('Check-out: không có bản ghi check-in hôm nay hoặc đã check-out', [
+                'user_id' => Auth::id(),
+                'today' => today()->toDateString(),
+            ]);
             return redirect()->route('admin.diem-danh.diem-danh')->with('error', 'Chưa có bản ghi check-in hôm nay hoặc đã check-out rồi.');
         }
 
@@ -183,6 +194,17 @@ class DiemDanhController extends Controller
 
         $record->update([
             'gio_ra' => $gioRa,
+            'gio_lam_co_ban' => $gioLamCoBan,
+            'gio_lam_tang_ca' => $gioLamTangCa,
+            'luong_co_ban' => $luongCoBan,
+            'luong_tang_ca' => $luongTangCa,
+        ]);
+
+        Log::info('Check-out: thành công', [
+            'user_id' => Auth::id(),
+            'diem_danh_id' => $record->id,
+            'gio_vao' => $gioVao->toDateTimeString(),
+            'gio_ra' => $gioRa->toDateTimeString(),
             'gio_lam_co_ban' => $gioLamCoBan,
             'gio_lam_tang_ca' => $gioLamTangCa,
             'luong_co_ban' => $luongCoBan,

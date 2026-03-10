@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer(['admin.layouts.app', 'admin.layouts.components.sidebar'], function ($view) {
-            Log::debug('[Sidebar] View composer bắt đầu', ['view' => $view->name()]);
+            // Log::debug('[Sidebar] View composer bắt đầu', ['view' => $view->name()]);
 
             $user = auth()->user();
             // ds_menu: danh sách route được phép xem (từ bảng nhan_vien)
@@ -33,18 +33,18 @@ class AppServiceProvider extends ServiceProvider
                 $ds_menu = (array) ($user->nhanVien->ds_menu ?? []);
             }
 
-            Log::debug('[Sidebar] User & ds_menu', [
-                'user_id' => $user?->id,
-                'ds_menu_count' => count($ds_menu),
-                'ds_menu' => $ds_menu,
-            ]);
+            // Log::debug('[Sidebar] User & ds_menu', [
+            //     'user_id' => $user?->id,
+            //     'ds_menu_count' => count($ds_menu),
+            //     'ds_menu' => $ds_menu,
+            // ]);
 
             // Toàn bộ menu từ config, lọc theo ds_menu (chỉ giữ mục có route trong ds_menu)
             $sidebarMenuItems = self::filterMenuByDsMenu($ds_menu);
 
-            Log::debug('[Sidebar] Kết quả menu sau lọc', [
-                'sidebar_menu_items_count' => count($sidebarMenuItems),
-            ]);
+            // Log::debug('[Sidebar] Kết quả menu sau lọc', [
+            //     'sidebar_menu_items_count' => count($sidebarMenuItems),
+            // ]);
 
             $view->with('sidebarDsMenu', $ds_menu);
             $view->with('sidebarMenuItems', $sidebarMenuItems);
@@ -57,7 +57,7 @@ class AppServiceProvider extends ServiceProvider
      */
     private static function filterMenuByDsMenu(array $ds_menu): array
     {
-        Log::debug('[Sidebar] filterMenuByDsMenu', ['ds_menu_count' => count($ds_menu)]);
+        // Log::debug('[Sidebar] filterMenuByDsMenu', ['ds_menu_count' => count($ds_menu)]);
 
         $allItems = config('admin_menu', []);
         $result = [];
@@ -85,10 +85,10 @@ class AppServiceProvider extends ServiceProvider
             }
         }
 
-        Log::debug('[Sidebar] filterMenuByDsMenu xong', [
-            'config_items' => count($allItems),
-            'result_items' => count($result),
-        ]);
+        // Log::debug('[Sidebar] filterMenuByDsMenu xong', [
+        //     'config_items' => count($allItems),
+        //     'result_items' => count($result),
+        // ]);
 
         return $result;
     }

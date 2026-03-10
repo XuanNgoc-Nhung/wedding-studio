@@ -61,10 +61,10 @@
                         <th>Giờ vào</th>
                         <th>Giờ ra</th>
                         <th class="text-center">Đi muộn</th>
-                        <th class="text-center">Hợp lệ</th>
+                        {{-- <th class="text-center">Hợp lệ</th> --}}
                         <th>Lý do</th>
-                        <th class="text-center">Nghỉ phép</th>
-                        <th>Loại phép</th>
+                        {{-- <th class="text-center">Nghỉ phép</th> --}}
+                        {{-- <th>Loại phép</th> --}}
                         <th class="text-end">Giờ làm cơ bản</th>
                         <th class="text-end">Giờ làm tăng ca</th>
                         <th class="text-end">Lương cơ bản</th>
@@ -86,22 +86,22 @@
                                 <span class="text-muted">Không</span>
                             @endif
                         </td>
-                        <td class="text-center">
+                        {{-- <td class="text-center">
                             @if($item->hop_le)
                                 <span class="badge bg-success">Có</span>
                             @else
                                 <span class="text-muted">Không</span>
                             @endif
-                        </td>
+                        </td> --}}
                         <td>{{ $item->ly_do ?? '—' }}</td>
-                        <td class="text-center">
+                        {{-- <td class="text-center">
                             @if($item->nghi_phep)
                                 <span class="badge bg-info">Có</span>
                             @else
                                 <span class="text-muted">Không</span>
                             @endif
-                        </td>
-                        <td>{{ $item->loai_phep ?? '—' }}</td>
+                        </td> --}}
+                        {{-- <td>{{ $item->loai_phep ?? '—' }}</td> --}}
                         <td class="text-end">{{ $item->gio_lam_co_ban !== null ? number_format($item->gio_lam_co_ban, 1) . ' h' : '—' }}</td>
                         <td class="text-end">{{ $item->gio_lam_tang_ca !== null ? number_format($item->gio_lam_tang_ca, 1) . ' h' : '—' }}</td>
                         <td class="text-end">{{ $item->luong_co_ban !== null ? number_format($item->luong_co_ban, 0, ',', '.') : '—' }}</td>
