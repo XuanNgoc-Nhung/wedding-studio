@@ -71,20 +71,33 @@ class DiemDanhController extends Controller
             $ngayTrongThang[] = (clone $d);
         }
 
+        $startStr = $start->format('Y-m-d');
+        $endStr = $end->format('Y-m-d');
+
+        // User có chấm công trong tháng (bất kể role) để đảm bảo hiển thị đủ
+        $userIdsCoChamCong = ChamCong::query()
+            ->whereBetween('ngay_diem_danh', [$startStr, $endStr])
+            ->distinct()
+            ->pluck('user_id');
+
         $nhanVien = User::query()
-            ->where('role', User::ROLE_NHAN_VIEN)
+            ->where(function ($q) use ($userIdsCoChamCong) {
+                $q->where('role', User::ROLE_NHAN_VIEN)
+                    ->orWhereIn('id', $userIdsCoChamCong);
+            })
             ->orderBy('name')
             ->get();
 
         $chamCong = ChamCong::query()
             ->with(['user', 'diemDanh'])
-            ->whereBetween('ngay_diem_danh', [$start->toDateString(), $end->toDateString()])
+            ->whereBetween('ngay_diem_danh', [$startStr, $endStr])
             ->whereIn('user_id', $nhanVien->pluck('id'))
             ->get();
 
         $bangChamCong = [];
         foreach ($chamCong as $record) {
-            $dateKey = $record->ngay_diem_danh?->toDateString();
+            $date = $record->ngay_diem_danh;
+            $dateKey = $date ? Carbon::parse($date)->format('Y-m-d') : null;
             if (!$dateKey) {
                 continue;
             }

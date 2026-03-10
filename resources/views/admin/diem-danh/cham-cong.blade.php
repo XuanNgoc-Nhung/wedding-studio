@@ -41,16 +41,25 @@
             </div>
         </form>
 
+        <p class="small text-muted mb-2">Mỗi ô: giờ vào–giờ ra
+             {{-- bên dưới là <strong>giờ làm cơ bản</strong> / <strong>giờ tăng ca</strong> (đơn vị: giờ). --}}
+            </p>
         <div class="table-responsive text-nowrap table-wrapper-bordered">
             <table class="table table-bordered table-hover mb-0">
                 <thead class="table-light">
                     <tr>
                         <th class="text-center align-middle" style="min-width: 48px;">STT</th>
                         <th style="min-width: 220px;">Nhân viên</th>
+                        @php
+                            $thuLabel = ['1' => 'T2', '2' => 'T3', '3' => 'T4', '4' => 'T5', '5' => 'T6', '6' => 'T7', '7' => 'CN'];
+                        @endphp
                         @foreach(($ngayTrongThang ?? []) as $day)
-                            <th class="text-center" style="min-width: 72px;">
+                            @php
+                                $isWeekend = in_array($day->dayOfWeekIso, [6, 7], true);
+                            @endphp
+                            <th class="text-center {{ $isWeekend ? 'bg-secondary bg-opacity-25' : '' }}" style="min-width: 72px;">
                                 <div class="fw-semibold">{{ $day->format('d') }}</div>
-                                <div class="small text-muted">{{ $day->isoFormat('dd') }}</div>
+                                <div class="small text-muted">{{ $thuLabel[$day->dayOfWeekIso] ?? $day->isoFormat('dd') }}</div>
                             </th>
                         @endforeach
                     </tr>
@@ -68,17 +77,20 @@
                                     $dateKey = $day->toDateString();
                                     $record = $bangChamCong[$dateKey][$u->id] ?? null;
                                     $diemDanh = $record?->diemDanh;
+                                    $isWeekend = in_array($day->dayOfWeekIso, [6, 7], true); // 6=Thứ 7, 7=Chủ nhật
                                 @endphp
-                                <td class="text-center align-middle">
+                                <td class="text-center align-middle {{ $isWeekend ? 'bg-secondary bg-opacity-25' : '' }}">
                                     @if($record && $diemDanh)
-                                        {{-- <div class="small">
-                                            <span class="badge bg-success">Có</span>
-                                        </div> --}}
-                                        <div class="small text-muted">
-                                            {{ $diemDanh->gio_vao ? $diemDanh->gio_vao->format('H:i') : '—' }}
-                                            -
-                                            {{ $diemDanh->gio_ra ? $diemDanh->gio_ra->format('H:i') : '—' }}
+                                        <div class="small">
+                                            <span class="text-success fw-medium">{{ $diemDanh->gio_vao ? $diemDanh->gio_vao->format('H:i') : '—' }}</span>
+                                            <span class="text-muted mx-1">–</span>
+                                            <span class="gio-ra fw-medium">{{ $diemDanh->gio_ra ? $diemDanh->gio_ra->format('H:i') : '—' }}</span>
                                         </div>
+                                        {{-- <div class="small mt-1">
+                                            <span class="text-primary" title="Giờ làm cơ bản">{{ $diemDanh->gio_lam_co_ban !== null ? number_format($diemDanh->gio_lam_co_ban, 1) . ' h' : '—' }}</span>
+                                            <span class="text-muted mx-1">/</span>
+                                            <span class="text-warning text-dark" title="Giờ tăng ca">{{ $diemDanh->gio_lam_tang_ca !== null ? number_format($diemDanh->gio_lam_tang_ca, 1) . ' h' : '—' }}</span>
+                                        </div> --}}
                                     @else
                                         <span class="text-muted">—</span>
                                     @endif
@@ -112,6 +124,7 @@
 .table-wrapper-bordered .table td {
     border: 1px solid var(--bs-border-color, #dee2e6);
 }
+.gio-ra { color: #e8590c; }
 </style>
 @endpush
 @endsection
