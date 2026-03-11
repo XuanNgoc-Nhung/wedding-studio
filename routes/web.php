@@ -20,7 +20,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.post')->mid
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register')->middleware('guest');
 Route::post('/register', [AuthController::class, 'register'])->name('register.post')->middleware('guest');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
-Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth']], function () {
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'checkRoute']], function () {
     Route::get('/', [Admin::class, 'index'])->name('index');
     Route::get('/thong-tin-ca-nhan', [Admin::class, 'thongTinCaNhan'])->name('thong-tin-ca-nhan');
     Route::put('/thong-tin-ca-nhan', [Admin::class, 'capNhatThongTinCaNhan'])->name('thong-tin-ca-nhan.update');

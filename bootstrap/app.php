@@ -16,7 +16,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'checkRoute' => \App\Http\Middleware\CheckRoute::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         // ValidationException: giữ xử lý mặc định của Laravel (redirect back với $errors)
