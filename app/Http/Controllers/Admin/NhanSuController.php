@@ -7,6 +7,7 @@ use App\Models\NhanVien;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -41,12 +42,12 @@ class NhanSuController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'phone' => 'nullable|string|max:20',
+            'phone' => ['nullable', 'string', 'max:20', Rule::unique('users', 'phone')],
             'password' => 'required|string|min:8|confirmed',
             'password_confirmation' => 'required_with:password',
             'gioi_tinh' => 'nullable|string|in:nam,nu,khac',
             'ngay_sinh' => 'nullable|date',
-            'cccd' => 'nullable|string|max:20',
+            'cccd' => ['nullable', 'string', 'max:20', Rule::unique('nhan_vien', 'cccd')],
             'role' => 'nullable|integer|in:1,2,3',
             'vi_tri_lam_viec' => 'nullable|string|max:255',
             'ngay_vao_cong_ty' => 'nullable|date',
@@ -56,11 +57,37 @@ class NhanSuController extends Controller
             'hinh_anh' => 'nullable|image|max:2048',
         ], [
             'name.required' => 'Vui lòng nhập họ tên.',
+            'name.string' => 'Họ tên phải là chuỗi ký tự.',
+            'name.max' => 'Họ tên không được quá 255 ký tự.',
             'email.required' => 'Vui lòng nhập email.',
+            'email.email' => 'Email không đúng định dạng.',
             'email.unique' => 'Email này đã được sử dụng.',
+            'phone.string' => 'Số điện thoại phải là chuỗi ký tự.',
+            'phone.max' => 'Số điện thoại không được quá 20 ký tự.',
+            'phone.unique' => 'Số điện thoại này đã được sử dụng.',
             'password.required' => 'Vui lòng nhập mật khẩu.',
+            'password.string' => 'Mật khẩu phải là chuỗi ký tự.',
             'password.min' => 'Mật khẩu tối thiểu 8 ký tự.',
             'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
+            'password_confirmation.required_with' => 'Vui lòng xác nhận lại mật khẩu.',
+            'gioi_tinh.string' => 'Giới tính phải là chuỗi ký tự.',
+            'gioi_tinh.in' => 'Giới tính không hợp lệ.',
+            'ngay_sinh.date' => 'Ngày sinh không đúng định dạng.',
+            'cccd.string' => 'Số CCCD phải là chuỗi ký tự.',
+            'cccd.max' => 'Số CCCD không được quá 20 ký tự.',
+            'cccd.unique' => 'Số CCCD này đã được sử dụng.',
+            'role.integer' => 'Vai trò phải là số nguyên.',
+            'role.in' => 'Vai trò không hợp lệ.',
+            'vi_tri_lam_viec.string' => 'Vị trí làm việc phải là chuỗi ký tự.',
+            'vi_tri_lam_viec.max' => 'Vị trí làm việc không được quá 255 ký tự.',
+            'ngay_vao_cong_ty.date' => 'Ngày vào công ty không đúng định dạng.',
+            'ngay_ky_hop_dong.date' => 'Ngày ký hợp đồng không đúng định dạng.',
+            'luong_co_ban.integer' => 'Lương cơ bản phải là số nguyên.',
+            'luong_co_ban.min' => 'Lương cơ bản không được âm.',
+            'luong_tang_ca.integer' => 'Lương tăng ca phải là số nguyên.',
+            'luong_tang_ca.min' => 'Lương tăng ca không được âm.',
+            'hinh_anh.image' => 'File tải lên phải là ảnh (jpeg, png, bmp, gif, webp).',
+            'hinh_anh.max' => 'Kích thước ảnh không được quá 2MB.',
         ]);
 
         $validated['password'] = Hash::make($request->password);
@@ -108,7 +135,7 @@ class NhanSuController extends Controller
             'name' => 'required|string|max:255',
             'gioi_tinh' => 'nullable|string|in:nam,nu,khac',
             'ngay_sinh' => 'nullable|date',
-            'cccd' => 'nullable|string|max:20',
+            'cccd' => ['nullable', 'string', 'max:20', Rule::unique('nhan_vien', 'cccd')->ignore($user->nhanVien?->id)],
             'role' => 'nullable|integer|in:1,2,3',
             'vi_tri_lam_viec' => 'nullable|string|max:255',
             'ngay_vao_cong_ty' => 'nullable|date',
@@ -118,6 +145,26 @@ class NhanSuController extends Controller
             'hinh_anh' => 'nullable|image|max:2048',
         ], [
             'name.required' => 'Vui lòng nhập họ tên.',
+            'name.string' => 'Họ tên phải là chuỗi ký tự.',
+            'name.max' => 'Họ tên không được quá 255 ký tự.',
+            'gioi_tinh.string' => 'Giới tính phải là chuỗi ký tự.',
+            'gioi_tinh.in' => 'Giới tính không hợp lệ.',
+            'ngay_sinh.date' => 'Ngày sinh không đúng định dạng.',
+            'cccd.string' => 'Số CCCD phải là chuỗi ký tự.',
+            'cccd.max' => 'Số CCCD không được quá 20 ký tự.',
+            'cccd.unique' => 'Số CCCD này đã được sử dụng.',
+            'role.integer' => 'Vai trò phải là số nguyên.',
+            'role.in' => 'Vai trò không hợp lệ.',
+            'vi_tri_lam_viec.string' => 'Vị trí làm việc phải là chuỗi ký tự.',
+            'vi_tri_lam_viec.max' => 'Vị trí làm việc không được quá 255 ký tự.',
+            'ngay_vao_cong_ty.date' => 'Ngày vào công ty không đúng định dạng.',
+            'ngay_ky_hop_dong.date' => 'Ngày ký hợp đồng không đúng định dạng.',
+            'luong_co_ban.integer' => 'Lương cơ bản phải là số nguyên.',
+            'luong_co_ban.min' => 'Lương cơ bản không được âm.',
+            'luong_tang_ca.integer' => 'Lương tăng ca phải là số nguyên.',
+            'luong_tang_ca.min' => 'Lương tăng ca không được âm.',
+            'hinh_anh.image' => 'File tải lên phải là ảnh (jpeg, png, bmp, gif, webp).',
+            'hinh_anh.max' => 'Kích thước ảnh không được quá 2MB.',
         ]);
 
         DB::beginTransaction();
@@ -179,8 +226,10 @@ class NhanSuController extends Controller
             'password_confirmation' => 'required_with:password',
         ], [
             'password.required' => 'Vui lòng nhập mật khẩu mới.',
+            'password.string' => 'Mật khẩu phải là chuỗi ký tự.',
             'password.min' => 'Mật khẩu tối thiểu 8 ký tự.',
             'password.confirmed' => 'Xác nhận mật khẩu không khớp.',
+            'password_confirmation.required_with' => 'Vui lòng xác nhận lại mật khẩu.',
         ]);
 
         $user->update(['password' => Hash::make($request->password)]);
@@ -253,6 +302,9 @@ class NhanSuController extends Controller
         ], [
             'user_id.required' => 'Thiếu thông tin nhân sự.',
             'user_id.exists' => 'Nhân sự không tồn tại.',
+            'permissions.array' => 'Danh sách quyền không hợp lệ.',
+            'permissions.*.string' => 'Mỗi quyền phải là chuỗi ký tự.',
+            'permissions.*.max' => 'Mỗi quyền không được quá 255 ký tự.',
         ]);
 
         $user = User::findOrFail($request->user_id);

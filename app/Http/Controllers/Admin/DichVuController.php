@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DichVuLe;
 use App\Models\NhomDichVu;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class DichVuController extends Controller
 {
@@ -35,11 +36,24 @@ class DichVuController extends Controller
     {
         $request->validate([
             'ten_dich_vu' => 'required|string|max:255',
-            'ma_dich_vu' => 'nullable|string|max:50',
+            'ma_dich_vu' => ['nullable', 'string', 'max:50', Rule::unique('dich_vu_le', 'ma_dich_vu')],
             'mo_ta' => 'nullable|string',
             'trang_thai' => 'nullable|integer|in:0,1',
             'ghi_chu' => 'nullable|string',
             'gia_dich_vu' => 'nullable|numeric|min:0',
+        ], [
+            'ten_dich_vu.required' => 'Vui lòng nhập tên dịch vụ.',
+            'ten_dich_vu.string' => 'Tên dịch vụ phải là chuỗi ký tự.',
+            'ten_dich_vu.max' => 'Tên dịch vụ không được quá 255 ký tự.',
+            'ma_dich_vu.string' => 'Mã dịch vụ phải là chuỗi ký tự.',
+            'ma_dich_vu.max' => 'Mã dịch vụ không được quá 50 ký tự.',
+            'ma_dich_vu.unique' => 'Mã dịch vụ đã tồn tại, vui lòng chọn mã khác.',
+            'mo_ta.string' => 'Mô tả phải là chuỗi ký tự.',
+            'trang_thai.integer' => 'Trạng thái phải là số nguyên.',
+            'trang_thai.in' => 'Trạng thái không hợp lệ.',
+            'ghi_chu.string' => 'Ghi chú phải là chuỗi ký tự.',
+            'gia_dich_vu.numeric' => 'Giá dịch vụ phải là số.',
+            'gia_dich_vu.min' => 'Giá dịch vụ không được âm.',
         ]);
 
         DichVuLe::create([
@@ -59,11 +73,24 @@ class DichVuController extends Controller
     {
         $request->validate([
             'ten_dich_vu' => 'required|string|max:255',
-            'ma_dich_vu' => 'nullable|string|max:50',
+            'ma_dich_vu' => ['nullable', 'string', 'max:50', Rule::unique('dich_vu_le', 'ma_dich_vu')->ignore($dichVu->id)],
             'mo_ta' => 'nullable|string',
             'trang_thai' => 'nullable|integer|in:0,1',
             'ghi_chu' => 'nullable|string',
             'gia_dich_vu' => 'nullable|numeric|min:0',
+        ], [
+            'ten_dich_vu.required' => 'Vui lòng nhập tên dịch vụ.',
+            'ten_dich_vu.string' => 'Tên dịch vụ phải là chuỗi ký tự.',
+            'ten_dich_vu.max' => 'Tên dịch vụ không được quá 255 ký tự.',
+            'ma_dich_vu.string' => 'Mã dịch vụ phải là chuỗi ký tự.',
+            'ma_dich_vu.max' => 'Mã dịch vụ không được quá 50 ký tự.',
+            'ma_dich_vu.unique' => 'Mã dịch vụ đã tồn tại, vui lòng chọn mã khác.',
+            'mo_ta.string' => 'Mô tả phải là chuỗi ký tự.',
+            'trang_thai.integer' => 'Trạng thái phải là số nguyên.',
+            'trang_thai.in' => 'Trạng thái không hợp lệ.',
+            'ghi_chu.string' => 'Ghi chú phải là chuỗi ký tự.',
+            'gia_dich_vu.numeric' => 'Giá dịch vụ phải là số.',
+            'gia_dich_vu.min' => 'Giá dịch vụ không được âm.',
         ]);
 
         $dichVu->update([
@@ -116,6 +143,22 @@ class DichVuController extends Controller
             'trang_thai' => 'nullable|integer|in:0,1',
             'dich_vu_le_ids' => 'nullable|array',
             'dich_vu_le_ids.*' => 'integer|exists:dich_vu_le,id',
+        ], [
+            'ten_nhom.required' => 'Vui lòng nhập tên nhóm dịch vụ.',
+            'ten_nhom.string' => 'Tên nhóm phải là chuỗi ký tự.',
+            'ten_nhom.max' => 'Tên nhóm không được quá 255 ký tự.',
+            'ma_nhom.string' => 'Mã nhóm phải là chuỗi ký tự.',
+            'ma_nhom.max' => 'Mã nhóm không được quá 50 ký tự.',
+            'gia_tien.numeric' => 'Giá tiền phải là số.',
+            'gia_tien.min' => 'Giá tiền không được âm.',
+            'the.string' => 'Thẻ phải là chuỗi ký tự.',
+            'ghi_chu.string' => 'Ghi chú phải là chuỗi ký tự.',
+            'mo_ta.string' => 'Mô tả phải là chuỗi ký tự.',
+            'trang_thai.integer' => 'Trạng thái phải là số nguyên.',
+            'trang_thai.in' => 'Trạng thái không hợp lệ.',
+            'dich_vu_le_ids.array' => 'Danh sách dịch vụ lẻ không hợp lệ.',
+            'dich_vu_le_ids.*.integer' => 'Mỗi dịch vụ lẻ phải là số nguyên.',
+            'dich_vu_le_ids.*.exists' => 'Một hoặc nhiều dịch vụ lẻ không tồn tại trong hệ thống.',
         ]);
 
         $ids = array_map('intval', (array) $request->input('dich_vu_le_ids', []));
@@ -154,6 +197,22 @@ class DichVuController extends Controller
             'trang_thai' => 'nullable|integer|in:0,1',
             'dich_vu_le_ids' => 'nullable|array',
             'dich_vu_le_ids.*' => 'integer|exists:dich_vu_le,id',
+        ], [
+            'ten_nhom.required' => 'Vui lòng nhập tên nhóm dịch vụ.',
+            'ten_nhom.string' => 'Tên nhóm phải là chuỗi ký tự.',
+            'ten_nhom.max' => 'Tên nhóm không được quá 255 ký tự.',
+            'ma_nhom.string' => 'Mã nhóm phải là chuỗi ký tự.',
+            'ma_nhom.max' => 'Mã nhóm không được quá 50 ký tự.',
+            'gia_tien.numeric' => 'Giá tiền phải là số.',
+            'gia_tien.min' => 'Giá tiền không được âm.',
+            'the.string' => 'Thẻ phải là chuỗi ký tự.',
+            'ghi_chu.string' => 'Ghi chú phải là chuỗi ký tự.',
+            'mo_ta.string' => 'Mô tả phải là chuỗi ký tự.',
+            'trang_thai.integer' => 'Trạng thái phải là số nguyên.',
+            'trang_thai.in' => 'Trạng thái không hợp lệ.',
+            'dich_vu_le_ids.array' => 'Danh sách dịch vụ lẻ không hợp lệ.',
+            'dich_vu_le_ids.*.integer' => 'Mỗi dịch vụ lẻ phải là số nguyên.',
+            'dich_vu_le_ids.*.exists' => 'Một hoặc nhiều dịch vụ lẻ không tồn tại trong hệ thống.',
         ]);
 
         $ids = array_map('intval', (array) $request->input('dich_vu_le_ids', []));
