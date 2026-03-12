@@ -22,7 +22,7 @@ class HeThongController extends Controller
             });
         }
 
-        $danhSach = $query->orderByDesc('id')->paginate(15)->withQueryString();
+        $danhSach = $query->withCount('nhanViens')->orderByDesc('id')->paginate(15)->withQueryString();
 
         return view('admin.he-thong.phong-ban', compact('danhSach'));
     }

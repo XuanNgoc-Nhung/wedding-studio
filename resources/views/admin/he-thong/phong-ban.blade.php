@@ -56,6 +56,7 @@
                         <th style="width: 50px;">STT</th>
                         <th>Tên phòng ban</th>
                         <th>Mã phòng ban</th>
+                        <th class="text-center">Số lượng nhân viên</th>
                         <th>Mô tả</th>
                         <th>Ghi chú</th>
                         <th class="text-center" style="width: 100px;">Thao tác</th>
@@ -67,6 +68,7 @@
                         <td>{{ ($danhSach->currentPage() - 1) * $danhSach->perPage() + $index + 1 }}</td>
                         <td><span class="fw-medium">{{ $item->ten_phong_ban ?? '—' }}</span></td>
                         <td>{{ $item->ma_phong_ban ?? '—' }}</td>
+                        <td class="text-center">{{ $item->nhan_viens_count ?? 0 }}</td>
                         <td>{{ \Illuminate\Support\Str::limit($item->mo_ta ?? '—', 50) }}</td>
                         <td>{{ \Illuminate\Support\Str::limit($item->ghi_chu ?? '—', 40) }}</td>
                         <td>
@@ -99,7 +101,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="text-center py-4 text-muted">Chưa có dữ liệu phòng ban.</td>
+                        <td colspan="7" class="text-center py-4 text-muted">Chưa có dữ liệu phòng ban.</td>
                     </tr>
                     @endforelse
                 </tbody>
