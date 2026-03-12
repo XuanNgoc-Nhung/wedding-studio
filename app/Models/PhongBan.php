@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class PhongBan extends Model
 {
@@ -25,11 +25,11 @@ class PhongBan extends Model
     ];
 
     /**
-     * Danh sách nhân viên thuộc phòng ban.
+     * Danh sách nhân viên thuộc phòng ban (nhiều-nhiều).
      */
-    public function nhanVien(): HasMany
+    public function nhanViens(): BelongsToMany
     {
-        return $this->hasMany(NhanVien::class);
+        return $this->belongsToMany(NhanVien::class, 'nhan_vien_phong_ban')->withTimestamps();
     }
 }
 

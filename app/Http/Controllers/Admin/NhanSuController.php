@@ -22,10 +22,11 @@ class NhanSuController extends Controller
 
     public function danhSach(Request $request)
     {
+        // return view('admin.nhan-su.demo');
         $search = $request->get('search');
 
         $danhSach = User::query()
-            ->with(['nhanVien', 'nhanVien.phongBan'])
+            ->with(['nhanVien', 'nhanVien.phongBans'])
             ->when($search, function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
@@ -57,7 +58,8 @@ class NhanSuController extends Controller
             'ngay_ky_hop_dong' => 'nullable|date',
             'luong_co_ban' => 'nullable|integer|min:0',
             'luong_tang_ca' => 'nullable|integer|min:0',
-            'phong_ban_id' => 'required|exists:phong_ban,id',
+            'phong_ban_ids' => 'required|array|min:1',
+            'phong_ban_ids.*' => 'exists:phong_ban,id',
             'hinh_anh' => 'nullable|image|max:2048',
         ], [
             'name.required' => 'Vui lòng nhập họ tên.',
@@ -90,8 +92,9 @@ class NhanSuController extends Controller
             'luong_co_ban.min' => 'Lương cơ bản không được âm.',
             'luong_tang_ca.integer' => 'Lương tăng ca phải là số nguyên.',
             'luong_tang_ca.min' => 'Lương tăng ca không được âm.',
-            'phong_ban_id.required' => 'Vui lòng chọn phòng ban.',
-            'phong_ban_id.exists' => 'Phòng ban không tồn tại.',
+            'phong_ban_ids.required' => 'Vui lòng chọn ít nhất một phòng ban.',
+            'phong_ban_ids.min' => 'Vui lòng chọn ít nhất một phòng ban.',
+            'phong_ban_ids.*.exists' => 'Phòng ban không tồn tại.',
             'hinh_anh.image' => 'File tải lên phải là ảnh (jpeg, png, bmp, gif, webp).',
             'hinh_anh.max' => 'Kích thước ảnh không được quá 2MB.',
         ]);
@@ -114,9 +117,8 @@ class NhanSuController extends Controller
                 $hinhAnhPath = $request->file('hinh_anh')->store('nhan-vien', 'public');
             }
 
-            NhanVien::create([
+            $nhanVien = NhanVien::create([
                 'user_id' => $user->id,
-                'phong_ban_id' => $request->input('phong_ban_id'),
                 'hinh_anh' => $hinhAnhPath,
                 'gioi_tinh' => $request->input('gioi_tinh'),
                 'ngay_sinh' => $request->input('ngay_sinh'),
@@ -127,6 +129,7 @@ class NhanSuController extends Controller
                 'luong_co_ban' => $request->input('luong_co_ban', 50000),
                 'luong_tang_ca' => $request->input('luong_tang_ca', 80000),
             ]);
+            $nhanVien->phongBans()->sync($request->input('phong_ban_ids', []));
 
             DB::commit();
             return redirect()->route('admin.nhan-su.danh-sach')->with('success', 'Đã thêm nhân sự mới thành công.');
@@ -149,7 +152,8 @@ class NhanSuController extends Controller
             'ngay_ky_hop_dong' => 'nullable|date',
             'luong_co_ban' => 'nullable|integer|min:0',
             'luong_tang_ca' => 'nullable|integer|min:0',
-            'phong_ban_id' => 'required|exists:phong_ban,id',
+            'phong_ban_ids' => 'required|array|min:1',
+            'phong_ban_ids.*' => 'exists:phong_ban,id',
             'hinh_anh' => 'nullable|image|max:2048',
         ], [
             'name.required' => 'Vui lòng nhập họ tên.',
@@ -170,8 +174,9 @@ class NhanSuController extends Controller
             'luong_co_ban.min' => 'Lương cơ bản không được âm.',
             'luong_tang_ca.integer' => 'Lương tăng ca phải là số nguyên.',
             'luong_tang_ca.min' => 'Lương tăng ca không được âm.',
-            'phong_ban_id.required' => 'Vui lòng chọn phòng ban.',
-            'phong_ban_id.exists' => 'Phòng ban không tồn tại.',
+            'phong_ban_ids.required' => 'Vui lòng chọn ít nhất một phòng ban.',
+            'phong_ban_ids.min' => 'Vui lòng chọn ít nhất một phòng ban.',
+            'phong_ban_ids.*.exists' => 'Phòng ban không tồn tại.',
             'hinh_anh.image' => 'File tải lên phải là ảnh (jpeg, png, bmp, gif, webp).',
             'hinh_anh.max' => 'Kích thước ảnh không được quá 2MB.',
         ]);
@@ -194,8 +199,8 @@ class NhanSuController extends Controller
             }
 
             if ($nhanVien) {
+                $nhanVien->phongBans()->sync($request->input('phong_ban_ids', []));
                 $nhanVien->update([
-                    'phong_ban_id' => $request->input('phong_ban_id'),
                     'hinh_anh' => $hinhAnhPath,
                     'gioi_tinh' => $request->input('gioi_tinh'),
                     'ngay_sinh' => $request->input('ngay_sinh'),
@@ -207,9 +212,8 @@ class NhanSuController extends Controller
                     'luong_tang_ca' => $request->filled('luong_tang_ca') ? (int) $request->input('luong_tang_ca') : $nhanVien->luong_tang_ca,
                 ]);
             } else {
-                NhanVien::create([
+                $nhanVien = NhanVien::create([
                     'user_id' => $user->id,
-                    'phong_ban_id' => $request->input('phong_ban_id'),
                     'hinh_anh' => $hinhAnhPath,
                     'gioi_tinh' => $request->input('gioi_tinh'),
                     'ngay_sinh' => $request->input('ngay_sinh'),
@@ -220,6 +224,7 @@ class NhanSuController extends Controller
                     'luong_co_ban' => $request->input('luong_co_ban', 50000),
                     'luong_tang_ca' => $request->input('luong_tang_ca', 80000),
                 ]);
+                $nhanVien->phongBans()->sync($request->input('phong_ban_ids', []));
             }
 
             DB::commit();

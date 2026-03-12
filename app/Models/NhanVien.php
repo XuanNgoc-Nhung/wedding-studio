@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class NhanVien extends Model
 {
@@ -20,7 +21,6 @@ class NhanVien extends Model
     protected $fillable = [
         'hinh_anh',
         'user_id',
-        'phong_ban_id',
         'gioi_tinh',
         'ngay_sinh',
         'cccd',
@@ -58,10 +58,10 @@ class NhanVien extends Model
     }
 
     /**
-     * Liên kết với phòng ban.
+     * Liên kết nhiều-nhiều với phòng ban (một nhân viên có thể trực thuộc nhiều phòng ban).
      */
-    public function phongBan(): BelongsTo
+    public function phongBans(): BelongsToMany
     {
-        return $this->belongsTo(PhongBan::class);
+        return $this->belongsToMany(PhongBan::class, 'nhan_vien_phong_ban')->withTimestamps();
     }
 }

@@ -87,7 +87,7 @@ class HeThongController extends Controller
 
     public function destroyPhongBan(PhongBan $phongBan)
     {
-        $dangCoNhanSu = $phongBan->nhanVien()->exists();
+        $dangCoNhanSu = $phongBan->nhanViens()->exists();
         if ($dangCoNhanSu) {
             return redirect()
                 ->route('admin.he-thong.phong-ban')

@@ -102,7 +102,7 @@
                         <td>{{ $item->phone ?? '—' }}</td>
                         <td>{{ $vaiTroLabel }}</td>
                         <td>{{ $nv?->vi_tri_lam_viec ?? '—' }}</td>
-                        <td>{{ $nv?->phongBan?->ten_phong_ban ?? '—' }}</td>
+                        <td>{{ $nv?->phongBans->pluck('ten_phong_ban')->join(', ') ?: '—' }}</td>
                         <td>{{ $nv?->ngay_vao_cong_ty ? $nv->ngay_vao_cong_ty->format('d/m/Y') : '—' }}</td>
                         <td>{{ $nv?->ngay_ky_hop_dong ? $nv->ngay_ky_hop_dong->format('d/m/Y') : '—' }}</td>
                         <td>{{ $nv?->luong_co_ban !== null ? number_format($nv->luong_co_ban) : '—' }}</td>
@@ -126,7 +126,7 @@
                                        data-cccd="{{ e($nv?->cccd ?? '') }}"
                                        data-role="{{ (int)($item->role ?? 0) }}"
                                        data-vi-tri="{{ e($nv?->vi_tri_lam_viec ?? '') }}"
-                                       data-phong-ban-id="{{ $nv?->phong_ban_id ?? '' }}"
+                                       data-phong-ban-ids="{{ $nv?->phongBans->pluck('id')->values()->toJson() }}"
                                        data-ngay-vao-cong-ty="{{ $nv?->ngay_vao_cong_ty?->format('Y-m-d') ?? '' }}"
                                        data-ngay-ky-hop-dong="{{ $nv?->ngay_ky_hop_dong?->format('Y-m-d') ?? '' }}"
                                        data-luong-co-ban="{{ $nv?->luong_co_ban ?? '' }}"
@@ -288,11 +288,10 @@
                                     <input type="text" class="form-control" id="them_vi_tri" name="vi_tri_lam_viec" value="{{ old('vi_tri_lam_viec') }}" placeholder="Ví dụ: Photographer, Makeup...">
                                 </div>
                                 <div class="col-12 col-sm-6 col-lg-4">
-                                    <label class="form-label" for="them_phong_ban">Phòng ban <span class="text-danger">*</span></label>
-                                    <select class="form-select" id="them_phong_ban" name="phong_ban_id" required>
-                                        <option value="">-- Chọn phòng ban --</option>
+                                    <label for="them_phong_ban" class="form-label">Phòng ban</label>
+                                    <select id="them_phong_ban" name="phong_ban_ids[]" class="select2-phong-ban form-select" multiple>
                                         @foreach($phongBans ?? [] as $pb)
-                                        <option value="{{ $pb->id }}" {{ old('phong_ban_id') == $pb->id ? 'selected' : '' }}>{{ $pb->ten_phong_ban }}</option>
+                                        <option value="{{ $pb->id }}" {{ in_array($pb->id, old('phong_ban_ids', [])) ? 'selected' : '' }}>{{ $pb->ten_phong_ban }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -409,9 +408,8 @@
                                     <input type="text" class="form-control" id="sua_vi_tri" name="vi_tri_lam_viec" placeholder="Ví dụ: Photographer, Makeup...">
                                 </div>
                                 <div class="col-12 col-sm-6 col-lg-4">
-                                    <label class="form-label" for="sua_phong_ban">Phòng ban <span class="text-danger">*</span></label>
-                                    <select class="form-select" required id="sua_phong_ban" name="phong_ban_id">
-                                        <option value="">-- Chọn phòng ban --</option>
+                                    <label class="form-label" for="sua_phong_ban">Phòng ban</label>
+                                    <select id="sua_phong_ban" name="phong_ban_ids[]" class="select2-phong-ban form-select" multiple>
                                         @foreach($phongBans ?? [] as $pb)
                                         <option value="{{ $pb->id }}">{{ $pb->ten_phong_ban }}</option>
                                         @endforeach
@@ -471,6 +469,7 @@
 
 @push('styles')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
+<link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
 <style>
 #modalThemNhanSu .modal-them-nhan-su,
 #modalSuaNhanSu .modal-them-nhan-su {
@@ -514,8 +513,61 @@
 @endpush
 
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Select2 cho Phòng ban (Multiple chọn nhiều) - giống demo
+    var $ = window.jQuery || window.$;
+    if ($ && $.fn.select2) {
+        function updatePhongBanSummary($select, placeholderText) {
+            if (!$select || !$select.length) return;
+            var data = $select.select2('data') || [];
+            var $container = $select.next('.select2').find('.select2-selection__rendered');
+            if (!$container.length) return;
+
+            if (!data.length) {
+                $container.html('<span class="select2-selection__placeholder">' + placeholderText + '</span>');
+                return;
+            }
+
+            var firstText = data[0].text || '';
+            var extra = data.length - 1;
+            var label = firstText + (extra > 0 ? ' +' + extra : '');
+
+            $container.empty();
+            var $choice = $('<li class="select2-selection__choice" title="' + label + '"></li>');
+            var $remove = $('<span class="select2-selection__choice__remove" role="presentation">×</span>');
+            $remove.on('click', function (e) {
+                e.stopPropagation();
+                $select.val(null).trigger('change');
+            });
+            $choice.append($remove).append(label);
+            $container.append($choice);
+        }
+
+        var $themPhongBan = $('#them_phong_ban');
+        var $suaPhongBan = $('#sua_phong_ban');
+
+        $themPhongBan.select2({
+            placeholder: 'Chọn phòng ban',
+            allowClear: true,
+            dropdownParent: $('#modalThemNhanSu')
+        }).on('change', function () {
+            updatePhongBanSummary($themPhongBan, 'Chọn phòng ban');
+        });
+
+        $suaPhongBan.select2({
+            placeholder: 'Chọn phòng ban',
+            allowClear: true,
+            dropdownParent: $('#modalSuaNhanSu')
+        }).on('change', function () {
+            updatePhongBanSummary($suaPhongBan, 'Chọn phòng ban');
+        });
+
+        // Khởi tạo label tóm tắt ban đầu (trường hợp đã có giá trị cũ)
+        updatePhongBanSummary($themPhongBan, 'Chọn phòng ban');
+        updatePhongBanSummary($suaPhongBan, 'Chọn phòng ban');
+    }
     var MAX_SIZE = 5 * 1024 * 1024; // 5MB
     var ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
 
@@ -618,7 +670,22 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('sua_cccd').value = btn.getAttribute('data-cccd') || '';
             document.getElementById('sua_vai_tro').value = btn.getAttribute('data-role') || '';
             document.getElementById('sua_vi_tri').value = btn.getAttribute('data-vi-tri') || '';
-            document.getElementById('sua_phong_ban').value = btn.getAttribute('data-phong-ban-id') || '';
+            var phongBanIds = [];
+            try {
+                var raw = btn.getAttribute('data-phong-ban-ids');
+                if (raw) phongBanIds = JSON.parse(raw);
+            } catch (e) {}
+            var ids = (phongBanIds || []).map(Number).filter(Boolean);
+            if ($ && $.fn.select2) {
+                $('#sua_phong_ban').val(ids).trigger('change');
+            } else {
+                var selSua = document.getElementById('sua_phong_ban');
+                if (selSua) {
+                    for (var i = 0; i < selSua.options.length; i++) {
+                        selSua.options[i].selected = ids.indexOf(Number(selSua.options[i].value)) !== -1;
+                    }
+                }
+            }
             document.getElementById('sua_ngay_vao_cong_ty').value = btn.getAttribute('data-ngay-vao-cong-ty') || '';
             document.getElementById('sua_ngay_ky_hop_dong').value = btn.getAttribute('data-ngay-ky-hop-dong') || '';
             document.getElementById('sua_luong_co_ban').value = btn.getAttribute('data-luong-co-ban') || '';
