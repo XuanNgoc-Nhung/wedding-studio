@@ -87,4 +87,13 @@ return [
         'label' => 'Thông tin cá nhân',
         'icon' => 'ti tabler-user-circle',
     ],
+    [
+        'type' => 'group',
+        'route' => 'admin.he-thong.phong-ban',
+        'label' => 'Hệ thống',
+        'icon' => 'ti tabler-building',
+        'children' => [
+            ['route' => 'admin.he-thong.phong-ban', 'label' => 'Phòng ban'],
+        ],  
+    ],
 ];

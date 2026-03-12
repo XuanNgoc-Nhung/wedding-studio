@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\NhanVien;
+use App\Models\PhongBan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +25,7 @@ class NhanSuController extends Controller
         $search = $request->get('search');
 
         $danhSach = User::query()
-            ->with('nhanVien')
+            ->with(['nhanVien', 'nhanVien.phongBan'])
             ->when($search, function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('email', 'like', "%{$search}%")
@@ -34,7 +35,9 @@ class NhanSuController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        return view('admin.nhan-su.danh-sach', compact('danhSach'));
+        $phongBans = PhongBan::orderBy('ten_phong_ban')->get();
+
+        return view('admin.nhan-su.danh-sach', compact('danhSach', 'phongBans'));
     }
 
     public function store(Request $request)
@@ -54,6 +57,7 @@ class NhanSuController extends Controller
             'ngay_ky_hop_dong' => 'nullable|date',
             'luong_co_ban' => 'nullable|integer|min:0',
             'luong_tang_ca' => 'nullable|integer|min:0',
+            'phong_ban_id' => 'required|exists:phong_ban,id',
             'hinh_anh' => 'nullable|image|max:2048',
         ], [
             'name.required' => 'Vui lòng nhập họ tên.',
@@ -86,6 +90,8 @@ class NhanSuController extends Controller
             'luong_co_ban.min' => 'Lương cơ bản không được âm.',
             'luong_tang_ca.integer' => 'Lương tăng ca phải là số nguyên.',
             'luong_tang_ca.min' => 'Lương tăng ca không được âm.',
+            'phong_ban_id.required' => 'Vui lòng chọn phòng ban.',
+            'phong_ban_id.exists' => 'Phòng ban không tồn tại.',
             'hinh_anh.image' => 'File tải lên phải là ảnh (jpeg, png, bmp, gif, webp).',
             'hinh_anh.max' => 'Kích thước ảnh không được quá 2MB.',
         ]);
@@ -110,6 +116,7 @@ class NhanSuController extends Controller
 
             NhanVien::create([
                 'user_id' => $user->id,
+                'phong_ban_id' => $request->input('phong_ban_id'),
                 'hinh_anh' => $hinhAnhPath,
                 'gioi_tinh' => $request->input('gioi_tinh'),
                 'ngay_sinh' => $request->input('ngay_sinh'),
@@ -135,13 +142,14 @@ class NhanSuController extends Controller
             'name' => 'required|string|max:255',
             'gioi_tinh' => 'nullable|string|in:nam,nu,khac',
             'ngay_sinh' => 'nullable|date',
-            'cccd' => ['nullable', 'string', 'max:20', Rule::unique('nhan_vien', 'cccd')->ignore($user->nhanVien?->id)],
+            'cccd' => ['nullable', 'string', 'max:20'],
             'role' => 'nullable|integer|in:1,2,3',
             'vi_tri_lam_viec' => 'nullable|string|max:255',
             'ngay_vao_cong_ty' => 'nullable|date',
             'ngay_ky_hop_dong' => 'nullable|date',
             'luong_co_ban' => 'nullable|integer|min:0',
             'luong_tang_ca' => 'nullable|integer|min:0',
+            'phong_ban_id' => 'required|exists:phong_ban,id',
             'hinh_anh' => 'nullable|image|max:2048',
         ], [
             'name.required' => 'Vui lòng nhập họ tên.',
@@ -152,7 +160,6 @@ class NhanSuController extends Controller
             'ngay_sinh.date' => 'Ngày sinh không đúng định dạng.',
             'cccd.string' => 'Số CCCD phải là chuỗi ký tự.',
             'cccd.max' => 'Số CCCD không được quá 20 ký tự.',
-            'cccd.unique' => 'Số CCCD này đã được sử dụng.',
             'role.integer' => 'Vai trò phải là số nguyên.',
             'role.in' => 'Vai trò không hợp lệ.',
             'vi_tri_lam_viec.string' => 'Vị trí làm việc phải là chuỗi ký tự.',
@@ -163,6 +170,8 @@ class NhanSuController extends Controller
             'luong_co_ban.min' => 'Lương cơ bản không được âm.',
             'luong_tang_ca.integer' => 'Lương tăng ca phải là số nguyên.',
             'luong_tang_ca.min' => 'Lương tăng ca không được âm.',
+            'phong_ban_id.required' => 'Vui lòng chọn phòng ban.',
+            'phong_ban_id.exists' => 'Phòng ban không tồn tại.',
             'hinh_anh.image' => 'File tải lên phải là ảnh (jpeg, png, bmp, gif, webp).',
             'hinh_anh.max' => 'Kích thước ảnh không được quá 2MB.',
         ]);
@@ -186,6 +195,7 @@ class NhanSuController extends Controller
 
             if ($nhanVien) {
                 $nhanVien->update([
+                    'phong_ban_id' => $request->input('phong_ban_id'),
                     'hinh_anh' => $hinhAnhPath,
                     'gioi_tinh' => $request->input('gioi_tinh'),
                     'ngay_sinh' => $request->input('ngay_sinh'),
@@ -199,6 +209,7 @@ class NhanSuController extends Controller
             } else {
                 NhanVien::create([
                     'user_id' => $user->id,
+                    'phong_ban_id' => $request->input('phong_ban_id'),
                     'hinh_anh' => $hinhAnhPath,
                     'gioi_tinh' => $request->input('gioi_tinh'),
                     'ngay_sinh' => $request->input('ngay_sinh'),

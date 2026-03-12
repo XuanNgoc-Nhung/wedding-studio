@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\KhachHangController as AdminKhachHang;
 use App\Http\Controllers\Admin\TrangPhucController as AdminTrangPhuc;
 use App\Http\Controllers\Admin\TaiChinhKeToanController as AdminTaiChinhKeToan;
 use App\Http\Controllers\Admin\DiemDanhController as AdminDiemDanh;
+use App\Http\Controllers\Admin\HeThongController as AdminHeThong;
 
 Route::get('/', function () {
     return view('welcome');
@@ -98,5 +99,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'c
         Route::get('/cham-cong', [AdminDiemDanh::class, 'chamCong'])->name('diem-danh.cham-cong');
         Route::get('/check-in', [AdminDiemDanh::class, 'checkIn'])->name('diem-danh.check-in');
         Route::get('/check-out', [AdminDiemDanh::class, 'checkOut'])->name('diem-danh.check-out');
+    });
+    //Route cho hệ thống
+    Route::group(['prefix' => 'he-thong'], function () {
+        Route::get('/phong-ban', [AdminHeThong::class, 'phongBan'])->name('he-thong.phong-ban');
+        Route::post('/phong-ban', [AdminHeThong::class, 'storePhongBan'])->name('he-thong.phong-ban.store');
+        Route::put('/phong-ban/{phongBan}', [AdminHeThong::class, 'updatePhongBan'])->name('he-thong.phong-ban.update');
+        Route::delete('/phong-ban/{phongBan}', [AdminHeThong::class, 'destroyPhongBan'])->name('he-thong.phong-ban.destroy');
     });
 });

@@ -20,6 +20,7 @@ class NhanVien extends Model
     protected $fillable = [
         'hinh_anh',
         'user_id',
+        'phong_ban_id',
         'gioi_tinh',
         'ngay_sinh',
         'cccd',
@@ -54,5 +55,13 @@ class NhanVien extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Liên kết với phòng ban.
+     */
+    public function phongBan(): BelongsTo
+    {
+        return $this->belongsTo(PhongBan::class);
     }
 }

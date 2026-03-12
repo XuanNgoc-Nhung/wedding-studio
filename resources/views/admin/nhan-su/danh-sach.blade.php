@@ -63,6 +63,7 @@
                         <th>Số điện thoại</th>
                         <th>Vai trò</th>
                         <th>Vị trí làm việc</th>
+                        <th>Phòng ban</th>
                         <th>Ngày vào công ty</th>
                         <th>Ngày ký hợp đồng</th>
                         <th>Lương cơ bản</th>
@@ -101,6 +102,7 @@
                         <td>{{ $item->phone ?? '—' }}</td>
                         <td>{{ $vaiTroLabel }}</td>
                         <td>{{ $nv?->vi_tri_lam_viec ?? '—' }}</td>
+                        <td>{{ $nv?->phongBan?->ten_phong_ban ?? '—' }}</td>
                         <td>{{ $nv?->ngay_vao_cong_ty ? $nv->ngay_vao_cong_ty->format('d/m/Y') : '—' }}</td>
                         <td>{{ $nv?->ngay_ky_hop_dong ? $nv->ngay_ky_hop_dong->format('d/m/Y') : '—' }}</td>
                         <td>{{ $nv?->luong_co_ban !== null ? number_format($nv->luong_co_ban) : '—' }}</td>
@@ -124,6 +126,7 @@
                                        data-cccd="{{ e($nv?->cccd ?? '') }}"
                                        data-role="{{ (int)($item->role ?? 0) }}"
                                        data-vi-tri="{{ e($nv?->vi_tri_lam_viec ?? '') }}"
+                                       data-phong-ban-id="{{ $nv?->phong_ban_id ?? '' }}"
                                        data-ngay-vao-cong-ty="{{ $nv?->ngay_vao_cong_ty?->format('Y-m-d') ?? '' }}"
                                        data-ngay-ky-hop-dong="{{ $nv?->ngay_ky_hop_dong?->format('Y-m-d') ?? '' }}"
                                        data-luong-co-ban="{{ $nv?->luong_co_ban ?? '' }}"
@@ -152,7 +155,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="15" class="text-center py-4 text-muted">Chưa có dữ liệu nhân sự.</td>
+                        <td colspan="16" class="text-center py-4 text-muted">Chưa có dữ liệu nhân sự.</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -285,6 +288,15 @@
                                     <input type="text" class="form-control" id="them_vi_tri" name="vi_tri_lam_viec" value="{{ old('vi_tri_lam_viec') }}" placeholder="Ví dụ: Photographer, Makeup...">
                                 </div>
                                 <div class="col-12 col-sm-6 col-lg-4">
+                                    <label class="form-label" for="them_phong_ban">Phòng ban <span class="text-danger">*</span></label>
+                                    <select class="form-select" id="them_phong_ban" name="phong_ban_id" required>
+                                        <option value="">-- Chọn phòng ban --</option>
+                                        @foreach($phongBans ?? [] as $pb)
+                                        <option value="{{ $pb->id }}" {{ old('phong_ban_id') == $pb->id ? 'selected' : '' }}>{{ $pb->ten_phong_ban }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-4">
                                     <label class="form-label" for="them_ngay_vao_cong_ty">Ngày vào công ty</label>
                                     <input type="date" class="form-control" id="them_ngay_vao_cong_ty" name="ngay_vao_cong_ty" value="{{ old('ngay_vao_cong_ty') }}">
                                 </div>
@@ -395,6 +407,15 @@
                                 <div class="col-12 col-sm-6 col-lg-4">
                                     <label class="form-label" for="sua_vi_tri">Vị trí làm việc</label>
                                     <input type="text" class="form-control" id="sua_vi_tri" name="vi_tri_lam_viec" placeholder="Ví dụ: Photographer, Makeup...">
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <label class="form-label" for="sua_phong_ban">Phòng ban <span class="text-danger">*</span></label>
+                                    <select class="form-select" required id="sua_phong_ban" name="phong_ban_id">
+                                        <option value="">-- Chọn phòng ban --</option>
+                                        @foreach($phongBans ?? [] as $pb)
+                                        <option value="{{ $pb->id }}">{{ $pb->ten_phong_ban }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="col-12 col-sm-6 col-lg-4">
                                     <label class="form-label" for="sua_ngay_vao_cong_ty">Ngày vào công ty</label>
@@ -597,6 +618,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('sua_cccd').value = btn.getAttribute('data-cccd') || '';
             document.getElementById('sua_vai_tro').value = btn.getAttribute('data-role') || '';
             document.getElementById('sua_vi_tri').value = btn.getAttribute('data-vi-tri') || '';
+            document.getElementById('sua_phong_ban').value = btn.getAttribute('data-phong-ban-id') || '';
             document.getElementById('sua_ngay_vao_cong_ty').value = btn.getAttribute('data-ngay-vao-cong-ty') || '';
             document.getElementById('sua_ngay_ky_hop_dong').value = btn.getAttribute('data-ngay-ky-hop-dong') || '';
             document.getElementById('sua_luong_co_ban').value = btn.getAttribute('data-luong-co-ban') || '';
