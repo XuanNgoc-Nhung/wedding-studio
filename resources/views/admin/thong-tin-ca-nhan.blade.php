@@ -133,7 +133,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                           <label class="form-label">Ngày sinh</label>
-                          <input type="date" class="form-control @error('ngay_sinh') is-invalid @enderror" name="ngay_sinh" value="{{ old('ngay_sinh', $user->nhanVien->ngay_sinh?->format('Y-m-d') ?? '') }}">
+                          <input type="text" class="flatpickr-date-admin form-control @error('ngay_sinh') is-invalid @enderror" name="ngay_sinh" value="{{ old('ngay_sinh', $user->nhanVien->ngay_sinh?->format('Y-m-d') ?? '') }}" placeholder="dd/mm/yyyy" autocomplete="off">
                           @error('ngay_sinh')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3">

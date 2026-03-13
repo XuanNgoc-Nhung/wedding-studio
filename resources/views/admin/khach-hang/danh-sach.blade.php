@@ -160,7 +160,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="them_ngay_sinh_chu_re">Ngày sinh</label>
-                            <input type="date" class="form-control" id="them_ngay_sinh_chu_re" name="ngay_sinh_chu_re" value="{{ old('ngay_sinh_chu_re') }}">
+                            <input type="text" class="flatpickr-date-admin form-control" id="them_ngay_sinh_chu_re" name="ngay_sinh_chu_re" value="{{ old('ngay_sinh_chu_re') }}" placeholder="dd/mm/yyyy" autocomplete="off">
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="them_gioi_tinh_chu_re">Giới tính</label>
@@ -188,7 +188,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="them_ngay_sinh_co_dau">Ngày sinh</label>
-                            <input type="date" class="form-control" id="them_ngay_sinh_co_dau" name="ngay_sinh_co_dau" value="{{ old('ngay_sinh_co_dau') }}">
+                            <input type="text" class="flatpickr-date-admin form-control" id="them_ngay_sinh_co_dau" name="ngay_sinh_co_dau" value="{{ old('ngay_sinh_co_dau') }}" placeholder="dd/mm/yyyy" autocomplete="off">
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="them_gioi_tinh_co_dau">Giới tính</label>
@@ -255,7 +255,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="sua_ngay_sinh_chu_re">Ngày sinh</label>
-                            <input type="date" class="form-control" id="sua_ngay_sinh_chu_re" name="ngay_sinh_chu_re">
+                            <input type="text" class="flatpickr-date-admin form-control" id="sua_ngay_sinh_chu_re" name="ngay_sinh_chu_re" placeholder="dd/mm/yyyy" autocomplete="off">
                         </div>
                         <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="sua_gioi_tinh_chu_re">Giới tính</label>
@@ -283,7 +283,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="sua_ngay_sinh_co_dau">Ngày sinh</label>
-                            <input type="date" class="form-control" id="sua_ngay_sinh_co_dau" name="ngay_sinh_co_dau">
+                            <input type="text" class="flatpickr-date-admin form-control" id="sua_ngay_sinh_co_dau" name="ngay_sinh_co_dau" placeholder="dd/mm/yyyy" autocomplete="off">
                         </div>
                         <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="sua_gioi_tinh_co_dau">Giới tính</label>
@@ -402,12 +402,12 @@ document.addEventListener('DOMContentLoaded', function() {
             var url = btn.getAttribute('data-url');
             if (url) formSua.action = url;
             document.getElementById('sua_ho_ten_chu_re').value = btn.getAttribute('data-ho-ten-chu-re') || '';
-            document.getElementById('sua_ngay_sinh_chu_re').value = btn.getAttribute('data-ngay-sinh-chu-re') || '';
+            if (window.setAdminDateInput) setAdminDateInput('sua_ngay_sinh_chu_re', btn.getAttribute('data-ngay-sinh-chu-re') || ''); else document.getElementById('sua_ngay_sinh_chu_re').value = btn.getAttribute('data-ngay-sinh-chu-re') || '';
             document.getElementById('sua_gioi_tinh_chu_re').value = btn.getAttribute('data-gioi-tinh-chu-re') || '';
             document.getElementById('sua_email_sdt_chu_re').value = btn.getAttribute('data-email-sdt-chu-re') || '';
             document.getElementById('sua_dia_chi_chu_re').value = btn.getAttribute('data-dia-chi-chu-re') || '';
             document.getElementById('sua_ho_ten_co_dau').value = btn.getAttribute('data-ho-ten-co-dau') || '';
-            document.getElementById('sua_ngay_sinh_co_dau').value = btn.getAttribute('data-ngay-sinh-co-dau') || '';
+            if (window.setAdminDateInput) setAdminDateInput('sua_ngay_sinh_co_dau', btn.getAttribute('data-ngay-sinh-co-dau') || ''); else document.getElementById('sua_ngay_sinh_co_dau').value = btn.getAttribute('data-ngay-sinh-co-dau') || '';
             document.getElementById('sua_gioi_tinh_co_dau').value = btn.getAttribute('data-gioi-tinh-co-dau') || '';
             document.getElementById('sua_dia_chi_co_dau').value = btn.getAttribute('data-dia-chi-co-dau') || '';
             document.getElementById('sua_email_sdt_co_dau').value = btn.getAttribute('data-email-sdt-co-dau') || '';

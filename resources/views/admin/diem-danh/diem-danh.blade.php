@@ -21,11 +21,11 @@
             <div class="row g-3 align-items-end">
                 <div class="col-md-3 col-lg-2">
                     <label class="form-label" for="tu_ngay">Từ ngày</label>
-                    <input type="date" class="form-control" id="tu_ngay" name="tu_ngay" value="{{ request('tu_ngay') }}">
+                    <input type="text" class="flatpickr-date-admin form-control" id="tu_ngay" name="tu_ngay" value="{{ request('tu_ngay') }}" placeholder="dd/mm/yyyy" autocomplete="off">
                 </div>
                 <div class="col-md-3 col-lg-2">
                     <label class="form-label" for="den_ngay">Đến ngày</label>
-                    <input type="date" class="form-control" id="den_ngay" name="den_ngay" value="{{ request('den_ngay') }}">
+                    <input type="text" class="flatpickr-date-admin form-control" id="den_ngay" name="den_ngay" value="{{ request('den_ngay') }}" placeholder="dd/mm/yyyy" autocomplete="off">
                 </div>
                 <div class="col-auto">
                     <button type="submit" class="btn btn-primary">

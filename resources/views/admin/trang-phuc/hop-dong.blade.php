@@ -220,15 +220,15 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="them_thoi_gian_bat_dau">Ngày thuê (bắt đầu) <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" id="them_thoi_gian_bat_dau" name="thoi_gian_thue_bat_dau" value="{{ old('thoi_gian_thue_bat_dau') }}" required>
+                            <input type="text" class="flatpickr-date-admin form-control" id="them_thoi_gian_bat_dau" name="thoi_gian_thue_bat_dau" value="{{ old('thoi_gian_thue_bat_dau') }}" placeholder="dd/mm/yyyy" required autocomplete="off">
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="them_thoi_gian_du_kien_tra">Ngày dự kiến trả <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" id="them_thoi_gian_du_kien_tra" name="thoi_gian_du_kien_tra" value="{{ old('thoi_gian_du_kien_tra') }}" required>
+                            <input type="text" class="flatpickr-date-admin form-control" id="them_thoi_gian_du_kien_tra" name="thoi_gian_du_kien_tra" value="{{ old('thoi_gian_du_kien_tra') }}" placeholder="dd/mm/yyyy" required autocomplete="off">
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="them_thoi_gian_tra_thuc_te">Ngày trả hàng thực tế</label>
-                            <input type="date" class="form-control" id="them_thoi_gian_tra_thuc_te" name="thoi_gian_tra_hang_thuc_te" value="{{ old('thoi_gian_tra_hang_thuc_te') }}">
+                            <input type="text" class="flatpickr-date-admin form-control" id="them_thoi_gian_tra_thuc_te" name="thoi_gian_tra_hang_thuc_te" value="{{ old('thoi_gian_tra_hang_thuc_te') }}" placeholder="dd/mm/yyyy" autocomplete="off">
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="them_trang_thai">Trạng thái</label>
@@ -306,15 +306,15 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="sua_thoi_gian_bat_dau">Ngày thuê (bắt đầu) <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" id="sua_thoi_gian_bat_dau" name="thoi_gian_thue_bat_dau" required>
+                            <input type="text" class="flatpickr-date-admin form-control" id="sua_thoi_gian_bat_dau" name="thoi_gian_thue_bat_dau" placeholder="dd/mm/yyyy" required autocomplete="off">
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="sua_thoi_gian_du_kien_tra">Ngày dự kiến trả <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" id="sua_thoi_gian_du_kien_tra" name="thoi_gian_du_kien_tra" required>
+                            <input type="text" class="flatpickr-date-admin form-control" id="sua_thoi_gian_du_kien_tra" name="thoi_gian_du_kien_tra" placeholder="dd/mm/yyyy" required autocomplete="off">
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="sua_thoi_gian_tra_thuc_te">Ngày trả hàng thực tế</label>
-                            <input type="date" class="form-control" id="sua_thoi_gian_tra_thuc_te" name="thoi_gian_tra_hang_thuc_te">
+                            <input type="text" class="flatpickr-date-admin form-control" id="sua_thoi_gian_tra_thuc_te" name="thoi_gian_tra_hang_thuc_te" placeholder="dd/mm/yyyy" autocomplete="off">
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="sua_trang_thai">Trạng thái</label>
@@ -456,9 +456,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('sua_trang_phuc_id').value = btn.getAttribute('data-trang-phuc-id') || '';
             document.getElementById('sua_so_luong_thue').value = btn.getAttribute('data-so-luong-thue') || '1';
             document.getElementById('sua_gia_thue').value = btn.getAttribute('data-gia-thue') || '';
-            document.getElementById('sua_thoi_gian_bat_dau').value = btn.getAttribute('data-thoi-gian-bat-dau') || '';
-            document.getElementById('sua_thoi_gian_du_kien_tra').value = btn.getAttribute('data-thoi-gian-du-kien-tra') || '';
-            document.getElementById('sua_thoi_gian_tra_thuc_te').value = btn.getAttribute('data-thoi-gian-tra-thuc-te') || '';
+            if (window.setAdminDateInput) { setAdminDateInput('sua_thoi_gian_bat_dau', btn.getAttribute('data-thoi-gian-bat-dau') || ''); setAdminDateInput('sua_thoi_gian_du_kien_tra', btn.getAttribute('data-thoi-gian-du-kien-tra') || ''); setAdminDateInput('sua_thoi_gian_tra_thuc_te', btn.getAttribute('data-thoi-gian-tra-thuc-te') || ''); } else { document.getElementById('sua_thoi_gian_bat_dau').value = btn.getAttribute('data-thoi-gian-bat-dau') || ''; document.getElementById('sua_thoi_gian_du_kien_tra').value = btn.getAttribute('data-thoi-gian-du-kien-tra') || ''; document.getElementById('sua_thoi_gian_tra_thuc_te').value = btn.getAttribute('data-thoi-gian-tra-thuc-te') || ''; }
             document.getElementById('sua_ghi_chu').value = btn.getAttribute('data-ghi-chu') || '';
             document.getElementById('sua_trang_thai').value = btn.getAttribute('data-trang-thai') || '0';
             updateSuaTongKho();

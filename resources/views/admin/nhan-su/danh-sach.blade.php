@@ -269,7 +269,7 @@
                                 </div>
                                 <div class="col-12 col-sm-6 col-lg-4">
                                     <label class="form-label" for="them_ngay_sinh">Ngày sinh</label>
-                                    <input type="date" class="form-control" id="them_ngay_sinh" name="ngay_sinh" value="{{ old('ngay_sinh') }}">
+                                    <input type="text" class="flatpickr-date-admin form-control" id="them_ngay_sinh" name="ngay_sinh" value="{{ old('ngay_sinh') }}" placeholder="dd/mm/yyyy" autocomplete="off">
                                 </div>
                                 <div class="col-12 col-sm-6 col-lg-4">
                                     <label class="form-label" for="them_cccd">CCCD</label>
@@ -297,11 +297,11 @@
                                 </div>
                                 <div class="col-12 col-sm-6 col-lg-4">
                                     <label class="form-label" for="them_ngay_vao_cong_ty">Ngày vào công ty</label>
-                                    <input type="date" class="form-control" id="them_ngay_vao_cong_ty" name="ngay_vao_cong_ty" value="{{ old('ngay_vao_cong_ty') }}">
+                                    <input type="text" class="flatpickr-date-admin form-control" id="them_ngay_vao_cong_ty" name="ngay_vao_cong_ty" value="{{ old('ngay_vao_cong_ty') }}" placeholder="dd/mm/yyyy" autocomplete="off">
                                 </div>
                                 <div class="col-12 col-sm-6 col-lg-4">
                                     <label class="form-label" for="them_ngay_ky_hop_dong">Ngày ký hợp đồng</label>
-                                    <input type="date" class="form-control" id="them_ngay_ky_hop_dong" name="ngay_ky_hop_dong" value="{{ old('ngay_ky_hop_dong') }}">
+                                    <input type="text" class="flatpickr-date-admin form-control" id="them_ngay_ky_hop_dong" name="ngay_ky_hop_dong" value="{{ old('ngay_ky_hop_dong') }}" placeholder="dd/mm/yyyy" autocomplete="off">
                                 </div>
                                 <div class="col-12 col-sm-6 col-lg-4">
                                     <label class="form-label" for="them_luong_co_ban">Lương cơ bản (VNĐ)</label>
@@ -389,7 +389,7 @@
                                 </div>
                                 <div class="col-12 col-sm-6 col-lg-4">
                                     <label class="form-label" for="sua_ngay_sinh">Ngày sinh</label>
-                                    <input type="date" class="form-control" id="sua_ngay_sinh" name="ngay_sinh">
+                                    <input type="text" class="flatpickr-date-admin form-control" id="sua_ngay_sinh" name="ngay_sinh" placeholder="dd/mm/yyyy" autocomplete="off">
                                 </div>
                                 <div class="col-12 col-sm-6 col-lg-4">
                                     <label class="form-label" for="sua_cccd">CCCD</label>
@@ -417,11 +417,11 @@
                                 </div>
                                 <div class="col-12 col-sm-6 col-lg-4">
                                     <label class="form-label" for="sua_ngay_vao_cong_ty">Ngày vào công ty</label>
-                                    <input type="date" class="form-control" id="sua_ngay_vao_cong_ty" name="ngay_vao_cong_ty">
+                                    <input type="text" class="flatpickr-date-admin form-control" id="sua_ngay_vao_cong_ty" name="ngay_vao_cong_ty" placeholder="dd/mm/yyyy" autocomplete="off">
                                 </div>
                                 <div class="col-12 col-sm-6 col-lg-4">
                                     <label class="form-label" for="sua_ngay_ky_hop_dong">Ngày ký hợp đồng</label>
-                                    <input type="date" class="form-control" id="sua_ngay_ky_hop_dong" name="ngay_ky_hop_dong">
+                                    <input type="text" class="flatpickr-date-admin form-control" id="sua_ngay_ky_hop_dong" name="ngay_ky_hop_dong" placeholder="dd/mm/yyyy" autocomplete="off">
                                 </div>
                                 <div class="col-12 col-sm-6 col-lg-4">
                                     <label class="form-label" for="sua_luong_co_ban">Lương cơ bản (VNĐ)</label>
@@ -664,7 +664,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('sua_email').value = btn.getAttribute('data-email') || '';
             document.getElementById('sua_so_dien_thoai').value = btn.getAttribute('data-phone') || '';
             document.getElementById('sua_gioi_tinh').value = btn.getAttribute('data-gioi-tinh') || '';
-            document.getElementById('sua_ngay_sinh').value = btn.getAttribute('data-ngay-sinh') || '';
+            if (window.setAdminDateInput) setAdminDateInput('sua_ngay_sinh', btn.getAttribute('data-ngay-sinh') || ''); else document.getElementById('sua_ngay_sinh').value = btn.getAttribute('data-ngay-sinh') || '';
             document.getElementById('sua_cccd').value = btn.getAttribute('data-cccd') || '';
             document.getElementById('sua_vai_tro').value = btn.getAttribute('data-role') || '';
             document.getElementById('sua_vi_tri').value = btn.getAttribute('data-vi-tri') || '';
@@ -684,8 +684,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 }
             }
-            document.getElementById('sua_ngay_vao_cong_ty').value = btn.getAttribute('data-ngay-vao-cong-ty') || '';
-            document.getElementById('sua_ngay_ky_hop_dong').value = btn.getAttribute('data-ngay-ky-hop-dong') || '';
+            if (window.setAdminDateInput) { setAdminDateInput('sua_ngay_vao_cong_ty', btn.getAttribute('data-ngay-vao-cong-ty') || ''); setAdminDateInput('sua_ngay_ky_hop_dong', btn.getAttribute('data-ngay-ky-hop-dong') || ''); } else { document.getElementById('sua_ngay_vao_cong_ty').value = btn.getAttribute('data-ngay-vao-cong-ty') || ''; document.getElementById('sua_ngay_ky_hop_dong').value = btn.getAttribute('data-ngay-ky-hop-dong') || ''; }
             document.getElementById('sua_luong_co_ban').value = btn.getAttribute('data-luong-co-ban') || '';
             document.getElementById('sua_luong_tang_ca').value = btn.getAttribute('data-luong-tang-ca') || '';
             var imgSrc = btn.getAttribute('data-hinh-anh') || '';

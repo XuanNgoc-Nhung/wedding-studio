@@ -194,11 +194,11 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="them_ngay_chup">Ngày chụp</label>
-                            <input type="date" class="form-control" id="them_ngay_chup" name="ngay_chup" value="{{ old('ngay_chup') }}">
+                            <input type="text" class="flatpickr-date-admin form-control" id="them_ngay_chup" name="ngay_chup" value="{{ old('ngay_chup') }}" placeholder="dd/mm/yyyy" autocomplete="off">
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="them_ngay_hen_tra_hang">Ngày hẹn trả hàng</label>
-                            <input type="date" class="form-control" id="them_ngay_hen_tra_hang" name="ngay_hen_tra_hang" value="{{ old('ngay_hen_tra_hang') }}">
+                            <input type="text" class="flatpickr-date-admin form-control" id="them_ngay_hen_tra_hang" name="ngay_hen_tra_hang" value="{{ old('ngay_hen_tra_hang') }}" placeholder="dd/mm/yyyy" autocomplete="off">
                         </div>
                         {{-- Tabs: Nhóm dịch vụ & Dịch vụ lẻ (Filled Pills) --}}
                         <div class="col-12 mt-2">
@@ -421,11 +421,11 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="sua_ngay_chup">Ngày chụp</label>
-                            <input type="date" class="form-control" id="sua_ngay_chup" name="ngay_chup">
+                            <input type="text" class="flatpickr-date-admin form-control" id="sua_ngay_chup" name="ngay_chup" placeholder="dd/mm/yyyy" autocomplete="off">
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="sua_ngay_hen_tra_hang">Ngày hẹn trả hàng</label>
-                            <input type="date" class="form-control" id="sua_ngay_hen_tra_hang" name="ngay_hen_tra_hang">
+                            <input type="text" class="flatpickr-date-admin form-control" id="sua_ngay_hen_tra_hang" name="ngay_hen_tra_hang" placeholder="dd/mm/yyyy" autocomplete="off">
                         </div>
                         {{-- Tabs: Nhóm dịch vụ & Dịch vụ lẻ (Sua) --}}
                         <div class="col-12 mt-2">
@@ -693,8 +693,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('sua_khach_hang_id').value = khachHangId;
             document.getElementById('sua_khach_hang_id_hidden').value = khachHangId;
             document.getElementById('sua_dia_diem').value = btn.getAttribute('data-dia-diem') || '';
-            document.getElementById('sua_ngay_chup').value = btn.getAttribute('data-ngay-chup') || '';
-            document.getElementById('sua_ngay_hen_tra_hang').value = btn.getAttribute('data-ngay-hen-tra-hang') || '';
+            if (window.setAdminDateInput) { setAdminDateInput('sua_ngay_chup', btn.getAttribute('data-ngay-chup') || ''); setAdminDateInput('sua_ngay_hen_tra_hang', btn.getAttribute('data-ngay-hen-tra-hang') || ''); } else { document.getElementById('sua_ngay_chup').value = btn.getAttribute('data-ngay-chup') || ''; document.getElementById('sua_ngay_hen_tra_hang').value = btn.getAttribute('data-ngay-hen-tra-hang') || ''; }
             document.getElementById('sua_trang_phuc').value = btn.getAttribute('data-trang-phuc') || '';
             document.getElementById('sua_concept').value = btn.getAttribute('data-concept') || '';
             document.getElementById('sua_ghi_chu_chup').value = btn.getAttribute('data-ghi-chu-chup') || '';

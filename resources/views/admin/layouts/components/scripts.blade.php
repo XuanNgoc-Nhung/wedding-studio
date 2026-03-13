@@ -46,5 +46,34 @@
     });
     </script>
 
+    <!-- Flatpickr: date picker single, định dạng hiển thị dd/mm/yyyy, value gửi lên server vẫn là Y-m-d -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof flatpickr === 'undefined') return;
+        document.querySelectorAll('input.flatpickr-date-admin').forEach(function(el) {
+            if (el._flatpickr) return;
+            var opts = {
+                altInput: true,
+                altFormat: 'd/m/Y',
+                dateFormat: 'Y-m-d',
+                allowInput: false,
+                static: false,
+                locale: { firstDayOfWeek: 1 }
+            };
+            var modal = el.closest('.modal');
+            if (modal) opts.appendTo = modal;
+            flatpickr(el, opts);
+        });
+    });
+    // Helper: gán giá trị ngày cho input (dùng khi mở modal Sửa). value định dạng Y-m-d hoặc rỗng.
+    window.setAdminDateInput = function(idOrEl, value) {
+        var el = typeof idOrEl === 'string' ? document.getElementById(idOrEl) : idOrEl;
+        if (!el) return;
+        if (el._flatpickr) { if (value) el._flatpickr.setDate(value, false); else el._flatpickr.clear(); }
+        else el.value = value || '';
+    };
+    </script>
+
     <!-- Page JS (thêm script riêng qua @push('scripts') trong từng trang nếu cần) -->
     @stack('scripts')

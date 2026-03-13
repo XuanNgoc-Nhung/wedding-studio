@@ -46,4 +46,15 @@
 <!-- Select2 (dùng chung cho các select trong admin) -->
 <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
 
+<!-- Flatpickr: date picker hiển thị dd/mm/yyyy (giống Single Picker trong demo) -->
+<link rel="stylesheet" href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}" />
+<style>
+/* Calendar Flatpickr: khi nằm trong modal thì appendTo modal, cần z-index cao hơn nội dung modal */
+.modal .flatpickr-calendar,
+.modal .flatpickr-calendar.open,
+.flatpickr-calendar.open {
+  z-index: 9999 !important;
+}
+</style>
+
 @stack('styles')
