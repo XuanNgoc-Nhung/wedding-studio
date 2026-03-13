@@ -56,6 +56,7 @@
                         <th style="width: 50px;">STT</th>
                         <th>Tên dịch vụ</th>
                         <th>Mã dịch vụ</th>
+                        <th>Phòng ban</th>
                         <th>Mô tả</th>
                         <th class="text-center" style="width: 100px;">Trạng thái</th>
                         <th>Ghi chú</th>
@@ -74,6 +75,7 @@
                         <td>{{ ($danhSach->currentPage() - 1) * $danhSach->perPage() + $index + 1 }}</td>
                         <td><span class="fw-medium">{{ $item->ten_dich_vu ?? '—' }}</span></td>
                         <td>{{ $item->ma_dich_vu ?? '—' }}</td>
+                        <td>{{ $item->phongBan?->ten_phong_ban ?? '—' }}</td>
                         <td>{{ \Illuminate\Support\Str::limit($item->mo_ta ?? '—', 50) }}</td>
                         <td class="text-center">
                             <span class="badge {{ $trangThaiBadge }}">{{ $trangThaiLabel }}</span>
@@ -97,7 +99,8 @@
                                        data-mo-ta="{{ e($item->mo_ta ?? '') }}"
                                        data-trang-thai="{{ (int)($item->trang_thai ?? 0) }}"
                                        data-ghi-chu="{{ e($item->ghi_chu ?? '') }}"
-                                       data-gia="{{ $item->gia_dich_vu ?? '' }}">
+                                       data-gia="{{ $item->gia_dich_vu ?? '' }}"
+                                       data-phong-ban-id="{{ $item->phong_ban_id ?? '' }}">
                                         <i class="fa-solid fa-pen me-2"></i> Sửa
                                     </a>
                                     <form id="form-xoa-dv-{{ $item->id }}" action="{{ route('admin.dich-vu.destroy', $item) }}" method="POST" class="d-inline">
@@ -113,7 +116,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="9" class="text-center py-4 text-muted">Chưa có dữ liệu dịch vụ lẻ.</td>
+                        <td colspan="10" class="text-center py-4 text-muted">Chưa có dữ liệu dịch vụ lẻ.</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -146,28 +149,39 @@
                 @endif
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-12 col-sm-6">
+                        {{-- Hàng 1: 3 input (1 cột mobile → 2 cột tablet → 3 cột desktop) --}}
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="them_ten_dich_vu">Tên dịch vụ <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="them_ten_dich_vu" name="ten_dich_vu" value="{{ old('ten_dich_vu') }}" placeholder="Nhập tên dịch vụ" required>
                         </div>
-                        <div class="col-12 col-sm-6">
-                            <label class="form-label" for="them_ma_dich_vu">Mã dịch vụ</label>
-                            <input type="text" class="form-control" id="them_ma_dich_vu" name="ma_dich_vu" value="{{ old('ma_dich_vu') }}" placeholder="Ví dụ: DV001">
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <label class="form-label" for="them_ma_dich_vu">Mã dịch vụ <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="them_ma_dich_vu" name="ma_dich_vu" value="{{ old('ma_dich_vu') }}" placeholder="Ví dụ: DV001" required>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <label class="form-label" for="them_phong_ban_id">Phòng ban phụ trách <span class="text-danger">*</span></label>
+                            <select class="form-select" id="them_phong_ban_id" name="phong_ban_id" required>
+                                <option value="">— Chọn phòng ban —</option>
+                                @foreach($phongBans ?? [] as $pb)
+                                <option value="{{ $pb->id }}" {{ old('phong_ban_id') == $pb->id ? 'selected' : '' }}>{{ $pb->ten_phong_ban }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="them_mo_ta">Mô tả</label>
                             <textarea class="form-control" id="them_mo_ta" name="mo_ta" rows="2" placeholder="Mô tả ngắn...">{{ old('mo_ta') }}</textarea>
                         </div>
-                        <div class="col-12 col-sm-6">
+                        {{-- Hàng 2: Trạng thái + Giá --}}
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="them_trang_thai">Trạng thái</label>
                             <select class="form-select" id="them_trang_thai" name="trang_thai">
                                 <option value="{{ \App\Models\DichVuLe::TRANG_THAI_HIEN_THI }}" {{ old('trang_thai', \App\Models\DichVuLe::TRANG_THAI_HIEN_THI) == \App\Models\DichVuLe::TRANG_THAI_HIEN_THI ? 'selected' : '' }}>Hiển thị</option>
                                 <option value="{{ \App\Models\DichVuLe::TRANG_THAI_AN }}" {{ old('trang_thai') == \App\Models\DichVuLe::TRANG_THAI_AN ? 'selected' : '' }}>Ẩn</option>
                             </select>
                         </div>
-                        <div class="col-12 col-sm-6">
-                            <label class="form-label" for="them_gia_dich_vu">Giá dịch vụ</label>
-                            <input type="number" class="form-control" id="them_gia_dich_vu" name="gia_dich_vu" value="{{ old('gia_dich_vu') }}" placeholder="0" min="0" step="1000">
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <label class="form-label" for="them_gia_dich_vu">Giá dịch vụ <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="them_gia_dich_vu" name="gia_dich_vu" value="{{ old('gia_dich_vu') }}" placeholder="0" min="0" step="1000" required>
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="them_ghi_chu">Ghi chú</label>
@@ -210,28 +224,39 @@
                 @endif
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-12 col-sm-6">
+                        {{-- Hàng 1: 3 input (1 cột mobile → 2 cột tablet → 3 cột desktop) --}}
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="sua_ten_dich_vu">Tên dịch vụ <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="sua_ten_dich_vu" name="ten_dich_vu" placeholder="Nhập tên dịch vụ" required>
                         </div>
-                        <div class="col-12 col-sm-6">
-                            <label class="form-label" for="sua_ma_dich_vu">Mã dịch vụ</label>
-                            <input type="text" class="form-control" id="sua_ma_dich_vu" name="ma_dich_vu" placeholder="Ví dụ: DV001">
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <label class="form-label" for="sua_ma_dich_vu">Mã dịch vụ <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="sua_ma_dich_vu" name="ma_dich_vu" placeholder="Ví dụ: DV001" required>
+                        </div>
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <label class="form-label" for="sua_phong_ban_id">Phòng ban phụ trách <span class="text-danger">*</span></label>
+                            <select class="form-select" id="sua_phong_ban_id" name="phong_ban_id" required>
+                                <option value="">— Chọn phòng ban —</option>
+                                @foreach($phongBans ?? [] as $pb)
+                                <option value="{{ $pb->id }}">{{ $pb->ten_phong_ban }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="sua_mo_ta">Mô tả</label>
                             <textarea class="form-control" id="sua_mo_ta" name="mo_ta" rows="2" placeholder="Mô tả ngắn..."></textarea>
                         </div>
-                        <div class="col-12 col-sm-6">
+                        {{-- Hàng 2: Trạng thái + Giá (cùng quy tắc responsive) --}}
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="sua_trang_thai">Trạng thái</label>
                             <select class="form-select" id="sua_trang_thai" name="trang_thai">
                                 <option value="{{ \App\Models\DichVuLe::TRANG_THAI_HIEN_THI }}">Hiển thị</option>
                                 <option value="{{ \App\Models\DichVuLe::TRANG_THAI_AN }}">Ẩn</option>
                             </select>
                         </div>
-                        <div class="col-12 col-sm-6">
-                            <label class="form-label" for="sua_gia_dich_vu">Giá dịch vụ</label>
-                            <input type="number" class="form-control" id="sua_gia_dich_vu" name="gia_dich_vu" placeholder="0" min="0" step="1000">
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <label class="form-label" for="sua_gia_dich_vu">Giá dịch vụ <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="sua_gia_dich_vu" name="gia_dich_vu" placeholder="0" min="0" step="1000" required>
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="sua_ghi_chu">Ghi chú</label>
@@ -313,6 +338,27 @@ document.addEventListener('DOMContentLoaded', function() {
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.map(function (el) { return new bootstrap.Tooltip(el); });
 
+    // Frontend validation: thông báo tiếng Việt cho trường bắt buộc
+    var messages = {
+        them_ma_dich_vu: 'Vui lòng nhập mã dịch vụ.',
+        them_phong_ban_id: 'Vui lòng chọn phòng ban phụ trách.',
+        them_gia_dich_vu: 'Vui lòng nhập giá dịch vụ.',
+        sua_ma_dich_vu: 'Vui lòng nhập mã dịch vụ.',
+        sua_phong_ban_id: 'Vui lòng chọn phòng ban phụ trách.',
+        sua_gia_dich_vu: 'Vui lòng nhập giá dịch vụ.'
+    };
+    ['them_ma_dich_vu', 'them_phong_ban_id', 'them_gia_dich_vu', 'sua_ma_dich_vu', 'sua_phong_ban_id', 'sua_gia_dich_vu'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (!el) return;
+        el.addEventListener('invalid', function() {
+            if (this.validity.valueMissing) this.setCustomValidity(messages[id] || 'Vui lòng điền trường này.');
+            else if (this.validity.rangeUnderflow && (id === 'them_gia_dich_vu' || id === 'sua_gia_dich_vu')) this.setCustomValidity('Giá dịch vụ không được âm.');
+            else this.setCustomValidity('');
+        });
+        el.addEventListener('input', function() { this.setCustomValidity(''); });
+        el.addEventListener('change', function() { this.setCustomValidity(''); });
+    });
+
     @if($errors->any())
     var modalThem = document.getElementById('modalThemDichVuLe');
     if (modalThem) {
@@ -336,6 +382,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('sua_trang_thai').value = btn.getAttribute('data-trang-thai') || '{{ \App\Models\DichVuLe::TRANG_THAI_HIEN_THI }}';
             document.getElementById('sua_ghi_chu').value = btn.getAttribute('data-ghi-chu') || '';
             document.getElementById('sua_gia_dich_vu').value = btn.getAttribute('data-gia') || '';
+            document.getElementById('sua_phong_ban_id').value = btn.getAttribute('data-phong-ban-id') || '';
         });
     }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\DichVuLe;
 use App\Models\NhomDichVu;
+use App\Models\PhongBan;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -17,7 +18,7 @@ class DichVuController extends Controller
 
     public function dichVuLe(Request $request)
     {
-        $query = DichVuLe::query()->with('nguoiTao');
+        $query = DichVuLe::query()->with(['nguoiTao', 'phongBan']);
 
         if ($request->filled('search')) {
             $q = $request->input('search');
@@ -28,23 +29,26 @@ class DichVuController extends Controller
         }
 
         $danhSach = $query->orderByDesc('id')->paginate(15)->withQueryString();
+        $phongBans = PhongBan::orderBy('ten_phong_ban')->get();
 
-        return view('admin.dich-vu.dich-vu-le', compact('danhSach'));
+        return view('admin.dich-vu.dich-vu-le', compact('danhSach', 'phongBans'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'ten_dich_vu' => 'required|string|max:255',
-            'ma_dich_vu' => ['nullable', 'string', 'max:50', Rule::unique('dich_vu_le', 'ma_dich_vu')],
+            'ma_dich_vu' => ['required', 'string', 'max:50', Rule::unique('dich_vu_le', 'ma_dich_vu')],
             'mo_ta' => 'nullable|string',
             'trang_thai' => 'nullable|integer|in:0,1',
             'ghi_chu' => 'nullable|string',
-            'gia_dich_vu' => 'nullable|numeric|min:0',
+            'gia_dich_vu' => 'required|numeric|min:0',
+            'phong_ban_id' => 'required|integer|exists:phong_ban,id',
         ], [
             'ten_dich_vu.required' => 'Vui lòng nhập tên dịch vụ.',
             'ten_dich_vu.string' => 'Tên dịch vụ phải là chuỗi ký tự.',
             'ten_dich_vu.max' => 'Tên dịch vụ không được quá 255 ký tự.',
+            'ma_dich_vu.required' => 'Vui lòng nhập mã dịch vụ.',
             'ma_dich_vu.string' => 'Mã dịch vụ phải là chuỗi ký tự.',
             'ma_dich_vu.max' => 'Mã dịch vụ không được quá 50 ký tự.',
             'ma_dich_vu.unique' => 'Mã dịch vụ đã tồn tại, vui lòng chọn mã khác.',
@@ -52,8 +56,12 @@ class DichVuController extends Controller
             'trang_thai.integer' => 'Trạng thái phải là số nguyên.',
             'trang_thai.in' => 'Trạng thái không hợp lệ.',
             'ghi_chu.string' => 'Ghi chú phải là chuỗi ký tự.',
+            'gia_dich_vu.required' => 'Vui lòng nhập giá dịch vụ.',
             'gia_dich_vu.numeric' => 'Giá dịch vụ phải là số.',
             'gia_dich_vu.min' => 'Giá dịch vụ không được âm.',
+            'phong_ban_id.required' => 'Vui lòng chọn phòng ban phụ trách.',
+            'phong_ban_id.integer' => 'Phòng ban không hợp lệ.',
+            'phong_ban_id.exists' => 'Phòng ban không tồn tại.',
         ]);
 
         DichVuLe::create([
@@ -63,6 +71,7 @@ class DichVuController extends Controller
             'trang_thai' => (int) $request->input('trang_thai', DichVuLe::TRANG_THAI_HIEN_THI),
             'ghi_chu' => $request->input('ghi_chu'),
             'gia_dich_vu' => $request->input('gia_dich_vu'),
+            'phong_ban_id' => (int) $request->input('phong_ban_id'),
             'nguoi_tao_id' => $request->user()?->id,
         ]);
 
@@ -73,15 +82,17 @@ class DichVuController extends Controller
     {
         $request->validate([
             'ten_dich_vu' => 'required|string|max:255',
-            'ma_dich_vu' => ['nullable', 'string', 'max:50', Rule::unique('dich_vu_le', 'ma_dich_vu')->ignore($dichVu->id)],
+            'ma_dich_vu' => ['required', 'string', 'max:50', Rule::unique('dich_vu_le', 'ma_dich_vu')->ignore($dichVu->id)],
             'mo_ta' => 'nullable|string',
             'trang_thai' => 'nullable|integer|in:0,1',
             'ghi_chu' => 'nullable|string',
-            'gia_dich_vu' => 'nullable|numeric|min:0',
+            'gia_dich_vu' => 'required|numeric|min:0',
+            'phong_ban_id' => 'required|integer|exists:phong_ban,id',
         ], [
             'ten_dich_vu.required' => 'Vui lòng nhập tên dịch vụ.',
             'ten_dich_vu.string' => 'Tên dịch vụ phải là chuỗi ký tự.',
             'ten_dich_vu.max' => 'Tên dịch vụ không được quá 255 ký tự.',
+            'ma_dich_vu.required' => 'Vui lòng nhập mã dịch vụ.',
             'ma_dich_vu.string' => 'Mã dịch vụ phải là chuỗi ký tự.',
             'ma_dich_vu.max' => 'Mã dịch vụ không được quá 50 ký tự.',
             'ma_dich_vu.unique' => 'Mã dịch vụ đã tồn tại, vui lòng chọn mã khác.',
@@ -89,8 +100,12 @@ class DichVuController extends Controller
             'trang_thai.integer' => 'Trạng thái phải là số nguyên.',
             'trang_thai.in' => 'Trạng thái không hợp lệ.',
             'ghi_chu.string' => 'Ghi chú phải là chuỗi ký tự.',
+            'gia_dich_vu.required' => 'Vui lòng nhập giá dịch vụ.',
             'gia_dich_vu.numeric' => 'Giá dịch vụ phải là số.',
             'gia_dich_vu.min' => 'Giá dịch vụ không được âm.',
+            'phong_ban_id.required' => 'Vui lòng chọn phòng ban phụ trách.',
+            'phong_ban_id.integer' => 'Phòng ban không hợp lệ.',
+            'phong_ban_id.exists' => 'Phòng ban không tồn tại.',
         ]);
 
         $dichVu->update([
@@ -100,6 +115,7 @@ class DichVuController extends Controller
             'trang_thai' => (int) $request->input('trang_thai', DichVuLe::TRANG_THAI_HIEN_THI),
             'ghi_chu' => $request->input('ghi_chu'),
             'gia_dich_vu' => $request->input('gia_dich_vu'),
+            'phong_ban_id' => (int) $request->input('phong_ban_id'),
         ]);
 
         return redirect()->route('admin.dich-vu.dich-vu-le')->with('success', 'Đã cập nhật dịch vụ lẻ thành công.');

@@ -34,6 +34,7 @@ class DichVuLe extends Model
         'ghi_chu',
         'gia_dich_vu',
         'nguoi_tao_id',
+        'phong_ban_id',
     ];
 
     /**
@@ -75,6 +76,14 @@ class DichVuLe extends Model
     public function nguoiTao(): BelongsTo
     {
         return $this->belongsTo(User::class, 'nguoi_tao_id');
+    }
+
+    /**
+     * Phòng ban phụ trách dịch vụ này (1 dịch vụ thuộc 1 phòng ban).
+     */
+    public function phongBan(): BelongsTo
+    {
+        return $this->belongsTo(PhongBan::class, 'phong_ban_id');
     }
 
     /**
