@@ -179,7 +179,7 @@
                         {{-- Hàng 1: 4 cột (lg), 2 cột (md), 1 cột (xs) --}}
                         <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="them_khach_hang_id">Khách hàng <span class="text-danger">*</span></label>
-                            <select class="form-select" id="them_khach_hang_id" name="khach_hang_id" required>
+                            <select class="select2-admin form-select" id="them_khach_hang_id" name="khach_hang_id" required data-placeholder="Chọn khách hàng">
                                 <option value="">-- Chọn khách hàng --</option>
                                 @foreach($danhSachKhachHang ?? [] as $kh)
                                 <option value="{{ $kh->id }}" {{ (string)old('khach_hang_id') === (string)$kh->id ? 'selected' : '' }}>
@@ -408,7 +408,7 @@
                         <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="sua_khach_hang_id">Khách hàng <span class="text-danger">*</span></label>
                             <input type="hidden" name="khach_hang_id" id="sua_khach_hang_id_hidden">
-                            <select class="form-select" id="sua_khach_hang_id" disabled aria-label="Khách hàng (không thể thay đổi)">
+                            <select class="select2-admin form-select" id="sua_khach_hang_id" disabled aria-label="Khách hàng (không thể thay đổi)" data-placeholder="Chọn khách hàng">
                                 <option value="">-- Chọn khách hàng --</option>
                                 @foreach($danhSachKhachHang ?? [] as $kh)
                                 <option value="{{ $kh->id }}">{{ $kh->ho_ten_chu_re ?? '' }} / {{ $kh->ho_ten_co_dau ?? '' }} ({{ $kh->email_hoac_sdt_chu_re ?? $kh->email_hoac_sdt_co_dau ?? '—' }})</option>

@@ -160,7 +160,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="them_phong_ban_id">Phòng ban phụ trách <span class="text-danger">*</span></label>
-                            <select class="form-select" id="them_phong_ban_id" name="phong_ban_id" required>
+                            <select class="select2-admin form-select" id="them_phong_ban_id" name="phong_ban_id" required data-placeholder="Chọn phòng ban">
                                 <option value="">— Chọn phòng ban —</option>
                                 @foreach($phongBans ?? [] as $pb)
                                 <option value="{{ $pb->id }}" {{ old('phong_ban_id') == $pb->id ? 'selected' : '' }}>{{ $pb->ten_phong_ban }}</option>
@@ -174,7 +174,7 @@
                         {{-- Hàng 2: Trạng thái + Giá --}}
                         <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="them_trang_thai">Trạng thái</label>
-                            <select class="form-select" id="them_trang_thai" name="trang_thai">
+                            <select class="select2-admin form-select" id="them_trang_thai" name="trang_thai" data-placeholder="Chọn trạng thái">
                                 <option value="{{ \App\Models\DichVuLe::TRANG_THAI_HIEN_THI }}" {{ old('trang_thai', \App\Models\DichVuLe::TRANG_THAI_HIEN_THI) == \App\Models\DichVuLe::TRANG_THAI_HIEN_THI ? 'selected' : '' }}>Hiển thị</option>
                                 <option value="{{ \App\Models\DichVuLe::TRANG_THAI_AN }}" {{ old('trang_thai') == \App\Models\DichVuLe::TRANG_THAI_AN ? 'selected' : '' }}>Ẩn</option>
                             </select>
@@ -235,7 +235,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="sua_phong_ban_id">Phòng ban phụ trách <span class="text-danger">*</span></label>
-                            <select class="form-select" id="sua_phong_ban_id" name="phong_ban_id" required>
+                            <select class="select2-admin form-select" id="sua_phong_ban_id" name="phong_ban_id" required data-placeholder="Chọn phòng ban">
                                 <option value="">— Chọn phòng ban —</option>
                                 @foreach($phongBans ?? [] as $pb)
                                 <option value="{{ $pb->id }}">{{ $pb->ten_phong_ban }}</option>
@@ -249,7 +249,7 @@
                         {{-- Hàng 2: Trạng thái + Giá (cùng quy tắc responsive) --}}
                         <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="sua_trang_thai">Trạng thái</label>
-                            <select class="form-select" id="sua_trang_thai" name="trang_thai">
+                            <select class="select2-admin form-select" id="sua_trang_thai" name="trang_thai" data-placeholder="Chọn trạng thái">
                                 <option value="{{ \App\Models\DichVuLe::TRANG_THAI_HIEN_THI }}">Hiển thị</option>
                                 <option value="{{ \App\Models\DichVuLe::TRANG_THAI_AN }}">Ẩn</option>
                             </select>

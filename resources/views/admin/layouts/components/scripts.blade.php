@@ -28,5 +28,23 @@
 
     <script src="../../assets/js/main.js"></script>
 
+    <!-- Select2: thống nhất UX select (tương tự modal phân công công việc) -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var $ = window.jQuery || window.$;
+        if (!$ || !$.fn.select2) return;
+        $('.select2-admin').each(function() {
+            var $el = $(this);
+            if ($el.data('select2')) return;
+            var placeholder = $el.data('placeholder') || 'Chọn...';
+            var opts = { placeholder: placeholder, allowClear: true, width: '100%' };
+            var $modal = $el.closest('.modal');
+            if ($modal.length) opts.dropdownParent = $modal;
+            $el.select2(opts);
+        });
+    });
+    </script>
+
     <!-- Page JS (thêm script riêng qua @push('scripts') trong từng trang nếu cần) -->
     @stack('scripts')

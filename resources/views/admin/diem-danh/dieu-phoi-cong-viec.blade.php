@@ -168,7 +168,7 @@
                     <div class="row g-3">
                         <div class="col-12 col-md-4">
                             <label class="form-label" for="phan_cong_tho_chup_id">Thợ chụp</label>
-                            <select id="phan_cong_tho_chup_id" name="tho_chup_id" class="select2-phan-cong form-select" data-allow-clear="true" data-placeholder="Chọn thợ chụp" style="width: 100%;">
+                            <select id="phan_cong_tho_chup_id" name="tho_chup_id" class="select2-admin form-select" data-placeholder="Chọn thợ chụp" style="width: 100%;">
                                 <option value="">— Chọn thợ chụp —</option>
                                 @foreach($danhSachNhanVien ?? [] as $nv)
                                 <option value="{{ $nv->id }}">{{ $nv->user?->name ?? 'Nhân viên #' . $nv->id }}</option>
@@ -177,7 +177,7 @@
                         </div>
                         <div class="col-12 col-md-4">
                             <label class="form-label" for="phan_cong_tho_make_id">Thợ make</label>
-                            <select id="phan_cong_tho_make_id" name="tho_make_id" class="select2-phan-cong form-select" data-allow-clear="true" data-placeholder="Chọn thợ make" style="width: 100%;">
+                            <select id="phan_cong_tho_make_id" name="tho_make_id" class="select2-admin form-select" data-placeholder="Chọn thợ make" style="width: 100%;">
                                 <option value="">— Chọn thợ make —</option>
                                 @foreach($danhSachNhanVien ?? [] as $nv)
                                 <option value="{{ $nv->id }}">{{ $nv->user?->name ?? 'Nhân viên #' . $nv->id }}</option>
@@ -186,7 +186,7 @@
                         </div>
                         <div class="col-12 col-md-4">
                             <label class="form-label" for="phan_cong_tho_edit_id">Thợ chỉnh sửa</label>
-                            <select id="phan_cong_tho_edit_id" name="tho_edit_id" class="select2-phan-cong form-select" data-allow-clear="true" data-placeholder="Chọn thợ chỉnh sửa" style="width: 100%;">
+                            <select id="phan_cong_tho_edit_id" name="tho_edit_id" class="select2-admin form-select" data-placeholder="Chọn thợ chỉnh sửa" style="width: 100%;">
                                 <option value="">— Chọn thợ chỉnh sửa —</option>
                                 @foreach($danhSachNhanVien ?? [] as $nv)
                                 <option value="{{ $nv->id }}">{{ $nv->user?->name ?? 'Nhân viên #' . $nv->id }}</option>
@@ -205,7 +205,6 @@
 </div>
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
 <style>
 #modalPhanCong .modal-dialog.modal-phan-cong {
     max-width: 95vw;
@@ -218,26 +217,11 @@
 @endpush
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     var $ = window.jQuery || window.$;
     var modalPhanCong = document.getElementById('modalPhanCong');
     var formPhanCong = document.getElementById('formPhanCong');
-
-    // Select2 cho 3 ô chọn thợ (giống demo: single select, allow clear, dropdown trong modal)
-    if ($ && $.fn.select2) {
-        $('.select2-phan-cong').each(function() {
-            var $el = $(this);
-            var placeholder = $el.data('placeholder') || 'Chọn...';
-            $el.wrap('<div class="position-relative"></div>').select2({
-                placeholder: placeholder,
-                allowClear: true,
-                dropdownParent: $('#modalPhanCong'),
-                width: '100%'
-            });
-        });
-    }
 
     // Khi mở modal từ nút "Phân việc": điền summary + form action + giá trị select (đã điều phối thì tự chọn)
     if (modalPhanCong) {

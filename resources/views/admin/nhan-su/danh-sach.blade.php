@@ -244,7 +244,7 @@
                                 </div>
                                 <div class="col-12 col-sm-6 col-lg-4">
                                     <label class="form-label" for="them_gioi_tinh">Giới tính</label>
-                                    <select class="form-select" id="them_gioi_tinh" name="gioi_tinh">
+                                    <select class="select2-admin form-select" id="them_gioi_tinh" name="gioi_tinh" data-placeholder="Chọn giới tính">
                                         <option value="">-- Chọn --</option>
                                         <option value="nam" {{ old('gioi_tinh') == 'nam' ? 'selected' : '' }}>Nam</option>
                                         <option value="nu" {{ old('gioi_tinh') == 'nu' ? 'selected' : '' }}>Nữ</option>
@@ -277,7 +277,7 @@
                                 </div>
                                 <div class="col-12 col-sm-6 col-lg-4">
                                     <label class="form-label" for="them_vai_tro">Vai trò</label>
-                                    <select class="form-select" id="them_vai_tro" name="role">
+                                    <select class="select2-admin form-select" id="them_vai_tro" name="role" data-placeholder="Chọn vai trò">
                                         <option value="{{ \App\Models\User::ROLE_ADMIN }}" {{ old('role') == \App\Models\User::ROLE_ADMIN ? 'selected' : '' }}>Admin</option>
                                         <option value="{{ \App\Models\User::ROLE_NHAN_VIEN }}" {{ old('role', \App\Models\User::ROLE_NHAN_VIEN) == \App\Models\User::ROLE_NHAN_VIEN ? 'selected' : '' }}>Nhân viên</option>
                                         <option value="{{ \App\Models\User::ROLE_NGUOI_DUNG }}" {{ old('role') == \App\Models\User::ROLE_NGUOI_DUNG ? 'selected' : '' }}>Người dùng</option>
@@ -372,7 +372,7 @@
                                 </div>
                                 <div class="col-12 col-sm-6 col-lg-4">
                                     <label class="form-label" for="sua_gioi_tinh">Giới tính</label>
-                                    <select class="form-select" id="sua_gioi_tinh" name="gioi_tinh">
+                                    <select class="select2-admin form-select" id="sua_gioi_tinh" name="gioi_tinh" data-placeholder="Chọn giới tính">
                                         <option value="">-- Chọn --</option>
                                         <option value="nam">Nam</option>
                                         <option value="nu">Nữ</option>
@@ -397,7 +397,7 @@
                                 </div>
                                 <div class="col-12 col-sm-6 col-lg-4">
                                     <label class="form-label" for="sua_vai_tro">Vai trò</label>
-                                    <select class="form-select" id="sua_vai_tro" name="role">
+                                    <select class="select2-admin form-select" id="sua_vai_tro" name="role" data-placeholder="Chọn vai trò">
                                         <option value="{{ \App\Models\User::ROLE_ADMIN }}">Admin</option>
                                         <option value="{{ \App\Models\User::ROLE_NHAN_VIEN }}">Nhân viên</option>
                                         <option value="{{ \App\Models\User::ROLE_NGUOI_DUNG }}">Người dùng</option>
@@ -469,7 +469,6 @@
 
 @push('styles')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
-<link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
 <style>
 #modalThemNhanSu .modal-them-nhan-su,
 #modalSuaNhanSu .modal-them-nhan-su {
@@ -513,10 +512,9 @@
 @endpush
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.full.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Select2 cho Phòng ban (Multiple chọn nhiều) - giống demo
+    // Select2 cho Phòng ban (Multiple chọn nhiều) - dùng Select2 từ layout
     var $ = window.jQuery || window.$;
     if ($ && $.fn.select2) {
         function updatePhongBanSummary($select, placeholderText) {

@@ -43,4 +43,7 @@
 <script src="../../assets/vendor/js/template-customizer.js"></script>
 <script src="../../assets/js/config.js"></script>
 
+<!-- Select2 (dùng chung cho các select trong admin) -->
+<link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
+
 @stack('styles')

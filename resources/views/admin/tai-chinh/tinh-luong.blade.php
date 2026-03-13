@@ -8,7 +8,7 @@
             <div class="row g-3 align-items-end">
                 <div class="col-md-3 col-lg-2">
                     <label class="form-label" for="month">Tháng</label>
-                    <select class="form-select" id="month" name="month">
+                    <select class="select2-admin form-select" id="month" name="month" data-placeholder="Chọn tháng">
                         @for($m = 1; $m <= 12; $m++)
                             <option value="{{ $m }}" @selected((int)($month ?? now()->month) === $m)>
                                 Tháng {{ $m }}

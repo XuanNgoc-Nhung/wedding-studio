@@ -164,7 +164,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="them_gioi_tinh_chu_re">Giới tính</label>
-                            <select class="form-select" id="them_gioi_tinh_chu_re" name="gioi_tinh_chu_re">
+                            <select class="select2-admin form-select" id="them_gioi_tinh_chu_re" name="gioi_tinh_chu_re" data-placeholder="Chọn giới tính">
                                 <option value="">-- Chọn --</option>
                                 <option value="nam" {{ old('gioi_tinh_chu_re') == 'nam' ? 'selected' : '' }}>Nam</option>
                                 <option value="nu" {{ old('gioi_tinh_chu_re') == 'nu' ? 'selected' : '' }}>Nữ</option>
@@ -192,7 +192,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="them_gioi_tinh_co_dau">Giới tính</label>
-                            <select class="form-select" id="them_gioi_tinh_co_dau" name="gioi_tinh_co_dau">
+                            <select class="select2-admin form-select" id="them_gioi_tinh_co_dau" name="gioi_tinh_co_dau" data-placeholder="Chọn giới tính">
                                 <option value="">-- Chọn --</option>
                                 <option value="nam" {{ old('gioi_tinh_co_dau') == 'nam' ? 'selected' : '' }}>Nam</option>
                                 <option value="nu" {{ old('gioi_tinh_co_dau') == 'nu' ? 'selected' : '' }}>Nữ</option>
@@ -259,7 +259,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="sua_gioi_tinh_chu_re">Giới tính</label>
-                            <select class="form-select" id="sua_gioi_tinh_chu_re" name="gioi_tinh_chu_re">
+                            <select class="select2-admin form-select" id="sua_gioi_tinh_chu_re" name="gioi_tinh_chu_re" data-placeholder="Chọn giới tính">
                                 <option value="">-- Chọn --</option>
                                 <option value="nam">Nam</option>
                                 <option value="nu">Nữ</option>
@@ -287,7 +287,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="sua_gioi_tinh_co_dau">Giới tính</label>
-                            <select class="form-select" id="sua_gioi_tinh_co_dau" name="gioi_tinh_co_dau">
+                            <select class="select2-admin form-select" id="sua_gioi_tinh_co_dau" name="gioi_tinh_co_dau" data-placeholder="Chọn giới tính">
                                 <option value="">-- Chọn --</option>
                                 <option value="nam">Nam</option>
                                 <option value="nu">Nữ</option>

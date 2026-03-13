@@ -176,7 +176,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                             <label class="form-label" for="them_trang_thai">Trạng thái</label>
-                            <select class="form-select" id="them_trang_thai" name="trang_thai">
+                            <select class="select2-admin form-select" id="them_trang_thai" name="trang_thai" data-placeholder="Chọn trạng thái">
                                 <option value="{{ \App\Models\NhomDichVu::TRANG_THAI_HIEN_THI }}" {{ old('trang_thai', \App\Models\NhomDichVu::TRANG_THAI_HIEN_THI) == \App\Models\NhomDichVu::TRANG_THAI_HIEN_THI ? 'selected' : '' }}>Hiển thị</option>
                                 <option value="{{ \App\Models\NhomDichVu::TRANG_THAI_AN }}" {{ old('trang_thai') == \App\Models\NhomDichVu::TRANG_THAI_AN ? 'selected' : '' }}>Ẩn</option>
                             </select>
@@ -276,7 +276,7 @@
                         </div>
                         <div class="col-12 col-sm-6">
                             <label class="form-label" for="sua_trang_thai">Trạng thái</label>
-                            <select class="form-select" id="sua_trang_thai" name="trang_thai">
+                            <select class="select2-admin form-select" id="sua_trang_thai" name="trang_thai" data-placeholder="Chọn trạng thái">
                                 <option value="{{ \App\Models\NhomDichVu::TRANG_THAI_HIEN_THI }}">Hiển thị</option>
                                 <option value="{{ \App\Models\NhomDichVu::TRANG_THAI_AN }}">Ẩn</option>
                             </select>

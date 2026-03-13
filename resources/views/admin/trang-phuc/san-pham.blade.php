@@ -172,7 +172,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="them_trang_thai">Trạng thái</label>
-                            <select class="form-select" id="them_trang_thai" name="trang_thai">
+                            <select class="select2-admin form-select" id="them_trang_thai" name="trang_thai" data-placeholder="Chọn trạng thái">
                                 <option value="1" {{ old('trang_thai', '1') == '1' ? 'selected' : '' }}>Hiển thị</option>
                                 <option value="0" {{ old('trang_thai') == '0' ? 'selected' : '' }}>Ẩn</option>
                             </select>
@@ -244,7 +244,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="sua_trang_thai">Trạng thái</label>
-                            <select class="form-select" id="sua_trang_thai" name="trang_thai">
+                            <select class="select2-admin form-select" id="sua_trang_thai" name="trang_thai" data-placeholder="Chọn trạng thái">
                                 <option value="1">Hiển thị</option>
                                 <option value="0">Ẩn</option>
                             </select>

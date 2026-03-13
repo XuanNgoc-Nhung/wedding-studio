@@ -31,7 +31,7 @@
                 </div>
                 <div class="col-md-3 col-lg-2">
                     <label class="form-label" for="loai_phieu">Loại phiếu</label>
-                    <select class="form-select" id="loai_phieu" name="loai_phieu">
+                    <select class="select2-admin form-select" id="loai_phieu" name="loai_phieu" data-placeholder="Loại phiếu">
                         <option value="">-- Tất cả --</option>
                         <option value="1" {{ request('loai_phieu') === '1' ? 'selected' : '' }}>Thu</option>
                         <option value="2" {{ request('loai_phieu') === '2' ? 'selected' : '' }}>Chi</option>
@@ -39,7 +39,7 @@
                 </div>
                 <div class="col-md-3 col-lg-2">
                     <label class="form-label" for="trang_thai">Trạng thái</label>
-                    <select class="form-select" id="trang_thai" name="trang_thai">
+                    <select class="select2-admin form-select" id="trang_thai" name="trang_thai" data-placeholder="Trạng thái">
                         <option value="">-- Tất cả --</option>
                         <option value="0" {{ request('trang_thai') === '0' ? 'selected' : '' }}>Chờ xử lý</option>
                         <option value="1" {{ request('trang_thai') === '1' ? 'selected' : '' }}>Đồng ý</option>
@@ -210,7 +210,7 @@
                     <div class="row g-3">
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="them_loai_phieu">Loại phiếu <span class="text-danger">*</span></label>
-                            <select class="form-select" id="them_loai_phieu" name="loai_phieu" required>
+                            <select class="select2-admin form-select" id="them_loai_phieu" name="loai_phieu" required data-placeholder="Chọn loại phiếu">
                                 <option value="1" {{ old('loai_phieu', '1') == '1' ? 'selected' : '' }}>Thu</option>
                                 <option value="2" {{ old('loai_phieu') == '2' ? 'selected' : '' }}>Chi</option>
                             </select>
@@ -266,7 +266,7 @@
                     <div class="row g-3">
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="sua_loai_phieu">Loại phiếu <span class="text-danger">*</span></label>
-                            <select class="form-select" id="sua_loai_phieu" name="loai_phieu" required>
+                            <select class="select2-admin form-select" id="sua_loai_phieu" name="loai_phieu" required data-placeholder="Chọn loại phiếu">
                                 <option value="1">Thu</option>
                                 <option value="2">Chi</option>
                             </select>
@@ -281,7 +281,7 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="sua_trang_thai">Trạng thái</label>
-                            <select class="form-select" id="sua_trang_thai" name="trang_thai">
+                            <select class="select2-admin form-select" id="sua_trang_thai" name="trang_thai" data-placeholder="Chọn trạng thái">
                                 <option value="-1">Từ chối</option>
                                 <option value="0">Chờ xử lý</option>
                                 <option value="1">Đồng ý</option>

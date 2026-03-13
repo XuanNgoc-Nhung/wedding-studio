@@ -202,7 +202,7 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="them_trang_phuc_id">Sản phẩm (ID) <span class="text-danger">*</span></label>
-                            <select class="form-select" id="them_trang_phuc_id" name="trang_phuc_id" required>
+                            <select class="select2-admin form-select" id="them_trang_phuc_id" name="trang_phuc_id" required data-placeholder="Chọn sản phẩm">
                                 <option value="">-- Chọn sản phẩm --</option>
                                 @foreach($danhSachSanPham ?? [] as $sp)
                                 <option value="{{ $sp->id }}" data-stock="{{ $stockByProduct[$sp->id] ?? 0 }}" {{ (string)old('trang_phuc_id') === (string)$sp->id ? 'selected' : '' }}>{{ $sp->ten_san_pham }} (code: {{ $sp->ma_san_pham }}) — Trong kho: {{ $stockByProduct[$sp->id] ?? 0 }}</option>
@@ -232,7 +232,7 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="them_trang_thai">Trạng thái</label>
-                            <select class="form-select" id="them_trang_thai" name="trang_thai">
+                            <select class="select2-admin form-select" id="them_trang_thai" name="trang_thai" data-placeholder="Chọn trạng thái">
                                 <option value="0" {{ old('trang_thai', '0') == '0' ? 'selected' : '' }}>Chờ xử lý</option>
                                 <option value="1" {{ old('trang_thai') == '1' ? 'selected' : '' }}>Đang diễn ra</option>
                                 <option value="2" {{ old('trang_thai') == '2' ? 'selected' : '' }}>Hoàn thành</option>
@@ -289,7 +289,7 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="sua_trang_phuc_id">Sản phẩm (ID) <span class="text-danger">*</span></label>
-                            <select class="form-select" id="sua_trang_phuc_id" name="trang_phuc_id" required>
+                            <select class="select2-admin form-select" id="sua_trang_phuc_id" name="trang_phuc_id" required data-placeholder="Chọn sản phẩm">
                                 @foreach($danhSachSanPham ?? [] as $sp)
                                 <option value="{{ $sp->id }}" data-stock="{{ $stockByProduct[$sp->id] ?? 0 }}">{{ $sp->ten_san_pham }} (code: {{ $sp->ma_san_pham }}) — Trong kho: {{ $stockByProduct[$sp->id] ?? 0 }}</option>
                                 @endforeach
@@ -318,7 +318,7 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="sua_trang_thai">Trạng thái</label>
-                            <select class="form-select" id="sua_trang_thai" name="trang_thai">
+                            <select class="select2-admin form-select" id="sua_trang_thai" name="trang_thai" data-placeholder="Chọn trạng thái">
                                 <option value="0">Chờ xử lý</option>
                                 <option value="1">Đang diễn ra</option>
                                 <option value="2">Hoàn thành</option>

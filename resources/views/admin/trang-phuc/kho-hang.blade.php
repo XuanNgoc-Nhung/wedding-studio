@@ -184,7 +184,7 @@
                     <div class="row g-3">
                         <div class="col-12">
                             <label class="form-label" for="them_trang_phuc_id">Chọn sản phẩm <span class="text-danger">*</span></label>
-                            <select class="form-select" id="them_trang_phuc_id" name="trang_phuc_id" required>
+                            <select class="select2-admin form-select" id="them_trang_phuc_id" name="trang_phuc_id" required data-placeholder="Chọn sản phẩm">
                                 <option value="">-- Chọn sản phẩm --</option>
                                 @foreach($sanPhamChuaCoTrongKho ?? [] as $sp)
                                 <option value="{{ $sp->id }}" {{ (string)old('trang_phuc_id') === (string)$sp->id ? 'selected' : '' }}>
@@ -204,7 +204,7 @@
                         </div>
                         <div class="col-12 col-md-4">
                             <label class="form-label" for="them_trang_thai">Trạng thái</label>
-                            <select class="form-select" id="them_trang_thai" name="trang_thai">
+                            <select class="select2-admin form-select" id="them_trang_thai" name="trang_thai" data-placeholder="Chọn trạng thái">
                                 <option value="1" {{ old('trang_thai', '1') == '1' ? 'selected' : '' }}>Hoạt động</option>
                                 <option value="0" {{ old('trang_thai') == '0' ? 'selected' : '' }}>Tạm dừng</option>
                             </select>
@@ -260,7 +260,7 @@
                         </div>
                         <div class="col-12 col-md-4">
                             <label class="form-label" for="sua_trang_thai">Trạng thái</label>
-                            <select class="form-select" id="sua_trang_thai" name="trang_thai">
+                            <select class="select2-admin form-select" id="sua_trang_thai" name="trang_thai" data-placeholder="Chọn trạng thái">
                                 <option value="1">Hoạt động</option>
                                 <option value="0">Tạm dừng</option>
                             </select>

@@ -123,7 +123,7 @@
                       <div class="row g-3">
                         <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                           <label class="form-label">Giới tính</label>
-                          <select class="form-select @error('gioi_tinh') is-invalid @enderror" name="gioi_tinh">
+                          <select class="select2-admin form-select @error('gioi_tinh') is-invalid @enderror" name="gioi_tinh" data-placeholder="Chọn giới tính">
                             <option value="">— Chọn —</option>
                             <option value="nam" {{ old('gioi_tinh', $user->nhanVien->gioi_tinh) === 'nam' ? 'selected' : '' }}>Nam</option>
                             <option value="nu" {{ old('gioi_tinh', $user->nhanVien->gioi_tinh) === 'nu' ? 'selected' : '' }}>Nữ</option>
