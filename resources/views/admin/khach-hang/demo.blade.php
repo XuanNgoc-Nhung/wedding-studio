@@ -61,7 +61,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
-    <title>Demo: Tabs and pills - UI elements | Vuexy - Bootstrap Dashboard PRO</title>
+    <title>Demo: Tables - Basic Tables | Vuexy - Bootstrap Dashboard PRO</title>
     
       <meta name="description" content="Vuexy is the best bootstrap 5 dashboard for responsive web apps. Streamline your app development process with ease." />
       <!-- Canonical SEO -->
@@ -127,6 +127,8 @@
 
     <!-- Page CSS -->
     
+  <link rel="stylesheet" href="../../assets/vendor/fonts/fontawesome.css" />
+
 
     <!-- Helpers -->
     <script src="../../assets/vendor/js/helpers.js"></script>
@@ -905,7 +907,7 @@
         </ul>
       </li>
       <!-- User interface -->
-      <li class="menu-item active open">
+      <li class="menu-item">
         <a href="javascript:void(0)" class="menu-link menu-toggle">
           <i class="menu-icon icon-base ti tabler-color-swatch"></i>
           <div data-i18n="User interface">User interface</div>
@@ -986,7 +988,7 @@
               <div data-i18n="Spinners">Spinners</div>
             </a>
           </li>
-          <li class="menu-item active">
+          <li class="menu-item">
             <a href="ui-tabs-pills.html" class="menu-link">
               <div data-i18n="Tabs & Pills">Tabs &amp; Pills</div>
             </a>
@@ -1222,7 +1224,7 @@
         </a>
       </li>
       <!-- Tables -->
-      <li class="menu-item">
+      <li class="menu-item active">
         <a href="tables-basic.html" class="menu-link">
           <i class="menu-icon icon-base ti tabler-table"></i>
           <div data-i18n="Tables">Tables</div>
@@ -1785,290 +1787,2350 @@
         <div class="content-wrapper">
           <!-- Content -->
           <div class="container-xxl flex-grow-1 container-p-y">
-  <!-- Tabs -->
-  <h5 class="py-4 my-6">Tabs</h5>
+  <!-- Basic Bootstrap Table -->
+  <div class="card">
+    <h5 class="card-header">Table Basic</h5>
+    <div class="table-responsive text-nowrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>Client</th>
+            <th>Users</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-angular icon-md text-danger me-4"></i>
+              <span class="fw-medium">Angular Project</span>
+            </td>
+            <td>Albert Cook</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-primary me-1">Active</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><i class="icon-base ti tabler-brand-react-native icon-md text-info me-4"></i> <span class="fw-medium">React Project</span></td>
+            <td>Barry Hunter</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-success me-1">Completed</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-2"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-2"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-vue icon-md text-success me-4"></i>
+              <span class="fw-medium">VueJs Project</span>
+            </td>
+            <td>Trevor Baker</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-info me-1">Scheduled</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-2"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-2"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-bootstrap icon-md text-primary me-4"></i>
+              <span class="fw-medium">Bootstrap Project</span>
+            </td>
+            <td>Jerry Milton</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-warning me-1">Pending</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-2"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-2"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!--/ Basic Bootstrap Table -->
 
-  <div class="row g-6">
-    <div class="col-xl-6">
-      <h6 class="text-body-secondary">Basic</h6>
-      <div class="nav-align-top nav-tabs-shadow">
-        <ul class="nav nav-tabs" role="tablist">
-          <li class="nav-item">
-            <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-top-home" aria-controls="navs-top-home" aria-selected="true">Home</button>
-          </li>
-          <li class="nav-item">
-            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-top-profile" aria-controls="navs-top-profile" aria-selected="false">Profile</button>
-          </li>
-          <li class="nav-item">
-            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-top-messages" aria-controls="navs-top-messages" aria-selected="false">Messages</button>
-          </li>
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane fade show active" id="navs-top-home" role="tabpanel">
-            <p>Icing pastry pudding oat cake. Lemon drops cotton candy caramels cake caramels sesame snaps powder. Bear claw candy topping.</p>
-            <p class="mb-0">Tootsie roll fruitcake cookie. Dessert topping pie. Jujubes wafer carrot cake jelly. Bonbon jelly-o jelly-o ice cream jelly beans candy canes cake bonbon. Cookie jelly beans marshmallow jujubes sweet.</p>
-          </div>
-          <div class="tab-pane fade" id="navs-top-profile" role="tabpanel">
-            <p>Donut dragée jelly pie halvah. Danish gingerbread bonbon cookie wafer candy oat cake ice cream. Gummies halvah tootsie roll muffin biscuit icing dessert gingerbread. Pastry ice cream cheesecake fruitcake.</p>
-            <p class="mb-0">Jelly-o jelly beans icing pastry cake cake lemon drops. Muffin muffin pie tiramisu halvah cotton candy liquorice caramels.</p>
-          </div>
-          <div class="tab-pane fade" id="navs-top-messages" role="tabpanel">
-            <p>Oat cake chupa chups dragée donut toffee. Sweet cotton candy jelly beans macaroon gummies cupcake gummi bears cake chocolate.</p>
-            <p class="mb-0">Cake chocolate bar cotton candy apple pie tootsie roll ice cream apple pie brownie cake. Sweet roll icing sesame snaps caramels danish toffee. Brownie biscuit dessert dessert. Pudding jelly jelly-o tart brownie jelly.</p>
-          </div>
-        </div>
-      </div>
+  <hr class="my-12" />
+
+  <!-- Bootstrap Dark Table -->
+  <div class="card overflow-hidden">
+    <h5 class="card-header">Table Dark</h5>
+    <div class="table-responsive text-nowrap">
+      <table class="table table-dark">
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>Client</th>
+            <th>Users</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-angular icon-md text-danger me-4"></i>
+              <span class="fw-medium">Angular Project</span>
+            </td>
+            <td>Albert Cook</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-primary me-1">Active</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><i class="icon-base ti tabler-brand-react-native icon-md text-info me-4"></i> <span class="fw-medium">React Project</span></td>
+            <td>Barry Hunter</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-success me-1">Completed</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-vue icon-md text-success me-4"></i>
+              <span class="fw-medium">VueJs Project</span>
+            </td>
+            <td>Trevor Baker</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-info me-1">Scheduled</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-bootstrap icon-md text-primary me-4"></i>
+              <span class="fw-medium">Bootstrap Project</span>
+            </td>
+            <td>Jerry Milton</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-warning me-1">Pending</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="col-xl-6">
-      <h6 class="text-body-secondary">Filled Tabs</h6>
-      <div class="nav-align-top nav-tabs-shadow">
-        <ul class="nav nav-tabs nav-fill" role="tablist">
-          <li class="nav-item">
-            <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-home" aria-controls="navs-justified-home" aria-selected="true">
-              <span class="d-none d-sm-inline-flex align-items-center">
-                <i class="icon-base ti tabler-home icon-sm me-1_5"></i>Home
-                <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-label-danger ms-1_5">3</span>
-              </span>
-              <i class="icon-base ti tabler-home icon-sm d-sm-none"></i>
-            </button>
-          </li>
-          <li class="nav-item">
-            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-profile" aria-controls="navs-justified-profile" aria-selected="false">
-              <span class="d-none d-sm-inline-flex align-items-center"><i class="icon-base ti tabler-user icon-sm me-1_5"></i>Profile</span>
-              <i class="icon-base ti tabler-user icon-sm d-sm-none"></i>
-            </button>
-          </li>
-          <li class="nav-item">
-            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-justified-messages" aria-controls="navs-justified-messages" aria-selected="false">
-              <span class="d-none d-sm-inline-flex align-items-center"><i class="icon-base ti tabler-message-dots icon-sm me-1_5"></i>Messages</span>
-              <i class="icon-base ti tabler-message-dots icon-sm d-sm-none"></i>
-            </button>
-          </li>
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane fade show active" id="navs-justified-home" role="tabpanel">
-            <p>Icing pastry pudding oat cake. Lemon drops cotton candy caramels cake caramels sesame snaps powder. Bear claw candy topping.</p>
-            <p class="mb-0">Tootsie roll fruitcake cookie. Dessert topping pie. Jujubes wafer carrot cake jelly. Bonbon jelly-o jelly-o ice cream jelly beans candy canes cake bonbon. Cookie jelly beans marshmallow jujubes sweet.</p>
-          </div>
-          <div class="tab-pane fade" id="navs-justified-profile" role="tabpanel">
-            <p>Donut dragée jelly pie halvah. Danish gingerbread bonbon cookie wafer candy oat cake ice cream. Gummies halvah tootsie roll muffin biscuit icing dessert gingerbread. Pastry ice cream cheesecake fruitcake.</p>
-            <p class="mb-0">Jelly-o jelly beans icing pastry cake cake lemon drops. Muffin muffin pie tiramisu halvah cotton candy liquorice caramels.</p>
-          </div>
-          <div class="tab-pane fade" id="navs-justified-messages" role="tabpanel">
-            <p>Oat cake chupa chups dragée donut toffee. Sweet cotton candy jelly beans macaroon gummies cupcake gummi bears cake chocolate.</p>
-            <p class="mb-0">Cake chocolate bar cotton candy apple pie tootsie roll ice cream apple pie brownie cake. Sweet roll icing sesame snaps caramels danish toffee. Brownie biscuit dessert dessert. Pudding jelly jelly-o tart brownie jelly.</p>
-          </div>
-        </div>
-      </div>
+  </div>
+  <!--/ Bootstrap Dark Table -->
+
+  <hr class="my-12" />
+
+  <!-- Bootstrap Table with Header - Dark -->
+  <div class="card">
+    <h5 class="card-header">Dark Table head</h5>
+    <div class="table-responsive text-nowrap">
+      <table class="table">
+        <thead class="table-dark">
+          <tr>
+            <th>Project</th>
+            <th>Client</th>
+            <th>Users</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-angular icon-md text-danger me-4"></i>
+              <span class="fw-medium">Angular Project</span>
+            </td>
+            <td>Albert Cook</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-primary me-1">Active</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><i class="icon-base ti tabler-brand-react-native icon-md text-info me-4"></i> <span class="fw-medium">React Project</span></td>
+            <td>Barry Hunter</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-success me-1">Completed</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-vue icon-md text-success me-4"></i>
+              <span class="fw-medium">VueJs Project</span>
+            </td>
+            <td>Trevor Baker</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-info me-1">Scheduled</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-bootstrap icon-md text-primary me-4"></i>
+              <span class="fw-medium">Bootstrap Project</span>
+            </td>
+            <td>Jerry Milton</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-warning me-1">Pending</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="col-xl-6">
-      <h6 class="text-body-secondary">Vertical</h6>
-      <div class="nav-align-left nav-tabs-shadow">
-        <ul class="nav nav-tabs" role="tablist">
-          <li class="nav-item">
-            <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-left-home" aria-controls="navs-left-home" aria-selected="true">Home</button>
-          </li>
-          <li class="nav-item">
-            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-left-profile" aria-controls="navs-left-profile" aria-selected="false">Profile</button>
-          </li>
-          <li class="nav-item">
-            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-left-messages" aria-controls="navs-left-messages" aria-selected="false">Messages</button>
-          </li>
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane fade show active" id="navs-left-home">
-            <p>Icing pastry pudding oat cake. Lemon drops cotton candy caramels cake caramels sesame snaps powder. Bear claw candy topping.</p>
-            <p class="mb-0">Tootsie roll fruitcake cookie. Dessert topping pie. Jujubes wafer carrot cake jelly. Bonbon jelly-o jelly-o ice cream jelly beans candy canes cake bonbon. Cookie jelly beans marshmallow jujubes sweet.</p>
-          </div>
-          <div class="tab-pane fade" id="navs-left-profile">
-            <p>Donut dragée jelly pie halvah. Danish gingerbread bonbon cookie wafer candy oat cake ice cream. Gummies halvah tootsie roll muffin biscuit icing dessert gingerbread. Pastry ice cream cheesecake fruitcake.</p>
-            <p class="mb-0">Jelly-o jelly beans icing pastry cake cake lemon drops. Muffin muffin pie tiramisu halvah cotton candy liquorice caramels.</p>
-          </div>
-          <div class="tab-pane fade" id="navs-left-messages">
-            <p>Oat cake chupa chups dragée donut toffee. Sweet cotton candy jelly beans macaroon gummies cupcake gummi bears cake chocolate.</p>
-            <p class="mb-0">Cake chocolate bar cotton candy apple pie tootsie roll ice cream apple pie brownie cake. Sweet roll icing sesame snaps caramels danish toffee. Brownie biscuit dessert dessert. Pudding jelly jelly-o tart brownie jelly.</p>
-          </div>
-        </div>
-      </div>
+  </div>
+  <!--/ Bootstrap Table with Header Dark -->
+
+  <hr class="my-12" />
+
+  <!-- Bootstrap Table with Header - Light -->
+  <div class="card">
+    <h5 class="card-header">Light Table head</h5>
+    <div class="table-responsive text-nowrap">
+      <table class="table">
+        <thead class="table-light">
+          <tr>
+            <th>Project</th>
+            <th>Client</th>
+            <th>Users</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-angular icon-md text-danger me-4"></i>
+              <span class="fw-medium">Angular Project</span>
+            </td>
+            <td>Albert Cook</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-primary me-1">Active</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><i class="icon-base ti tabler-brand-react-native icon-md text-info me-4"></i> <span class="fw-medium">React Project</span></td>
+            <td>Barry Hunter</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-success me-1">Completed</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-vue icon-md text-success me-4"></i>
+              <span class="fw-medium">VueJs Project</span>
+            </td>
+            <td>Trevor Baker</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-info me-1">Scheduled</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-bootstrap icon-md text-primary me-4"></i>
+              <span class="fw-medium">Bootstrap Project</span>
+            </td>
+            <td>Jerry Milton</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-warning me-1">Pending</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="col-xl-6">
-      <h6 class="text-body-secondary">Bottom tabs</h6>
-      <div class="nav-align-bottom nav-tabs-shadow">
-        <ul class="nav nav-tabs" role="tablist">
-          <li class="nav-item">
-            <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-bottom-home" aria-controls="navs-bottom-home" aria-selected="true">Home</button>
-          </li>
-          <li class="nav-item">
-            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-bottom-profile" aria-controls="navs-bottom-profile" aria-selected="false">Profile</button>
-          </li>
-          <li class="nav-item">
-            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-bottom-messages" aria-controls="navs-bottom-messages" aria-selected="false">Messages</button>
-          </li>
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane fade show active" id="navs-bottom-home" role="tabpanel">
-            <p>Icing pastry pudding oat cake. Lemon drops cotton candy caramels cake caramels sesame snaps powder. Bear claw candy topping.</p>
-            <p class="mb-0">Tootsie roll fruitcake cookie. Dessert topping pie. Jujubes wafer carrot cake jelly. Bonbon jelly-o jelly-o ice cream jelly beans candy canes cake bonbon. Cookie jelly beans marshmallow jujubes sweet.</p>
-          </div>
-          <div class="tab-pane fade" id="navs-bottom-profile" role="tabpanel">
-            <p>Donut dragée jelly pie halvah. Danish gingerbread bonbon cookie wafer candy oat cake ice cream. Gummies halvah tootsie roll muffin biscuit icing dessert gingerbread. Pastry ice cream cheesecake fruitcake.</p>
-            <p class="mb-0">Jelly-o jelly beans icing pastry cake cake lemon drops. Muffin muffin pie tiramisu halvah cotton candy liquorice caramels.</p>
-          </div>
-          <div class="tab-pane fade" id="navs-bottom-messages" role="tabpanel">
-            <p>Oat cake chupa chups dragée donut toffee. Sweet cotton candy jelly beans macaroon gummies cupcake gummi bears cake chocolate.</p>
-            <p class="mb-0">Cake chocolate bar cotton candy apple pie tootsie roll ice cream apple pie brownie cake. Sweet roll icing sesame snaps caramels danish toffee. Brownie biscuit dessert dessert. Pudding jelly jelly-o tart brownie jelly.</p>
-          </div>
-        </div>
+  </div>
+  <!-- Bootstrap Table with Header - Light -->
+
+  <hr class="my-12" />
+
+  <!-- Bootstrap Table with Header - Footer -->
+  <div class="card">
+    <h5 class="card-header">Table Header & Footer</h5>
+    <div class="table-responsive text-nowrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>Client</th>
+            <th>Users</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-angular icon-md text-danger me-4"></i>
+              <span class="fw-medium">Angular Project</span>
+            </td>
+            <td>Albert Cook</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-primary me-1">Active</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><i class="icon-base ti tabler-brand-react-native icon-md text-info me-4"></i> <span class="fw-medium">React Project</span></td>
+            <td>Barry Hunter</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-success me-1">Completed</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-vue icon-md text-success me-4"></i>
+              <span class="fw-medium">VueJs Project</span>
+            </td>
+            <td>Trevor Baker</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-info me-1">Scheduled</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-bootstrap icon-md text-primary me-4"></i>
+              <span class="fw-medium">Bootstrap Project</span>
+            </td>
+            <td>Jerry Milton</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-warning me-1">Pending</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot class="table-border-bottom-0">
+          <tr>
+            <th class="rounded-start-bottom">Project</th>
+            <th>Client</th>
+            <th>Users</th>
+            <th>Status</th>
+            <th class="rounded-end-bottom">Actions</th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+  <!-- Bootstrap Table with Header - Footer -->
+
+  <hr class="my-12" />
+
+  <!-- Bootstrap Table with Caption -->
+  <div class="card">
+    <h5 class="card-header">Table Caption</h5>
+    <div class="table-responsive text-nowrap">
+      <table class="table">
+        <caption class="ms-6">
+          List of Projects
+        </caption>
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>Client</th>
+            <th>Users</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-angular icon-md text-danger me-4"></i>
+              <span class="fw-medium">Angular Project</span>
+            </td>
+            <td>Albert Cook</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-primary me-1">Active</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><i class="icon-base ti tabler-brand-react-native icon-md text-info me-4"></i> <span class="fw-medium">React Project</span></td>
+            <td>Barry Hunter</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-success me-1">Completed</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-vue icon-md text-success me-4"></i>
+              <span class="fw-medium">VueJs Project</span>
+            </td>
+            <td>Trevor Baker</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-info me-1">Scheduled</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-bootstrap icon-md text-primary me-4"></i>
+              <span class="fw-medium">Bootstrap Project</span>
+            </td>
+            <td>Jerry Milton</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-warning me-1">Pending</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- Bootstrap Table with Caption -->
+
+  <hr class="my-12" />
+
+  <!-- Striped Rows -->
+  <div class="card">
+    <h5 class="card-header">Striped rows</h5>
+    <div class="table-responsive text-nowrap">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>Client</th>
+            <th>Users</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-angular icon-md text-danger me-4"></i>
+              <span class="fw-medium">Angular Project</span>
+            </td>
+            <td>Albert Cook</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-primary me-1">Active</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><i class="icon-base ti tabler-brand-react-native icon-md text-info me-4"></i> <span class="fw-medium">React Project</span></td>
+            <td>Barry Hunter</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-success me-1">Completed</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-vue icon-md text-success me-4"></i>
+              <span class="fw-medium">VueJs Project</span>
+            </td>
+            <td>Trevor Baker</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-info me-1">Scheduled</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-bootstrap icon-md text-primary me-4"></i>
+              <span class="fw-medium">Bootstrap Project</span>
+            </td>
+            <td>Jerry Milton</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-warning me-1">Pending</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!--/ Striped Rows -->
+
+  <hr class="my-12" />
+
+  <!-- Bordered Table -->
+  <div class="card">
+    <h5 class="card-header">Bordered Table</h5>
+    <div class="card-body">
+      <div class="table-responsive text-nowrap">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Project</th>
+              <th>Client</th>
+              <th>Users</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <i class="icon-base ti tabler-brand-angular icon-md text-danger me-4"></i>
+                <span class="fw-medium">Angular Project</span>
+              </td>
+              <td>Albert Cook</td>
+              <td>
+                <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                  <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                    <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                  </li>
+                  <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                    <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                  </li>
+                  <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                    <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                  </li>
+                </ul>
+              </td>
+              <td><span class="badge bg-label-primary me-1">Active</span></td>
+              <td>
+                <div class="dropdown">
+                  <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                    <i class="icon-base ti tabler-dots-vertical"></i>
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                    <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td><i class="icon-base ti tabler-brand-react-native icon-md text-info me-4"></i> <span class="fw-medium">React Project</span></td>
+              <td>Barry Hunter</td>
+              <td>
+                <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                  <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                    <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                  </li>
+                  <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                    <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                  </li>
+                  <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                    <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                  </li>
+                </ul>
+              </td>
+              <td><span class="badge bg-label-success me-1">Completed</span></td>
+              <td>
+                <div class="dropdown">
+                  <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                    <i class="icon-base ti tabler-dots-vertical"></i>
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                    <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <i class="icon-base ti tabler-brand-vue icon-md text-success me-4"></i>
+                <span class="fw-medium">VueJs Project</span>
+              </td>
+              <td>Trevor Baker</td>
+              <td>
+                <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                  <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                    <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                  </li>
+                  <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                    <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                  </li>
+                  <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                    <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                  </li>
+                </ul>
+              </td>
+              <td><span class="badge bg-label-info me-1">Scheduled</span></td>
+              <td>
+                <div class="dropdown">
+                  <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                    <i class="icon-base ti tabler-dots-vertical"></i>
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                    <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <i class="icon-base ti tabler-brand-bootstrap icon-md text-primary me-4"></i>
+                <span class="fw-medium">Bootstrap Project</span>
+              </td>
+              <td>Jerry Milton</td>
+              <td>
+                <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                  <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                    <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                  </li>
+                  <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                    <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                  </li>
+                  <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                    <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                  </li>
+                </ul>
+              </td>
+              <td><span class="badge bg-label-warning me-1">Pending</span></td>
+              <td>
+                <div class="dropdown">
+                  <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                    <i class="icon-base ti tabler-dots-vertical"></i>
+                  </button>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                    <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
-  <!-- Tabs -->
+  <!--/ Bordered Table -->
 
-  <hr class="container-m-nx mt-12" />
+  <hr class="my-12" />
 
-  <!-- Pills -->
-  <h5 class="py-4 my-6">Pills</h5>
-
-  <div class="row g-6">
-    <div class="col-xl-6">
-      <h6 class="text-body-secondary">Basic</h6>
-      <div class="nav-align-top">
-        <ul class="nav nav-pills mb-4" role="tablist">
-          <li class="nav-item">
-            <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-top-home" aria-controls="navs-pills-top-home" aria-selected="true">Home</button>
-          </li>
-          <li class="nav-item">
-            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-top-profile" aria-controls="navs-pills-top-profile" aria-selected="false">Profile</button>
-          </li>
-          <li class="nav-item">
-            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-top-messages" aria-controls="navs-pills-top-messages" aria-selected="false">Messages</button>
-          </li>
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane fade show active" id="navs-pills-top-home" role="tabpanel">
-            <p>Icing pastry pudding oat cake. Lemon drops cotton candy caramels cake caramels sesame snaps powder. Bear claw candy topping.</p>
-            <p class="mb-0">Tootsie roll fruitcake cookie. Dessert topping pie. Jujubes wafer carrot cake jelly. Bonbon jelly-o jelly-o ice cream jelly beans candy canes cake bonbon. Cookie jelly beans marshmallow jujubes sweet.</p>
-          </div>
-          <div class="tab-pane fade" id="navs-pills-top-profile" role="tabpanel">
-            <p>Donut dragée jelly pie halvah. Danish gingerbread bonbon cookie wafer candy oat cake ice cream. Gummies halvah tootsie roll muffin biscuit icing dessert gingerbread. Pastry ice cream cheesecake fruitcake.</p>
-            <p class="mb-0">Jelly-o jelly beans icing pastry cake cake lemon drops. Muffin muffin pie tiramisu halvah cotton candy liquorice caramels.</p>
-          </div>
-          <div class="tab-pane fade" id="navs-pills-top-messages" role="tabpanel">
-            <p>Oat cake chupa chups dragée donut toffee. Sweet cotton candy jelly beans macaroon gummies cupcake gummi bears cake chocolate.</p>
-            <p class="mb-0">Cake chocolate bar cotton candy apple pie tootsie roll ice cream apple pie brownie cake. Sweet roll icing sesame snaps caramels danish toffee. Brownie biscuit dessert dessert. Pudding jelly jelly-o tart brownie jelly.</p>
-          </div>
-        </div>
-      </div>
+  <!-- Borderless Table -->
+  <div class="card">
+    <h5 class="card-header">Borderless Table</h5>
+    <div class="table-responsive text-nowrap">
+      <table class="table table-borderless">
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>Client</th>
+            <th>Users</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-angular icon-md text-danger me-4"></i>
+              <span class="fw-medium">Angular Project</span>
+            </td>
+            <td>Albert Cook</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-primary me-1">Active</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><i class="icon-base ti tabler-brand-react-native icon-md text-info me-4"></i> <span class="fw-medium">React Project</span></td>
+            <td>Barry Hunter</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-success me-1">Completed</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-vue icon-md text-success me-4"></i>
+              <span class="fw-medium">VueJs Project</span>
+            </td>
+            <td>Trevor Baker</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-info me-1">Scheduled</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-bootstrap icon-md text-primary me-4"></i>
+              <span class="fw-medium">Bootstrap Project</span>
+            </td>
+            <td>Jerry Milton</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-warning me-1">Pending</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
+  <!--/ Borderless Table -->
 
-    <div class="col-xl-6">
-      <h6 class="text-body-secondary">Filled Pills</h6>
-      <div class="nav-align-top">
-        <ul class="nav nav-pills mb-4 nav-fill" role="tablist">
-          <li class="nav-item mb-1 mb-sm-0">
-            <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-justified-home" aria-controls="navs-pills-justified-home" aria-selected="true">
-              <span class="d-none d-sm-inline-flex align-items-center">
-                <i class="icon-base ti tabler-home icon-sm me-1_5"></i>Home
-                <span class="badge rounded-pill badge-center h-px-20 w-px-20 bg-danger ms-1_5">3</span>
-              </span>
-              <i class="icon-base ti tabler-home icon-sm d-sm-none"></i>
-            </button>
-          </li>
-          <li class="nav-item mb-1 mb-sm-0">
-            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-justified-profile" aria-controls="navs-pills-justified-profile" aria-selected="false">
-              <span class="d-none d-sm-inline-flex align-items-center"><i class="icon-base ti tabler-user icon-sm me-1_5"></i>Profile</span>
-              <i class="icon-base ti tabler-user icon-sm d-sm-none"></i>
-            </button>
-          </li>
-          <li class="nav-item">
-            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-justified-messages" aria-controls="navs-pills-justified-messages" aria-selected="false">
-              <span class="d-none d-sm-inline-flex align-items-center"><i class="icon-base ti tabler-message-dots icon-sm me-1_5"></i>Messages</span>
-              <i class="icon-base ti tabler-message-dots icon-sm d-sm-none"></i>
-            </button>
-          </li>
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane fade show active" id="navs-pills-justified-home" role="tabpanel">
-            <p>Icing pastry pudding oat cake. Lemon drops cotton candy caramels cake caramels sesame snaps powder. Bear claw candy topping.</p>
-            <p class="mb-0">Tootsie roll fruitcake cookie. Dessert topping pie. Jujubes wafer carrot cake jelly. Bonbon jelly-o jelly-o ice cream jelly beans candy canes cake bonbon. Cookie jelly beans marshmallow jujubes sweet.</p>
-          </div>
-          <div class="tab-pane fade" id="navs-pills-justified-profile" role="tabpanel">
-            <p>Donut dragée jelly pie halvah. Danish gingerbread bonbon cookie wafer candy oat cake ice cream. Gummies halvah tootsie roll muffin biscuit icing dessert gingerbread. Pastry ice cream cheesecake fruitcake.</p>
-            <p class="mb-0">Jelly-o jelly beans icing pastry cake cake lemon drops. Muffin muffin pie tiramisu halvah cotton candy liquorice caramels.</p>
-          </div>
-          <div class="tab-pane fade" id="navs-pills-justified-messages" role="tabpanel">
-            <p>Oat cake chupa chups dragée donut toffee. Sweet cotton candy jelly beans macaroon gummies cupcake gummi bears cake chocolate.</p>
-            <p class="mb-0">Cake chocolate bar cotton candy apple pie tootsie roll ice cream apple pie brownie cake. Sweet roll icing sesame snaps caramels danish toffee. Brownie biscuit dessert dessert. Pudding jelly jelly-o tart brownie jelly.</p>
-          </div>
-        </div>
-      </div>
+  <hr class="my-12" />
+
+  <!-- Hoverable Table rows -->
+  <div class="card">
+    <h5 class="card-header">Hoverable rows</h5>
+    <div class="table-responsive text-nowrap">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>Client</th>
+            <th>Users</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-angular icon-md text-danger me-4"></i>
+              <span class="fw-medium">Angular Project</span>
+            </td>
+            <td>Albert Cook</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-primary me-1">Active</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><i class="icon-base ti tabler-brand-react-native icon-md text-info me-4"></i> <span class="fw-medium">React Project</span></td>
+            <td>Barry Hunter</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-success me-1">Completed</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-vue icon-md text-success me-4"></i>
+              <span class="fw-medium">VueJs Project</span>
+            </td>
+            <td>Trevor Baker</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-info me-1">Scheduled</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-bootstrap icon-md text-primary me-4"></i>
+              <span class="fw-medium">Bootstrap Project</span>
+            </td>
+            <td>Jerry Milton</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-warning me-1">Pending</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="col-xl-6">
-      <h6 class="text-body-secondary">Vertical</h6>
-      <div class="nav-align-left">
-        <ul class="nav nav-pills me-4" role="tablist">
-          <li class="nav-item">
-            <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-left-home" aria-controls="navs-pills-left-home" aria-selected="true">Home</button>
-          </li>
-          <li class="nav-item">
-            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-left-profile" aria-controls="navs-pills-left-profile" aria-selected="false">Profile</button>
-          </li>
-          <li class="nav-item">
-            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-left-messages" aria-controls="navs-pills-left-messages" aria-selected="false">Messages</button>
-          </li>
-        </ul>
-        <div class="tab-content">
-          <div class="tab-pane fade show active" id="navs-pills-left-home" role="tabpanel">
-            <p>Icing pastry pudding oat cake. Lemon drops cotton candy caramels cake caramels sesame snaps powder. Bear claw candy topping.</p>
-            <p class="mb-0">Tootsie roll fruitcake cookie. Dessert topping pie. Jujubes wafer carrot cake jelly. Bonbon jelly-o jelly-o ice cream jelly beans candy canes cake bonbon. Cookie jelly beans marshmallow jujubes sweet.</p>
-          </div>
-          <div class="tab-pane fade" id="navs-pills-left-profile" role="tabpanel">
-            <p>Donut dragée jelly pie halvah. Danish gingerbread bonbon cookie wafer candy oat cake ice cream. Gummies halvah tootsie roll muffin biscuit icing dessert gingerbread. Pastry ice cream cheesecake fruitcake.</p>
-            <p class="mb-0">Jelly-o jelly beans icing pastry cake cake lemon drops. Muffin muffin pie tiramisu halvah cotton candy liquorice caramels.</p>
-          </div>
-          <div class="tab-pane fade" id="navs-pills-left-messages" role="tabpanel">
-            <p>Oat cake chupa chups dragée donut toffee. Sweet cotton candy jelly beans macaroon gummies cupcake gummi bears cake chocolate.</p>
-            <p class="mb-0">Cake chocolate bar cotton candy apple pie tootsie roll ice cream apple pie brownie cake. Sweet roll icing sesame snaps caramels danish toffee. Brownie biscuit dessert dessert. Pudding jelly jelly-o tart brownie jelly.</p>
-          </div>
-        </div>
-      </div>
+  </div>
+  <!--/ Hoverable Table rows -->
+
+  <hr class="my-12" />
+
+  <!-- Small table -->
+
+  <div class="card">
+    <h5 class="card-header">Small Table</h5>
+    <div class="table-responsive text-nowrap">
+      <table class="table table-sm">
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>Client</th>
+            <th>Users</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-angular icon-md text-danger me-4"></i>
+              <span class="fw-medium">Angular Project</span>
+            </td>
+            <td>Albert Cook</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-primary me-1">Active</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><i class="icon-base ti tabler-brand-react-native icon-md text-info me-4"></i> <span class="fw-medium">React Project</span></td>
+            <td>Barry Hunter</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-success me-1">Completed</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-vue icon-md text-success me-4"></i>
+              <span class="fw-medium">VueJs Project</span>
+            </td>
+            <td>Trevor Baker</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-info me-1">Scheduled</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-bootstrap icon-md text-primary me-4"></i>
+              <span class="fw-medium">Bootstrap Project</span>
+            </td>
+            <td>Jerry Milton</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-warning me-1">Pending</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="col-xl-6">
-      <h6 class="text-body-secondary">Within cards</h6>
-      <div class="card text-center">
-        <div class="card-header">
-          <div class="nav-align-top">
-            <ul class="nav nav-pills" role="tablist">
-              <li class="nav-item">
-                <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-within-card-active" aria-controls="navs-pills-within-card-active" aria-selected="true">Active</button>
+  </div>
+  <!--/ Small table -->
+
+  <hr class="my-12" />
+
+  <!-- Contextual Classes -->
+
+  <div class="card">
+    <h5 class="card-header">Contextual Classes</h5>
+    <div class="table-responsive text-nowrap">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>Client</th>
+            <th>Users</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          <tr class="table-default">
+            <td>
+              <i class="icon-base ti tabler-brand-sketch icon-md text-warning me-4"></i>
+              <span class="fw-medium">Sketch Project</span>
+            </td>
+            <td>Ronnie Shane</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-primary me-1">Active</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr class="table-active">
+            <td><i class="icon-base ti tabler-brand-react-native icon-md text-info me-4"></i> <span class="fw-medium">React Project</span></td>
+            <td>Barry Hunter</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-success me-1">Completed</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr class="table-primary">
+            <td>
+              <i class="icon-base ti tabler-brand-angular icon-md text-danger me-4"></i>
+              <span class="fw-medium">Angular Project</span>
+            </td>
+            <td>Albert Cook</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-primary me-1">Active</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr class="table-secondary">
+            <td>
+              <i class="icon-base ti tabler-brand-vue icon-md text-success me-4"></i>
+              <span class="fw-medium">VueJs Project</span>
+            </td>
+            <td>Trevor Baker</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-info me-1">Scheduled</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr class="table-success">
+            <td>
+              <i class="icon-base ti tabler-brand-bootstrap icon-md text-primary me-4"></i>
+              <span class="fw-medium">Bootstrap Project</span>
+            </td>
+            <td>Jerry Milton</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-warning me-1">Pending</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr class="table-danger">
+            <td>
+              <i class="icon-base ti tabler-brand-sketch icon-md text-warning me-4"></i>
+              <span class="fw-medium">Sketch Project</span>
+            </td>
+            <td>Sarah Banks</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-primary me-1">Active</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr class="table-warning">
+            <td><i class="icon-base ti tabler-brand-react-native icon-md text-info me-4"></i> <span class="fw-medium">React Custom</span></td>
+            <td>Ted Richer</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-info me-1">Scheduled</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr class="table-info">
+            <td>
+              <i class="icon-base ti tabler-brand-bootstrap icon-md text-primary me-4"></i>
+              <span class="fw-medium">Latest Bootstrap</span>
+            </td>
+            <td>Perry Parker</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-warning me-1">Pending</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr class="table-light">
+            <td><i class="icon-base ti tabler-brand-angular icon-md text-danger me-4"></i> <span class="fw-medium">Angular UI</span></td>
+            <td>Ana Bell</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-success me-1">Completed</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr class="table-dark">
+            <td class="rounded-start-bottom">
+              <i class="icon-base ti tabler-brand-vue icon-md text-success me-4"></i>
+              <span class="fw-medium">Bootstrap UI</span>
+            </td>
+            <td>Jerry Milton</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-success me-1">Completed</span></td>
+            <td class="rounded-end-bottom">
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!--/ Contextual Classes -->
+
+  <hr class="my-12" />
+
+  <!-- Table within card -->
+  <h5 class="mb-4">Table without Card</h5>
+  <div class="table-responsive text-nowrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Project</th>
+          <th>Client</th>
+          <th>Users</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        <tr>
+          <td>
+            <i class="icon-base ti tabler-brand-angular icon-md text-danger me-4"></i>
+            <span class="fw-medium">Angular Project</span>
+          </td>
+          <td>Albert Cook</td>
+          <td>
+            <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+              <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
               </li>
-              <li class="nav-item">
-                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#navs-pills-within-card-link" aria-controls="navs-pills-within-card-link" aria-selected="false">Link</button>
+              <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
               </li>
-              <li class="nav-item">
-                <button type="button" class="nav-link disabled" role="tab" data-bs-toggle="tab" aria-selected="false">Disabled</button>
+              <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
               </li>
             </ul>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="tab-content p-0">
-            <div class="tab-pane fade show active" id="navs-pills-within-card-active" role="tabpanel">
-              <h4 class="card-title">Special active title</h4>
-              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              <a href="javascript:void(0)" class="btn btn-primary">Go somewhere</a>
+          </td>
+          <td><span class="badge bg-label-primary me-1">Active</span></td>
+          <td>
+            <div class="dropdown">
+              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                <i class="icon-base ti tabler-dots-vertical"></i>
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+              </div>
             </div>
-            <div class="tab-pane fade" id="navs-pills-within-card-link" role="tabpanel">
-              <h4 class="card-title">Special link title</h4>
-              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              <a href="javascript:void(0)" class="btn btn-secondary">Go somewhere</a>
+          </td>
+        </tr>
+        <tr>
+          <td><i class="icon-base ti tabler-brand-react-native icon-md text-info me-4"></i> <span class="fw-medium">React Project</span></td>
+          <td>Barry Hunter</td>
+          <td>
+            <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+              <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+              </li>
+              <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+              </li>
+              <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+              </li>
+            </ul>
+          </td>
+          <td><span class="badge bg-label-success me-1">Completed</span></td>
+          <td>
+            <div class="dropdown">
+              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                <i class="icon-base ti tabler-dots-vertical"></i>
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
+          </td>
+        </tr>
+        <tr>
+          <td><i class="icon-base ti tabler-brand-vue icon-md text-success me-4"></i> <span class="fw-medium">VueJs Project</span></td>
+          <td>Trevor Baker</td>
+          <td>
+            <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+              <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+              </li>
+              <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+              </li>
+              <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+              </li>
+            </ul>
+          </td>
+          <td><span class="badge bg-label-info me-1">Scheduled</span></td>
+          <td>
+            <div class="dropdown">
+              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                <i class="icon-base ti tabler-dots-vertical"></i>
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <i class="icon-base ti tabler-brand-bootstrap icon-md text-primary me-4"></i>
+            <span class="fw-medium">Bootstrap Project</span>
+          </td>
+          <td>Jerry Milton</td>
+          <td>
+            <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+              <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+              </li>
+              <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+              </li>
+              <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+              </li>
+            </ul>
+          </td>
+          <td><span class="badge bg-label-warning me-1">Pending</span></td>
+          <td>
+            <div class="dropdown">
+              <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                <i class="icon-base ti tabler-dots-vertical"></i>
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!--/ Table within card -->
+
+  <hr class="my-12" />
+
+  <!-- Responsive Table -->
+  <div class="card">
+    <h5 class="card-header">Responsive Table</h5>
+    <div class="table-responsive text-nowrap">
+      <table class="table">
+        <thead>
+          <tr class="text-nowrap">
+            <th>#</th>
+            <th>Table heading</th>
+            <th>Table heading</th>
+            <th>Table heading</th>
+            <th>Table heading</th>
+            <th>Table heading</th>
+            <th>Table heading</th>
+            <th>Table heading</th>
+            <th>Table heading</th>
+            <th>Table heading</th>
+          </tr>
+        </thead>
+        <tbody class="table-border-bottom-0">
+          <tr>
+            <th scope="row">1</th>
+            <td>Table cell</td>
+            <td>Table cell</td>
+            <td>Table cell</td>
+            <td>Table cell</td>
+            <td>Table cell</td>
+            <td>Table cell</td>
+            <td>Table cell</td>
+            <td>Table cell</td>
+            <td>Table cell</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Table cell</td>
+            <td>Table cell</td>
+            <td>Table cell</td>
+            <td>Table cell</td>
+            <td>Table cell</td>
+            <td>Table cell</td>
+            <td>Table cell</td>
+            <td>Table cell</td>
+            <td>Table cell</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Table cell</td>
+            <td>Table cell</td>
+            <td>Table cell</td>
+            <td>Table cell</td>
+            <td>Table cell</td>
+            <td>Table cell</td>
+            <td>Table cell</td>
+            <td>Table cell</td>
+            <td>Table cell</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-  <!-- Pills -->
+  <!--/ Responsive Table -->
+
+  <hr class="my-12" />
+
+  <!-- Nested table -->
+  <div class="card overflow-hidden">
+    <h5 class="card-header">Nested table</h5>
+    <div class="table-responsive">
+      <table class="table table-dark">
+        <thead>
+          <tr>
+            <th>Project</th>
+            <th>Client</th>
+            <th>Users</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-angular icon-md text-danger me-4"></i>
+              <span class="fw-medium">Angular Project</span>
+            </td>
+            <td>Albert Cook</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-primary me-1">Active</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="5">
+              <table class="table mb-0 table-light">
+                <thead>
+                  <tr>
+                    <th>Project</th>
+                    <th>Client</th>
+                    <th>Users</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><i class="icon-base ti tabler-brand-react-native icon-md text-info me-4"></i> <span class="fw-medium">React Project</span></td>
+                    <td>Barry Hunter</td>
+                    <td>
+                      <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                          <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                        </li>
+                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                          <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                        </li>
+                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                          <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                        </li>
+                      </ul>
+                    </td>
+                    <td><span class="badge bg-label-success me-1">Completed</span></td>
+                    <td>
+                      <div class="dropdown">
+                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                          <i class="icon-base ti tabler-dots-vertical"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                          <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><i class="icon-base ti tabler-brand-vue icon-md text-success me-4"></i> <span class="fw-medium">VueJs Project</span></td>
+                    <td>Trevor Baker</td>
+                    <td>
+                      <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                          <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                        </li>
+                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                          <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                        </li>
+                        <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                          <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                        </li>
+                      </ul>
+                    </td>
+                    <td><span class="badge bg-label-info me-1">Scheduled</span></td>
+                    <td>
+                      <div class="dropdown">
+                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                          <i class="icon-base ti tabler-dots-vertical"></i>
+                        </button>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                          <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <i class="icon-base ti tabler-brand-bootstrap icon-md text-primary me-4"></i>
+              <span class="fw-medium">Bootstrap Project</span>
+            </td>
+            <td>Jerry Milton</td>
+            <td>
+              <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Lilian Fuller">
+                  <img src="../../assets/img/avatars/5.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Sophia Wilkerson">
+                  <img src="../../assets/img/avatars/6.png" alt="Avatar" class="rounded-circle" />
+                </li>
+                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up" title="Christina Parker">
+                  <img src="../../assets/img/avatars/7.png" alt="Avatar" class="rounded-circle" />
+                </li>
+              </ul>
+            </td>
+            <td><span class="badge bg-label-warning me-1">Pending</span></td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-dots-vertical"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-pencil me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="icon-base ti tabler-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!--/ Nested table -->
 </div>
           <!-- / Content -->
 

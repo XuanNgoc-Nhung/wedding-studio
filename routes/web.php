@@ -100,6 +100,12 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'c
         Route::get('/cham-cong', [AdminDiemDanh::class, 'chamCong'])->name('diem-danh.cham-cong');
         Route::get('/check-in', [AdminDiemDanh::class, 'checkIn'])->name('diem-danh.check-in');
         Route::get('/check-out', [AdminDiemDanh::class, 'checkOut'])->name('diem-danh.check-out');
+        //Điều phối công việc
+        Route::get('/dieu-phoi-cong-viec', [AdminDiemDanh::class, 'dieuPhoiCongViec'])->name('diem-danh.dieu-phoi-cong-viec');
+        Route::put('/dieu-phoi-cong-viec/{hopDong}/phan-cong', [AdminDiemDanh::class, 'phanCongCongViec'])->name('diem-danh.phan-cong-cong-viec');
+        Route::post('/dieu-phoi-cong-viec', [AdminDiemDanh::class, 'storeDieuPhoiCongViec'])->name('diem-danh.store-dieu-phoi-cong-viec');
+        Route::put('/dieu-phoi-cong-viec/{dieuPhoiCongViec}', [AdminDiemDanh::class, 'updateDieuPhoiCongViec'])->name('diem-danh.update-dieu-phoi-cong-viec');
+        Route::delete('/dieu-phoi-cong-viec/{dieuPhoiCongViec}', [AdminDiemDanh::class, 'destroyDieuPhoiCongViec'])->name('diem-danh.destroy-dieu-phoi-cong-viec');
     });
     //Route cho hệ thống
     Route::group(['prefix' => 'he-thong'], function () {

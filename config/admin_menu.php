@@ -21,6 +21,7 @@ return [
         'children' => [
             ['route' => 'admin.diem-danh.diem-danh', 'label' => 'Điểm danh'],
             ['route' => 'admin.diem-danh.cham-cong', 'label' => 'Chấm công'],
+            ['route' => 'admin.diem-danh.dieu-phoi-cong-viec', 'label' => 'Điều phối công việc'],
         ],
     ],
     [

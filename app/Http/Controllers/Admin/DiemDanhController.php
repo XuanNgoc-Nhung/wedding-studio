@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\ChamCong;
 use App\Models\DiemDanh;
+use App\Models\HopDong;
 use App\Models\NhanVien;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -225,5 +226,60 @@ class DiemDanhController extends Controller
         ]);
 
         return redirect()->route('admin.diem-danh.diem-danh')->with('success', 'Check-out thành công lúc ' . $gioRa->format('H:i d/m/Y') . '.');
+    }
+    // Điều phối công việc (chỉ xem danh sách hợp đồng, không thêm/sửa)
+    public function dieuPhoiCongViec(Request $request)
+    {
+        $search = $request->get('search');
+        $danhSach = HopDong::query()
+            ->with(['khachHang', 'nguoiTao', 'thoChup.user', 'thoMake.user', 'thoEdit.user'])
+            ->when($search, function ($q) use ($search) {
+                $q->whereHas('khachHang', function ($q2) use ($search) {
+                    $q2->where('ho_ten_chu_re', 'like', "%{$search}%")
+                        ->orWhere('ho_ten_co_dau', 'like', "%{$search}%")
+                        ->orWhere('email_hoac_sdt_chu_re', 'like', "%{$search}%")
+                        ->orWhere('email_hoac_sdt_co_dau', 'like', "%{$search}%");
+                });
+            })
+            ->orderByDesc('id')
+            ->paginate(15)
+            ->withQueryString();
+
+        $danhSachNhanVien = NhanVien::query()->with('user')->orderBy('id')->get();
+
+        return view('admin.diem-danh.dieu-phoi-cong-viec', compact('danhSach', 'danhSachNhanVien'));
+    }
+
+    /**
+     * Cập nhật phân công thợ chụp / make / edit cho hợp đồng (từ modal Phân việc).
+     */
+    public function phanCongCongViec(Request $request, HopDong $hopDong)
+    {
+        $validated = $request->validate([
+            'tho_chup_id' => 'nullable|exists:nhan_vien,id',
+            'tho_make_id' => 'nullable|exists:nhan_vien,id',
+            'tho_edit_id' => 'nullable|exists:nhan_vien,id',
+        ]);
+
+        $hopDong->update([
+            'tho_chup_id' => $validated['tho_chup_id'] ?? null,
+            'tho_make_id' => $validated['tho_make_id'] ?? null,
+            'tho_edit_id' => $validated['tho_edit_id'] ?? null,
+        ]);
+
+        return redirect()->route('admin.diem-danh.dieu-phoi-cong-viec')->with('success', 'Phân công công việc đã được cập nhật.');
+    }
+
+    public function storeDieuPhoiCongViec(Request $request)
+    {
+        return redirect()->route('admin.diem-danh.dieu-phoi-cong-viec')->with('success', 'Điều phối công việc thành công.');
+    }
+    public function updateDieuPhoiCongViec(Request $request, $dieuPhoiCongViec)
+    {
+        return redirect()->route('admin.diem-danh.dieu-phoi-cong-viec')->with('success', 'Điều phối công việc thành công.');
+    }
+    public function destroyDieuPhoiCongViec(Request $request, $dieuPhoiCongViec)
+    {
+        return redirect()->route('admin.diem-danh.dieu-phoi-cong-viec')->with('success', 'Điều phối công việc thành công.');
     }
 }
