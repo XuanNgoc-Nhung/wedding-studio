@@ -191,6 +191,80 @@
                             <label class="form-label" for="them_ngay_hen_tra_hang">Ngày hẹn trả hàng</label>
                             <input type="date" class="form-control" id="them_ngay_hen_tra_hang" name="ngay_hen_tra_hang" value="{{ old('ngay_hen_tra_hang') }}">
                         </div>
+                        {{-- Tabs: Nhóm dịch vụ & Dịch vụ lẻ --}}
+                        <div class="col-12 mt-2">
+                            <label class="form-label d-block">Tham khảo dịch vụ</label>
+                            <ul class="nav nav-tabs mb-2" id="tabDichVuThemHopDong" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="tab-nhom-dich-vu-btn" data-bs-toggle="tab" data-bs-target="#tab-nhom-dich-vu" type="button" role="tab">Nhóm dịch vụ</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="tab-dich-vu-le-btn" data-bs-toggle="tab" data-bs-target="#tab-dich-vu-le" type="button" role="tab">Dịch vụ lẻ</button>
+                                </li>
+                            </ul>
+                            <div class="tab-content border border-top-0 rounded-bottom p-3 bg-light" id="tabDichVuThemHopDongContent">
+                                <div class="tab-pane fade show active" id="tab-nhom-dich-vu" role="tabpanel">
+                                    <div class="table-responsive" style="max-height: 220px; overflow-y: auto;">
+                                        <table class="table table-sm table-hover table-bordered mb-0">
+                                            <thead class="table-light sticky-top">
+                                                <tr>
+                                                    <th style="width: 50px;">STT</th>
+                                                    <th>Tên nhóm</th>
+                                                    <th>Mã</th>
+                                                    <th class="text-end">Giá tiền</th>
+                                                    <th class="text-end">Giá gốc</th>
+                                                    <th>Thẻ</th>
+                                                    <th>Ghi chú</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse($danhSachNhomDichVu ?? [] as $idx => $ndv)
+                                                <tr>
+                                                    <td>{{ $idx + 1 }}</td>
+                                                    <td>{{ $ndv->ten_nhom ?? '—' }}</td>
+                                                    <td>{{ $ndv->ma_nhom ?? '—' }}</td>
+                                                    <td class="text-end">{{ $ndv->gia_tien !== null ? number_format((float)$ndv->gia_tien, 0, ',', '.') . ' đ' : '—' }}</td>
+                                                    <td class="text-end">{{ $ndv->gia_goc !== null ? number_format((float)$ndv->gia_goc, 0, ',', '.') . ' đ' : '—' }}</td>
+                                                    <td>{{ $ndv->the ?? '—' }}</td>
+                                                    <td>{{ $ndv->ghi_chu ? str($ndv->ghi_chu)->limit(40) : '—' }}</td>
+                                                </tr>
+                                                @empty
+                                                <tr><td colspan="7" class="text-center text-muted py-3">Chưa có nhóm dịch vụ.</td></tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="tab-dich-vu-le" role="tabpanel">
+                                    <div class="table-responsive" style="max-height: 220px; overflow-y: auto;">
+                                        <table class="table table-sm table-hover table-bordered mb-0">
+                                            <thead class="table-light sticky-top">
+                                                <tr>
+                                                    <th style="width: 50px;">STT</th>
+                                                    <th>Tên dịch vụ</th>
+                                                    <th>Mã</th>
+                                                    <th class="text-end">Giá dịch vụ</th>
+                                                    <th>Ghi chú</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse($danhSachDichVuLe ?? [] as $idx => $dvl)
+                                                <tr>
+                                                    <td>{{ $idx + 1 }}</td>
+                                                    <td>{{ $dvl->ten_dich_vu ?? '—' }}</td>
+                                                    <td>{{ $dvl->ma_dich_vu ?? '—' }}</td>
+                                                    <td class="text-end">{{ $dvl->gia_dich_vu !== null ? number_format((float)$dvl->gia_dich_vu, 0, ',', '.') . ' đ' : '—' }}</td>
+                                                    <td>{{ $dvl->ghi_chu ? str($dvl->ghi_chu)->limit(40) : '—' }}</td>
+                                                </tr>
+                                                @empty
+                                                <tr><td colspan="5" class="text-center text-muted py-3">Chưa có dịch vụ lẻ.</td></tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-12">
                             <label class="form-label" for="them_trang_phuc">Trang phục</label>
                             <textarea class="form-control" id="them_trang_phuc" name="trang_phuc" rows="2" placeholder="Mô tả trang phục">{{ old('trang_phuc') }}</textarea>

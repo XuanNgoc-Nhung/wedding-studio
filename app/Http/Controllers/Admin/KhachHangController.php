@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\DichVuLe;
 use App\Models\HopDong;
 use App\Models\KhachHang;
 use App\Models\NhanVien;
+use App\Models\NhomDichVu;
 use Illuminate\Http\Request;
 
 class KhachHangController extends Controller
@@ -102,8 +104,22 @@ class KhachHangController extends Controller
 
         $danhSachKhachHang = KhachHang::query()->orderBy('id')->get();
         $danhSachNhanVien = NhanVien::query()->with('user')->orderBy('id')->get();
+        $danhSachNhomDichVu = NhomDichVu::query()
+            ->where('trang_thai', NhomDichVu::TRANG_THAI_HIEN_THI)
+            ->orderBy('ten_nhom')
+            ->get();
+        $danhSachDichVuLe = DichVuLe::query()
+            ->where('trang_thai', DichVuLe::TRANG_THAI_HIEN_THI)
+            ->orderBy('ten_dich_vu')
+            ->get();
 
-        return view('admin.khach-hang.hop-dong', compact('danhSach', 'danhSachKhachHang', 'danhSachNhanVien'));
+        return view('admin.khach-hang.hop-dong', compact(
+            'danhSach',
+            'danhSachKhachHang',
+            'danhSachNhanVien',
+            'danhSachNhomDichVu',
+            'danhSachDichVuLe'
+        ));
     }
 
     public function storeHopDong(Request $request)
