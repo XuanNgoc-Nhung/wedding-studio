@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\HopDong;
 use App\Models\KhachHang;
+use App\Models\NhanVien;
 use Illuminate\Http\Request;
 
 class KhachHangController extends Controller
@@ -81,14 +83,93 @@ class KhachHangController extends Controller
         $khachHang->delete();
         return redirect()->route('admin.khach-hang.danh-sach')->with('success', 'Đã xóa khách hàng thành công.');
     }
-    public function hopDong()
+    public function hopDong(Request $request)
     {
-        return view('admin.khach-hang.hop-dong');
+        $search = $request->get('search');
+        $danhSach = HopDong::query()
+            ->with(['khachHang', 'thoChup.user', 'thoMake.user', 'thoEdit.user'])
+            ->when($search, function ($q) use ($search) {
+                $q->whereHas('khachHang', function ($q2) use ($search) {
+                    $q2->where('ho_ten_chu_re', 'like', "%{$search}%")
+                        ->orWhere('ho_ten_co_dau', 'like', "%{$search}%")
+                        ->orWhere('email_hoac_sdt_chu_re', 'like', "%{$search}%")
+                        ->orWhere('email_hoac_sdt_co_dau', 'like', "%{$search}%");
+                });
+            })
+            ->orderByDesc('id')
+            ->paginate(15)
+            ->withQueryString();
+
+        $danhSachKhachHang = KhachHang::query()->orderBy('id')->get();
+        $danhSachNhanVien = NhanVien::query()->with('user')->orderBy('id')->get();
+
+        return view('admin.khach-hang.hop-dong', compact('danhSach', 'danhSachKhachHang', 'danhSachNhanVien'));
     }
+
     public function storeHopDong(Request $request)
     {
         $validated = $request->validate([
             'khach_hang_id' => 'required|exists:khach_hang,id',
+            'tho_chup_id' => 'nullable|exists:nhan_vien,id',
+            'tho_make_id' => 'nullable|exists:nhan_vien,id',
+            'tho_edit_id' => 'nullable|exists:nhan_vien,id',
+            'dia_diem' => 'nullable|string|max:255',
+            'ngay_chup' => 'nullable|date',
+            'trang_phuc' => 'nullable|string',
+            'concept' => 'nullable|string',
+            'ghi_chu_chup' => 'nullable|string',
+            'trang_thai_chup' => 'nullable|string|max:50',
+            'tong_tien' => 'nullable|numeric|min:0',
+            'thanh_toan_lan_1' => 'nullable|numeric|min:0',
+            'thanh_toan_lan_2' => 'nullable|numeric|min:0',
+            'thanh_toan_lan_3' => 'nullable|numeric|min:0',
+            'trang_thai_hop_dong' => 'nullable|string|max:50',
+            'trang_thai_edit' => 'nullable|string|max:50',
+            'link_file_demo' => 'nullable|string|max:500',
+            'link_file_in' => 'nullable|string|max:500',
+            'ngay_tra_link_in' => 'nullable|date',
+            'ngay_hen_tra_hang' => 'nullable|date',
         ]);
+
+        $validated['nguoi_tao_id'] = $request->user()?->id;
+        HopDong::create($validated);
+
+        return redirect()->route('admin.khach-hang.hop-dong')->with('success', 'Đã thêm hợp đồng thành công.');
+    }
+
+    public function updateHopDong(Request $request, HopDong $hopDong)
+    {
+        $validated = $request->validate([
+            'khach_hang_id' => 'required|exists:khach_hang,id',
+            'tho_chup_id' => 'nullable|exists:nhan_vien,id',
+            'tho_make_id' => 'nullable|exists:nhan_vien,id',
+            'tho_edit_id' => 'nullable|exists:nhan_vien,id',
+            'dia_diem' => 'nullable|string|max:255',
+            'ngay_chup' => 'nullable|date',
+            'trang_phuc' => 'nullable|string',
+            'concept' => 'nullable|string',
+            'ghi_chu_chup' => 'nullable|string',
+            'trang_thai_chup' => 'nullable|string|max:50',
+            'tong_tien' => 'nullable|numeric|min:0',
+            'thanh_toan_lan_1' => 'nullable|numeric|min:0',
+            'thanh_toan_lan_2' => 'nullable|numeric|min:0',
+            'thanh_toan_lan_3' => 'nullable|numeric|min:0',
+            'trang_thai_hop_dong' => 'nullable|string|max:50',
+            'trang_thai_edit' => 'nullable|string|max:50',
+            'link_file_demo' => 'nullable|string|max:500',
+            'link_file_in' => 'nullable|string|max:500',
+            'ngay_tra_link_in' => 'nullable|date',
+            'ngay_hen_tra_hang' => 'nullable|date',
+        ]);
+
+        $hopDong->update($validated);
+
+        return redirect()->route('admin.khach-hang.hop-dong')->with('success', 'Đã cập nhật hợp đồng thành công.');
+    }
+
+    public function destroyHopDong(HopDong $hopDong)
+    {
+        $hopDong->delete();
+        return redirect()->route('admin.khach-hang.hop-dong')->with('success', 'Đã xóa hợp đồng.');
     }
 }

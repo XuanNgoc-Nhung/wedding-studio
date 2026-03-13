@@ -12,48 +12,80 @@ class HopDong extends Model
 
     protected $table = 'hop_dong';
 
-    /** Trạng thái: chờ xử lý */
-    public const TRANG_THAI_CHO_XU_LY = 0;
-
-    /** Trạng thái: đang diễn ra */
-    public const TRANG_THAI_DANG_DIEN_RA = 1;
-
-    /** Trạng thái: hoàn thành */
-    public const TRANG_THAI_HOAN_THANH = 2;
-
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
     protected $fillable = [
-        'ten_khach_hang',
-        'so_dien_thoai',
-        'trang_phuc_id',
-        'so_luong_thue',
-        'gia_thue',
-        'thoi_gian_thue_bat_dau',
-        'thoi_gian_du_kien_tra',
-        'thoi_gian_tra_hang_thuc_te',
-        'ghi_chu',
-        'trang_thai',
-        'user_id',
+        'nguoi_tao_id',
+        'khach_hang_id',
+        'tho_chup_id',
+        'tho_make_id',
+        'tho_edit_id',
+        'dia_diem',
+        'ngay_chup',
+        'trang_phuc',
+        'concept',
+        'ghi_chu_chup',
+        'trang_thai_chup',
+        'tong_tien',
+        'thanh_toan_lan_1',
+        'thanh_toan_lan_2',
+        'thanh_toan_lan_3',
+        'trang_thai_hop_dong',
+        'trang_thai_edit',
+        'link_file_demo',
+        'link_file_in',
+        'ngay_tra_link_in',
+        'ngay_hen_tra_hang',
     ];
 
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [
-            'thoi_gian_thue_bat_dau' => 'datetime',
-            'thoi_gian_du_kien_tra' => 'datetime',
-            'thoi_gian_tra_hang_thuc_te' => 'datetime',
-            'gia_thue' => 'decimal:2',
-            'so_luong_thue' => 'integer',
-            'trang_thai' => 'integer',
+            'ngay_chup' => 'date',
+            'ngay_tra_link_in' => 'date',
+            'ngay_hen_tra_hang' => 'date',
+            'tong_tien' => 'decimal:2',
+            'thanh_toan_lan_1' => 'decimal:2',
+            'thanh_toan_lan_2' => 'decimal:2',
+            'thanh_toan_lan_3' => 'decimal:2',
         ];
     }
 
-    public function trangPhuc(): BelongsTo
+    /** Người tạo hợp đồng (user đăng nhập). */
+    public function nguoiTao(): BelongsTo
     {
-        return $this->belongsTo(TrangPhuc::class, 'trang_phuc_id', 'id');
+        return $this->belongsTo(User::class, 'nguoi_tao_id', 'id');
     }
 
-    public function user(): BelongsTo
+    /** Khách hàng. */
+    public function khachHang(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(KhachHang::class, 'khach_hang_id', 'id');
+    }
+
+    /** Thợ chụp (nhân viên). */
+    public function thoChup(): BelongsTo
+    {
+        return $this->belongsTo(NhanVien::class, 'tho_chup_id', 'id');
+    }
+
+    /** Thợ make (nhân viên). */
+    public function thoMake(): BelongsTo
+    {
+        return $this->belongsTo(NhanVien::class, 'tho_make_id', 'id');
+    }
+
+    /** Thợ edit (nhân viên). */
+    public function thoEdit(): BelongsTo
+    {
+        return $this->belongsTo(NhanVien::class, 'tho_edit_id', 'id');
     }
 }
