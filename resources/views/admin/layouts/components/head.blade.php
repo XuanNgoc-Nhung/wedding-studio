@@ -55,6 +55,14 @@
 .flatpickr-calendar.open {
   z-index: 9999 !important;
 }
+.modal .modal-footer{
+  padding: 1.2rem !important;
+  border-top: 1px solid #cdcdcd !important;
+}
+.modal .modal-header{
+  padding: 1.2rem !important;
+  border-bottom: 1px solid #cdcdcd !important;
+}
 </style>
 
 @stack('styles')

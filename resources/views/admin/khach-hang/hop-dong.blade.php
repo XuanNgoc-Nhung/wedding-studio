@@ -370,6 +370,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <a href="{{ route('admin.khach-hang.danh-sach') }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary">
+                         Thêm khách hàng
+                    </a>
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
                     <button type="submit" class="btn btn-primary">
                         <i class="fa-solid fa-floppy-disk me-1"></i> Lưu
@@ -595,6 +598,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <a href="{{ route('admin.khach-hang.danh-sach') }}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary">
+                         Thêm khách hàng
+                    </a>
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
                     <button type="submit" class="btn btn-primary">
                         <i class="fa-solid fa-floppy-disk me-1"></i> Lưu
@@ -637,12 +643,43 @@
 #modalSuaHopDong .modal-dialog.modal-hop-dong {
     max-width: 95vw;
     width: 1200px;
+    max-height: calc(100vh - 2rem);
 }
 @media (min-width: 992px) {
     #modalThemHopDong .modal-dialog.modal-hop-dong,
     #modalSuaHopDong .modal-dialog.modal-hop-dong {
         max-width: 1200px;
     }
+}
+/* Modal thêm/sửa hợp đồng: chỉ phần nội dung form cuộn, footer luôn hiển thị */
+#modalThemHopDong .modal-content,
+#modalSuaHopDong .modal-content {
+    max-height: calc(100vh - 2rem);
+    display: flex;
+    flex-direction: column;
+}
+#modalThemHopDong .modal-content .modal-header,
+#modalSuaHopDong .modal-content .modal-header,
+#modalThemHopDong .modal-content .modal-footer,
+#modalSuaHopDong .modal-content .modal-footer {
+    flex-shrink: 0;
+}
+#modalThemHopDong .modal-content form,
+#modalSuaHopDong .modal-content form {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+}
+#modalThemHopDong .modal-content form .modal-body,
+#modalSuaHopDong .modal-content form .modal-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+#modalThemHopDong .modal-content form .modal-body.py-0,
+#modalSuaHopDong .modal-content form .modal-body.py-0 {
+    flex: 0 0 auto;
 }
 #modalXacNhanXoaHopDong .modal-confirm-xoa {
     max-width: 90vw;
