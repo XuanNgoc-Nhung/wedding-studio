@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\HopDong;
 use App\Models\NhanVien;
 use App\Models\PhongBan;
 use App\Models\User;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -341,6 +344,36 @@ class NhanSuController extends Controller
 
     public function lichLamViec()
     {
-        return view('admin.nhan-su.lich-lam-viec');
+        $nhanVienId = auth()->user()?->nhanVien?->id;
+
+        $homNay = Carbon::now(config('app.timezone'));
+        $batDauTuan = $homNay->copy()->startOfWeek(Carbon::MONDAY)->startOfDay();
+        $ketThucTuan = $homNay->copy()->endOfWeek(Carbon::SUNDAY)->endOfDay();
+
+        $dsNgayTrongTuan = collect(
+            CarbonPeriod::create($batDauTuan->copy()->startOfDay(), '1 day', $ketThucTuan->copy()->startOfDay())
+        );
+
+        $hopDongTrongTuan = collect();
+        if ($nhanVienId) {
+            $hopDongTrongTuan = HopDong::query()
+                ->with(['khachHang', 'thoChup', 'thoMake', 'thoEdit'])
+                ->whereBetween('ngay_chup', [$batDauTuan->toDateString(), $ketThucTuan->toDateString()])
+                ->where(function ($q) use ($nhanVienId) {
+                    $q->where('tho_chup_id', $nhanVienId)
+                        ->orWhere('tho_make_id', $nhanVienId)
+                        ->orWhere('tho_edit_id', $nhanVienId);
+                })
+                ->orderBy('ngay_chup')
+                ->get();
+        }
+
+        return view('admin.nhan-su.lich-lam-viec', compact(
+            'batDauTuan',
+            'ketThucTuan',
+            'dsNgayTrongTuan',
+            'hopDongTrongTuan',
+            'nhanVienId'
+        ));
     }
 }
