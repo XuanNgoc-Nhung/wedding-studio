@@ -87,11 +87,33 @@ class DichVuLe extends Model
     }
 
     /**
+     * Các hợp đồng có chọn dịch vụ lẻ này (many-to-many).
+     */
+    public function hopDong(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            HopDong::class,
+            'hop_dong_dich_vu_le',
+            'dich_vu_le_id',
+            'hop_dong_id'
+        )
+            ->using(HopDongDichVuLe::class)
+            ->withPivot('gia_goc', 'gia_thuc')
+            ->withTimestamps();
+    }
+
+    /**
      * Các nhóm dịch vụ chứa dịch vụ lẻ này (many-to-many).
      */
     public function nhomDichVu(): BelongsToMany
     {
-        return $this->belongsToMany(NhomDichVu::class, 'dich_vu_le_nhom_dich_vu')
+        return $this->belongsToMany(
+            NhomDichVu::class,
+            'dich_vu_le_nhom_dich_vu',
+            'dich_vu_le_id',
+            'nhom_dich_vu_id'
+        )
+            ->using(DichVuLeNhomDichVu::class)
             ->withPivot('so_luong')
             ->withTimestamps();
     }

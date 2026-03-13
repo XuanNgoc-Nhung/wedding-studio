@@ -105,6 +105,7 @@ class KhachHangController extends Controller
         $danhSachKhachHang = KhachHang::query()->orderBy('id')->get();
         $danhSachNhanVien = NhanVien::query()->with('user')->orderBy('id')->get();
         $danhSachNhomDichVu = NhomDichVu::query()
+            ->with('dichVuLe')
             ->where('trang_thai', NhomDichVu::TRANG_THAI_HIEN_THI)
             ->orderBy('ten_nhom')
             ->get();
@@ -145,10 +146,31 @@ class KhachHangController extends Controller
             'link_file_in' => 'nullable|string|max:500',
             'ngay_tra_link_in' => 'nullable|date',
             'ngay_hen_tra_hang' => 'nullable|date',
+            'dich_vu_le_hop_dong' => 'nullable|array',
+            'dich_vu_le_hop_dong.*.dich_vu_le_id' => 'required|integer|exists:dich_vu_le,id',
+            'dich_vu_le_hop_dong.*.gia_goc' => 'required|numeric|min:0',
+            'dich_vu_le_hop_dong.*.gia_thuc' => 'required|numeric|min:0',
         ]);
 
         $validated['nguoi_tao_id'] = $request->user()?->id;
-        HopDong::create($validated);
+        $dichVuLeHopDong = $request->input('dich_vu_le_hop_dong', []);
+        unset($validated['dich_vu_le_hop_dong']);
+
+        $hopDong = HopDong::create($validated);
+
+        if (! empty($dichVuLeHopDong)) {
+            $sync = [];
+            foreach ($dichVuLeHopDong as $item) {
+                $id = (int) ($item['dich_vu_le_id'] ?? 0);
+                if ($id > 0) {
+                    $sync[$id] = [
+                        'gia_goc' => (float) ($item['gia_goc'] ?? 0),
+                        'gia_thuc' => (float) ($item['gia_thuc'] ?? 0),
+                    ];
+                }
+            }
+            $hopDong->dichVuLe()->sync($sync);
+        }
 
         return redirect()->route('admin.khach-hang.hop-dong')->with('success', 'Đã thêm hợp đồng thành công.');
     }

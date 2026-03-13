@@ -77,7 +77,13 @@ class NhomDichVu extends Model
      */
     public function dichVuLe(): BelongsToMany
     {
-        return $this->belongsToMany(DichVuLe::class, 'dich_vu_le_nhom_dich_vu')
+        return $this->belongsToMany(
+            DichVuLe::class,
+            'dich_vu_le_nhom_dich_vu',
+            'nhom_dich_vu_id',
+            'dich_vu_le_id'
+        )
+            ->using(DichVuLeNhomDichVu::class)
             ->withPivot('so_luong')
             ->withTimestamps();
     }

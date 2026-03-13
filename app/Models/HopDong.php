@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class HopDong extends Model
 {
@@ -87,5 +88,19 @@ class HopDong extends Model
     public function thoEdit(): BelongsTo
     {
         return $this->belongsTo(NhanVien::class, 'tho_edit_id', 'id');
+    }
+
+    /** Dịch vụ lẻ đã chọn trong hợp đồng (chỉ những dòng user tích chọn khi thêm/sửa). */
+    public function dichVuLe(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            DichVuLe::class,
+            'hop_dong_dich_vu_le',
+            'hop_dong_id',
+            'dich_vu_le_id'
+        )
+            ->using(HopDongDichVuLe::class)
+            ->withPivot('gia_goc', 'gia_thuc')
+            ->withTimestamps();
     }
 }
