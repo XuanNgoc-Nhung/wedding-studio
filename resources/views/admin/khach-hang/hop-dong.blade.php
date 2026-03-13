@@ -107,6 +107,7 @@
                                        data-bs-toggle="modal"
                                        data-bs-target="#modalSuaHopDong"
                                        data-url="{{ route('admin.khach-hang.update-hop-dong', $item) }}"
+                                       data-dich-vu-url="{{ route('admin.khach-hang.hop-dong.dich-vu', $item) }}"
                                        data-khach-hang-id="{{ $item->khach_hang_id ?? '' }}"
                                        data-tho-chup-id="{{ $item->tho_chup_id ?? '' }}"
                                        data-tho-make-id="{{ $item->tho_make_id ?? '' }}"
@@ -379,7 +380,7 @@
     </div>
 </div>
 
-{{-- Modal Chỉnh sửa hợp đồng --}}
+{{-- Modal Chỉnh sửa hợp đồng (cấu trúc giống Thêm mới, khách hàng disabled) --}}
 <div class="modal fade" id="modalSuaHopDong" tabindex="-1" aria-labelledby="modalSuaHopDongLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-hop-dong">
         <div class="modal-content">
@@ -403,53 +404,165 @@
                 @endif
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-12 col-md-6">
+                        {{-- Hàng 1: Khách hàng (disabled) + Địa điểm + Ngày chụp + Ngày hẹn trả hàng --}}
+                        <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="sua_khach_hang_id">Khách hàng <span class="text-danger">*</span></label>
-                            <select class="form-select" id="sua_khach_hang_id" name="khach_hang_id" required>
+                            <input type="hidden" name="khach_hang_id" id="sua_khach_hang_id_hidden">
+                            <select class="form-select" id="sua_khach_hang_id" disabled aria-label="Khách hàng (không thể thay đổi)">
                                 <option value="">-- Chọn khách hàng --</option>
                                 @foreach($danhSachKhachHang ?? [] as $kh)
                                 <option value="{{ $kh->id }}">{{ $kh->ho_ten_chu_re ?? '' }} / {{ $kh->ho_ten_co_dau ?? '' }} ({{ $kh->email_hoac_sdt_chu_re ?? $kh->email_hoac_sdt_co_dau ?? '—' }})</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="sua_dia_diem">Địa điểm</label>
                             <input type="text" class="form-control" id="sua_dia_diem" name="dia_diem" placeholder="Địa điểm chụp">
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="sua_ngay_chup">Ngày chụp</label>
                             <input type="date" class="form-control" id="sua_ngay_chup" name="ngay_chup">
                         </div>
-                        <div class="col-12 col-md-6">
-                            <label class="form-label" for="sua_trang_thai_chup">Trạng thái chụp</label>
-                            <input type="text" class="form-control" id="sua_trang_thai_chup" name="trang_thai_chup" placeholder="VD: Đã chụp, Chờ chụp...">
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <label class="form-label" for="sua_ngay_hen_tra_hang">Ngày hẹn trả hàng</label>
+                            <input type="date" class="form-control" id="sua_ngay_hen_tra_hang" name="ngay_hen_tra_hang">
                         </div>
-                        <div class="col-12 col-md-4">
-                            <label class="form-label" for="sua_tho_chup_id">Thợ chụp</label>
-                            <select class="form-select" id="sua_tho_chup_id" name="tho_chup_id">
-                                <option value="">-- Chọn --</option>
-                                @foreach($danhSachNhanVien ?? [] as $nv)
-                                <option value="{{ $nv->id }}">{{ $nv->user?->name ?? 'NV #' . $nv->id }}</option>
-                                @endforeach
-                            </select>
+                        {{-- Tabs: Nhóm dịch vụ & Dịch vụ lẻ (Sua) --}}
+                        <div class="col-12 mt-2">
+                            <label class="form-label d-block">Tham khảo dịch vụ</label>
+                            <div class="nav-align-top">
+                                <ul class="nav nav-pills mb-4 nav-fill" id="tabDichVuSuaHopDong" role="tablist">
+                                    <li class="nav-item mb-1 mb-sm-0" role="presentation">
+                                        <button type="button" class="nav-link active" id="tab-nhom-dich-vu-sua-btn" role="tab" data-bs-toggle="tab" data-bs-target="#tab-nhom-dich-vu-sua" aria-controls="tab-nhom-dich-vu-sua" aria-selected="true">Nhóm dịch vụ</button>
+                                    </li>
+                                    <li class="nav-item mb-1 mb-sm-0" role="presentation">
+                                        <button type="button" class="nav-link" id="tab-dich-vu-le-sua-btn" role="tab" data-bs-toggle="tab" data-bs-target="#tab-dich-vu-le-sua" aria-controls="tab-dich-vu-le-sua" aria-selected="false">Dịch vụ lẻ</button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content p-3 bg-light rounded" id="tabDichVuSuaHopDongContent">
+                                <div class="tab-pane fade show active" id="tab-nhom-dich-vu-sua" role="tabpanel">
+                                    <div class="table-responsive" style="max-height: 220px; overflow-y: auto;">
+                                        <table class="table table-sm table-hover table-bordered mb-0" id="tableNhomDichVuSua">
+                                            <thead class="table-light sticky-top">
+                                                <tr>
+                                                    <th style="width: 40px;" class="text-center">Chọn</th>
+                                                    <th style="width: 50px;">STT</th>
+                                                    <th>Tên nhóm</th>
+                                                    <th>Mã</th>
+                                                    <th class="text-end">Giá tiền</th>
+                                                    <th class="text-end">Giá gốc</th>
+                                                    <th>Thẻ</th>
+                                                    <th>Ghi chú</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse($danhSachNhomDichVu ?? [] as $idx => $ndv)
+                                                @php
+                                                    $dvlList = $ndv->dichVuLe->map(fn($d) => [
+                                                        'id' => $d->id,
+                                                        'ten_dich_vu' => $d->ten_dich_vu ?? '—',
+                                                        'ma_dich_vu' => $d->ma_dich_vu ?? '—',
+                                                        'gia_goc' => $d->gia_dich_vu !== null ? (float)$d->gia_dich_vu : 0,
+                                                        'gia_dich_vu' => $d->gia_dich_vu !== null ? number_format((float)$d->gia_dich_vu, 0, ',', '.') . ' đ' : '—',
+                                                        'ghi_chu' => $d->ghi_chu ? \Illuminate\Support\Str::limit($d->ghi_chu, 40) : '—',
+                                                        'so_luong' => $d->pivot->so_luong ?? 1,
+                                                    ])->values()->toArray();
+                                                @endphp
+                                                <tr data-nhom-id="{{ $ndv->id }}"
+                                                    data-ten-nhom="{{ e($ndv->ten_nhom ?? '') }}"
+                                                    data-dich-vu-le='{{ json_encode($dvlList, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) }}'>
+                                                    <td class="text-center">
+                                                        <input type="checkbox" class="form-check-input cb-nhom-dich-vu-sua" value="{{ $ndv->id }}" aria-label="Chọn nhóm {{ $ndv->ten_nhom }}">
+                                                    </td>
+                                                    <td>{{ $idx + 1 }}</td>
+                                                    <td>{{ $ndv->ten_nhom ?? '—' }}</td>
+                                                    <td>{{ $ndv->ma_nhom ?? '—' }}</td>
+                                                    <td class="text-end">{{ $ndv->gia_tien !== null ? number_format((float)$ndv->gia_tien, 0, ',', '.') . ' đ' : '—' }}</td>
+                                                    <td class="text-end">{{ $ndv->gia_goc !== null ? number_format((float)$ndv->gia_goc, 0, ',', '.') . ' đ' : '—' }}</td>
+                                                    <td>{{ $ndv->the ?? '—' }}</td>
+                                                    <td>{{ $ndv->ghi_chu ? str($ndv->ghi_chu)->limit(40) : '—' }}</td>
+                                                </tr>
+                                                @empty
+                                                <tr><td colspan="8" class="text-center text-muted py-3">Chưa có nhóm dịch vụ.</td></tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="tab-dich-vu-le-sua" role="tabpanel">
+                                    <div class="table-responsive" style="max-height: 220px; overflow-y: auto;">
+                                        <table class="table table-sm table-hover table-bordered mb-0" id="tableDichVuLeSua">
+                                            <thead class="table-light sticky-top">
+                                                <tr>
+                                                    <th style="width: 40px;" class="text-center">Chọn</th>
+                                                    <th style="width: 50px;">STT</th>
+                                                    <th>Tên dịch vụ</th>
+                                                    <th>Mã</th>
+                                                    <th class="text-end">Giá dịch vụ</th>
+                                                    <th>Ghi chú</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @forelse($danhSachDichVuLe ?? [] as $idx => $dvl)
+                                                @php
+                                                    $dvlItem = [
+                                                        'id' => $dvl->id,
+                                                        'ten_dich_vu' => $dvl->ten_dich_vu ?? '—',
+                                                        'ma_dich_vu' => $dvl->ma_dich_vu ?? '—',
+                                                        'gia_goc' => $dvl->gia_dich_vu !== null ? (float)$dvl->gia_dich_vu : 0,
+                                                        'gia_dich_vu' => $dvl->gia_dich_vu !== null ? number_format((float)$dvl->gia_dich_vu, 0, ',', '.') . ' đ' : '—',
+                                                        'ghi_chu' => $dvl->ghi_chu ? \Illuminate\Support\Str::limit($dvl->ghi_chu, 40) : '—',
+                                                        'so_luong' => 1,
+                                                    ];
+                                                @endphp
+                                                <tr data-dich-vu-le='{{ json_encode($dvlItem, JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE) }}'>
+                                                    <td class="text-center">
+                                                        <input type="checkbox" class="form-check-input cb-dich-vu-le-sua" value="{{ $dvl->id }}" aria-label="Chọn dịch vụ {{ $dvl->ten_dich_vu }}">
+                                                    </td>
+                                                    <td>{{ $idx + 1 }}</td>
+                                                    <td>{{ $dvl->ten_dich_vu ?? '—' }}</td>
+                                                    <td>{{ $dvl->ma_dich_vu ?? '—' }}</td>
+                                                    <td class="text-end">{{ $dvl->gia_dich_vu !== null ? number_format((float)$dvl->gia_dich_vu, 0, ',', '.') . ' đ' : '—' }}</td>
+                                                    <td>{{ $dvl->ghi_chu ? str($dvl->ghi_chu)->limit(40) : '—' }}</td>
+                                                </tr>
+                                                @empty
+                                                <tr><td colspan="6" class="text-center text-muted py-3">Chưa có dịch vụ lẻ.</td></tr>
+                                                @endforelse
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-12 col-md-4">
-                            <label class="form-label" for="sua_tho_make_id">Thợ make</label>
-                            <select class="form-select" id="sua_tho_make_id" name="tho_make_id">
-                                <option value="">-- Chọn --</option>
-                                @foreach($danhSachNhanVien ?? [] as $nv)
-                                <option value="{{ $nv->id }}">{{ $nv->user?->name ?? 'NV #' . $nv->id }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-12 col-md-4">
-                            <label class="form-label" for="sua_tho_edit_id">Thợ edit</label>
-                            <select class="form-select" id="sua_tho_edit_id" name="tho_edit_id">
-                                <option value="">-- Chọn --</option>
-                                @foreach($danhSachNhanVien ?? [] as $nv)
-                                <option value="{{ $nv->id }}">{{ $nv->user?->name ?? 'NV #' . $nv->id }}</option>
-                                @endforeach
-                            </select>
+                        {{-- Bảng: Dịch vụ lẻ của nhóm đã chọn (Sua) --}}
+                        <div class="col-12 d-none" id="boxDichVuLeTheoNhomSua">
+                            <label class="form-label fw-medium">Dịch vụ lẻ của nhóm đã chọn</label>
+                            <div class="table-responsive border rounded" style="max-height: 200px; overflow-y: auto;">
+                                <table class="table table-sm table-bordered mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th style="width: 40px;" class="text-center">Chọn</th>
+                                            <th>Nhóm dịch vụ</th>
+                                            <th style="width: 50px;">STT</th>
+                                            <th>Tên dịch vụ</th>
+                                            <th>Mã</th>
+                                            <th class="text-end">Giá gốc</th>
+                                            <th class="text-end">Giá thực</th>
+                                            <th>Ghi chú</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyDichVuLeTheoNhomSua"></tbody>
+                                    <tfoot id="tfootDichVuLeTheoNhomSua" class="table-light">
+                                        <tr>
+                                            <td colspan="5" class="text-end fw-medium">Tổng</td>
+                                            <td class="text-end fw-medium" id="tdTongGiaGocSua">0 đ</td>
+                                            <td class="text-end fw-medium" id="tdTongGiaThucSua">0 đ</td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="sua_trang_phuc">Trang phục</label>
@@ -463,45 +576,21 @@
                             <label class="form-label" for="sua_ghi_chu_chup">Ghi chú chụp</label>
                             <textarea class="form-control" id="sua_ghi_chu_chup" name="ghi_chu_chup" rows="2" placeholder="Ghi chú"></textarea>
                         </div>
-                        <div class="col-12 col-md-4">
+                        <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="sua_tong_tien">Tổng tiền</label>
                             <input type="number" class="form-control" id="sua_tong_tien" name="tong_tien" min="0" step="0.01">
                         </div>
-                        <div class="col-12 col-md-4">
+                        <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="sua_thanh_toan_lan_1">Thanh toán lần 1</label>
                             <input type="number" class="form-control" id="sua_thanh_toan_lan_1" name="thanh_toan_lan_1" min="0" step="0.01">
                         </div>
-                        <div class="col-12 col-md-4">
+                        <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="sua_thanh_toan_lan_2">Thanh toán lần 2</label>
                             <input type="number" class="form-control" id="sua_thanh_toan_lan_2" name="thanh_toan_lan_2" min="0" step="0.01">
                         </div>
-                        <div class="col-12 col-md-4">
+                        <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="sua_thanh_toan_lan_3">Thanh toán lần 3</label>
                             <input type="number" class="form-control" id="sua_thanh_toan_lan_3" name="thanh_toan_lan_3" min="0" step="0.01">
-                        </div>
-                        <div class="col-12 col-md-4">
-                            <label class="form-label" for="sua_trang_thai_hop_dong">Trạng thái hợp đồng</label>
-                            <input type="text" class="form-control" id="sua_trang_thai_hop_dong" name="trang_thai_hop_dong" placeholder="VD: Mới, Đã thanh toán...">
-                        </div>
-                        <div class="col-12 col-md-4">
-                            <label class="form-label" for="sua_trang_thai_edit">Trạng thái edit</label>
-                            <input type="text" class="form-control" id="sua_trang_thai_edit" name="trang_thai_edit" placeholder="VD: Đang edit, Đã xong...">
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <label class="form-label" for="sua_link_file_demo">Link file demo</label>
-                            <input type="text" class="form-control" id="sua_link_file_demo" name="link_file_demo" placeholder="URL">
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <label class="form-label" for="sua_link_file_in">Link file in</label>
-                            <input type="text" class="form-control" id="sua_link_file_in" name="link_file_in" placeholder="URL">
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <label class="form-label" for="sua_ngay_tra_link_in">Ngày trả link in</label>
-                            <input type="date" class="form-control" id="sua_ngay_tra_link_in" name="ngay_tra_link_in">
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <label class="form-label" for="sua_ngay_hen_tra_hang">Ngày hẹn trả hàng</label>
-                            <input type="date" class="form-control" id="sua_ngay_hen_tra_hang" name="ngay_hen_tra_hang">
                         </div>
                     </div>
                 </div>
@@ -525,7 +614,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
             </div>
             <div class="modal-body">
-                Bạn có chắc muốn xóa hợp đồng này?
+                <p class="mb-0">Bạn có chắc muốn xóa hợp đồng này?</p>
+                <p class="text-warning mb-0 mt-2 small">
+                    <i class="fa-solid fa-triangle-exclamation me-1"></i>
+                    Toàn bộ bản ghi dịch vụ trong hợp đồng (bảng dịch vụ trong hợp đồng) cũng sẽ bị xóa theo. Thao tác không thể hoàn tác.
+                </p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
@@ -540,20 +633,15 @@
 @push('styles')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
 <style>
-#modalThemHopDong .modal-dialog.modal-hop-dong {
+#modalThemHopDong .modal-dialog.modal-hop-dong,
+#modalSuaHopDong .modal-dialog.modal-hop-dong {
     max-width: 95vw;
     width: 1200px;
 }
-#modalSuaHopDong .modal-dialog.modal-hop-dong {
-    max-width: 90vw;
-    width: 900px;
-}
 @media (min-width: 992px) {
-    #modalThemHopDong .modal-dialog.modal-hop-dong {
-        max-width: 1200px;
-    }
+    #modalThemHopDong .modal-dialog.modal-hop-dong,
     #modalSuaHopDong .modal-dialog.modal-hop-dong {
-        max-width: 900px;
+        max-width: 1200px;
     }
 }
 #modalXacNhanXoaHopDong .modal-confirm-xoa {
@@ -592,7 +680,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     @endif
 
-    // Modal Sửa: gán data vào form
+    // Modal Sửa: gán data vào form (cấu trúc giống Thêm mới, khách hàng disabled)
     var modalSua = document.getElementById('modalSuaHopDong');
     var formSua = document.getElementById('formSuaHopDong');
     if (modalSua && formSua) {
@@ -601,26 +689,68 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!btn || !btn.classList.contains('btn-sua-hop-dong')) return;
             var url = btn.getAttribute('data-url');
             if (url) formSua.action = url;
-            document.getElementById('sua_khach_hang_id').value = btn.getAttribute('data-khach-hang-id') || '';
-            document.getElementById('sua_tho_chup_id').value = btn.getAttribute('data-tho-chup-id') || '';
-            document.getElementById('sua_tho_make_id').value = btn.getAttribute('data-tho-make-id') || '';
-            document.getElementById('sua_tho_edit_id').value = btn.getAttribute('data-tho-edit-id') || '';
+            var khachHangId = btn.getAttribute('data-khach-hang-id') || '';
+            document.getElementById('sua_khach_hang_id').value = khachHangId;
+            document.getElementById('sua_khach_hang_id_hidden').value = khachHangId;
             document.getElementById('sua_dia_diem').value = btn.getAttribute('data-dia-diem') || '';
             document.getElementById('sua_ngay_chup').value = btn.getAttribute('data-ngay-chup') || '';
+            document.getElementById('sua_ngay_hen_tra_hang').value = btn.getAttribute('data-ngay-hen-tra-hang') || '';
             document.getElementById('sua_trang_phuc').value = btn.getAttribute('data-trang-phuc') || '';
             document.getElementById('sua_concept').value = btn.getAttribute('data-concept') || '';
             document.getElementById('sua_ghi_chu_chup').value = btn.getAttribute('data-ghi-chu-chup') || '';
-            document.getElementById('sua_trang_thai_chup').value = btn.getAttribute('data-trang-thai-chup') || '';
             document.getElementById('sua_tong_tien').value = btn.getAttribute('data-tong-tien') || '';
             document.getElementById('sua_thanh_toan_lan_1').value = btn.getAttribute('data-thanh-toan-lan-1') || '';
             document.getElementById('sua_thanh_toan_lan_2').value = btn.getAttribute('data-thanh-toan-lan-2') || '';
             document.getElementById('sua_thanh_toan_lan_3').value = btn.getAttribute('data-thanh-toan-lan-3') || '';
-            document.getElementById('sua_trang_thai_hop_dong').value = btn.getAttribute('data-trang-thai-hop-dong') || '';
-            document.getElementById('sua_trang_thai_edit').value = btn.getAttribute('data-trang-thai-edit') || '';
-            document.getElementById('sua_link_file_demo').value = btn.getAttribute('data-link-file-demo') || '';
-            document.getElementById('sua_link_file_in').value = btn.getAttribute('data-link-file-in') || '';
-            document.getElementById('sua_ngay_tra_link_in').value = btn.getAttribute('data-ngay-tra-link-in') || '';
-            document.getElementById('sua_ngay_hen_tra_hang').value = btn.getAttribute('data-ngay-hen-tra-hang') || '';
+            // Reset tab dịch vụ (Sua)
+            var tableNhomSua = document.getElementById('tableNhomDichVuSua');
+            var tableDichVuLeSua = document.getElementById('tableDichVuLeSua');
+            var boxDichVuLeSua = document.getElementById('boxDichVuLeTheoNhomSua');
+            var tbodyDichVuLeSua = document.getElementById('tbodyDichVuLeTheoNhomSua');
+            if (tableNhomSua) tableNhomSua.querySelectorAll('.cb-nhom-dich-vu-sua').forEach(function(cb) { cb.checked = false; });
+            if (tableDichVuLeSua) tableDichVuLeSua.querySelectorAll('.cb-dich-vu-le-sua').forEach(function(cb) { cb.checked = false; });
+            if (boxDichVuLeSua) boxDichVuLeSua.classList.add('d-none');
+            if (tbodyDichVuLeSua) tbodyDichVuLeSua.innerHTML = '';
+
+            // Load dịch vụ đã lưu của hợp đồng từ dich_vu_trong_hop_dong và đổ vào bảng (Sua)
+            var dichVuUrl = btn.getAttribute('data-dich-vu-url');
+            if (dichVuUrl && tbodyDichVuLeSua && boxDichVuLeSua) {
+                fetch(dichVuUrl, { headers: { 'Accept': 'application/json' } })
+                    .then(function(res) { return res.json(); })
+                    .then(function(json) {
+                        var data = (json && json.data) ? json.data : [];
+                        tbodyDichVuLeSua.innerHTML = '';
+                        if (!Array.isArray(data) || data.length === 0) {
+                            boxDichVuLeSua.classList.add('d-none');
+                            return;
+                        }
+                        boxDichVuLeSua.classList.remove('d-none');
+                        data.forEach(function(row, idx) {
+                            var stt = idx + 1;
+                            var giaGoc = row.gia_goc != null ? Number(row.gia_goc) : 0;
+                            var giaThuc = row.gia_thuc != null ? Number(row.gia_thuc) : giaGoc;
+                            var tr = document.createElement('tr');
+                            tr.setAttribute('data-dich-vu-le-id', row.id_dich_vu);
+                            tr.setAttribute('data-gia-goc', String(giaGoc));
+                            tr.innerHTML =
+                                '<td class="text-center"><input type="checkbox" class="form-check-input cb-dich-vu-le-hop-dong" checked value="' + escapeHtml(String(row.id_dich_vu)) + '" aria-label="Chọn lưu dịch vụ"></td>' +
+                                '<td>' + escapeHtml('—') + '</td>' +
+                                '<td>' + stt + '</td>' +
+                                '<td>' + escapeHtml(row.ten_dich_vu) + '</td>' +
+                                '<td>' + escapeHtml(row.ma_dich_vu) + '</td>' +
+                                '<td class="text-end">' + escapeHtml(formatMoney(giaGoc) + ' đ') + '</td>' +
+                                '<td class="text-end"><input type="number" class="form-control form-control-sm input-gia-thuc" min="0" step="10" value="' + escapeHtml(String(giaThuc)) + '" style="width: 100px; display: inline-block;" placeholder="Tròn chục" inputmode="numeric"></td>' +
+                                '<td>' + escapeHtml(row.ghi_chu) + '</td>';
+                            tbodyDichVuLeSua.appendChild(tr);
+                        });
+                        updateTongDichVuLeTheoNhomSua();
+                    })
+                    .catch(function() {
+                        // Nếu lỗi thì không chặn mở modal, chỉ không hiển thị dịch vụ
+                        boxDichVuLeSua.classList.add('d-none');
+                        tbodyDichVuLeSua.innerHTML = '';
+                    });
+            }
         });
     }
 
@@ -841,6 +971,160 @@ document.addEventListener('DOMContentLoaded', function() {
                     inp.name = o.n;
                     inp.value = o.v;
                     formThemHopDong.appendChild(inp);
+                });
+                index++;
+            });
+        });
+    }
+
+    // --- Modal Sửa: tab Nhóm dịch vụ + Dịch vụ lẻ → bảng "Dịch vụ lẻ của nhóm đã chọn" (logic giống Thêm) ---
+    var tableNhomSua = document.getElementById('tableNhomDichVuSua');
+    var tableDichVuLeSua = document.getElementById('tableDichVuLeSua');
+    var boxDichVuLeSua = document.getElementById('boxDichVuLeTheoNhomSua');
+    var tbodyDichVuLeSua = document.getElementById('tbodyDichVuLeTheoNhomSua');
+
+    function renderDichVuLeTheoNhomSua() {
+        if (!tbodyDichVuLeSua || !boxDichVuLeSua) return;
+        var checkedNhomRows = [];
+        if (tableNhomSua) {
+            tableNhomSua.querySelectorAll('tbody tr[data-nhom-id]').forEach(function(row) {
+                if (row.querySelector('.cb-nhom-dich-vu-sua') && row.querySelector('.cb-nhom-dich-vu-sua').checked) checkedNhomRows.push(row);
+            });
+        }
+        var checkedDichVuLeRows = [];
+        if (tableDichVuLeSua) {
+            tableDichVuLeSua.querySelectorAll('tbody tr[data-dich-vu-le]').forEach(function(row) {
+                if (row.querySelector('.cb-dich-vu-le-sua') && row.querySelector('.cb-dich-vu-le-sua').checked) checkedDichVuLeRows.push(row);
+            });
+        }
+        var allItems = [];
+        checkedNhomRows.forEach(function(row) {
+            var tenNhom = row.getAttribute('data-ten-nhom') || '—';
+            var json = row.getAttribute('data-dich-vu-le');
+            var list = [];
+            try { list = json ? JSON.parse(json) : []; } catch (e) {}
+            list.forEach(function(dvl) {
+                allItems.push({ tenNhom: tenNhom, dvl: dvl });
+            });
+        });
+        checkedDichVuLeRows.forEach(function(row) {
+            var json = row.getAttribute('data-dich-vu-le');
+            var dvl = null;
+            try { dvl = json ? JSON.parse(json) : null; } catch (e) {}
+            if (dvl) allItems.push({ tenNhom: '—', dvl: dvl });
+        });
+        var seenMa = {};
+        var uniqueItems = [];
+        allItems.forEach(function(item) {
+            var ma = (item.dvl.ma_dich_vu != null && item.dvl.ma_dich_vu !== '') ? String(item.dvl.ma_dich_vu).trim() : null;
+            var key = ma !== null ? ma : '__empty_' + (item.dvl.id != null ? item.dvl.id : uniqueItems.length);
+            if (seenMa[key]) return;
+            seenMa[key] = true;
+            uniqueItems.push(item);
+        });
+        tbodyDichVuLeSua.innerHTML = '';
+        if (uniqueItems.length === 0) {
+            if (checkedNhomRows.length > 0) {
+                boxDichVuLeSua.classList.remove('d-none');
+                var tr = document.createElement('tr');
+                tr.innerHTML = '<td colspan="8" class="text-muted">Nhóm đã chọn chưa có dịch vụ lẻ.</td>';
+                tbodyDichVuLeSua.appendChild(tr);
+                updateTongDichVuLeTheoNhomSua();
+            } else {
+                boxDichVuLeSua.classList.add('d-none');
+            }
+            return;
+        }
+        boxDichVuLeSua.classList.remove('d-none');
+        uniqueItems.forEach(function(item, idx) {
+            var tenNhom = item.tenNhom;
+            var dvl = item.dvl;
+            var stt = idx + 1;
+            var giaGoc = dvl.gia_goc != null ? Number(dvl.gia_goc) : 0;
+            var giaThucTronChuc = Math.round(giaGoc / 10) * 10;
+            var giaGocDisplay = dvl.gia_dich_vu != null && dvl.gia_dich_vu !== '' ? dvl.gia_dich_vu : '—';
+            var tr = document.createElement('tr');
+            tr.setAttribute('data-dich-vu-le-id', dvl.id);
+            tr.setAttribute('data-gia-goc', String(giaGoc));
+            tr.innerHTML =
+                '<td class="text-center"><input type="checkbox" class="form-check-input cb-dich-vu-le-hop-dong" checked value="' + escapeHtml(String(dvl.id)) + '" aria-label="Chọn lưu dịch vụ"></td>' +
+                '<td>' + escapeHtml(tenNhom) + '</td>' +
+                '<td>' + stt + '</td>' +
+                '<td>' + escapeHtml(dvl.ten_dich_vu) + '</td>' +
+                '<td>' + escapeHtml(dvl.ma_dich_vu) + '</td>' +
+                '<td class="text-end">' + escapeHtml(giaGocDisplay) + '</td>' +
+                '<td class="text-end"><input type="number" class="form-control form-control-sm input-gia-thuc" min="0" step="10" value="' + escapeHtml(String(giaThucTronChuc)) + '" style="width: 100px; display: inline-block;" placeholder="Tròn chục" inputmode="numeric"></td>' +
+                '<td>' + escapeHtml(dvl.ghi_chu) + '</td>';
+            tbodyDichVuLeSua.appendChild(tr);
+        });
+        updateTongDichVuLeTheoNhomSua();
+    }
+
+    function updateTongDichVuLeTheoNhomSua() {
+        var tdTongGiaGocSua = document.getElementById('tdTongGiaGocSua');
+        var tdTongGiaThucSua = document.getElementById('tdTongGiaThucSua');
+        if (!tbodyDichVuLeSua || !tdTongGiaGocSua || !tdTongGiaThucSua) return;
+        var rows = tbodyDichVuLeSua.querySelectorAll('tr[data-dich-vu-le-id]');
+        var tongGoc = 0, tongThuc = 0;
+        rows.forEach(function(tr) {
+            tongGoc += parseFloat(tr.getAttribute('data-gia-goc')) || 0;
+            var inp = tr.querySelector('.input-gia-thuc');
+            tongThuc += inp ? (parseFloat(inp.value) || 0) : 0;
+        });
+        tdTongGiaGocSua.textContent = formatMoney(tongGoc) + ' đ';
+        tdTongGiaThucSua.textContent = formatMoney(tongThuc) + ' đ';
+    }
+
+    if (tableNhomSua) {
+        tableNhomSua.addEventListener('change', function(e) {
+            if (!e.target.classList.contains('cb-nhom-dich-vu-sua')) return;
+            if (e.target.checked) {
+                tableNhomSua.querySelectorAll('.cb-nhom-dich-vu-sua').forEach(function(cb) {
+                    if (cb !== e.target) cb.checked = false;
+                });
+            }
+            renderDichVuLeTheoNhomSua();
+        });
+    }
+    if (tableDichVuLeSua) {
+        tableDichVuLeSua.addEventListener('change', function(e) {
+            if (e.target.classList.contains('cb-dich-vu-le-sua')) renderDichVuLeTheoNhomSua();
+        });
+    }
+    if (boxDichVuLeSua) {
+        boxDichVuLeSua.addEventListener('input', function(e) {
+            if (!e.target.classList.contains('input-gia-thuc')) return;
+            var inp = e.target;
+            if (inp.value.indexOf('.') !== -1) inp.value = roundToTen(inp.value);
+            updateTongDichVuLeTheoNhomSua();
+        });
+        boxDichVuLeSua.addEventListener('change', function(e) {
+            if (e.target.classList.contains('input-gia-thuc')) {
+                e.target.value = roundToTen(e.target.value);
+                updateTongDichVuLeTheoNhomSua();
+            }
+        });
+    }
+
+    // Submit form Sửa HĐ: gửi dịch vụ lẻ được tích chọn (giống Thêm)
+    if (formSua && tbodyDichVuLeSua) {
+        formSua.addEventListener('submit', function() {
+            document.querySelectorAll('#formSuaHopDong input[name^="dich_vu_le_hop_dong"]').forEach(function(el) { el.remove(); });
+            var index = 0;
+            tbodyDichVuLeSua.querySelectorAll('tr[data-dich-vu-le-id]').forEach(function(tr) {
+                var cb = tr.querySelector('.cb-dich-vu-le-hop-dong');
+                if (!cb || !cb.checked) return;
+                var dichVuLeId = tr.getAttribute('data-dich-vu-le-id');
+                var giaGoc = tr.getAttribute('data-gia-goc') || '0';
+                var inputGiaThuc = tr.querySelector('.input-gia-thuc');
+                var giaThuc = inputGiaThuc ? inputGiaThuc.value : giaGoc;
+                var prefix = 'dich_vu_le_hop_dong[' + index + ']';
+                [ { n: prefix + '[dich_vu_le_id]', v: dichVuLeId }, { n: prefix + '[gia_goc]', v: String(giaGoc) }, { n: prefix + '[gia_thuc]', v: String(giaThuc) } ].forEach(function(o) {
+                    var inp = document.createElement('input');
+                    inp.type = 'hidden';
+                    inp.name = o.n;
+                    inp.value = o.v;
+                    formSua.appendChild(inp);
                 });
                 index++;
             });

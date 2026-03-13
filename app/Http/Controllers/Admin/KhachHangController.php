@@ -13,6 +13,29 @@ use Illuminate\Http\Request;
 
 class KhachHangController extends Controller
 {
+    public function dichVuTrongHopDong(HopDong $hopDong)
+    {
+        $rows = DichVuTrongHopDong::query()
+            ->where('dich_vu_trong_hop_dong.id_hop_dong', $hopDong->id)
+            ->join('dich_vu_le', 'dich_vu_le.id', '=', 'dich_vu_trong_hop_dong.id_dich_vu')
+            ->select([
+                'dich_vu_trong_hop_dong.id',
+                'dich_vu_trong_hop_dong.id_hop_dong',
+                'dich_vu_trong_hop_dong.id_dich_vu',
+                'dich_vu_trong_hop_dong.gia_goc',
+                'dich_vu_trong_hop_dong.gia_thuc',
+                'dich_vu_trong_hop_dong.ghi_chu',
+                'dich_vu_le.ten_dich_vu',
+                'dich_vu_le.ma_dich_vu',
+            ])
+            ->orderBy('dich_vu_trong_hop_dong.id')
+            ->get();
+
+        return response()->json([
+            'data' => $rows,
+        ]);
+    }
+
     public function index()
     {
         return redirect()->route('admin.khach-hang.danh-sach');
@@ -209,15 +232,43 @@ class KhachHangController extends Controller
             'link_file_in' => 'nullable|string|max:500',
             'ngay_tra_link_in' => 'nullable|date',
             'ngay_hen_tra_hang' => 'nullable|date',
+            'dich_vu_le_hop_dong' => 'nullable|array',
+            'dich_vu_le_hop_dong.*.dich_vu_le_id' => 'required_with:dich_vu_le_hop_dong|integer|exists:dich_vu_le,id',
+            'dich_vu_le_hop_dong.*.gia_goc' => 'nullable|numeric|min:0',
+            'dich_vu_le_hop_dong.*.gia_thuc' => 'nullable|numeric|min:0',
+            'dich_vu_le_hop_dong.*.ghi_chu' => 'nullable|string|max:500',
         ]);
 
+        $dichVuLeHopDong = $request->input('dich_vu_le_hop_dong', []);
+        unset($validated['dich_vu_le_hop_dong']);
+
         $hopDong->update($validated);
+
+        // Cập nhật dịch vụ trong hợp đồng: xóa cũ, thêm lại theo danh sách gửi lên
+        DichVuTrongHopDong::where('id_hop_dong', $hopDong->id)->delete();
+        if (! empty($dichVuLeHopDong)) {
+            foreach ($dichVuLeHopDong as $item) {
+                $idDichVu = (int) ($item['dich_vu_le_id'] ?? 0);
+                if ($idDichVu <= 0) {
+                    continue;
+                }
+                DichVuTrongHopDong::create([
+                    'id_hop_dong' => $hopDong->id,
+                    'id_dich_vu' => $idDichVu,
+                    'gia_goc' => (float) ($item['gia_goc'] ?? 0),
+                    'gia_thuc' => (float) ($item['gia_thuc'] ?? 0),
+                    'ghi_chu' => $item['ghi_chu'] ?? null,
+                ]);
+            }
+        }
 
         return redirect()->route('admin.khach-hang.hop-dong')->with('success', 'Đã cập nhật hợp đồng thành công.');
     }
 
     public function destroyHopDong(HopDong $hopDong)
     {
+        // Xóa tất cả bản ghi dịch vụ trong hợp đồng (id_hop_dong trùng) trước khi xóa hợp đồng
+        DichVuTrongHopDong::where('id_hop_dong', $hopDong->id)->delete();
         $hopDong->delete();
         return redirect()->route('admin.khach-hang.hop-dong')->with('success', 'Đã xóa hợp đồng.');
     }
