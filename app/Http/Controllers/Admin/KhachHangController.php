@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\DichVuLe;
+use App\Models\DichVuTrongHopDong;
 use App\Models\HopDong;
 use App\Models\KhachHang;
 use App\Models\NhanVien;
@@ -89,7 +90,7 @@ class KhachHangController extends Controller
     {
         $search = $request->get('search');
         $danhSach = HopDong::query()
-            ->with(['khachHang', 'thoChup.user', 'thoMake.user', 'thoEdit.user'])
+            ->with(['khachHang', 'nguoiTao', 'thoChup.user', 'thoMake.user', 'thoEdit.user'])
             ->when($search, function ($q) use ($search) {
                 $q->whereHas('khachHang', function ($q2) use ($search) {
                     $q2->where('ho_ten_chu_re', 'like', "%{$search}%")
@@ -125,6 +126,7 @@ class KhachHangController extends Controller
 
     public function storeHopDong(Request $request)
     {
+        // --- Bước 1: Validate và tách dữ liệu hợp đồng vs dịch vụ lẻ ---
         $validated = $request->validate([
             'khach_hang_id' => 'required|exists:khach_hang,id',
             'tho_chup_id' => 'nullable|exists:nhan_vien,id',
@@ -147,29 +149,38 @@ class KhachHangController extends Controller
             'ngay_tra_link_in' => 'nullable|date',
             'ngay_hen_tra_hang' => 'nullable|date',
             'dich_vu_le_hop_dong' => 'nullable|array',
-            'dich_vu_le_hop_dong.*.dich_vu_le_id' => 'required|integer|exists:dich_vu_le,id',
-            'dich_vu_le_hop_dong.*.gia_goc' => 'required|numeric|min:0',
-            'dich_vu_le_hop_dong.*.gia_thuc' => 'required|numeric|min:0',
+            'dich_vu_le_hop_dong.*.dich_vu_le_id' => 'required_with:dich_vu_le_hop_dong|integer|exists:dich_vu_le,id',
+            'dich_vu_le_hop_dong.*.gia_goc' => 'nullable|numeric|min:0',
+            'dich_vu_le_hop_dong.*.gia_thuc' => 'nullable|numeric|min:0',
+            'dich_vu_le_hop_dong.*.ghi_chu' => 'nullable|string|max:500',
         ]);
 
-        $validated['nguoi_tao_id'] = $request->user()?->id;
         $dichVuLeHopDong = $request->input('dich_vu_le_hop_dong', []);
         unset($validated['dich_vu_le_hop_dong']);
+        $validated['nguoi_tao_id'] = $request->user()?->id;
 
+        // --- Bước 2: Tạo hợp đồng (chỉ thông tin hợp đồng) ---
         $hopDong = HopDong::create($validated);
 
-        if (! empty($dichVuLeHopDong)) {
-            $sync = [];
+        // --- Bước 3: Chỉ khi đã có id hợp đồng mới thêm dịch vụ lẻ vào bảng dich_vu_trong_hop_dong ---
+        if ($hopDong->id && ! empty($dichVuLeHopDong)) {
             foreach ($dichVuLeHopDong as $item) {
-                $id = (int) ($item['dich_vu_le_id'] ?? 0);
-                if ($id > 0) {
-                    $sync[$id] = [
+                $idDichVu = (int) ($item['dich_vu_le_id'] ?? 0);
+                if ($idDichVu <= 0) {
+                    continue;
+                }
+                DichVuTrongHopDong::updateOrCreate(
+                    [
+                        'id_hop_dong' => $hopDong->id,
+                        'id_dich_vu' => $idDichVu,
+                    ],
+                    [
                         'gia_goc' => (float) ($item['gia_goc'] ?? 0),
                         'gia_thuc' => (float) ($item['gia_thuc'] ?? 0),
-                    ];
-                }
+                        'ghi_chu' => $item['ghi_chu'] ?? null,
+                    ]
+                );
             }
-            $hopDong->dichVuLe()->sync($sync);
         }
 
         return redirect()->route('admin.khach-hang.hop-dong')->with('success', 'Đã thêm hợp đồng thành công.');

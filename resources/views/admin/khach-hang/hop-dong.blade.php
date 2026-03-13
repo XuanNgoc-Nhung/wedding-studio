@@ -54,16 +54,20 @@
                 <thead class="table-light">
                     <tr>
                         <th style="width: 50px;">STT</th>
+                        <th>Người tạo</th>
                         <th>Khách hàng</th>
                         <th>Địa điểm</th>
                         <th>Ngày chụp</th>
-                        <th>Thợ chụp</th>
-                        <th>Thợ make</th>
-                        <th>Thợ edit</th>
+                        <th>Ngày hẹn trả hàng</th>
+                        <th>Trang phục</th>
+                        <th>Ghi chú</th>
                         <th class="text-end">Tổng tiền</th>
+                        <th class="text-end">Thanh toán lần 1</th>
+                        <th class="text-end">Thanh toán lần 2</th>
+                        <th class="text-end">Thanh toán lần 3</th>
                         <th>Trạng thái chụp</th>
-                        <th>Trạng thái HĐ</th>
                         <th>Trạng thái edit</th>
+                        <th>Trạng thái HĐ</th>
                         <th class="text-center" style="width: 100px;">Thao tác</th>
                     </tr>
                 </thead>
@@ -78,16 +82,20 @@
                     @endphp
                     <tr>
                         <td>{{ ($danhSach->currentPage() - 1) * $danhSach->perPage() + $index + 1 }}</td>
+                        <td>{{ $item->nguoiTao?->name ?? '—' }}</td>
                         <td><span class="fw-medium">{{ $tenKhachHang }}</span></td>
                         <td>{{ $item->dia_diem ? str($item->dia_diem)->limit(25) : '—' }}</td>
                         <td>{{ $item->ngay_chup ? $item->ngay_chup->format('d/m/Y') : '—' }}</td>
-                        <td>{{ $item->thoChup?->user?->name ?? '—' }}</td>
-                        <td>{{ $item->thoMake?->user?->name ?? '—' }}</td>
-                        <td>{{ $item->thoEdit?->user?->name ?? '—' }}</td>
+                        <td>{{ $item->ngay_hen_tra_hang ? $item->ngay_hen_tra_hang->format('d/m/Y') : '—' }}</td>
+                        <td>{{ $item->trang_phuc ? str($item->trang_phuc)->limit(30) : '—' }}</td>
+                        <td>{{ $item->ghi_chu_chup ? str($item->ghi_chu_chup)->limit(40) : '—' }}</td>
                         <td class="text-end">{{ $item->tong_tien !== null ? number_format((float)$item->tong_tien, 0, ',', '.') . ' đ' : '—' }}</td>
+                        <td class="text-end">{{ $item->thanh_toan_lan_1 !== null ? number_format((float)$item->thanh_toan_lan_1, 0, ',', '.') . ' đ' : '—' }}</td>
+                        <td class="text-end">{{ $item->thanh_toan_lan_2 !== null ? number_format((float)$item->thanh_toan_lan_2, 0, ',', '.') . ' đ' : '—' }}</td>
+                        <td class="text-end">{{ $item->thanh_toan_lan_3 !== null ? number_format((float)$item->thanh_toan_lan_3, 0, ',', '.') . ' đ' : '—' }}</td>
                         <td>{{ $item->trang_thai_chup ?? '—' }}</td>
-                        <td>{{ $item->trang_thai_hop_dong ?? '—' }}</td>
                         <td>{{ $item->trang_thai_edit ?? '—' }}</td>
+                        <td>{{ $item->trang_thai_hop_dong ?? '—' }}</td>
                         <td>
                             <div class="dropdown">
                                 <button type="button" class="btn btn-sm btn-icon btn-outline-secondary dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -134,7 +142,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="12" class="text-center py-4 text-muted">Chưa có hợp đồng nào.</td>
+                        <td colspan="16" class="text-center py-4 text-muted">Chưa có hợp đồng nào.</td>
                     </tr>
                     @endforelse
                 </tbody>
