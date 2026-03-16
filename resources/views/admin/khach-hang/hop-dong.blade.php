@@ -102,6 +102,13 @@
                                     <i class="fa-solid fa-ellipsis-vertical"></i>
                                 </button>
                                 <div class="dropdown-menu">
+                                    <button type="button"
+                                            class="dropdown-item btn-them-anh-thanh-toan"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modalAnhThanhToan"
+                                            data-hop-dong-id="{{ $item->id }}">
+                                        <i class="fa-solid fa-image me-2"></i> Thêm ảnh thanh toán
+                                    </button>
                                     <a class="dropdown-item btn-sua-hop-dong"
                                        href="javascript:void(0);"
                                        data-bs-toggle="modal"
@@ -189,15 +196,15 @@
                             </select>
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
-                            <label class="form-label" for="them_dia_diem">Địa điểm</label>
+                            <label class="form-label" for="them_dia_diem">Địa điểm (Dự kiến)</label>
                             <input type="text" class="form-control" id="them_dia_diem" name="dia_diem" value="{{ old('dia_diem') }}" placeholder="Địa điểm chụp">
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
-                            <label class="form-label" for="them_ngay_chup">Ngày chụp</label>
+                            <label class="form-label" for="them_ngay_chup">Ngày chụp (Dự kiến)</label>
                             <input type="text" class="flatpickr-date-admin form-control" id="them_ngay_chup" name="ngay_chup" value="{{ old('ngay_chup') }}" placeholder="dd/mm/yyyy" autocomplete="off">
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
-                            <label class="form-label" for="them_ngay_hen_tra_hang">Ngày hẹn trả hàng</label>
+                            <label class="form-label" for="them_ngay_hen_tra_hang">Ngày hẹn trả hàng (Dự kiến)</label>
                             <input type="text" class="flatpickr-date-admin form-control" id="them_ngay_hen_tra_hang" name="ngay_hen_tra_hang" value="{{ old('ngay_hen_tra_hang') }}" placeholder="dd/mm/yyyy" autocomplete="off">
                         </div>
                         {{-- Tabs: Nhóm dịch vụ & Dịch vụ lẻ (Filled Pills) --}}
@@ -419,15 +426,15 @@
                             </select>
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
-                            <label class="form-label" for="sua_dia_diem">Địa điểm</label>
+                            <label class="form-label" for="sua_dia_diem">Địa điểm (Dự kiến)</label>
                             <input type="text" class="form-control" id="sua_dia_diem" name="dia_diem" placeholder="Địa điểm chụp">
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
-                            <label class="form-label" for="sua_ngay_chup">Ngày chụp</label>
+                            <label class="form-label" for="sua_ngay_chup">Ngày chụp (Dự kiến)</label>
                             <input type="text" class="flatpickr-date-admin form-control" id="sua_ngay_chup" name="ngay_chup" placeholder="dd/mm/yyyy" autocomplete="off">
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
-                            <label class="form-label" for="sua_ngay_hen_tra_hang">Ngày hẹn trả hàng</label>
+                            <label class="form-label" for="sua_ngay_hen_tra_hang">Ngày hẹn trả hàng (Dự kiến)</label>
                             <input type="text" class="flatpickr-date-admin form-control" id="sua_ngay_hen_tra_hang" name="ngay_hen_tra_hang" placeholder="dd/mm/yyyy" autocomplete="off">
                         </div>
                         {{-- Tabs: Nhóm dịch vụ & Dịch vụ lẻ (Sua) --}}
@@ -604,6 +611,60 @@
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
                     <button type="submit" class="btn btn-primary">
                         <i class="fa-solid fa-floppy-disk me-1"></i> Lưu
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+ </div>
+
+{{-- Modal thêm ảnh thanh toán --}}
+<div class="modal fade" id="modalAnhThanhToan" tabindex="-1" aria-labelledby="modalAnhThanhToanLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAnhThanhToanLabel">Thêm ảnh thanh toán</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <form id="formAnhThanhToan" method="POST" action="#" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label d-block mb-2">Ảnh thanh toán</label>
+                        <div id="previewAnhThanhToanWrapper"
+                             class="border rounded d-flex align-items-center justify-content-center bg-light"
+                             style="width: 100%; max-width: 420px; height: 260px; margin: 0 auto 1rem auto;">
+                            <img id="previewAnhThanhToan"
+                                 src=""
+                                 alt="Preview ảnh thanh toán"
+                                 class="img-thumbnail"
+                                 style="max-height: 240px; max-width: 100%; object-fit: contain; display: none;">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="lan_thanh_toan" class="form-label">Lần thanh toán</label>
+                        <select name="lan_thanh_toan"
+                                id="lan_thanh_toan"
+                                class="form-select select2-admin"
+                                data-placeholder="Chọn lần thanh toán">
+                            <option value="1">Lần 1</option>
+                            <option value="2">Lần 2</option>
+                            <option value="3">Lần 3</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="anh_thanh_toan" class="form-label">Chọn file ảnh</label>
+                        <input type="file"
+                               name="anh_thanh_toan"
+                               id="anh_thanh_toan"
+                               class="form-control"
+                               accept="image/*">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fa-solid fa-upload me-1"></i> Lưu ảnh
                     </button>
                 </div>
             </form>
@@ -1164,6 +1225,64 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
                 index++;
             });
+        });
+    }
+
+    // Modal Thêm ảnh thanh toán: select2 + preview ảnh upload
+    var modalAnhThanhToan = document.getElementById('modalAnhThanhToan');
+    var inputAnhThanhToan = document.getElementById('anh_thanh_toan');
+    var previewWrapper = document.getElementById('previewAnhThanhToanWrapper');
+    var previewImg = document.getElementById('previewAnhThanhToan');
+
+    if (window.jQuery && jQuery.fn.select2) {
+        var $lanThanhToan = jQuery('#lan_thanh_toan');
+        if ($lanThanhToan.length) {
+            $lanThanhToan.select2({
+                dropdownParent: jQuery('#modalAnhThanhToan'),
+                width: '100%',
+                placeholder: $lanThanhToan.data('placeholder') || 'Chọn lần thanh toán',
+                minimumResultsForSearch: Infinity
+            });
+        }
+    }
+
+    if (inputAnhThanhToan && previewWrapper && previewImg) {
+        inputAnhThanhToan.addEventListener('change', function() {
+            var file = this.files && this.files[0] ? this.files[0] : null;
+            if (!file || !file.type || !file.type.startsWith('image/')) {
+                previewImg.src = '';
+                previewImg.style.display = 'none';
+                return;
+            }
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                previewImg.src = e.target.result || '';
+                if (previewImg.src) {
+                    previewImg.style.display = 'block';
+                } else {
+                    previewImg.style.display = 'none';
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    if (modalAnhThanhToan) {
+        modalAnhThanhToan.addEventListener('hidden.bs.modal', function() {
+            if (inputAnhThanhToan) {
+                inputAnhThanhToan.value = '';
+            }
+            if (previewImg) {
+                previewImg.src = '';
+                previewImg.style.display = 'none';
+            }
+            var $lanThanhToanReset = window.jQuery ? jQuery('#lan_thanh_toan') : null;
+            if ($lanThanhToanReset && $lanThanhToanReset.length) {
+                $lanThanhToanReset.val('1').trigger('change');
+            } else {
+                var selectLan = document.getElementById('lan_thanh_toan');
+                if (selectLan) selectLan.value = '1';
+            }
         });
     }
 });
