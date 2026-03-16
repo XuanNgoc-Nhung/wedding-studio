@@ -10,6 +10,7 @@ use App\Models\KhachHang;
 use App\Models\NhanVien;
 use App\Models\NhomDichVu;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class KhachHangController extends Controller
 {
@@ -271,5 +272,36 @@ class KhachHangController extends Controller
         DichVuTrongHopDong::where('id_hop_dong', $hopDong->id)->delete();
         $hopDong->delete();
         return redirect()->route('admin.khach-hang.hop-dong')->with('success', 'Đã xóa hợp đồng.');
+    }
+
+    /**
+     * Upload ảnh thanh toán và quay lại trang hợp đồng.
+     */
+    public function uploadAnhThanhToan(Request $request)
+    {
+        $validated = $request->validate([
+            'hop_dong_id' => 'required|exists:hop_dong,id',
+            'lan_thanh_toan' => 'required|in:1,2,3',
+            'anh_thanh_toan' => 'required|image|max:5120', // 5MB
+        ]);
+
+        /** @var \Illuminate\Http\UploadedFile $file */
+        $file = $request->file('anh_thanh_toan');
+
+        $hopDong = HopDong::findOrFail($validated['hop_dong_id']);
+        $lan = (int) $validated['lan_thanh_toan'];
+
+        $column = 'anh_thanh_toan_' . $lan;
+
+        // Lưu file vào storage/app/public/hop-dong/anh-thanh-toan
+        $path = $file->store('hop-dong/anh-thanh-toan', 'public');
+
+        // Cập nhật đường dẫn ảnh cho hợp đồng
+        $hopDong->{$column} = $path;
+        $hopDong->save();
+
+        return redirect()
+            ->route('admin.khach-hang.hop-dong')
+            ->with('success', 'Upload ảnh thanh toán thành công.');
     }
 }

@@ -89,10 +89,63 @@
                         <td>{{ $item->ngay_hen_tra_hang ? $item->ngay_hen_tra_hang->format('d/m/Y') : '—' }}</td>
                         <td>{{ $item->trang_phuc ? str($item->trang_phuc)->limit(30) : '—' }}</td>
                         <td>{{ $item->ghi_chu_chup ? str($item->ghi_chu_chup)->limit(40) : '—' }}</td>
-                        <td class="text-end">{{ $item->tong_tien !== null ? number_format((float)$item->tong_tien, 0, ',', '.') . ' đ' : '—' }}</td>
-                        <td class="text-end">{{ $item->thanh_toan_lan_1 !== null ? number_format((float)$item->thanh_toan_lan_1, 0, ',', '.') . ' đ' : '—' }}</td>
-                        <td class="text-end">{{ $item->thanh_toan_lan_2 !== null ? number_format((float)$item->thanh_toan_lan_2, 0, ',', '.') . ' đ' : '—' }}</td>
-                        <td class="text-end">{{ $item->thanh_toan_lan_3 !== null ? number_format((float)$item->thanh_toan_lan_3, 0, ',', '.') . ' đ' : '—' }}</td>
+                        <td class="text-end">
+                            {{ $item->tong_tien !== null ? number_format((float)$item->tong_tien, 0, ',', '.') . ' đ' : '—' }}
+                        </td>
+                        <td class="text-end">
+                            @if($item->thanh_toan_lan_1 !== null)
+                                <div class="d-flex justify-content-between align-items-center gap-2">
+                                    <span class="flex-grow-1 text-end">
+                                        {{ number_format((float)$item->thanh_toan_lan_1, 0, ',', '.') . ' đ' }}
+                                    </span>
+                                    @if(!empty($item->anh_thanh_toan_1))
+                                        <button type="button"
+                                                onclick="xemAnhThanhToan('{{ asset('storage/' . $item->anh_thanh_toan_1) }}', 'Ảnh thanh toán lần 1')"
+                                                class="btn btn-sm btn-outline-secondary ms-2 btn-xem-anh-thanh-toan">
+                                            Xem
+                                        </button>
+                                    @endif
+                                </div>
+                            @else
+                                —
+                            @endif
+                        </td>
+                        <td class="text-end">
+                            @if($item->thanh_toan_lan_2 !== null)
+                                <div class="d-flex justify-content-between align-items-center gap-2">
+                                    <span class="flex-grow-1 text-end">
+                                        {{ number_format((float)$item->thanh_toan_lan_2, 0, ',', '.') . ' đ' }}
+                                    </span>
+                                    @if(!empty($item->anh_thanh_toan_2))
+                                        <button type="button"
+                                                onclick="xemAnhThanhToan('{{ asset('storage/' . $item->anh_thanh_toan_2) }}', 'Ảnh thanh toán lần 2')"
+                                                class="btn btn-sm btn-outline-secondary ms-2 btn-xem-anh-thanh-toan">
+                                            Xem
+                                        </button>
+                                    @endif
+                                </div>
+                            @else
+                                —
+                            @endif
+                        </td>
+                        <td class="text-end">
+                            @if($item->thanh_toan_lan_3 !== null)
+                                <div class="d-flex justify-content-between align-items-center gap-2">
+                                    <span class="flex-grow-1 text-end">
+                                        {{ number_format((float)$item->thanh_toan_lan_3, 0, ',', '.') . ' đ' }}
+                                    </span>
+                                    @if(!empty($item->anh_thanh_toan_3))
+                                        <button type="button"
+                                                onclick="xemAnhThanhToan('{{ asset('storage/' . $item->anh_thanh_toan_3) }}', 'Ảnh thanh toán lần 3')"
+                                                class="btn btn-sm btn-outline-secondary ms-2 btn-xem-anh-thanh-toan">
+                                            Xem
+                                        </button>
+                                    @endif
+                                </div>
+                            @else
+                                —
+                            @endif
+                        </td>
                         <td>{{ $item->trang_thai_chup ?? '—' }}</td>
                         <td>{{ $item->trang_thai_edit ?? '—' }}</td>
                         <td>{{ $item->trang_thai_hop_dong ?? '—' }}</td>
@@ -106,7 +159,8 @@
                                             class="dropdown-item btn-them-anh-thanh-toan"
                                             data-bs-toggle="modal"
                                             data-bs-target="#modalAnhThanhToan"
-                                            data-hop-dong-id="{{ $item->id }}">
+                                            data-hop-dong-id="{{ $item->id }}"
+                                            data-upload-url="{{ route('admin.khach-hang.hop-dong.upload-anh-thanh-toan') }}">
                                         <i class="fa-solid fa-image me-2"></i> Thêm ảnh thanh toán
                                     </button>
                                     <a class="dropdown-item btn-sua-hop-dong"
@@ -159,6 +213,39 @@
         <x-pagination-info :paginator="$danhSach ?? null" label="hợp đồng" />
     </div>
 </div>
+
+<script>
+    // Hàm xem ảnh thanh toán, được đặt ngay dưới bảng để luôn có sẵn cho các nút "Xem"
+    function xemAnhThanhToan(url, title) {
+        console.log('[XEM ANH] gọi xemAnhThanhToan với:', { url: url, title: title });
+
+        var modal = document.getElementById('modalXemAnhThanhToan');
+        var img = document.getElementById('imgXemAnhThanhToan');
+        var titleEl = document.getElementById('modalXemAnhThanhToanLabel');
+
+        if (!modal || !img) {
+            console.warn('[XEM ANH] Không tìm thấy modal hoặc thẻ img hiển thị ảnh.');
+            return;
+        }
+
+        if (!url) {
+            console.warn('[XEM ANH] URL ảnh không hợp lệ:', url);
+            return;
+        }
+
+        img.src = url;
+        if (titleEl) {
+            titleEl.textContent = title || 'Ảnh thanh toán';
+        }
+
+        if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
+            var instance = bootstrap.Modal.getOrCreateInstance(modal);
+            instance.show();
+        } else {
+            console.warn('[XEM ANH] bootstrap.Modal chưa sẵn sàng, không thể mở modal.');
+        }
+    }
+</script>
 
 {{-- Modal Thêm mới hợp đồng --}}
 <div class="modal fade" id="modalThemHopDong" tabindex="-1" aria-labelledby="modalThemHopDongLabel" aria-hidden="true">
@@ -618,6 +705,27 @@
     </div>
  </div>
 
+{{-- Modal xem ảnh thanh toán --}}
+<div class="modal fade" id="modalXemAnhThanhToan" tabindex="-1" aria-labelledby="modalXemAnhThanhToanLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalXemAnhThanhToanLabel">Ảnh thanh toán</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="imgXemAnhThanhToan"
+                     src=""
+                     alt="Ảnh thanh toán"
+                     class="img-fluid rounded shadow-sm">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {{-- Modal thêm ảnh thanh toán --}}
 <div class="modal fade" id="modalAnhThanhToan" tabindex="-1" aria-labelledby="modalAnhThanhToanLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -626,9 +734,13 @@
                 <h5 class="modal-title" id="modalAnhThanhToanLabel">Thêm ảnh thanh toán</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
             </div>
-            <form id="formAnhThanhToan" method="POST" action="#" enctype="multipart/form-data">
+            <form id="formAnhThanhToan"
+                  method="POST"
+                  action="{{ route('admin.khach-hang.hop-dong.upload-anh-thanh-toan') }}"
+                  enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body">
+                    <input type="hidden" name="hop_dong_id" id="anh_thanh_toan_hop_dong_id">
                     <div class="mb-3">
                         <label class="form-label d-block mb-2">Ảnh thanh toán</label>
                         <div id="previewAnhThanhToanWrapper"
@@ -1231,8 +1343,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Modal Thêm ảnh thanh toán: select2 + preview ảnh upload
     var modalAnhThanhToan = document.getElementById('modalAnhThanhToan');
     var inputAnhThanhToan = document.getElementById('anh_thanh_toan');
+    var inputHopDongIdAnh = document.getElementById('anh_thanh_toan_hop_dong_id');
     var previewWrapper = document.getElementById('previewAnhThanhToanWrapper');
     var previewImg = document.getElementById('previewAnhThanhToan');
+    var modalXemAnhThanhToan = document.getElementById('modalXemAnhThanhToan');
+    var imgXemAnhThanhToan = document.getElementById('imgXemAnhThanhToan');
 
     if (window.jQuery && jQuery.fn.select2) {
         var $lanThanhToan = jQuery('#lan_thanh_toan');
@@ -1244,6 +1359,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 minimumResultsForSearch: Infinity
             });
         }
+    }
+
+    // Khi mở modal, gán id hợp đồng
+    if (modalAnhThanhToan && formAnhThanhToan) {
+        modalAnhThanhToan.addEventListener('show.bs.modal', function (e) {
+            var btn = e.relatedTarget;
+            if (!btn || !btn.classList.contains('btn-them-anh-thanh-toan')) return;
+            var hopDongId = btn.getAttribute('data-hop-dong-id') || '';
+            if (inputHopDongIdAnh) {
+                inputHopDongIdAnh.value = hopDongId;
+            }
+        });
     }
 
     if (inputAnhThanhToan && previewWrapper && previewImg) {
@@ -1285,6 +1412,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Form upload ảnh thanh toán dùng submit mặc định (không dùng AJAX)
 });
 </script>
 @endpush
