@@ -173,7 +173,7 @@
                                     <div id="them_sp_hinh_anh_placeholder" class="text-center text-muted py-4 px-3">
                                         <span class="small">Vui lòng chọn ảnh sản phẩm</span>
                                     </div>
-                                    <img id="them_sp_hinh_anh_preview" src="" alt="Preview" class="rounded w-100 d-none" style="max-height: 210px; object-fit: cover;">
+                                    <img id="them_sp_hinh_anh_preview" src="" alt="Preview" class="rounded w-100 d-none" style="max-height: 240px; object-fit: cover;">
                                 </div>
                                 <input type="file" class="form-control" id="them_sp_hinh_anh" name="hinh_anh" accept="image/jpeg,image/png,image/gif,image/webp">
                                 <small class="text-muted d-block mt-1">JPEG, PNG, GIF, WebP — tối đa 5MB</small>
@@ -266,7 +266,7 @@
                                     <div id="sua_sp_hinh_anh_placeholder" class="text-center text-muted py-4 px-3">
                                         <span class="small">Ảnh hiện tại hoặc chọn ảnh mới</span>
                                     </div>
-                                    <img id="sua_sp_hinh_anh_preview" src="" alt="Preview" class="rounded w-100 d-none" style="max-height: 210px; object-fit: cover;">
+                                    <img id="sua_sp_hinh_anh_preview" src="" alt="Preview" class="rounded w-100 d-none" style="max-height: 240px; object-fit: cover;">
                                 </div>
                                 <input type="file" class="form-control" id="sua_sp_hinh_anh" name="hinh_anh" accept="image/jpeg,image/png,image/gif,image/webp">
                                 <small class="text-muted d-block mt-1">JPEG, PNG, GIF, WebP — tối đa 5MB</small>
