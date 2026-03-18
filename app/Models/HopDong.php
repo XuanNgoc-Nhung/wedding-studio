@@ -93,6 +93,18 @@ class HopDong extends Model
         return $this->belongsTo(NhanVien::class, 'tho_edit_id', 'id');
     }
 
+    /** Trang phục thuê (hợp đồng thuê trang phục — cột trang_phuc_id). */
+    public function trangPhuc(): BelongsTo
+    {
+        return $this->belongsTo(TrangPhuc::class, 'trang_phuc_id', 'id');
+    }
+
+    /** Người cho thuê (user đăng nhập khi tạo HĐ thuê trang phục — cột user_id). */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
     /** Dịch vụ lẻ đã chọn trong hợp đồng (chỉ những dòng user tích chọn khi thêm/sửa). */
     public function dichVuLe(): BelongsToMany
     {

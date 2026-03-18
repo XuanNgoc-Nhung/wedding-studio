@@ -189,6 +189,7 @@
                                        data-thanh-toan-lan-1="{{ $item->thanh_toan_lan_1 !== null ? $item->thanh_toan_lan_1 : '' }}"
                                        data-thanh-toan-lan-2="{{ $item->thanh_toan_lan_2 !== null ? $item->thanh_toan_lan_2 : '' }}"
                                        data-thanh-toan-lan-3="{{ $item->thanh_toan_lan_3 !== null ? $item->thanh_toan_lan_3 : '' }}"
+                                       data-khoa-thanh-toan-lan-1="{{ !empty($item->anh_thanh_toan_1) ? '1' : '0' }}"
                                        data-trang-thai-hop-dong="{{ e($item->trang_thai_hop_dong ?? '') }}"
                                        data-trang-thai-edit="{{ e($item->trang_thai_edit ?? '') }}"
                                        data-link-file-demo="{{ e($item->link_file_demo ?? '') }}"
@@ -450,22 +451,20 @@
                             <label class="form-label" for="them_ghi_chu_chup">Ghi chú chụp</label>
                             <textarea class="form-control" id="them_ghi_chu_chup" name="ghi_chu_chup" rows="2" placeholder="Ghi chú">{{ old('ghi_chu_chup') }}</textarea>
                         </div>
-                        {{-- Tổng tiền + thanh toán: 4 cột (lg), 2 (md), 1 (xs) --}}
-                        <div class="col-12 col-sm-6 col-lg-3">
-                            <label class="form-label" for="them_tong_tien">Tổng tiền</label>
-                            <input type="number" class="form-control" id="them_tong_tien" name="tong_tien" value="{{ old('tong_tien') }}" min="0" step="0.01">
+                        {{-- Tổng tiền (theo nhóm) + thanh toán lần 1 + còn lại --}}
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <label class="form-label" for="them_tong_tien_display">Tổng tiền</label>
+                            <input type="hidden" name="tong_tien" id="them_tong_tien" value="{{ old('tong_tien', '0') }}">
+                            <input type="text" class="form-control bg-body-secondary text-end fw-semibold fs-5" id="them_tong_tien_display" readonly tabindex="-1" value="0 đ" aria-readonly="true" autocomplete="off">
+                            <small class="text-muted">Tổng giá thực tất cả dịch vụ được tích lưu trong bảng (gồm nhóm và dịch vụ lẻ ngoài nhóm).</small>
                         </div>
-                        <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="them_thanh_toan_lan_1">Thanh toán lần 1</label>
-                            <input type="number" class="form-control" id="them_thanh_toan_lan_1" name="thanh_toan_lan_1" value="{{ old('thanh_toan_lan_1') }}" min="0" step="0.01">
+                            <input type="number" class="form-control" id="them_thanh_toan_lan_1" name="thanh_toan_lan_1" value="{{ old('thanh_toan_lan_1', '0') }}" min="0" step="0.01">
                         </div>
-                        <div class="col-12 col-sm-6 col-lg-3">
-                            <label class="form-label" for="them_thanh_toan_lan_2">Thanh toán lần 2</label>
-                            <input type="number" class="form-control" id="them_thanh_toan_lan_2" name="thanh_toan_lan_2" value="{{ old('thanh_toan_lan_2') }}" min="0" step="0.01">
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-3">
-                            <label class="form-label" for="them_thanh_toan_lan_3">Thanh toán lần 3</label>
-                            <input type="number" class="form-control" id="them_thanh_toan_lan_3" name="thanh_toan_lan_3" value="{{ old('thanh_toan_lan_3') }}" min="0" step="0.01">
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <label class="form-label" for="them_con_lai">Còn lại</label>
+                            <input type="text" class="form-control bg-body-secondary" id="them_con_lai" readonly tabindex="-1" value="0 đ" aria-readonly="true" autocomplete="off">
                         </div>
                     </div>
                 </div>
@@ -679,21 +678,20 @@
                             <label class="form-label" for="sua_ghi_chu_chup">Ghi chú chụp</label>
                             <textarea class="form-control" id="sua_ghi_chu_chup" name="ghi_chu_chup" rows="2" placeholder="Ghi chú"></textarea>
                         </div>
-                        <div class="col-12 col-sm-6 col-lg-3">
-                            <label class="form-label" for="sua_tong_tien">Tổng tiền</label>
-                            <input type="number" class="form-control" id="sua_tong_tien" name="tong_tien" min="0" step="0.01">
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <label class="form-label" for="sua_tong_tien_display">Tổng tiền</label>
+                            <input type="hidden" name="tong_tien" id="sua_tong_tien" value="">
+                            <input type="text" class="form-control bg-body-secondary text-end fw-semibold fs-5" id="sua_tong_tien_display" readonly tabindex="-1" value="0 đ" aria-readonly="true" autocomplete="off">
+                            <small class="text-muted">Tự tính theo dịch vụ được tích lưu trong bảng (hoặc tổng đang lưu nếu chưa có dòng).</small>
                         </div>
-                        <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="sua_thanh_toan_lan_1">Thanh toán lần 1</label>
                             <input type="number" class="form-control" id="sua_thanh_toan_lan_1" name="thanh_toan_lan_1" min="0" step="0.01">
+                            <small class="text-muted d-none" id="sua_thanh_toan_lan_1_ghi_chu">Đã có ảnh chứng từ thanh toán lần 1 — không chỉnh sửa số tiền.</small>
                         </div>
-                        <div class="col-12 col-sm-6 col-lg-3">
-                            <label class="form-label" for="sua_thanh_toan_lan_2">Thanh toán lần 2</label>
-                            <input type="number" class="form-control" id="sua_thanh_toan_lan_2" name="thanh_toan_lan_2" min="0" step="0.01">
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-3">
-                            <label class="form-label" for="sua_thanh_toan_lan_3">Thanh toán lần 3</label>
-                            <input type="number" class="form-control" id="sua_thanh_toan_lan_3" name="thanh_toan_lan_3" min="0" step="0.01">
+                        <div class="col-12 col-sm-6 col-lg-4">
+                            <label class="form-label" for="sua_con_lai">Còn lại</label>
+                            <input type="text" class="form-control bg-body-secondary" id="sua_con_lai" readonly tabindex="-1" value="0 đ" aria-readonly="true" autocomplete="off">
                         </div>
                     </div>
                 </div>
@@ -926,11 +924,31 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('sua_trang_phuc').value = btn.getAttribute('data-trang-phuc') || '';
             document.getElementById('sua_concept').value = btn.getAttribute('data-concept') || '';
             document.getElementById('sua_ghi_chu_chup').value = btn.getAttribute('data-ghi-chu-chup') || '';
-            document.getElementById('sua_tong_tien').value = btn.getAttribute('data-tong-tien') || '';
-            document.getElementById('sua_thanh_toan_lan_1').value = btn.getAttribute('data-thanh-toan-lan-1') || '';
-            document.getElementById('sua_thanh_toan_lan_2').value = btn.getAttribute('data-thanh-toan-lan-2') || '';
-            document.getElementById('sua_thanh_toan_lan_3').value = btn.getAttribute('data-thanh-toan-lan-3') || '';
-            // Reset tab dịch vụ (Sua)
+            window._suaHopDongTongFallback = btn.getAttribute('data-tong-tien') || '0';
+            var inpSuaLan1 = document.getElementById('sua_thanh_toan_lan_1');
+            var ghiChuLan1 = document.getElementById('sua_thanh_toan_lan_1_ghi_chu');
+            if (inpSuaLan1) {
+                inpSuaLan1.value = btn.getAttribute('data-thanh-toan-lan-1') || '0';
+                var khoaLan1 = btn.getAttribute('data-khoa-thanh-toan-lan-1') === '1';
+                inpSuaLan1.disabled = khoaLan1;
+                inpSuaLan1.classList.toggle('bg-body-secondary', khoaLan1);
+                inpSuaLan1.removeAttribute('name');
+                if (khoaLan1) {
+                    var h = document.createElement('input');
+                    h.type = 'hidden';
+                    h.name = 'thanh_toan_lan_1';
+                    h.id = 'sua_thanh_toan_lan_1_hidden';
+                    h.value = inpSuaLan1.value;
+                    var oldH = document.getElementById('sua_thanh_toan_lan_1_hidden');
+                    if (oldH) oldH.remove();
+                    inpSuaLan1.parentNode.insertBefore(h, inpSuaLan1.nextSibling);
+                } else {
+                    var oldH2 = document.getElementById('sua_thanh_toan_lan_1_hidden');
+                    if (oldH2) oldH2.remove();
+                    inpSuaLan1.setAttribute('name', 'thanh_toan_lan_1');
+                }
+                if (ghiChuLan1) ghiChuLan1.classList.toggle('d-none', !khoaLan1);
+            }
             var tableNhomSua = document.getElementById('tableNhomDichVuSua');
             var tableDichVuLeSua = document.getElementById('tableDichVuLeSua');
             var boxDichVuLeSua = document.getElementById('boxDichVuLeTheoNhomSua');
@@ -939,6 +957,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (tableDichVuLeSua) tableDichVuLeSua.querySelectorAll('.cb-dich-vu-le-sua').forEach(function(cb) { cb.checked = false; });
             if (boxDichVuLeSua) boxDichVuLeSua.classList.add('d-none');
             if (tbodyDichVuLeSua) tbodyDichVuLeSua.innerHTML = '';
+            syncSuaTongTienVaConLai();
 
             // Load dịch vụ đã lưu của hợp đồng từ dich_vu_trong_hop_dong và đổ vào bảng (Sua)
             var dichVuUrl = btn.getAttribute('data-dich-vu-url');
@@ -950,6 +969,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         tbodyDichVuLeSua.innerHTML = '';
                         if (!Array.isArray(data) || data.length === 0) {
                             boxDichVuLeSua.classList.add('d-none');
+                            syncSuaTongTienVaConLai();
                             return;
                         }
                         boxDichVuLeSua.classList.remove('d-none');
@@ -960,6 +980,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             var tr = document.createElement('tr');
                             tr.setAttribute('data-dich-vu-le-id', row.id_dich_vu);
                             tr.setAttribute('data-gia-goc', String(giaGoc));
+                            tr.setAttribute('data-tu-nhom', '0');
                             tr.innerHTML =
                                 '<td class="text-center"><input type="checkbox" class="form-check-input cb-dich-vu-le-hop-dong" checked value="' + escapeHtml(String(row.id_dich_vu)) + '" aria-label="Chọn lưu dịch vụ"></td>' +
                                 '<td>' + escapeHtml('—') + '</td>' +
@@ -974,9 +995,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         updateTongDichVuLeTheoNhomSua();
                     })
                     .catch(function() {
-                        // Nếu lỗi thì không chặn mở modal, chỉ không hiển thị dịch vụ
                         boxDichVuLeSua.classList.add('d-none');
                         tbodyDichVuLeSua.innerHTML = '';
+                        syncSuaTongTienVaConLai();
                     });
             }
         });
@@ -1067,6 +1088,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 updateTongDichVuLeTheoNhom();
             } else {
                 boxDichVuLe.classList.add('d-none');
+                syncThemTongTienVaConLai();
             }
             return;
         }
@@ -1081,6 +1103,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var tr = document.createElement('tr');
             tr.setAttribute('data-dich-vu-le-id', dvl.id);
             tr.setAttribute('data-gia-goc', String(giaGoc));
+            tr.setAttribute('data-tu-nhom', tenNhom !== '—' ? '1' : '0');
             tr.innerHTML =
                 '<td class="text-center"><input type="checkbox" class="form-check-input cb-dich-vu-le-hop-dong" checked value="' + escapeHtml(String(dvl.id)) + '" aria-label="Chọn lưu dịch vụ"></td>' +
                 '<td>' + escapeHtml(tenNhom) + '</td>' +
@@ -1122,6 +1145,30 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         tdTongGiaGoc.textContent = formatMoney(tongGoc) + ' đ';
         tdTongGiaThuc.textContent = formatMoney(tongThuc) + ' đ';
+        syncThemTongTienVaConLai();
+    }
+
+    function syncThemTongTienVaConLai() {
+        var inpTongHidden = document.getElementById('them_tong_tien');
+        var inpTongDisplay = document.getElementById('them_tong_tien_display');
+        var inpLan1 = document.getElementById('them_thanh_toan_lan_1');
+        var inpConLai = document.getElementById('them_con_lai');
+        if (!inpTongHidden || !inpConLai) return;
+        var tong = 0;
+        if (tbodyDichVuLe) {
+            tbodyDichVuLe.querySelectorAll('tr[data-dich-vu-le-id]').forEach(function(tr) {
+                var cb = tr.querySelector('.cb-dich-vu-le-hop-dong');
+                if (!cb || !cb.checked) return;
+                var inpGia = tr.querySelector('.input-gia-thuc');
+                tong += inpGia ? (parseFloat(inpGia.value) || 0) : 0;
+            });
+        }
+        var tongRounded = Math.round(tong * 100) / 100;
+        inpTongHidden.value = String(tongRounded);
+        if (inpTongDisplay) inpTongDisplay.value = formatMoney(tongRounded) + ' đ';
+        var lan1 = inpLan1 ? (parseFloat(inpLan1.value) || 0) : 0;
+        var conLai = Math.max(0, tongRounded - lan1);
+        inpConLai.value = formatMoney(conLai) + ' đ';
     }
 
     // Chỉ cho phép chọn 1 nhóm: khi chọn nhóm khác thì bỏ chọn nhóm hiện tại
@@ -1165,7 +1212,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 inp.value = roundToTen(inp.value);
                 updateTongDichVuLeTheoNhom();
             }
+            if (e.target.classList.contains('cb-dich-vu-le-hop-dong')) {
+                syncThemTongTienVaConLai();
+            }
         });
+    }
+
+    var inpThemThanhToanLan1 = document.getElementById('them_thanh_toan_lan_1');
+    if (inpThemThanhToanLan1) {
+        inpThemThanhToanLan1.addEventListener('input', syncThemTongTienVaConLai);
+        inpThemThanhToanLan1.addEventListener('change', syncThemTongTienVaConLai);
     }
 
     // Reset khi mở lại modal Thêm mới (bỏ chọn và ẩn box)
@@ -1176,6 +1232,14 @@ document.addEventListener('DOMContentLoaded', function() {
             if (tableDichVuLe) tableDichVuLe.querySelectorAll('.cb-dich-vu-le').forEach(function(cb) { cb.checked = false; });
             if (boxDichVuLe) { boxDichVuLe.classList.add('d-none'); }
             if (tbodyDichVuLe) tbodyDichVuLe.innerHTML = '';
+            var tTong = document.getElementById('them_tong_tien');
+            var tTongDisp = document.getElementById('them_tong_tien_display');
+            var tLan1 = document.getElementById('them_thanh_toan_lan_1');
+            var tConLai = document.getElementById('them_con_lai');
+            if (tTong) tTong.value = '0';
+            if (tTongDisp) tTongDisp.value = '0 đ';
+            if (tLan1) tLan1.value = '0';
+            if (tConLai) tConLai.value = '0 đ';
         });
     }
 
@@ -1183,6 +1247,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var formThemHopDong = document.getElementById('formThemHopDong');
     if (formThemHopDong && tbodyDichVuLe) {
         formThemHopDong.addEventListener('submit', function() {
+            syncThemTongTienVaConLai();
             document.querySelectorAll('#formThemHopDong input[name^="dich_vu_le_hop_dong"]').forEach(function(el) { el.remove(); });
             var index = 0;
             tbodyDichVuLe.querySelectorAll('tr[data-dich-vu-le-id]').forEach(function(tr) {
@@ -1260,6 +1325,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 updateTongDichVuLeTheoNhomSua();
             } else {
                 boxDichVuLeSua.classList.add('d-none');
+                syncSuaTongTienVaConLai();
             }
             return;
         }
@@ -1274,6 +1340,7 @@ document.addEventListener('DOMContentLoaded', function() {
             var tr = document.createElement('tr');
             tr.setAttribute('data-dich-vu-le-id', dvl.id);
             tr.setAttribute('data-gia-goc', String(giaGoc));
+            tr.setAttribute('data-tu-nhom', tenNhom !== '—' ? '1' : '0');
             tr.innerHTML =
                 '<td class="text-center"><input type="checkbox" class="form-check-input cb-dich-vu-le-hop-dong" checked value="' + escapeHtml(String(dvl.id)) + '" aria-label="Chọn lưu dịch vụ"></td>' +
                 '<td>' + escapeHtml(tenNhom) + '</td>' +
@@ -1286,6 +1353,31 @@ document.addEventListener('DOMContentLoaded', function() {
             tbodyDichVuLeSua.appendChild(tr);
         });
         updateTongDichVuLeTheoNhomSua();
+    }
+
+    function syncSuaTongTienVaConLai() {
+        var hidden = document.getElementById('sua_tong_tien');
+        var display = document.getElementById('sua_tong_tien_display');
+        var lan1El = document.getElementById('sua_thanh_toan_lan_1');
+        var conLaiEl = document.getElementById('sua_con_lai');
+        if (!hidden || !conLaiEl) return;
+        var rowEls = tbodyDichVuLeSua ? tbodyDichVuLeSua.querySelectorAll('tr[data-dich-vu-le-id]') : [];
+        var tong = 0;
+        if (rowEls.length === 0) {
+            tong = parseFloat(window._suaHopDongTongFallback || '0') || 0;
+        } else {
+            rowEls.forEach(function(tr) {
+                var cb = tr.querySelector('.cb-dich-vu-le-hop-dong');
+                if (!cb || !cb.checked) return;
+                var inpGia = tr.querySelector('.input-gia-thuc');
+                tong += inpGia ? (parseFloat(inpGia.value) || 0) : 0;
+            });
+        }
+        var tongRounded = Math.round(tong * 100) / 100;
+        hidden.value = String(tongRounded);
+        if (display) display.value = formatMoney(tongRounded) + ' đ';
+        var l1 = lan1El ? (parseFloat(lan1El.value) || 0) : 0;
+        conLaiEl.value = formatMoney(Math.max(0, tongRounded - l1)) + ' đ';
     }
 
     function updateTongDichVuLeTheoNhomSua() {
@@ -1301,6 +1393,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         tdTongGiaGocSua.textContent = formatMoney(tongGoc) + ' đ';
         tdTongGiaThucSua.textContent = formatMoney(tongThuc) + ' đ';
+        syncSuaTongTienVaConLai();
     }
 
     if (tableNhomSua) {
@@ -1331,12 +1424,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 e.target.value = roundToTen(e.target.value);
                 updateTongDichVuLeTheoNhomSua();
             }
+            if (e.target.classList.contains('cb-dich-vu-le-hop-dong')) {
+                syncSuaTongTienVaConLai();
+            }
         });
+    }
+
+    var inpSuaThanhToanLan1 = document.getElementById('sua_thanh_toan_lan_1');
+    if (inpSuaThanhToanLan1) {
+        inpSuaThanhToanLan1.addEventListener('input', syncSuaTongTienVaConLai);
+        inpSuaThanhToanLan1.addEventListener('change', syncSuaTongTienVaConLai);
     }
 
     // Submit form Sửa HĐ: gửi dịch vụ lẻ được tích chọn (giống Thêm)
     if (formSua && tbodyDichVuLeSua) {
         formSua.addEventListener('submit', function() {
+            syncSuaTongTienVaConLai();
             document.querySelectorAll('#formSuaHopDong input[name^="dich_vu_le_hop_dong"]').forEach(function(el) { el.remove(); });
             var index = 0;
             tbodyDichVuLeSua.querySelectorAll('tr[data-dich-vu-le-id]').forEach(function(tr) {
