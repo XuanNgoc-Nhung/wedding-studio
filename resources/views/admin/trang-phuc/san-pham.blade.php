@@ -55,6 +55,7 @@
                 <thead class="table-light">
                     <tr>
                         <th style="width: 50px;">STT</th>
+                        <th style="width: 110px;">Hình ảnh</th>
                         <th>Tên sản phẩm</th>
                         <th>Mã</th>
                         <th>Slug</th>
@@ -75,6 +76,15 @@
                     @endphp
                     <tr>
                         <td>{{ ($danhSach->currentPage() - 1) * $danhSach->perPage() + $index + 1 }}</td>
+                        <td>
+                            @if(!empty($item->hinh_anh))
+                            <img src="{{ asset('storage/' . $item->hinh_anh) }}" alt="" class="rounded border" style="width: 100px; height: 150px; object-fit: cover;">
+                            @else
+                            <div class="rounded border bg-label-primary d-flex align-items-center justify-content-center" style="width: 96px; height: 64px;">
+                                <span class="text-primary fw-medium">{{ strtoupper(mb_substr($item->ten_san_pham ?? 'S', 0, 1)) }}</span>
+                            </div>
+                            @endif
+                        </td>
                         <td><span class="fw-medium">{{ $item->ten_san_pham ?? '—' }}</span></td>
                         <td>{{ $item->ma_san_pham ?? '—' }}</td>
                         <td>{{ $item->slug ?? '—' }}</td>
@@ -101,6 +111,7 @@
                                        data-ten="{{ e($item->ten_san_pham ?? '') }}"
                                        data-ma="{{ e($item->ma_san_pham ?? '') }}"
                                        data-slug="{{ e($item->slug ?? '') }}"
+                                       data-hinh-anh="{{ !empty($item->hinh_anh) ? asset('storage/' . $item->hinh_anh) : '' }}"
                                        data-nha-cung-cap="{{ e($item->nha_cung_cap ?? '') }}"
                                        data-mo-ta="{{ e($item->mo_ta ?? '') }}"
                                        data-trang-thai="{{ e($item->trang_thai ?? 1) }}"
@@ -121,7 +132,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="10" class="text-center py-4 text-muted">Chưa có dữ liệu sản phẩm trang phục.</td>
+                        <td colspan="11" class="text-center py-4 text-muted">Chưa có dữ liệu sản phẩm trang phục.</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -139,7 +150,7 @@
                 <h5 class="modal-title" id="modalThemSanPhamLabel">Thêm sản phẩm trang phục mới</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
             </div>
-            <form action="{{ route('admin.trang-phuc.san-pham.store') }}" method="POST" id="formThemSanPham">
+            <form action="{{ route('admin.trang-phuc.san-pham.store') }}" method="POST" enctype="multipart/form-data" id="formThemSanPham">
                 @csrf
                 @if($errors->any())
                 <div class="modal-body py-0">
@@ -154,40 +165,61 @@
                 @endif
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="them_ten_san_pham">Tên sản phẩm <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="them_ten_san_pham" name="ten_san_pham" value="{{ old('ten_san_pham') }}" placeholder="Nhập tên sản phẩm" required>
+                        {{-- Cột trái: Hình ảnh --}}
+                        <div class="col-12 col-lg-4">
+                            <div class="sticky-lg-top">
+                                <label class="form-label" for="them_sp_hinh_anh">Hình ảnh</label>
+                                <div class="rounded border bg-light d-flex align-items-center justify-content-center overflow-hidden mb-2" style="min-height: 210px;">
+                                    <div id="them_sp_hinh_anh_placeholder" class="text-center text-muted py-4 px-3">
+                                        <span class="small">Vui lòng chọn ảnh sản phẩm</span>
+                                    </div>
+                                    <img id="them_sp_hinh_anh_preview" src="" alt="Preview" class="rounded w-100 d-none" style="max-height: 210px; object-fit: cover;">
+                                </div>
+                                <input type="file" class="form-control" id="them_sp_hinh_anh" name="hinh_anh" accept="image/jpeg,image/png,image/gif,image/webp">
+                                <small class="text-muted d-block mt-1">JPEG, PNG, GIF, WebP — tối đa 5MB</small>
+                                <div id="them_sp_hinh_anh_error" class="alert alert-danger mt-2 d-none" role="alert"></div>
+                            </div>
                         </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="them_ma_san_pham">Mã sản phẩm <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="them_ma_san_pham" name="ma_san_pham" value="{{ old('ma_san_pham') }}" placeholder="Ví dụ: TP001" required>
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="them_slug">Slug</label>
-                            <input type="text" class="form-control" id="them_slug" name="slug" value="{{ old('slug') }}" placeholder="Tự tạo từ tên nếu bỏ trống">
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="them_nha_cung_cap">Nhà cung cấp</label>
-                            <input type="text" class="form-control" id="them_nha_cung_cap" name="nha_cung_cap" value="{{ old('nha_cung_cap') }}" placeholder="Ví dụ: Nhà may A...">
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="them_trang_thai">Trạng thái</label>
-                            <select class="select2-admin form-select" id="them_trang_thai" name="trang_thai" data-placeholder="Chọn trạng thái">
-                                <option value="1" {{ old('trang_thai', '1') == '1' ? 'selected' : '' }}>Hiển thị</option>
-                                <option value="0" {{ old('trang_thai') == '0' ? 'selected' : '' }}>Ẩn</option>
-                            </select>
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="them_gia_tri">Giá trị</label>
-                            <input type="number" class="form-control" id="them_gia_tri" name="gia_tri" value="{{ old('gia_tri') }}" placeholder="0" min="0" step="0.01">
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label" for="them_mo_ta">Mô tả</label>
-                            <textarea class="form-control" id="them_mo_ta" name="mo_ta" rows="2" placeholder="Mô tả ngắn...">{{ old('mo_ta') }}</textarea>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label" for="them_ghi_chu">Ghi chú</label>
-                            <textarea class="form-control" id="them_ghi_chu" name="ghi_chu" rows="2" placeholder="Ghi chú...">{{ old('ghi_chu') }}</textarea>
+
+                        {{-- Cột phải: Thông tin --}}
+                        <div class="col-12 col-lg-8">
+                            <div class="row g-3">
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <label class="form-label" for="them_ten_san_pham">Tên sản phẩm <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="them_ten_san_pham" name="ten_san_pham" value="{{ old('ten_san_pham') }}" placeholder="Nhập tên sản phẩm" required>
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <label class="form-label" for="them_ma_san_pham">Mã sản phẩm <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="them_ma_san_pham" name="ma_san_pham" value="{{ old('ma_san_pham') }}" placeholder="Ví dụ: TP001" required>
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <label class="form-label" for="them_slug">Slug</label>
+                                    <input type="text" class="form-control" id="them_slug" name="slug" value="{{ old('slug') }}" placeholder="Tự tạo từ tên nếu bỏ trống">
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <label class="form-label" for="them_nha_cung_cap">Nhà cung cấp</label>
+                                    <input type="text" class="form-control" id="them_nha_cung_cap" name="nha_cung_cap" value="{{ old('nha_cung_cap') }}" placeholder="Ví dụ: Nhà may A...">
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <label class="form-label" for="them_trang_thai">Trạng thái</label>
+                                    <select class="select2-admin form-select" id="them_trang_thai" name="trang_thai" data-placeholder="Chọn trạng thái">
+                                        <option value="1" {{ old('trang_thai', '1') == '1' ? 'selected' : '' }}>Hiển thị</option>
+                                        <option value="0" {{ old('trang_thai') == '0' ? 'selected' : '' }}>Ẩn</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <label class="form-label" for="them_gia_tri">Giá trị</label>
+                                    <input type="number" class="form-control" id="them_gia_tri" name="gia_tri" value="{{ old('gia_tri') }}" placeholder="0" min="0" step="0.01">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label" for="them_mo_ta">Mô tả</label>
+                                    <textarea class="form-control" id="them_mo_ta" name="mo_ta" rows="2" placeholder="Mô tả ngắn...">{{ old('mo_ta') }}</textarea>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label" for="them_ghi_chu">Ghi chú</label>
+                                    <textarea class="form-control" id="them_ghi_chu" name="ghi_chu" rows="2" placeholder="Ghi chú...">{{ old('ghi_chu') }}</textarea>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -210,7 +242,7 @@
                 <h5 class="modal-title" id="modalSuaSanPhamLabel">Chỉnh sửa sản phẩm trang phục</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
             </div>
-            <form id="formSuaSanPham" method="POST" action="">
+            <form id="formSuaSanPham" method="POST" enctype="multipart/form-data" action="">
                 @csrf
                 @method('PUT')
                 @if($errors->any())
@@ -226,40 +258,61 @@
                 @endif
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="sua_ten_san_pham">Tên sản phẩm <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="sua_ten_san_pham" name="ten_san_pham" placeholder="Nhập tên sản phẩm" required>
+                        {{-- Cột trái: Hình ảnh --}}
+                        <div class="col-12 col-lg-4">
+                            <div class="sticky-lg-top">
+                                <label class="form-label" for="sua_sp_hinh_anh">Hình ảnh</label>
+                                <div class="rounded border bg-light d-flex align-items-center justify-content-center overflow-hidden mb-2" style="min-height: 210px;">
+                                    <div id="sua_sp_hinh_anh_placeholder" class="text-center text-muted py-4 px-3">
+                                        <span class="small">Ảnh hiện tại hoặc chọn ảnh mới</span>
+                                    </div>
+                                    <img id="sua_sp_hinh_anh_preview" src="" alt="Preview" class="rounded w-100 d-none" style="max-height: 210px; object-fit: cover;">
+                                </div>
+                                <input type="file" class="form-control" id="sua_sp_hinh_anh" name="hinh_anh" accept="image/jpeg,image/png,image/gif,image/webp">
+                                <small class="text-muted d-block mt-1">JPEG, PNG, GIF, WebP — tối đa 5MB</small>
+                                <div id="sua_sp_hinh_anh_error" class="alert alert-danger mt-2 d-none" role="alert"></div>
+                            </div>
                         </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="sua_ma_san_pham">Mã sản phẩm <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="sua_ma_san_pham" name="ma_san_pham" placeholder="Ví dụ: TP001" required>
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="sua_slug">Slug</label>
-                            <input type="text" class="form-control" id="sua_slug" name="slug" placeholder="Tự tạo từ tên nếu bỏ trống">
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="sua_nha_cung_cap">Nhà cung cấp</label>
-                            <input type="text" class="form-control" id="sua_nha_cung_cap" name="nha_cung_cap" placeholder="Ví dụ: Nhà may A...">
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="sua_trang_thai">Trạng thái</label>
-                            <select class="select2-admin form-select" id="sua_trang_thai" name="trang_thai" data-placeholder="Chọn trạng thái">
-                                <option value="1">Hiển thị</option>
-                                <option value="0">Ẩn</option>
-                            </select>
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="sua_gia_tri">Giá trị</label>
-                            <input type="number" class="form-control" id="sua_gia_tri" name="gia_tri" placeholder="0" min="0" step="0.01">
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label" for="sua_mo_ta">Mô tả</label>
-                            <textarea class="form-control" id="sua_mo_ta" name="mo_ta" rows="2" placeholder="Mô tả ngắn..."></textarea>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label" for="sua_ghi_chu">Ghi chú</label>
-                            <textarea class="form-control" id="sua_ghi_chu" name="ghi_chu" rows="2" placeholder="Ghi chú..."></textarea>
+
+                        {{-- Cột phải: Thông tin --}}
+                        <div class="col-12 col-lg-8">
+                            <div class="row g-3">
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <label class="form-label" for="sua_ten_san_pham">Tên sản phẩm <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="sua_ten_san_pham" name="ten_san_pham" placeholder="Nhập tên sản phẩm" required>
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <label class="form-label" for="sua_ma_san_pham">Mã sản phẩm <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="sua_ma_san_pham" name="ma_san_pham" placeholder="Ví dụ: TP001" required>
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <label class="form-label" for="sua_slug">Slug</label>
+                                    <input type="text" class="form-control" id="sua_slug" name="slug" placeholder="Tự tạo từ tên nếu bỏ trống">
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <label class="form-label" for="sua_nha_cung_cap">Nhà cung cấp</label>
+                                    <input type="text" class="form-control" id="sua_nha_cung_cap" name="nha_cung_cap" placeholder="Ví dụ: Nhà may A...">
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <label class="form-label" for="sua_trang_thai">Trạng thái</label>
+                                    <select class="select2-admin form-select" id="sua_trang_thai" name="trang_thai" data-placeholder="Chọn trạng thái">
+                                        <option value="1">Hiển thị</option>
+                                        <option value="0">Ẩn</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 col-sm-6 col-lg-4">
+                                    <label class="form-label" for="sua_gia_tri">Giá trị</label>
+                                    <input type="number" class="form-control" id="sua_gia_tri" name="gia_tri" placeholder="0" min="0" step="0.01">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label" for="sua_mo_ta">Mô tả</label>
+                                    <textarea class="form-control" id="sua_mo_ta" name="mo_ta" rows="2" placeholder="Mô tả ngắn..."></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label" for="sua_ghi_chu">Ghi chú</label>
+                                    <textarea class="form-control" id="sua_ghi_chu" name="ghi_chu" rows="2" placeholder="Ghi chú..."></textarea>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -368,14 +421,95 @@ document.addEventListener('DOMContentLoaded', function() {
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.map(function (el) { return new bootstrap.Tooltip(el); });
 
+    var modalThem = document.getElementById('modalThemSanPham');
+
     // Mở modal Thêm khi có lỗi validation (sau redirect)
     @if($errors->any())
-    var modalThem = document.getElementById('modalThemSanPham');
     if (modalThem) {
         var m = new bootstrap.Modal(modalThem);
         m.show();
     }
     @endif
+
+    // --- Upload ảnh: Modal Thêm sản phẩm ---
+    var MAX_SIZE = 5 * 1024 * 1024; // 5MB
+    var ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
+    var inputHinhAnh = document.getElementById('them_sp_hinh_anh');
+    var placeholder = document.getElementById('them_sp_hinh_anh_placeholder');
+    var previewImg = document.getElementById('them_sp_hinh_anh_preview');
+    var errorDiv = document.getElementById('them_sp_hinh_anh_error');
+    var currentObjectUrl = null;
+
+    function clearPreview() {
+        if (currentObjectUrl) {
+            URL.revokeObjectURL(currentObjectUrl);
+            currentObjectUrl = null;
+        }
+        if (previewImg) {
+            previewImg.src = '';
+            previewImg.classList.add('d-none');
+        }
+        if (placeholder) placeholder.classList.remove('d-none');
+        if (errorDiv) {
+            errorDiv.classList.add('d-none');
+            errorDiv.textContent = '';
+        }
+        if (inputHinhAnh) inputHinhAnh.value = '';
+    }
+
+    function processFile(file) {
+        if (currentObjectUrl) {
+            URL.revokeObjectURL(currentObjectUrl);
+            currentObjectUrl = null;
+        }
+        if (placeholder) placeholder.classList.remove('d-none');
+        if (previewImg) previewImg.classList.add('d-none');
+        if (errorDiv) {
+            errorDiv.classList.add('d-none');
+            errorDiv.textContent = '';
+        }
+        if (!file) return;
+
+        if (!ALLOWED_TYPES.includes(file.type)) {
+            if (errorDiv) {
+                errorDiv.textContent = 'Vui lòng chọn file ảnh (JPEG, PNG, GIF hoặc WebP).';
+                errorDiv.classList.remove('d-none');
+            }
+            return;
+        }
+        if (file.size > MAX_SIZE) {
+            if (errorDiv) {
+                errorDiv.textContent = 'Kích thước file không được vượt quá 5MB. File của bạn: ' + (file.size / 1024 / 1024).toFixed(2) + 'MB.';
+                errorDiv.classList.remove('d-none');
+            }
+            return;
+        }
+
+        if (placeholder) placeholder.classList.add('d-none');
+        currentObjectUrl = URL.createObjectURL(file);
+        if (previewImg) {
+            previewImg.src = currentObjectUrl;
+            previewImg.classList.remove('d-none');
+        }
+    }
+
+    if (inputHinhAnh) {
+        inputHinhAnh.addEventListener('change', function() {
+            var file = this.files && this.files[0];
+            processFile(file);
+        });
+    }
+
+    if (modalThem) {
+        modalThem.addEventListener('hidden.bs.modal', function() {
+            clearPreview();
+            document.querySelectorAll('.modal-backdrop').forEach(function(el) { el.remove(); });
+            document.body.classList.remove('modal-open');
+            document.body.style.removeProperty('overflow');
+            document.body.style.removeProperty('padding-right');
+        });
+    }
 
     // Auto slug: Thêm mới
     var themTen = document.getElementById('them_ten_san_pham');
@@ -388,6 +522,74 @@ document.addEventListener('DOMContentLoaded', function() {
     // Modal Sửa: gán data vào form
     var modalSua = document.getElementById('modalSuaSanPham');
     var formSua = document.getElementById('formSuaSanPham');
+    var suaInputHinhAnh = document.getElementById('sua_sp_hinh_anh');
+    var suaPlaceholder = document.getElementById('sua_sp_hinh_anh_placeholder');
+    var suaPreviewImg = document.getElementById('sua_sp_hinh_anh_preview');
+    var suaErrorDiv = document.getElementById('sua_sp_hinh_anh_error');
+    var suaObjectUrl = null;
+
+    function suaClearPreview(keepExistingImage) {
+        if (suaObjectUrl) {
+            URL.revokeObjectURL(suaObjectUrl);
+            suaObjectUrl = null;
+        }
+        if (suaErrorDiv) {
+            suaErrorDiv.classList.add('d-none');
+            suaErrorDiv.textContent = '';
+        }
+        if (suaInputHinhAnh) suaInputHinhAnh.value = '';
+
+        if (keepExistingImage && suaPreviewImg && suaPreviewImg.dataset.existingSrc) {
+            suaPreviewImg.src = suaPreviewImg.dataset.existingSrc;
+            suaPreviewImg.classList.remove('d-none');
+            if (suaPlaceholder) suaPlaceholder.classList.add('d-none');
+            return;
+        }
+
+        if (suaPreviewImg) {
+            suaPreviewImg.src = '';
+            suaPreviewImg.classList.add('d-none');
+            suaPreviewImg.dataset.existingSrc = '';
+        }
+        if (suaPlaceholder) suaPlaceholder.classList.remove('d-none');
+    }
+
+    function suaProcessFile(file) {
+        if (suaObjectUrl) {
+            URL.revokeObjectURL(suaObjectUrl);
+            suaObjectUrl = null;
+        }
+        if (suaErrorDiv) {
+            suaErrorDiv.classList.add('d-none');
+            suaErrorDiv.textContent = '';
+        }
+        if (!file) return;
+
+        if (!ALLOWED_TYPES.includes(file.type)) {
+            if (suaErrorDiv) {
+                suaErrorDiv.textContent = 'Vui lòng chọn file ảnh (JPEG, PNG, GIF hoặc WebP).';
+                suaErrorDiv.classList.remove('d-none');
+            }
+            if (suaInputHinhAnh) suaInputHinhAnh.value = '';
+            return;
+        }
+        if (file.size > MAX_SIZE) {
+            if (suaErrorDiv) {
+                suaErrorDiv.textContent = 'Kích thước file không được vượt quá 5MB. File của bạn: ' + (file.size / 1024 / 1024).toFixed(2) + 'MB.';
+                suaErrorDiv.classList.remove('d-none');
+            }
+            if (suaInputHinhAnh) suaInputHinhAnh.value = '';
+            return;
+        }
+
+        suaObjectUrl = URL.createObjectURL(file);
+        if (suaPreviewImg) {
+            suaPreviewImg.src = suaObjectUrl;
+            suaPreviewImg.classList.remove('d-none');
+            if (suaPlaceholder) suaPlaceholder.classList.add('d-none');
+        }
+    }
+
     if (modalSua && formSua) {
         modalSua.addEventListener('show.bs.modal', function(e) {
             var btn = e.relatedTarget;
@@ -407,6 +609,26 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('sua_trang_thai').value = btn.getAttribute('data-trang-thai') || '1';
             document.getElementById('sua_ghi_chu').value = btn.getAttribute('data-ghi-chu') || '';
             document.getElementById('sua_gia_tri').value = btn.getAttribute('data-gia-tri') || '';
+
+            // Ảnh hiện tại
+            var existingImg = btn.getAttribute('data-hinh-anh') || '';
+            if (suaPreviewImg) suaPreviewImg.dataset.existingSrc = existingImg;
+            suaClearPreview(true);
+        });
+
+        modalSua.addEventListener('hidden.bs.modal', function() {
+            suaClearPreview(false);
+            document.querySelectorAll('.modal-backdrop').forEach(function(el) { el.remove(); });
+            document.body.classList.remove('modal-open');
+            document.body.style.removeProperty('overflow');
+            document.body.style.removeProperty('padding-right');
+        });
+    }
+
+    if (suaInputHinhAnh) {
+        suaInputHinhAnh.addEventListener('change', function() {
+            var file = this.files && this.files[0];
+            suaProcessFile(file);
         });
     }
 

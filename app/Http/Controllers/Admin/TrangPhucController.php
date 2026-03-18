@@ -9,6 +9,7 @@ use App\Models\TrangPhuc;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class TrangPhucController extends Controller
 {
@@ -63,6 +64,7 @@ class TrangPhucController extends Controller
             'ten_san_pham' => 'required|string|max:255',
             'ma_san_pham' => 'required|string|max:255|unique:trang_phuc,ma_san_pham',
             'slug' => 'nullable|string|max:255|unique:trang_phuc,slug',
+            'hinh_anh' => 'nullable|image|mimes:jpeg,png,gif,webp|max:5120',
             'mo_ta' => 'nullable|string',
             'ghi_chu' => 'nullable|string',
             'trang_thai' => 'nullable|in:0,1',
@@ -77,10 +79,16 @@ class TrangPhucController extends Controller
 
         $slug = $this->uniqueSlug($slug);
 
+        $hinhAnhPath = null;
+        if ($request->hasFile('hinh_anh')) {
+            $hinhAnhPath = $request->file('hinh_anh')->store('trang-phuc/san-pham', 'public');
+        }
+
         TrangPhuc::create([
             'ten_san_pham' => $validated['ten_san_pham'],
             'ma_san_pham' => $validated['ma_san_pham'],
             'slug' => $slug,
+            'hinh_anh' => $hinhAnhPath,
             'mo_ta' => $validated['mo_ta'] ?? null,
             'ghi_chu' => $validated['ghi_chu'] ?? null,
             'trang_thai' => $validated['trang_thai'] ?? 1,
@@ -97,6 +105,7 @@ class TrangPhucController extends Controller
             'ten_san_pham' => 'required|string|max:255',
             'ma_san_pham' => 'required|string|max:255|unique:trang_phuc,ma_san_pham,' . $trangPhuc->id,
             'slug' => 'nullable|string|max:255|unique:trang_phuc,slug,' . $trangPhuc->id,
+            'hinh_anh' => 'nullable|image|mimes:jpeg,png,gif,webp|max:5120',
             'mo_ta' => 'nullable|string',
             'ghi_chu' => 'nullable|string',
             'trang_thai' => 'nullable|in:0,1',
@@ -111,7 +120,7 @@ class TrangPhucController extends Controller
 
         $slug = $this->uniqueSlug($slug, $trangPhuc->id);
 
-        $trangPhuc->update([
+        $updateData = [
             'ten_san_pham' => $validated['ten_san_pham'],
             'ma_san_pham' => $validated['ma_san_pham'],
             'slug' => $slug,
@@ -120,7 +129,18 @@ class TrangPhucController extends Controller
             'trang_thai' => $validated['trang_thai'] ?? 1,
             'gia_tri' => $validated['gia_tri'] ?? 0,
             'nha_cung_cap' => $validated['nha_cung_cap'] ?? null,
-        ]);
+        ];
+
+        if ($request->hasFile('hinh_anh')) {
+            $newPath = $request->file('hinh_anh')->store('trang-phuc/san-pham', 'public');
+            $updateData['hinh_anh'] = $newPath;
+
+            if (!empty($trangPhuc->hinh_anh) && Storage::disk('public')->exists($trangPhuc->hinh_anh)) {
+                Storage::disk('public')->delete($trangPhuc->hinh_anh);
+            }
+        }
+
+        $trangPhuc->update($updateData);
 
         return redirect()->route('admin.trang-phuc.san-pham')->with('success', 'Đã cập nhật sản phẩm trang phục thành công.');
     }

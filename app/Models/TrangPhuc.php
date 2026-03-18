@@ -27,6 +27,7 @@ class TrangPhuc extends Model
         'ten_san_pham',
         'ma_san_pham',
         'slug',
+        'hinh_anh',
         'mo_ta',
         'ghi_chu',
         'trang_thai',
