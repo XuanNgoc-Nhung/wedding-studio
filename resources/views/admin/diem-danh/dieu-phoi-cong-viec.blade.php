@@ -52,7 +52,7 @@
                         <th>Ngày chụp</th>
                         <th>Ngày hẹn trả hàng</th>
                         <th>Trang phục</th>
-                        <th>Ghi chú</th>
+                        {{-- <th>Ghi chú</th> --}}
                         <th class="text-end">Tổng tiền</th>
                         <th>Trạng thái chụp</th>
                         <th>Trạng thái edit</th>
@@ -79,7 +79,7 @@
                         <td>{{ $item->ngay_chup ? $item->ngay_chup->format('d/m/Y') : '—' }}</td>
                         <td>{{ $item->ngay_hen_tra_hang ? $item->ngay_hen_tra_hang->format('d/m/Y') : '—' }}</td>
                         <td>{{ $item->trang_phuc ? str($item->trang_phuc)->limit(30) : '—' }}</td>
-                        <td>{{ $item->ghi_chu_chup ? str($item->ghi_chu_chup)->limit(40) : '—' }}</td>
+                        {{-- <td>{{ $item->ghi_chu_chup ? str($item->ghi_chu_chup)->limit(40) : '—' }}</td> --}}
                         <td class="text-end">{{ $item->tong_tien !== null ? number_format((float)$item->tong_tien, 0, ',', '.') . ' đ' : '—' }}</td>
                         <td>{{ $item->trang_thai_chup ?? '—' }}</td>
                         <td>{{ $item->trang_thai_edit ?? '—' }}</td>
@@ -92,9 +92,9 @@
                                     data-url="{{ route('admin.diem-danh.phan-cong-cong-viec', $item) }}"
                                     data-ten-khach-hang="{{ e($tenKhachHang) }}"
                                     data-dia-diem="{{ e($item->dia_diem ?? '') }}"
-                                    data-ngay-chup="{{ $item->ngay_chup ? $item->ngay_chup->format('d/m/Y') : '—' }}"
-                                    data-ngay-hen-tra-hang="{{ $item->ngay_hen_tra_hang ? $item->ngay_hen_tra_hang->format('d/m/Y') : '—' }}"
-                                    data-trang-phuc="{{ e($item->trang_phuc ? str($item->trang_phuc)->limit(50) : '') }}"
+                                    data-ngay-chup="{{ $item->ngay_chup ? $item->ngay_chup->format('Y-m-d') : '' }}"
+                                    data-ngay-hen-tra-hang="{{ $item->ngay_hen_tra_hang ? $item->ngay_hen_tra_hang->format('Y-m-d') : '' }}"
+                                    data-trang-phuc="{{ e($item->trang_phuc ?? '') }}"
                                     data-tong-tien="{{ $item->tong_tien !== null ? number_format((float)$item->tong_tien, 0, ',', '.') . ' đ' : '—' }}"
                                     data-trang-thai-chup="{{ e($item->trang_thai_chup ?? '') }}"
                                     data-trang-thai-edit="{{ e($item->trang_thai_edit ?? '') }}"
@@ -137,19 +137,19 @@
                             </div>
                             <div class="col-12 col-sm-6 col-lg-3">
                                 <label class="form-label" for="pv-dia-diem">Địa điểm</label>
-                                <input type="text" class="form-control" id="pv-dia-diem" disabled value="" placeholder="—">
+                                <input type="text" class="form-control" id="pv-dia-diem" name="dia_diem" value="" placeholder="Nhập địa điểm...">
                             </div>
                             <div class="col-12 col-sm-6 col-lg-3">
                                 <label class="form-label" for="pv-ngay-chup">Ngày chụp</label>
-                                <input type="text" class="form-control" id="pv-ngay-chup" disabled value="" placeholder="—">
+                                <input type="text" class="flatpickr-date-admin form-control" id="pv-ngay-chup" name="ngay_chup" value="" placeholder="dd/mm/yyyy" autocomplete="off">
                             </div>
                             <div class="col-12 col-sm-6 col-lg-3">
                                 <label class="form-label" for="pv-ngay-hen-tra-hang">Ngày hẹn trả hàng</label>
-                                <input type="text" class="form-control" id="pv-ngay-hen-tra-hang" disabled value="" placeholder="—">
+                                <input type="text" class="flatpickr-date-admin form-control" id="pv-ngay-hen-tra-hang" name="ngay_hen_tra_hang" value="" placeholder="dd/mm/yyyy" autocomplete="off">
                             </div>
                             <div class="col-12 col-sm-6 col-lg-3">
                                 <label class="form-label" for="pv-trang-phuc">Trang phục</label>
-                                <input type="text" class="form-control" id="pv-trang-phuc" disabled value="" placeholder="—">
+                                <input type="text" class="form-control" id="pv-trang-phuc" name="trang_phuc" value="" placeholder="Nhập trang phục...">
                             </div>
                             <div class="col-12 col-sm-6 col-lg-3">
                                 <label class="form-label" for="pv-tong-tien">Tổng tiền</label>
@@ -230,10 +230,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!btn || !btn.classList.contains('btn-phan-viec')) return;
             formPhanCong.action = btn.getAttribute('data-url') || '';
             document.getElementById('pv-ten-khach-hang').value = btn.getAttribute('data-ten-khach-hang') || '—';
-            document.getElementById('pv-dia-diem').value = btn.getAttribute('data-dia-diem') || '—';
-            document.getElementById('pv-ngay-chup').value = btn.getAttribute('data-ngay-chup') || '—';
-            document.getElementById('pv-ngay-hen-tra-hang').value = btn.getAttribute('data-ngay-hen-tra-hang') || '—';
-            document.getElementById('pv-trang-phuc').value = btn.getAttribute('data-trang-phuc') || '—';
+            document.getElementById('pv-dia-diem').value = btn.getAttribute('data-dia-diem') || '';
+            if (window.setAdminDateInput) { setAdminDateInput('pv-ngay-chup', btn.getAttribute('data-ngay-chup') || ''); setAdminDateInput('pv-ngay-hen-tra-hang', btn.getAttribute('data-ngay-hen-tra-hang') || ''); } else { document.getElementById('pv-ngay-chup').value = btn.getAttribute('data-ngay-chup') || ''; document.getElementById('pv-ngay-hen-tra-hang').value = btn.getAttribute('data-ngay-hen-tra-hang') || ''; }
+            document.getElementById('pv-trang-phuc').value = btn.getAttribute('data-trang-phuc') || '';
             document.getElementById('pv-tong-tien').value = btn.getAttribute('data-tong-tien') || '—';
             document.getElementById('pv-trang-thai-chup').value = btn.getAttribute('data-trang-thai-chup') || '—';
             document.getElementById('pv-trang-thai-edit').value = btn.getAttribute('data-trang-thai-edit') || '—';

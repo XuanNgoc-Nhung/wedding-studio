@@ -259,12 +259,20 @@ class DiemDanhController extends Controller
             'tho_chup_id' => 'nullable|exists:nhan_vien,id',
             'tho_make_id' => 'nullable|exists:nhan_vien,id',
             'tho_edit_id' => 'nullable|exists:nhan_vien,id',
+            'dia_diem' => 'nullable|string|max:255',
+            'trang_phuc' => 'nullable|string|max:255',
+            'ngay_chup' => 'nullable|date',
+            'ngay_hen_tra_hang' => 'nullable|date',
         ]);
 
         $hopDong->update([
             'tho_chup_id' => $validated['tho_chup_id'] ?? null,
             'tho_make_id' => $validated['tho_make_id'] ?? null,
             'tho_edit_id' => $validated['tho_edit_id'] ?? null,
+            'dia_diem' => $validated['dia_diem'] ?? null,
+            'trang_phuc' => $validated['trang_phuc'] ?? null,
+            'ngay_chup' => $validated['ngay_chup'] ?? null,
+            'ngay_hen_tra_hang' => $validated['ngay_hen_tra_hang'] ?? null,
         ]);
 
         return redirect()->route('admin.diem-danh.dieu-phoi-cong-viec')->with('success', 'Phân công công việc đã được cập nhật.');
