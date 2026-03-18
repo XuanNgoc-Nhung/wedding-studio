@@ -160,6 +160,12 @@
                                             data-bs-toggle="modal"
                                             data-bs-target="#modalAnhThanhToan"
                                             data-hop-dong-id="{{ $item->id }}"
+                                            data-thanh-toan-lan-1="{{ $item->thanh_toan_lan_1 !== null ? $item->thanh_toan_lan_1 : '' }}"
+                                            data-thanh-toan-lan-2="{{ $item->thanh_toan_lan_2 !== null ? $item->thanh_toan_lan_2 : '' }}"
+                                            data-thanh-toan-lan-3="{{ $item->thanh_toan_lan_3 !== null ? $item->thanh_toan_lan_3 : '' }}"
+                                            data-anh-thanh-toan-1="{{ !empty($item->anh_thanh_toan_1) ? asset('storage/' . $item->anh_thanh_toan_1) : '' }}"
+                                            data-anh-thanh-toan-2="{{ !empty($item->anh_thanh_toan_2) ? asset('storage/' . $item->anh_thanh_toan_2) : '' }}"
+                                            data-anh-thanh-toan-3="{{ !empty($item->anh_thanh_toan_3) ? asset('storage/' . $item->anh_thanh_toan_3) : '' }}"
                                             data-upload-url="{{ route('admin.khach-hang.hop-dong.upload-anh-thanh-toan') }}">
                                         <i class="fa-solid fa-image me-2"></i> Thêm ảnh thanh toán
                                     </button>
@@ -758,11 +764,24 @@
                         <select name="lan_thanh_toan"
                                 id="lan_thanh_toan"
                                 class="form-select select2-admin"
-                                data-placeholder="Chọn lần thanh toán">
+                                data-placeholder="Chọn lần thanh toán"
+                                onclick="handleLanThanhToanClick()"
+                                onchange="handleLanThanhToanClick()">
                             <option value="1">Lần 1</option>
                             <option value="2">Lần 2</option>
                             <option value="3">Lần 3</option>
                         </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="so_tien_thanh_toan" class="form-label">Số tiền thanh toán</label>
+                        <input type="number"
+                               name="so_tien_thanh_toan"
+                               id="so_tien_thanh_toan"
+                               class="form-control"
+                               min="0"
+                               step="0.01"
+                               inputmode="decimal"
+                               placeholder="Nhập số tiền thanh toán...">
                     </div>
                     <div class="mb-3">
                         <label for="anh_thanh_toan" class="form-label">Chọn file ảnh</label>
@@ -1342,8 +1361,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Modal Thêm ảnh thanh toán: select2 + preview ảnh upload
     var modalAnhThanhToan = document.getElementById('modalAnhThanhToan');
+    var formAnhThanhToan = document.getElementById('formAnhThanhToan');
     var inputAnhThanhToan = document.getElementById('anh_thanh_toan');
     var inputHopDongIdAnh = document.getElementById('anh_thanh_toan_hop_dong_id');
+    var inputSoTienThanhToan = document.getElementById('so_tien_thanh_toan');
+    var selectLanThanhToan = document.getElementById('lan_thanh_toan');
     var previewWrapper = document.getElementById('previewAnhThanhToanWrapper');
     var previewImg = document.getElementById('previewAnhThanhToan');
     var modalXemAnhThanhToan = document.getElementById('modalXemAnhThanhToan');
@@ -1361,6 +1383,75 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    function getThanhToanMacDinh(btn, lan) {
+        if (!btn) return '';
+        var key = 'data-thanh-toan-lan-' + String(lan || '');
+        return btn.getAttribute(key) || '';
+    }
+
+    function getAnhThanhToanMacDinh(btn, lan) {
+        if (!btn) return '';
+        var key = 'data-anh-thanh-toan-' + String(lan || '');
+        return btn.getAttribute(key) || '';
+    }
+
+    function setPreviewAnhThanhToan(url) {
+        if (!previewImg) return;
+        console.log('[ANH_THANH_TOAN] setPreviewAnhThanhToan', { url: url });
+        if (!url) {
+            previewImg.src = '';
+            previewImg.style.display = 'none';
+            return;
+        }
+        previewImg.src = url;
+        previewImg.style.display = 'block';
+    }
+
+    function fillTheoLanThanhToan(btn) {
+        if (!selectLanThanhToan) return;
+        var lan = selectLanThanhToan.value || '1';
+        console.log('[ANH_THANH_TOAN] fillTheoLanThanhToan:start', {
+            lan: lan,
+            hasBtn: !!btn,
+            btnClasses: btn ? btn.className : null,
+            tienAttr: btn ? btn.getAttribute('data-thanh-toan-lan-' + String(lan)) : null,
+            anhAttr: btn ? btn.getAttribute('data-anh-thanh-toan-' + String(lan)) : null
+        });
+
+        // Tiền: nếu chưa có thì gán 0
+        if (inputSoTienThanhToan) {
+            var macDinhTien = getThanhToanMacDinh(btn, lan);
+            inputSoTienThanhToan.value = (macDinhTien !== null && macDinhTien !== undefined && String(macDinhTien).trim() !== '')
+                ? String(macDinhTien)
+                : '0';
+            console.log('[ANH_THANH_TOAN] set so_tien_thanh_toan', {
+                lan: lan,
+                macDinhTien: macDinhTien,
+                valueSet: inputSoTienThanhToan.value
+            });
+        } else {
+            console.warn('[ANH_THANH_TOAN] missing #so_tien_thanh_toan input');
+        }
+
+        // Reset file input khi đổi lần để tránh nhầm preview ảnh mới
+        if (inputAnhThanhToan) {
+            inputAnhThanhToan.value = '';
+        } else {
+            console.warn('[ANH_THANH_TOAN] missing #anh_thanh_toan input');
+        }
+
+        // Ảnh: nếu đã có ảnh thanh toán lần n thì preview ảnh đó
+        var macDinhAnh = getAnhThanhToanMacDinh(btn, lan);
+        console.log('[ANH_THANH_TOAN] set preview from existing url', { lan: lan, macDinhAnh: macDinhAnh });
+        setPreviewAnhThanhToan(macDinhAnh);
+
+        console.log('[ANH_THANH_TOAN] fillTheoLanThanhToan:done', {
+            lan: lan,
+            previewVisible: previewImg ? previewImg.style.display : null,
+            previewSrc: previewImg ? previewImg.src : null
+        });
+    }
+
     // Khi mở modal, gán id hợp đồng
     if (modalAnhThanhToan && formAnhThanhToan) {
         modalAnhThanhToan.addEventListener('show.bs.modal', function (e) {
@@ -1370,25 +1461,44 @@ document.addEventListener('DOMContentLoaded', function() {
             if (inputHopDongIdAnh) {
                 inputHopDongIdAnh.value = hopDongId;
             }
+
+            // Lưu nút kích hoạt để dùng khi đổi "lần thanh toán"
+            modalAnhThanhToan._triggerBtn = btn;
+
+            // Khi mở modal, tự gán tiền mặc định theo lần đang chọn (mặc định là lần 1)
+            console.log('[ANH_THANH_TOAN] modal show', {
+                hopDongId: hopDongId,
+                lanSelected: selectLanThanhToan ? selectLanThanhToan.value : null
+            });
+            fillTheoLanThanhToan(btn);
         });
+    }
+
+    window.handleLanThanhToanClick = function () {
+        var modal = document.getElementById('modalAnhThanhToan');
+        var sel = document.getElementById('lan_thanh_toan');
+        var btn = modal ? (modal._triggerBtn || null) : null;
+        console.log('[ANH_THANH_TOAN] handleLanThanhToanClick', {
+            lanSelected: sel ? sel.value : null,
+            hasBtn: !!btn
+        });
+        fillTheoLanThanhToan(btn);
+    };
+
+    if (!selectLanThanhToan) {
+        console.warn('[ANH_THANH_TOAN] missing #lan_thanh_toan select');
     }
 
     if (inputAnhThanhToan && previewWrapper && previewImg) {
         inputAnhThanhToan.addEventListener('change', function() {
             var file = this.files && this.files[0] ? this.files[0] : null;
             if (!file || !file.type || !file.type.startsWith('image/')) {
-                previewImg.src = '';
-                previewImg.style.display = 'none';
+                setPreviewAnhThanhToan('');
                 return;
             }
             var reader = new FileReader();
             reader.onload = function(e) {
-                previewImg.src = e.target.result || '';
-                if (previewImg.src) {
-                    previewImg.style.display = 'block';
-                } else {
-                    previewImg.style.display = 'none';
-                }
+                setPreviewAnhThanhToan(e.target.result || '');
             };
             reader.readAsDataURL(file);
         });
@@ -1399,10 +1509,13 @@ document.addEventListener('DOMContentLoaded', function() {
             if (inputAnhThanhToan) {
                 inputAnhThanhToan.value = '';
             }
-            if (previewImg) {
-                previewImg.src = '';
-                previewImg.style.display = 'none';
+            if (inputSoTienThanhToan) {
+                inputSoTienThanhToan.value = '';
             }
+            if (previewImg) {
+                setPreviewAnhThanhToan('');
+            }
+            modalAnhThanhToan._triggerBtn = null;
             var $lanThanhToanReset = window.jQuery ? jQuery('#lan_thanh_toan') : null;
             if ($lanThanhToanReset && $lanThanhToanReset.length) {
                 $lanThanhToanReset.val('1').trigger('change');

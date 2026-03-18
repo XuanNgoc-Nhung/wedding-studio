@@ -282,26 +282,37 @@ class KhachHangController extends Controller
         $validated = $request->validate([
             'hop_dong_id' => 'required|exists:hop_dong,id',
             'lan_thanh_toan' => 'required|in:1,2,3',
-            'anh_thanh_toan' => 'required|image|max:5120', // 5MB
+            'anh_thanh_toan' => 'nullable|image|max:5120', // 5MB
+            'so_tien_thanh_toan' => 'nullable|numeric|min:0',
         ]);
-
-        /** @var \Illuminate\Http\UploadedFile $file */
-        $file = $request->file('anh_thanh_toan');
 
         $hopDong = HopDong::findOrFail($validated['hop_dong_id']);
         $lan = (int) $validated['lan_thanh_toan'];
 
         $column = 'anh_thanh_toan_' . $lan;
+        $columnTien = 'thanh_toan_lan_' . $lan;
 
-        // Lưu file vào storage/app/public/hop-dong/anh-thanh-toan
-        $path = $file->store('hop-dong/anh-thanh-toan', 'public');
+        // Nếu có upload ảnh thì mới cập nhật ảnh
+        if ($request->hasFile('anh_thanh_toan')) {
+            /** @var \Illuminate\Http\UploadedFile $file */
+            $file = $request->file('anh_thanh_toan');
 
-        // Cập nhật đường dẫn ảnh cho hợp đồng
-        $hopDong->{$column} = $path;
+            // Lưu file vào storage/app/public/hop-dong/anh-thanh-toan
+            $path = $file->store('hop-dong/anh-thanh-toan', 'public');
+
+            // Cập nhật đường dẫn ảnh cho hợp đồng
+            $hopDong->{$column} = $path;
+        }
+
+        // Nếu có nhập số tiền thì lưu vào đúng lần thanh toán
+        if ($request->filled('so_tien_thanh_toan')) {
+            $hopDong->{$columnTien} = (float) $validated['so_tien_thanh_toan'];
+        }
+
         $hopDong->save();
 
         return redirect()
             ->route('admin.khach-hang.hop-dong')
-            ->with('success', 'Upload ảnh thanh toán thành công.');
+            ->with('success', 'Đã cập nhật thanh toán thành công.');
     }
 }
