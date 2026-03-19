@@ -4,7 +4,7 @@
 <div class="card">
     {{-- <h5 class="card-header">Lịch làm việc</h5> --}}
     <div class="card-body">
-        @if(empty($nhanVienId))
+        @if(empty($nhanVienId) && empty($isAdmin))
             <div class="alert alert-warning mb-0">
                 Tài khoản của bạn chưa có hồ sơ nhân viên nên chưa thể lọc theo thợ chụp/make/edit.
             </div>
@@ -25,8 +25,8 @@
 @endsection
 
 @push('modals')
-<div class="modal fade" id="wsWorkDayModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+<div class="modal fade" id="wsWorkDayModal" tabindex="-1" aria-labelledby="wsWorkDayModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="wsWorkDayModalTitle">Chi tiết công việc</h5>
@@ -36,7 +36,7 @@
                 <div class="text-muted small">Đang tải...</div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Đóng</button>
             </div>
         </div>
     </div>
@@ -58,14 +58,15 @@
         /* Bôi xám các ngày cuối tuần (T7/CN) */
         .admin-work-calendar .fc .fc-daygrid-day.fc-day-sat,
         .admin-work-calendar .fc .fc-daygrid-day.fc-day-sun{
-            background: rgba(67, 89, 113, .06);
+            /* background: rgba(67, 89, 113, .06); */
         }
         .admin-work-calendar .ws-day-summary{
-            border-radius: 8px;
             padding: 6px 8px;
-            background: rgba(105,108,255,.08);
-            color: #384551;
+            background: rgb(172, 255, 213);
+            color: #28103b;
             line-height: 1.25;
+            border: 1px solid rgb(172, 255, 213);
+            border-radius: 8px;
             font-size: .8125rem;
         }
         .admin-work-calendar .ws-day-summary .ws-total{
@@ -98,6 +99,15 @@
         .admin-work-calendar .ws-event-item .ws-role{
             opacity: .9;
             font-weight: 600;
+        }
+
+        /* Center content in modal body (loading/empty/error states) */
+        #wsWorkDayModalBody.is-centered{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 220px;
         }
     </style>
 @endpush
@@ -215,6 +225,7 @@
                 if (!modalEl || !titleEl || !bodyEl) return;
 
                 titleEl.textContent = 'Chi tiết công việc ngày ' + dateStr;
+                bodyEl.classList.add('is-centered');
                 bodyEl.innerHTML = '<div class="text-muted small">Đang tải...</div>';
 
                 if (typeof bootstrap !== 'undefined' && bootstrap.Modal) {
@@ -233,28 +244,41 @@
                     .then(function (payload) {
                         var items = (payload && payload.items) ? payload.items : [];
                         if (!items.length) {
+                            bodyEl.classList.add('is-centered');
                             bodyEl.innerHTML = '<div class="alert alert-info mb-0">Không có công việc trong ngày này.</div>';
                             return;
                         }
 
+                        bodyEl.classList.remove('is-centered');
                         var html = '<div class="table-responsive"><table class="table table-sm align-middle">';
                         html += '<thead><tr>' +
-                            '<th style="width:90px">Giờ</th>' +
-                            '<th>Khách hàng</th>' +
-                            '<th style="width:160px">Vai trò</th>' +
-                            '<th>Địa điểm</th>' +
+                            '<th style="width:80px">Giờ</th>' +
+                            '<th style="min-width:180px">Khách hàng</th>' +
+                            '<th style="min-width:160px">Địa điểm</th>' +
+                            '<th style="min-width:140px">Concept</th>' +
+                            '<th style="min-width:140px">Người chụp</th>' +
+                            '<th style="min-width:140px">Người make</th>' +
+                            '<th style="min-width:140px">Người edit</th>' +
                             '</tr></thead><tbody>';
 
                         items.forEach(function (it) {
                             var time = it.time || '--:--';
-                            var kh = it.khach_hang || ('HĐ #' + it.id);
+                            var kh = it.khach_hang || ('SBR00' + it.id);
                             var roles = (it.roles && it.roles.length) ? it.roles.join(', ') : '';
                             var diaDiem = it.dia_diem || '';
+                            var concept = it.concept || '';
+                            var pc = it.phan_cong || {};
+                            var nguoiChup = pc.chup || '';
+                            var nguoiMake = pc.make || '';
+                            var nguoiEdit = pc.edit || '';
                             html += '<tr>' +
                                 '<td><strong>' + escapeHtml(time) + '</strong></td>' +
                                 '<td>' + escapeHtml(kh) + '</td>' +
-                                '<td>' + escapeHtml(roles) + '</td>' +
                                 '<td>' + escapeHtml(diaDiem) + '</td>' +
+                                '<td>' + escapeHtml(concept) + '</td>' +
+                                '<td>' + escapeHtml(nguoiChup) + '</td>' +
+                                '<td>' + escapeHtml(nguoiMake) + '</td>' +
+                                '<td>' + escapeHtml(nguoiEdit) + '</td>' +
                                 '</tr>';
                         });
 
@@ -262,6 +286,7 @@
                         bodyEl.innerHTML = html;
                     })
                     .catch(function () {
+                        bodyEl.classList.add('is-centered');
                         bodyEl.innerHTML = '<div class="alert alert-danger mb-0">Không tải được dữ liệu chi tiết. Vui lòng thử lại.</div>';
                     });
             }

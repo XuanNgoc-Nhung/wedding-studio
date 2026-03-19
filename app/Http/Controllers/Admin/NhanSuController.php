@@ -344,7 +344,9 @@ class NhanSuController extends Controller
 
     public function lichLamViec()
     {
-        $nhanVienId = auth()->user()?->nhanVien?->id;
+        $user = auth()->user();
+        $isAdmin = (int) ($user?->role) === User::ROLE_ADMIN;
+        $nhanVienId = $user?->nhanVien?->id;
 
         $homNay = Carbon::now(config('app.timezone'));
         $batDauTuan = $homNay->copy()->startOfWeek(Carbon::MONDAY)->startOfDay();
@@ -355,14 +357,16 @@ class NhanSuController extends Controller
         );
 
         $hopDongTrongTuan = collect();
-        if ($nhanVienId) {
+        if ($isAdmin || $nhanVienId) {
             $hopDongTrongTuan = HopDong::query()
                 ->with(['khachHang', 'thoChup', 'thoMake', 'thoEdit'])
                 ->whereBetween('ngay_chup', [$batDauTuan->toDateString(), $ketThucTuan->toDateString()])
-                ->where(function ($q) use ($nhanVienId) {
-                    $q->where('tho_chup_id', $nhanVienId)
-                        ->orWhere('tho_make_id', $nhanVienId)
-                        ->orWhere('tho_edit_id', $nhanVienId);
+                ->when(!$isAdmin, function ($q) use ($nhanVienId) {
+                    $q->where(function ($qq) use ($nhanVienId) {
+                        $qq->where('tho_chup_id', $nhanVienId)
+                            ->orWhere('tho_make_id', $nhanVienId)
+                            ->orWhere('tho_edit_id', $nhanVienId);
+                    });
                 })
                 ->orderBy('ngay_chup')
                 ->get();
@@ -373,14 +377,17 @@ class NhanSuController extends Controller
             'ketThucTuan',
             'dsNgayTrongTuan',
             'hopDongTrongTuan',
-            'nhanVienId'
+            'nhanVienId',
+            'isAdmin'
         ));
     }
 
     public function lichLamViecData(Request $request)
     {
-        $nhanVienId = auth()->user()?->nhanVien?->id;
-        if (!$nhanVienId) {
+        $user = auth()->user();
+        $isAdmin = (int) ($user?->role) === User::ROLE_ADMIN;
+        $nhanVienId = $user?->nhanVien?->id;
+        if (!$isAdmin && !$nhanVienId) {
             return response()->json([]);
         }
 
@@ -401,10 +408,12 @@ class NhanSuController extends Controller
                 ->with(['khachHang'])
                 ->where('ngay_chup', '>=', $startDt)
                 ->where('ngay_chup', '<', $endDtExclusive)
-                ->where(function ($q) use ($nhanVienId) {
-                    $q->where('tho_chup_id', $nhanVienId)
-                        ->orWhere('tho_make_id', $nhanVienId)
-                        ->orWhere('tho_edit_id', $nhanVienId);
+                ->when(!$isAdmin, function ($q) use ($nhanVienId) {
+                    $q->where(function ($qq) use ($nhanVienId) {
+                        $qq->where('tho_chup_id', $nhanVienId)
+                            ->orWhere('tho_make_id', $nhanVienId)
+                            ->orWhere('tho_edit_id', $nhanVienId);
+                    });
                 })
                 ->orderBy('ngay_chup')
                 ->get();
@@ -416,9 +425,15 @@ class NhanSuController extends Controller
                 }
 
                 $roles = [];
-                if ((int) $hd->tho_chup_id === (int) $nhanVienId) $roles[] = 'Chụp';
-                if ((int) $hd->tho_make_id === (int) $nhanVienId) $roles[] = 'Make';
-                if ((int) $hd->tho_edit_id === (int) $nhanVienId) $roles[] = 'Edit';
+                if (!$nhanVienId) {
+                    if ($hd->tho_chup_id) $roles[] = 'Chụp';
+                    if ($hd->tho_make_id) $roles[] = 'Make';
+                    if ($hd->tho_edit_id) $roles[] = 'Edit';
+                } else {
+                    if ((int) $hd->tho_chup_id === (int) $nhanVienId) $roles[] = 'Chụp';
+                    if ((int) $hd->tho_make_id === (int) $nhanVienId) $roles[] = 'Make';
+                    if ((int) $hd->tho_edit_id === (int) $nhanVienId) $roles[] = 'Edit';
+                }
                 $roleText = implode(', ', $roles);
 
                 $kh = $hd->khachHang;
@@ -446,15 +461,23 @@ class NhanSuController extends Controller
 
         $rows = HopDong::query()
             ->whereBetween(DB::raw('DATE(ngay_chup)'), [$startDate, $endDate])
-            ->where(function ($q) use ($nhanVienId) {
-                $q->where('tho_chup_id', $nhanVienId)
-                    ->orWhere('tho_make_id', $nhanVienId)
-                    ->orWhere('tho_edit_id', $nhanVienId);
+            ->when(!$isAdmin, function ($q) use ($nhanVienId) {
+                $q->where(function ($qq) use ($nhanVienId) {
+                    $qq->where('tho_chup_id', $nhanVienId)
+                        ->orWhere('tho_make_id', $nhanVienId)
+                        ->orWhere('tho_edit_id', $nhanVienId);
+                });
             })
             ->selectRaw('DATE(ngay_chup) as ngay')
-            ->selectRaw('SUM(CASE WHEN tho_chup_id = ? THEN 1 ELSE 0 END) as chup', [$nhanVienId])
-            ->selectRaw('SUM(CASE WHEN tho_make_id = ? THEN 1 ELSE 0 END) as make', [$nhanVienId])
-            ->selectRaw('SUM(CASE WHEN tho_edit_id = ? THEN 1 ELSE 0 END) as edit', [$nhanVienId])
+            ->when($isAdmin, function ($q) {
+                $q->selectRaw('SUM(CASE WHEN tho_chup_id IS NOT NULL THEN 1 ELSE 0 END) as chup')
+                    ->selectRaw('SUM(CASE WHEN tho_make_id IS NOT NULL THEN 1 ELSE 0 END) as make')
+                    ->selectRaw('SUM(CASE WHEN tho_edit_id IS NOT NULL THEN 1 ELSE 0 END) as edit');
+            }, function ($q) use ($nhanVienId) {
+                $q->selectRaw('SUM(CASE WHEN tho_chup_id = ? THEN 1 ELSE 0 END) as chup', [$nhanVienId])
+                    ->selectRaw('SUM(CASE WHEN tho_make_id = ? THEN 1 ELSE 0 END) as make', [$nhanVienId])
+                    ->selectRaw('SUM(CASE WHEN tho_edit_id = ? THEN 1 ELSE 0 END) as edit', [$nhanVienId]);
+            })
             ->selectRaw('COUNT(*) as tong')
             ->groupBy(DB::raw('DATE(ngay_chup)'))
             ->orderBy(DB::raw('DATE(ngay_chup)'))
@@ -486,8 +509,10 @@ class NhanSuController extends Controller
 
     public function lichLamViecChiTietNgay(Request $request)
     {
-        $nhanVienId = auth()->user()?->nhanVien?->id;
-        if (!$nhanVienId) {
+        $user = auth()->user();
+        $isAdmin = (int) ($user?->role) === User::ROLE_ADMIN;
+        $nhanVienId = $user?->nhanVien?->id;
+        if (!$isAdmin && !$nhanVienId) {
             return response()->json(['date' => null, 'items' => []]);
         }
 
@@ -504,22 +529,30 @@ class NhanSuController extends Controller
         }
 
         $items = HopDong::query()
-            ->with(['khachHang'])
+            ->with(['khachHang', 'thoChup.user', 'thoMake.user', 'thoEdit.user'])
             ->whereDate('ngay_chup', $day)
-            ->where(function ($q) use ($nhanVienId) {
-                $q->where('tho_chup_id', $nhanVienId)
-                    ->orWhere('tho_make_id', $nhanVienId)
-                    ->orWhere('tho_edit_id', $nhanVienId);
+            ->when(!$isAdmin, function ($q) use ($nhanVienId) {
+                $q->where(function ($qq) use ($nhanVienId) {
+                    $qq->where('tho_chup_id', $nhanVienId)
+                        ->orWhere('tho_make_id', $nhanVienId)
+                        ->orWhere('tho_edit_id', $nhanVienId);
+                });
             })
             ->orderBy('ngay_chup')
             ->get()
-            ->map(function (HopDong $hd) use ($nhanVienId, $tz) {
+            ->map(function (HopDong $hd) use ($nhanVienId, $tz, $isAdmin) {
                 $dt = $hd->ngay_chup ? Carbon::parse($hd->ngay_chup, $tz) : null;
 
                 $roles = [];
-                if ((int) $hd->tho_chup_id === (int) $nhanVienId) $roles[] = 'Chụp';
-                if ((int) $hd->tho_make_id === (int) $nhanVienId) $roles[] = 'Make';
-                if ((int) $hd->tho_edit_id === (int) $nhanVienId) $roles[] = 'Edit';
+                if ($isAdmin || !$nhanVienId) {
+                    if ($hd->tho_chup_id) $roles[] = 'Chụp';
+                    if ($hd->tho_make_id) $roles[] = 'Make';
+                    if ($hd->tho_edit_id) $roles[] = 'Edit';
+                } else {
+                    if ((int) $hd->tho_chup_id === (int) $nhanVienId) $roles[] = 'Chụp';
+                    if ((int) $hd->tho_make_id === (int) $nhanVienId) $roles[] = 'Make';
+                    if ((int) $hd->tho_edit_id === (int) $nhanVienId) $roles[] = 'Edit';
+                }
 
                 $kh = $hd->khachHang;
                 $ten = $kh->ten_khach_hang ?? $kh->ten ?? $kh->ho_ten ?? $kh->name ?? null;
@@ -534,6 +567,11 @@ class NhanSuController extends Controller
                     'trang_thai_chup' => $hd->trang_thai_chup,
                     'trang_thai_edit' => $hd->trang_thai_edit,
                     'roles' => $roles,
+                    'phan_cong' => [
+                        'chup' => $hd->thoChup?->user?->name,
+                        'make' => $hd->thoMake?->user?->name,
+                        'edit' => $hd->thoEdit?->user?->name,
+                    ],
                 ];
             })
             ->values();
