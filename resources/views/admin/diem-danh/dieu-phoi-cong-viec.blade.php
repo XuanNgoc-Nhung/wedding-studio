@@ -92,7 +92,7 @@
                                     data-url="{{ route('admin.diem-danh.phan-cong-cong-viec', $item) }}"
                                     data-ten-khach-hang="{{ e($tenKhachHang) }}"
                                     data-dia-diem="{{ e($item->dia_diem ?? '') }}"
-                                    data-ngay-chup="{{ $item->ngay_chup ? $item->ngay_chup->format('Y-m-d') : '' }}"
+                                    data-ngay-chup="{{ $item->ngay_chup ? $item->ngay_chup->format('Y-m-d H:i') : '' }}"
                                     data-ngay-hen-tra-hang="{{ $item->ngay_hen_tra_hang ? $item->ngay_hen_tra_hang->format('Y-m-d') : '' }}"
                                     data-trang-phuc="{{ e($item->trang_phuc ?? '') }}"
                                     data-tong-tien="{{ $item->tong_tien !== null ? number_format((float)$item->tong_tien, 0, ',', '.') . ' đ' : '—' }}"
@@ -141,7 +141,7 @@
                             </div>
                             <div class="col-12 col-sm-6 col-lg-3">
                                 <label class="form-label" for="pv-ngay-chup">Ngày chụp</label>
-                                <input type="text" class="flatpickr-date-admin form-control" id="pv-ngay-chup" name="ngay_chup" value="" placeholder="dd/mm/yyyy" autocomplete="off">
+                                <input type="text" class="flatpickr-datetime-admin form-control" id="pv-ngay-chup" name="ngay_chup" value="" placeholder="dd/mm/yyyy hh:mm" autocomplete="off">
                             </div>
                             <div class="col-12 col-sm-6 col-lg-3">
                                 <label class="form-label" for="pv-ngay-hen-tra-hang">Ngày hẹn trả hàng</label>
@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formPhanCong.action = btn.getAttribute('data-url') || '';
             document.getElementById('pv-ten-khach-hang').value = btn.getAttribute('data-ten-khach-hang') || '—';
             document.getElementById('pv-dia-diem').value = btn.getAttribute('data-dia-diem') || '';
-            if (window.setAdminDateInput) { setAdminDateInput('pv-ngay-chup', btn.getAttribute('data-ngay-chup') || ''); setAdminDateInput('pv-ngay-hen-tra-hang', btn.getAttribute('data-ngay-hen-tra-hang') || ''); } else { document.getElementById('pv-ngay-chup').value = btn.getAttribute('data-ngay-chup') || ''; document.getElementById('pv-ngay-hen-tra-hang').value = btn.getAttribute('data-ngay-hen-tra-hang') || ''; }
+            if (window.setAdminDateTimeInput && window.setAdminDateInput) { setAdminDateTimeInput('pv-ngay-chup', btn.getAttribute('data-ngay-chup') || ''); setAdminDateInput('pv-ngay-hen-tra-hang', btn.getAttribute('data-ngay-hen-tra-hang') || ''); } else { document.getElementById('pv-ngay-chup').value = btn.getAttribute('data-ngay-chup') || ''; document.getElementById('pv-ngay-hen-tra-hang').value = btn.getAttribute('data-ngay-hen-tra-hang') || ''; }
             document.getElementById('pv-trang-phuc').value = btn.getAttribute('data-trang-phuc') || '';
             document.getElementById('pv-tong-tien').value = btn.getAttribute('data-tong-tien') || '—';
             document.getElementById('pv-trang-thai-chup').value = btn.getAttribute('data-trang-thai-chup') || '—';
