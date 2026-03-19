@@ -376,4 +376,171 @@ class NhanSuController extends Controller
             'nhanVienId'
         ));
     }
+
+    public function lichLamViecData(Request $request)
+    {
+        $nhanVienId = auth()->user()?->nhanVien?->id;
+        if (!$nhanVienId) {
+            return response()->json([]);
+        }
+
+        $start = $request->query('start');
+        $end = $request->query('end');
+        $view = (string) $request->query('view', 'dayGridMonth');
+        if (!$start || !$end) {
+            return response()->json([]);
+        }
+
+        $tz = config('app.timezone');
+        $startDt = Carbon::parse($start, $tz);
+        $endDtExclusive = Carbon::parse($end, $tz); // FullCalendar end là mốc exclusive
+
+        // View tuần/ngày: trả event theo từng hợp đồng (có giờ)
+        if (in_array($view, ['timeGridDay', 'timeGridWeek'], true)) {
+            $items = HopDong::query()
+                ->with(['khachHang'])
+                ->where('ngay_chup', '>=', $startDt)
+                ->where('ngay_chup', '<', $endDtExclusive)
+                ->where(function ($q) use ($nhanVienId) {
+                    $q->where('tho_chup_id', $nhanVienId)
+                        ->orWhere('tho_make_id', $nhanVienId)
+                        ->orWhere('tho_edit_id', $nhanVienId);
+                })
+                ->orderBy('ngay_chup')
+                ->get();
+
+            $events = $items->map(function (HopDong $hd) use ($nhanVienId, $tz) {
+                $start = $hd->ngay_chup ? Carbon::parse($hd->ngay_chup, $tz) : null;
+                if (!$start) {
+                    return null;
+                }
+
+                $roles = [];
+                if ((int) $hd->tho_chup_id === (int) $nhanVienId) $roles[] = 'Chụp';
+                if ((int) $hd->tho_make_id === (int) $nhanVienId) $roles[] = 'Make';
+                if ((int) $hd->tho_edit_id === (int) $nhanVienId) $roles[] = 'Edit';
+                $roleText = implode(', ', $roles);
+
+                $kh = $hd->khachHang;
+                $ten = $kh->ten_khach_hang ?? $kh->ten ?? $kh->ho_ten ?? $kh->name ?? ('HĐ #' . $hd->id);
+
+                return [
+                    'id' => 'hd-' . $hd->id,
+                    'title' => $ten,
+                    'start' => $start->toIso8601String(),
+                    'end' => $start->copy()->addMinutes(60)->toIso8601String(),
+                    'allDay' => false,
+                    'extendedProps' => [
+                        'hop_dong_id' => $hd->id,
+                        'role' => $roleText,
+                    ],
+                ];
+            })->filter()->values();
+
+            return response()->json($events);
+        }
+
+        // View tháng/danh sách: tổng hợp theo ngày như hiện tại
+        $startDate = $startDt->toDateString();
+        $endDate = $endDtExclusive->copy()->subDay()->toDateString();
+
+        $rows = HopDong::query()
+            ->whereBetween(DB::raw('DATE(ngay_chup)'), [$startDate, $endDate])
+            ->where(function ($q) use ($nhanVienId) {
+                $q->where('tho_chup_id', $nhanVienId)
+                    ->orWhere('tho_make_id', $nhanVienId)
+                    ->orWhere('tho_edit_id', $nhanVienId);
+            })
+            ->selectRaw('DATE(ngay_chup) as ngay')
+            ->selectRaw('SUM(CASE WHEN tho_chup_id = ? THEN 1 ELSE 0 END) as chup', [$nhanVienId])
+            ->selectRaw('SUM(CASE WHEN tho_make_id = ? THEN 1 ELSE 0 END) as make', [$nhanVienId])
+            ->selectRaw('SUM(CASE WHEN tho_edit_id = ? THEN 1 ELSE 0 END) as edit', [$nhanVienId])
+            ->selectRaw('COUNT(*) as tong')
+            ->groupBy(DB::raw('DATE(ngay_chup)'))
+            ->orderBy(DB::raw('DATE(ngay_chup)'))
+            ->get();
+
+        $events = $rows->map(function ($r) {
+            $chup = (int) ($r->chup ?? 0);
+            $make = (int) ($r->make ?? 0);
+            $edit = (int) ($r->edit ?? 0);
+            $tong = (int) ($r->tong ?? ($chup + $make + $edit));
+
+            return [
+                'id' => 'work-' . $r->ngay,
+                'start' => $r->ngay,
+                'allDay' => true,
+                'display' => 'block',
+                'title' => '',
+                'extendedProps' => [
+                    'chup' => $chup,
+                    'make' => $make,
+                    'edit' => $edit,
+                    'tong' => $tong,
+                ],
+            ];
+        })->values();
+
+        return response()->json($events);
+    }
+
+    public function lichLamViecChiTietNgay(Request $request)
+    {
+        $nhanVienId = auth()->user()?->nhanVien?->id;
+        if (!$nhanVienId) {
+            return response()->json(['date' => null, 'items' => []]);
+        }
+
+        $date = $request->query('date');
+        if (!$date) {
+            return response()->json(['date' => null, 'items' => []]);
+        }
+
+        $tz = config('app.timezone');
+        try {
+            $day = Carbon::parse($date, $tz)->toDateString();
+        } catch (\Throwable $e) {
+            return response()->json(['date' => null, 'items' => []]);
+        }
+
+        $items = HopDong::query()
+            ->with(['khachHang'])
+            ->whereDate('ngay_chup', $day)
+            ->where(function ($q) use ($nhanVienId) {
+                $q->where('tho_chup_id', $nhanVienId)
+                    ->orWhere('tho_make_id', $nhanVienId)
+                    ->orWhere('tho_edit_id', $nhanVienId);
+            })
+            ->orderBy('ngay_chup')
+            ->get()
+            ->map(function (HopDong $hd) use ($nhanVienId, $tz) {
+                $dt = $hd->ngay_chup ? Carbon::parse($hd->ngay_chup, $tz) : null;
+
+                $roles = [];
+                if ((int) $hd->tho_chup_id === (int) $nhanVienId) $roles[] = 'Chụp';
+                if ((int) $hd->tho_make_id === (int) $nhanVienId) $roles[] = 'Make';
+                if ((int) $hd->tho_edit_id === (int) $nhanVienId) $roles[] = 'Edit';
+
+                $kh = $hd->khachHang;
+                $ten = $kh->ten_khach_hang ?? $kh->ten ?? $kh->ho_ten ?? $kh->name ?? null;
+
+                return [
+                    'id' => $hd->id,
+                    'time' => $dt ? $dt->format('H:i') : null,
+                    'datetime' => $dt ? $dt->toIso8601String() : null,
+                    'khach_hang' => $ten,
+                    'dia_diem' => $hd->dia_diem,
+                    'concept' => $hd->concept,
+                    'trang_thai_chup' => $hd->trang_thai_chup,
+                    'trang_thai_edit' => $hd->trang_thai_edit,
+                    'roles' => $roles,
+                ];
+            })
+            ->values();
+
+        return response()->json([
+            'date' => $day,
+            'items' => $items,
+        ]);
+    }
 }

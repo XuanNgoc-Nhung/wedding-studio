@@ -50,6 +50,8 @@
     </div>
     <!-- / Layout wrapper -->
 
+    @stack('modals')
+
     <!-- Core JS & Scripts -->
     @include('admin.layouts.components.scripts')
     @stack('scripts')

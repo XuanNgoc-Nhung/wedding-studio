@@ -65,9 +65,36 @@
             if (modal) opts.appendTo = modal;
             flatpickr(el, opts);
         });
+
+        // Datetime picker: hiển thị dd/mm/yyyy HH:MM, value gửi lên server Y-m-d H:i
+        document.querySelectorAll('input.flatpickr-datetime-admin').forEach(function(el) {
+            if (el._flatpickr) return;
+            var opts = {
+                altInput: true,
+                altFormat: 'd/m/Y H:i',
+                dateFormat: 'Y-m-d H:i',
+                enableTime: true,
+                time_24hr: true,
+                minuteIncrement: 5,
+                allowInput: false,
+                static: false,
+                locale: { firstDayOfWeek: 1 }
+            };
+            var modal = el.closest('.modal');
+            if (modal) opts.appendTo = modal;
+            flatpickr(el, opts);
+        });
     });
     // Helper: gán giá trị ngày cho input (dùng khi mở modal Sửa). value định dạng Y-m-d hoặc rỗng.
     window.setAdminDateInput = function(idOrEl, value) {
+        var el = typeof idOrEl === 'string' ? document.getElementById(idOrEl) : idOrEl;
+        if (!el) return;
+        if (el._flatpickr) { if (value) el._flatpickr.setDate(value, false); else el._flatpickr.clear(); }
+        else el.value = value || '';
+    };
+
+    // Helper: gán giá trị datetime cho input (dùng khi mở modal Sửa). value định dạng Y-m-d H:i hoặc rỗng.
+    window.setAdminDateTimeInput = function(idOrEl, value) {
         var el = typeof idOrEl === 'string' ? document.getElementById(idOrEl) : idOrEl;
         if (!el) return;
         if (el._flatpickr) { if (value) el._flatpickr.setDate(value, false); else el._flatpickr.clear(); }

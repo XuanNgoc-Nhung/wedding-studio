@@ -11,8 +11,8 @@ use App\Http\Controllers\Admin\TaiChinhKeToanController as AdminTaiChinhKeToan;
 use App\Http\Controllers\Admin\DiemDanhController as AdminDiemDanh;
 use App\Http\Controllers\Admin\HeThongController as AdminHeThong;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/demo', function () {
+    return view('admin.nhan-su.demo');
 });
 
 // Đăng nhập / Đăng xuất / Đăng ký (guest mới vào được login, register; auth mới vào được logout)
@@ -35,6 +35,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'c
         Route::get('/phan-quyen', [AdminNhanSu::class, 'phanQuyen'])->name('nhan-su.phan-quyen');
         Route::post('/phan-quyen', [AdminNhanSu::class, 'luuPhanQuyen'])->name('nhan-su.luu-phan-quyen');
         Route::get('/lich-lam-viec', [AdminNhanSu::class, 'lichLamViec'])->name('nhan-su.lich-lam-viec');
+        Route::get('/lich-lam-viec/data', [AdminNhanSu::class, 'lichLamViecData'])->name('nhan-su.lich-lam-viec.data');
+        Route::get('/lich-lam-viec/chi-tiet-ngay', [AdminNhanSu::class, 'lichLamViecChiTietNgay'])->name('nhan-su.lich-lam-viec.chi-tiet-ngay');
     });
     //Route cho khách hàng
     Route::group(['prefix' => 'khach-hang'], function () {

@@ -53,7 +53,7 @@ class HopDong extends Model
     protected function casts(): array
     {
         return [
-            'ngay_chup' => 'date',
+            'ngay_chup' => 'datetime',
             'ngay_tra_link_in' => 'date',
             'ngay_hen_tra_hang' => 'date',
             'tong_tien' => 'decimal:2',

@@ -85,7 +85,7 @@
                         <td>{{ $item->nguoiTao?->name ?? '—' }}</td>
                         <td><span class="fw-medium">{{ $tenKhachHang }}</span></td>
                         <td>{{ $item->dia_diem ? str($item->dia_diem)->limit(25) : '—' }}</td>
-                        <td>{{ $item->ngay_chup ? $item->ngay_chup->format('d/m/Y') : '—' }}</td>
+                        <td>{{ $item->ngay_chup ? $item->ngay_chup->format('d/m/Y H:i') : '—' }}</td>
                         <td>{{ $item->ngay_hen_tra_hang ? $item->ngay_hen_tra_hang->format('d/m/Y') : '—' }}</td>
                         <td>{{ $item->trang_phuc ? str($item->trang_phuc)->limit(30) : '—' }}</td>
                         <td>{{ $item->ghi_chu_chup ? str($item->ghi_chu_chup)->limit(40) : '—' }}</td>
@@ -180,7 +180,7 @@
                                        data-tho-make-id="{{ $item->tho_make_id ?? '' }}"
                                        data-tho-edit-id="{{ $item->tho_edit_id ?? '' }}"
                                        data-dia-diem="{{ e($item->dia_diem ?? '') }}"
-                                       data-ngay-chup="{{ $item->ngay_chup?->format('Y-m-d') ?? '' }}"
+                                       data-ngay-chup="{{ $item->ngay_chup?->format('Y-m-d H:i') ?? '' }}"
                                        data-trang-phuc="{{ e($item->trang_phuc ?? '') }}"
                                        data-concept="{{ e($item->concept ?? '') }}"
                                        data-ghi-chu-chup="{{ e($item->ghi_chu_chup ?? '') }}"
@@ -295,7 +295,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="them_ngay_chup">Ngày chụp (Dự kiến)</label>
-                            <input type="text" class="flatpickr-date-admin form-control" id="them_ngay_chup" name="ngay_chup" value="{{ old('ngay_chup') }}" placeholder="dd/mm/yyyy" autocomplete="off">
+                            <input type="text" class="flatpickr-datetime-admin form-control" id="them_ngay_chup" name="ngay_chup" value="{{ old('ngay_chup') }}" placeholder="dd/mm/yyyy hh:mm" autocomplete="off">
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="them_ngay_hen_tra_hang">Ngày hẹn trả hàng (Dự kiến)</label>
@@ -523,7 +523,7 @@
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="sua_ngay_chup">Ngày chụp (Dự kiến)</label>
-                            <input type="text" class="flatpickr-date-admin form-control" id="sua_ngay_chup" name="ngay_chup" placeholder="dd/mm/yyyy" autocomplete="off">
+                            <input type="text" class="flatpickr-datetime-admin form-control" id="sua_ngay_chup" name="ngay_chup" placeholder="dd/mm/yyyy hh:mm" autocomplete="off">
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="sua_ngay_hen_tra_hang">Ngày hẹn trả hàng (Dự kiến)</label>
@@ -920,7 +920,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('sua_khach_hang_id').value = khachHangId;
             document.getElementById('sua_khach_hang_id_hidden').value = khachHangId;
             document.getElementById('sua_dia_diem').value = btn.getAttribute('data-dia-diem') || '';
-            if (window.setAdminDateInput) { setAdminDateInput('sua_ngay_chup', btn.getAttribute('data-ngay-chup') || ''); setAdminDateInput('sua_ngay_hen_tra_hang', btn.getAttribute('data-ngay-hen-tra-hang') || ''); } else { document.getElementById('sua_ngay_chup').value = btn.getAttribute('data-ngay-chup') || ''; document.getElementById('sua_ngay_hen_tra_hang').value = btn.getAttribute('data-ngay-hen-tra-hang') || ''; }
+            if (window.setAdminDateTimeInput && window.setAdminDateInput) { setAdminDateTimeInput('sua_ngay_chup', btn.getAttribute('data-ngay-chup') || ''); setAdminDateInput('sua_ngay_hen_tra_hang', btn.getAttribute('data-ngay-hen-tra-hang') || ''); } else { document.getElementById('sua_ngay_chup').value = btn.getAttribute('data-ngay-chup') || ''; document.getElementById('sua_ngay_hen_tra_hang').value = btn.getAttribute('data-ngay-hen-tra-hang') || ''; }
             document.getElementById('sua_trang_phuc').value = btn.getAttribute('data-trang-phuc') || '';
             document.getElementById('sua_concept').value = btn.getAttribute('data-concept') || '';
             document.getElementById('sua_ghi_chu_chup').value = btn.getAttribute('data-ghi-chu-chup') || '';
