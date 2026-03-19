@@ -63,6 +63,9 @@
   padding: 1.2rem !important;
   border-bottom: 1px solid #cdcdcd !important;
 }
+.modal .modal-body{
+  max-height: calc(100vh - 200px);
+}
 </style>
 
 @stack('styles')

@@ -74,22 +74,22 @@
                     @forelse($danhSach ?? [] as $index => $item)
                     @php
                         $trangThaiLabels = [
-                            0 => 'Chờ xử lý',
-                            1 => 'Đang diễn ra',
-                            2 => 'Hoàn thành',
+                            'moi' => 'Mới',
+                            'dang_thue' => 'Đang thuê',
+                            'hoan_thanh' => 'Hoàn thành',
                         ];
                         $trangThaiBadges = [
-                            0 => 'bg-label-warning',
-                            1 => 'bg-label-info',
-                            2 => 'bg-label-success',
+                            'moi' => 'bg-label-warning',
+                            'dang_thue' => 'bg-label-info',
+                            'hoan_thanh' => 'bg-label-success',
                         ];
-                        $tt = (int)($item->trang_thai ?? 0);
-                        $trangThaiLabel = $trangThaiLabels[$tt] ?? '—';
+                        $tt = (string)($item->trang_thai ?? 'moi');
+                        $trangThaiLabel = $trangThaiLabels[$tt] ?? $tt;
                         $trangThaiBadge = $trangThaiBadges[$tt] ?? 'bg-label-secondary';
-                        $duKienTra = $item->thoi_gian_du_kien_tra;
+                        $duKienTra = $item->ngay_tra_du_kien;
                         $tinhTrangPhu = '—';
                         $tinhTrangBadge = '';
-                        if ($tt === 1 && $duKienTra) {
+                        if ($tt === 'dang_thue' && $duKienTra) {
                             if ($duKienTra->isToday()) {
                                 $tinhTrangPhu = 'Đến lịch trả đồ';
                                 $tinhTrangBadge = 'bg-label-warning';
@@ -102,15 +102,15 @@
                     <tr>
                         <td>{{ ($danhSach->currentPage() - 1) * $danhSach->perPage() + $index + 1 }}</td>
                         <td><span class="fw-medium">{{ $item->ten_khach_hang ?? '—' }}</span></td>
-                        <td>{{ $item->so_dien_thoai ?? '—' }}</td>
-                        <td class="text-center">{{ $item->trang_phuc_id ?? '—' }}</td>
-                        <td class="text-center">{{ $item->so_luong_thue ?? 0 }}</td>
+                        <td>{{ $item->sdt_khach_hang ?? '—' }}</td>
+                        <td class="text-center">{{ $item->san_pham_id ?? '—' }}</td>
+                        <td class="text-center">{{ $item->so_luong ?? 0 }}</td>
                         <td class="text-end">
                             {{ $item->gia_thue !== null ? number_format((float)$item->gia_thue, 0, ',', '.') . ' đ' : '—' }}
                         </td>
-                        <td>{{ $item->thoi_gian_thue_bat_dau?->format('d/m/Y') ?? '—' }}</td>
-                        <td>{{ $item->thoi_gian_du_kien_tra?->format('d/m/Y') ?? '—' }}</td>
-                        <td>{{ $item->thoi_gian_tra_hang_thuc_te?->format('d/m/Y') ?? '—' }}</td>
+                        <td>{{ $item->ngay_thue?->format('d/m/Y') ?? '—' }}</td>
+                        <td>{{ $item->ngay_tra_du_kien?->format('d/m/Y') ?? '—' }}</td>
+                        <td>{{ $item->ngay_tra_thuc_te?->format('d/m/Y') ?? '—' }}</td>
                         <td>{{ \Illuminate\Support\Str::limit($item->ghi_chu ?? '—', 30) }}</td>
                         <td class="text-center">
                             <span class="badge {{ $trangThaiBadge }}">{{ $trangThaiLabel }}</span>
@@ -122,7 +122,7 @@
                             {{ $tinhTrangPhu }}
                             @endif
                         </td>
-                        <td>{{ $item->user?->name ?? '—' }}</td>
+                        <td>{{ $item->nguoiChoThue?->name ?? '—' }}</td>
                         <td>
                             <div class="dropdown">
                                 <button type="button" class="btn btn-sm btn-icon btn-outline-secondary dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
@@ -135,15 +135,15 @@
                                        data-bs-target="#modalSuaHopDong"
                                        data-url="{{ route('admin.trang-phuc.update-hop-dong', $item) }}"
                                        data-ten-khach-hang="{{ e($item->ten_khach_hang ?? '') }}"
-                                       data-so-dien-thoai="{{ e($item->so_dien_thoai ?? '') }}"
-                                       data-trang-phuc-id="{{ $item->trang_phuc_id ?? '' }}"
-                                       data-so-luong-thue="{{ $item->so_luong_thue ?? 1 }}"
+                                       data-so-dien-thoai="{{ e($item->sdt_khach_hang ?? '') }}"
+                                       data-trang-phuc-id="{{ $item->san_pham_id ?? '' }}"
+                                       data-so-luong-thue="{{ $item->so_luong ?? 1 }}"
                                        data-gia-thue="{{ $item->gia_thue ?? '' }}"
-                                       data-thoi-gian-bat-dau="{{ $item->thoi_gian_thue_bat_dau?->format('Y-m-d') ?? '' }}"
-                                       data-thoi-gian-du-kien-tra="{{ $item->thoi_gian_du_kien_tra?->format('Y-m-d') ?? '' }}"
-                                       data-thoi-gian-tra-thuc-te="{{ $item->thoi_gian_tra_hang_thuc_te?->format('Y-m-d') ?? '' }}"
+                                       data-thoi-gian-bat-dau="{{ $item->ngay_thue?->format('Y-m-d') ?? '' }}"
+                                       data-thoi-gian-du-kien-tra="{{ $item->ngay_tra_du_kien?->format('Y-m-d') ?? '' }}"
+                                       data-thoi-gian-tra-thuc-te="{{ $item->ngay_tra_thuc_te?->format('Y-m-d') ?? '' }}"
                                        data-ghi-chu="{{ e($item->ghi_chu ?? '') }}"
-                                       data-trang-thai="{{ $item->trang_thai ?? 0 }}">
+                                       data-trang-thai="{{ $item->trang_thai ?? 'moi' }}">
                                         <i class="fa-solid fa-pen me-2"></i> Sửa
                                     </a>
                                     <form id="form-xoa-hd-{{ $item->id }}" action="{{ route('admin.trang-phuc.destroy-hop-dong', $item) }}" method="POST" class="d-inline">
@@ -179,8 +179,8 @@
             </div>
             <form action="{{ route('admin.trang-phuc.store-hop-dong') }}" method="POST" id="formThemHopDong">
                 @csrf
-                @if($errors->any())
-                <div class="modal-body py-0">
+                <div class="modal-body">
+                    @if($errors->any())
                     <div class="alert alert-danger">
                         <ul class="mb-0 list-unstyled">
                             @foreach($errors->all() as $err)
@@ -188,9 +188,7 @@
                             @endforeach
                         </ul>
                     </div>
-                </div>
-                @endif
-                <div class="modal-body">
+                    @endif
                     <div class="row g-3">
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="them_ten_khach_hang">Tên khách hàng <span class="text-danger">*</span></label>
@@ -233,9 +231,9 @@
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="them_trang_thai">Trạng thái</label>
                             <select class="select2-admin form-select" id="them_trang_thai" name="trang_thai" data-placeholder="Chọn trạng thái">
-                                <option value="0" {{ old('trang_thai', '0') == '0' ? 'selected' : '' }}>Chờ xử lý</option>
-                                <option value="1" {{ old('trang_thai') == '1' ? 'selected' : '' }}>Đang diễn ra</option>
-                                <option value="2" {{ old('trang_thai') == '2' ? 'selected' : '' }}>Hoàn thành</option>
+                                <option value="moi" {{ old('trang_thai', 'moi') == 'moi' ? 'selected' : '' }}>Mới</option>
+                                <option value="dang_thue" {{ old('trang_thai') == 'dang_thue' ? 'selected' : '' }}>Đang thuê</option>
+                                <option value="hoan_thanh" {{ old('trang_thai') == 'hoan_thanh' ? 'selected' : '' }}>Hoàn thành</option>
                             </select>
                         </div>
                         <div class="col-12">
@@ -266,8 +264,8 @@
             <form id="formSuaHopDong" method="POST" action="">
                 @csrf
                 @method('PUT')
-                @if($errors->any())
-                <div class="modal-body py-0">
+                <div class="modal-body">
+                    @if($errors->any())
                     <div class="alert alert-danger">
                         <ul class="mb-0 list-unstyled">
                             @foreach($errors->all() as $err)
@@ -275,9 +273,7 @@
                             @endforeach
                         </ul>
                     </div>
-                </div>
-                @endif
-                <div class="modal-body">
+                    @endif
                     <div class="row g-3">
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="sua_ten_khach_hang">Tên khách hàng <span class="text-danger">*</span></label>
@@ -319,9 +315,9 @@
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="sua_trang_thai">Trạng thái</label>
                             <select class="select2-admin form-select" id="sua_trang_thai" name="trang_thai" data-placeholder="Chọn trạng thái">
-                                <option value="0">Chờ xử lý</option>
-                                <option value="1">Đang diễn ra</option>
-                                <option value="2">Hoàn thành</option>
+                                <option value="moi">Mới</option>
+                                <option value="dang_thue">Đang thuê</option>
+                                <option value="hoan_thanh">Hoàn thành</option>
                             </select>
                         </div>
                         <div class="col-12">
