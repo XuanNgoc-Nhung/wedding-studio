@@ -20,13 +20,13 @@
         <form action="{{ route('admin.dich-vu.nhom-dich-vu') }}" method="GET" class="mb-4">
             <div class="row g-3 align-items-end">
                 <div class="col-md-6 col-lg-4">
-                    <label class="form-label" for="search">Tên, mã nhóm hoặc thẻ</label>
+                    <label class="form-label" for="search">Tên nhóm hoặc tên dịch vụ</label>
                     <input type="text"
                            class="form-control"
                            id="search"
                            name="search"
                            value="{{ request('search') }}"
-                           placeholder="Nhập tên, mã nhóm hoặc thẻ để tìm...">
+                           placeholder="Nhập tên nhóm hoặc tên dịch vụ để tìm...">
                 </div>
                 <div class="col-auto">
                     <button type="submit" class="btn btn-primary">

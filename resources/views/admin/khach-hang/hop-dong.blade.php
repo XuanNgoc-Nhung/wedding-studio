@@ -327,7 +327,21 @@
                                         <button type="button" class="nav-link" id="tab-dich-vu-le-btn" role="tab" data-bs-toggle="tab" data-bs-target="#tab-dich-vu-le" aria-controls="tab-dich-vu-le" aria-selected="false">Dịch vụ lẻ</button>
                                     </li>
                                 </ul>
+                                {{-- Ô tìm kiếm nhanh cho tab Nhóm dịch vụ + Dịch vụ lẻ --}}
+                                    <div class="row g-2 align-items-end mb-3">
+                                        <div class="col-12 col-md-7">
+                                            <label class="form-label d-block" for="them_tim_dich_vu">Tìm theo tên hoặc mã</label>
+                                            <input type="text"
+                                                   class="form-control"
+                                                   id="them_tim_dich_vu"
+                                                   placeholder="Nhập tên hoặc mã dịch vụ... (ví dụ: DV001, Bảo hiểm)">
+                                        </div>
+                                        <div class="col-auto">
+                                            <button type="button" class="btn btn-outline-secondary" id="btnXoaLocThemDichVu">Bỏ lọc</button>
+                                        </div>
+                                    </div>
                                 <div class="tab-content p-3 bg-light rounded" id="tabDichVuThemHopDongContent">
+                                    
                                 <div class="tab-pane fade show active" id="tab-nhom-dich-vu" role="tabpanel">
                                     <div class="table-responsive" style="max-height: 220px; overflow-y: auto;">
                                         <table class="table table-sm table-hover table-bordered mb-0" id="tableNhomDichVuThem">
@@ -1175,6 +1189,79 @@ document.addEventListener('DOMContentLoaded', function() {
     var tableDichVuLe = document.getElementById('tableDichVuLeThem');
     var boxDichVuLe = document.getElementById('boxDichVuLeTheoNhom');
     var tbodyDichVuLe = document.getElementById('tbodyDichVuLeTheoNhom');
+    var inpTimDichVuThem = document.getElementById('them_tim_dich_vu');
+    var btnXoaLocThemDichVu = document.getElementById('btnXoaLocThemDichVu');
+
+    function stripDiacritics(value) {
+        // Giúp search không bị phụ thuộc dấu tiếng Việt.
+        return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+
+    function normalizeSearch(value) {
+        return stripDiacritics(value).toLowerCase().trim();
+    }
+
+    function applayTimKiemDichVuThem() {
+        var q = inpTimDichVuThem ? normalizeSearch(inpTimDichVuThem.value) : '';
+
+        if (tableNhom) {
+            tableNhom.querySelectorAll('tbody tr[data-nhom-id]').forEach(function (row) {
+                if (!q) {
+                    row.style.display = '';
+                    return;
+                }
+
+                var tenNhom = normalizeSearch(row.getAttribute('data-ten-nhom') || '');
+                var maNhom = normalizeSearch((row.children[3] && row.children[3].innerText) ? row.children[3].innerText : '');
+
+                var matched = tenNhom.includes(q) || maNhom.includes(q);
+
+                // Nếu chưa khớp theo tên/mã nhóm thì thử khớp theo tên/mã dịch vụ lẻ thuộc nhóm.
+                if (!matched) {
+                    // Cache danh sách dịch vụ lẻ thuộc nhóm để tránh parse JSON mỗi lần gõ.
+                    var list = row.__dichVuLeList;
+                    if (!Array.isArray(list)) {
+                        var json = row.getAttribute('data-dich-vu-le');
+                        list = [];
+                        try { list = json ? JSON.parse(json) : []; } catch (e) { list = []; }
+                        row.__dichVuLeList = list;
+                    }
+                    if (Array.isArray(list)) {
+                        matched = list.some(function (d) {
+                            var tenDv = normalizeSearch(d && d.ten_dich_vu ? d.ten_dich_vu : '');
+                            var maDv = normalizeSearch(d && d.ma_dich_vu ? d.ma_dich_vu : '');
+                            return tenDv.includes(q) || maDv.includes(q);
+                        });
+                    }
+                }
+
+                row.style.display = matched ? '' : 'none';
+            });
+        }
+
+        if (tableDichVuLe) {
+            tableDichVuLe.querySelectorAll('tbody tr[data-dich-vu-le]').forEach(function (row) {
+                if (!q) {
+                    row.style.display = '';
+                    return;
+                }
+
+                // Cache item dịch vụ lẻ để tránh parse JSON mỗi lần gõ.
+                var dvl = row.__dichVuLeItem;
+                if (!dvl) {
+                    var json = row.getAttribute('data-dich-vu-le');
+                    try { dvl = json ? JSON.parse(json) : null; } catch (e) { dvl = null; }
+                    row.__dichVuLeItem = dvl;
+                }
+
+                var ten = dvl && dvl.ten_dich_vu ? dvl.ten_dich_vu : (row.children[2] && row.children[2].innerText ? row.children[2].innerText : '');
+                var ma = dvl && dvl.ma_dich_vu ? dvl.ma_dich_vu : (row.children[3] && row.children[3].innerText ? row.children[3].innerText : '');
+
+                var matched = normalizeSearch(ten).includes(q) || normalizeSearch(ma).includes(q);
+                row.style.display = matched ? '' : 'none';
+            });
+        }
+    }
 
     function renderDichVuLeTheoNhom() {
         if (!tbodyDichVuLe || !boxDichVuLe) return;
@@ -1355,6 +1442,18 @@ document.addEventListener('DOMContentLoaded', function() {
         tableDichVuLe.addEventListener('change', function(e) {
             if (e.target.classList.contains('cb-dich-vu-le')) renderDichVuLeTheoNhom();
         });
+    }
+
+    // Bộ lọc theo tên hoặc mã cho tab Thêm: áp dụng trực tiếp lên 2 bảng.
+    if (inpTimDichVuThem) {
+        inpTimDichVuThem.addEventListener('input', applayTimKiemDichVuThem);
+        if (btnXoaLocThemDichVu) {
+            btnXoaLocThemDichVu.addEventListener('click', function () {
+                inpTimDichVuThem.value = '';
+                applayTimKiemDichVuThem();
+            });
+        }
+        applayTimKiemDichVuThem();
     }
 
     // Giá thực: chỉ nhập số tròn chục, không thập phân (10, 240, 2450...). Khi blur làm tròn về bội 10.

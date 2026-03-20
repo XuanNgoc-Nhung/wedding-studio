@@ -137,6 +137,10 @@ class DichVuController extends Controller
                 $qb->where('ten_nhom', 'like', '%' . $q . '%')
                     ->orWhere('ma_nhom', 'like', '%' . $q . '%')
                     ->orWhere('the', 'like', '%' . $q . '%');
+                // Cho phép tìm nhóm theo tên dịch vụ lẻ thuộc nhóm đó
+                $qb->orWhereHas('dichVuLe', function ($dvq) use ($q) {
+                    $dvq->where('ten_dich_vu', 'like', '%' . $q . '%');
+                });
             });
         }
 
