@@ -22,6 +22,8 @@ class DichVuTrongHopDong extends Model
         'id_dich_vu',
         'gia_goc',
         'gia_thuc',
+        'so_luong',
+        'thanh_tien',
         'ghi_chu',
     ];
 
@@ -35,6 +37,8 @@ class DichVuTrongHopDong extends Model
         return [
             'gia_goc' => 'decimal:2',
             'gia_thuc' => 'decimal:2',
+            'so_luong' => 'integer',
+            'thanh_tien' => 'decimal:2',
         ];
     }
 

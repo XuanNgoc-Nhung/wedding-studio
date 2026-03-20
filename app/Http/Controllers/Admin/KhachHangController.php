@@ -27,6 +27,8 @@ class KhachHangController extends Controller
                 'dich_vu_trong_hop_dong.id_dich_vu',
                 'dich_vu_trong_hop_dong.gia_goc',
                 'dich_vu_trong_hop_dong.gia_thuc',
+                'dich_vu_trong_hop_dong.so_luong',
+                'dich_vu_trong_hop_dong.thanh_tien',
                 'dich_vu_trong_hop_dong.ghi_chu',
                 'dich_vu_le.ten_dich_vu',
                 'dich_vu_le.ma_dich_vu',
@@ -190,6 +192,8 @@ class KhachHangController extends Controller
             'dich_vu_le_hop_dong.*.dich_vu_le_id' => 'required_with:dich_vu_le_hop_dong|integer|exists:dich_vu_le,id',
             'dich_vu_le_hop_dong.*.gia_goc' => 'nullable|numeric|min:0',
             'dich_vu_le_hop_dong.*.gia_thuc' => 'nullable|numeric|min:0',
+            'dich_vu_le_hop_dong.*.so_luong' => 'nullable|integer|min:0',
+            'dich_vu_le_hop_dong.*.thanh_tien' => 'nullable|numeric|min:0',
             'dich_vu_le_hop_dong.*.ghi_chu' => 'nullable|string|max:500',
         ]);
 
@@ -212,6 +216,10 @@ class KhachHangController extends Controller
                 if ($idDichVu <= 0) {
                     continue;
                 }
+
+                $soLuong = (int) ($item['so_luong'] ?? 1);
+                if ($soLuong < 0) $soLuong = 0;
+                $thanhTien = (float) ($item['thanh_tien'] ?? ($item['gia_thuc'] ?? 0));
                 DichVuTrongHopDong::updateOrCreate(
                     [
                         'id_hop_dong' => $hopDong->id,
@@ -220,6 +228,8 @@ class KhachHangController extends Controller
                     [
                         'gia_goc' => (float) ($item['gia_goc'] ?? 0),
                         'gia_thuc' => (float) ($item['gia_thuc'] ?? 0),
+                        'so_luong' => $soLuong,
+                        'thanh_tien' => $thanhTien,
                         'ghi_chu' => $item['ghi_chu'] ?? null,
                     ]
                 );
@@ -257,6 +267,8 @@ class KhachHangController extends Controller
             'dich_vu_le_hop_dong.*.dich_vu_le_id' => 'required_with:dich_vu_le_hop_dong|integer|exists:dich_vu_le,id',
             'dich_vu_le_hop_dong.*.gia_goc' => 'nullable|numeric|min:0',
             'dich_vu_le_hop_dong.*.gia_thuc' => 'nullable|numeric|min:0',
+            'dich_vu_le_hop_dong.*.so_luong' => 'nullable|integer|min:0',
+            'dich_vu_le_hop_dong.*.thanh_tien' => 'nullable|numeric|min:0',
             'dich_vu_le_hop_dong.*.ghi_chu' => 'nullable|string|max:500',
         ]);
 
@@ -277,11 +289,17 @@ class KhachHangController extends Controller
                 if ($idDichVu <= 0) {
                     continue;
                 }
+
+                $soLuong = (int) ($item['so_luong'] ?? 1);
+                if ($soLuong < 0) $soLuong = 0;
+                $thanhTien = (float) ($item['thanh_tien'] ?? ($item['gia_thuc'] ?? 0));
                 DichVuTrongHopDong::create([
                     'id_hop_dong' => $hopDong->id,
                     'id_dich_vu' => $idDichVu,
                     'gia_goc' => (float) ($item['gia_goc'] ?? 0),
                     'gia_thuc' => (float) ($item['gia_thuc'] ?? 0),
+                    'so_luong' => $soLuong,
+                    'thanh_tien' => $thanhTien,
                     'ghi_chu' => $item['ghi_chu'] ?? null,
                 ]);
             }

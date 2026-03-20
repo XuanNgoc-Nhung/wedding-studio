@@ -329,12 +329,12 @@
                                 </ul>
                                 {{-- Ô tìm kiếm nhanh cho tab Nhóm dịch vụ + Dịch vụ lẻ --}}
                                     <div class="row g-2 align-items-end mb-3">
-                                        <div class="col-12 col-md-7">
+                                        <div class="col-12 col-md-3">
                                             <label class="form-label d-block" for="them_tim_dich_vu">Tìm theo tên hoặc mã</label>
                                             <input type="text"
                                                    class="form-control"
                                                    id="them_tim_dich_vu"
-                                                   placeholder="Nhập tên hoặc mã dịch vụ... (ví dụ: DV001, Bảo hiểm)">
+                                                   placeholder="Nhập tên hoặc mã dịch vụ...">
                                         </div>
                                         <div class="col-auto">
                                             <button type="button" class="btn btn-outline-secondary" id="btnXoaLocThemDichVu">Bỏ lọc</button>
@@ -1126,21 +1126,30 @@ document.addEventListener('DOMContentLoaded', function() {
                         boxDichVuLeSua.classList.remove('d-none');
                         data.forEach(function(row, idx) {
                             var stt = idx + 1;
-                            var giaGoc = row.gia_goc != null ? Number(row.gia_goc) : 0;
-                            var giaThuc = row.gia_thuc != null ? Number(row.gia_thuc) : giaGoc;
+                            var soLuong = row.so_luong != null ? Number(row.so_luong) : 1;
+                            if (isNaN(soLuong) || soLuong < 0) soLuong = 0;
+
+                            var giaGocTotal = row.gia_goc != null ? Number(row.gia_goc) : 0;
+                            var thanhTienTotal = row.thanh_tien != null
+                                ? Number(row.thanh_tien)
+                                : (row.gia_thuc != null ? Number(row.gia_thuc) : giaGocTotal);
+
+                            // UI đang nhập giá "theo đơn vị" (sẽ nhân với so_luong khi tính thành tiền).
+                            var giaGocUnit = soLuong > 0 ? (giaGocTotal / soLuong) : giaGocTotal;
+                            var giaThucUnit = soLuong > 0 ? (thanhTienTotal / soLuong) : thanhTienTotal;
                             var tr = document.createElement('tr');
                             tr.setAttribute('data-dich-vu-le-id', row.id_dich_vu);
-                            tr.setAttribute('data-gia-goc', String(giaGoc));
+                            tr.setAttribute('data-gia-goc', String(giaGocUnit));
                             tr.setAttribute('data-tu-nhom', '0');
                             tr.innerHTML =
                                 '<td class="text-center"><input type="checkbox" class="form-check-input cb-dich-vu-le-hop-dong" checked value="' + escapeHtml(String(row.id_dich_vu)) + '" aria-label="Chọn lưu dịch vụ"></td>' +
                                 '<td>' + escapeHtml('—') + '</td>' +
                                 '<td>' + escapeHtml(row.ten_dich_vu) + '</td>' +
                                 '<td>' + escapeHtml(row.ma_dich_vu) + '</td>' +
-                                '<td class="text-end">' + escapeHtml(formatMoney(giaGoc) + ' đ') + '</td>' +
-                                '<td class="text-end"><input type="number" class="form-control form-control-sm input-gia-thuc" min="0" step="10" value="' + escapeHtml(String(giaThuc)) + '" style="width: 100px; display: inline-block;" placeholder="Tròn chục" inputmode="numeric"></td>' +
-                                '<td class="text-end"><input type="number" class="form-control form-control-sm input-so-luong" min="0" step="1" value="1" style="width: 95px; display: inline-block;" inputmode="numeric"></td>' +
-                                '<td class="text-end"><span class="thanh-tien-display">' + escapeHtml(formatMoney(giaThuc)) + ' đ</span></td>';
+                                '<td class="text-end">' + escapeHtml(formatMoney(giaGocUnit) + ' đ') + '</td>' +
+                                '<td class="text-end"><input type="number" class="form-control form-control-sm input-gia-thuc" min="0" step="10" value="' + escapeHtml(String(giaThucUnit)) + '" style="width: 100px; display: inline-block;" placeholder="Tròn chục" inputmode="numeric"></td>' +
+                                '<td class="text-end"><input type="number" class="form-control form-control-sm input-so-luong" min="0" step="1" value="' + escapeHtml(String(soLuong)) + '" style="width: 95px; display: inline-block;" inputmode="numeric"></td>' +
+                                '<td class="text-end"><span class="thanh-tien-display">' + escapeHtml(formatMoney(thanhTienTotal)) + ' đ</span></td>';
                             tbodyDichVuLeSua.appendChild(tr);
                         });
                         updateTongDichVuLeTheoNhomSua();
@@ -1556,7 +1565,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 var giaGoc = unitGiaGoc * soLuong;
                 var giaThuc = unitGiaThuc * soLuong;
                 var prefix = 'dich_vu_le_hop_dong[' + index + ']';
-                [ { n: prefix + '[dich_vu_le_id]', v: dichVuLeId }, { n: prefix + '[gia_goc]', v: String(giaGoc) }, { n: prefix + '[gia_thuc]', v: String(giaThuc) } ].forEach(function(o) {
+                [ { n: prefix + '[dich_vu_le_id]', v: dichVuLeId }, { n: prefix + '[gia_goc]', v: String(giaGoc) }, { n: prefix + '[gia_thuc]', v: String(giaThuc) }, { n: prefix + '[so_luong]', v: String(soLuong) }, { n: prefix + '[thanh_tien]', v: String(giaThuc) } ].forEach(function(o) {
                     var inp = document.createElement('input');
                     inp.type = 'hidden';
                     inp.name = o.n;
@@ -1786,7 +1795,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 var giaGoc = unitGiaGoc * soLuong;
                 var giaThuc = unitGiaThuc * soLuong;
                 var prefix = 'dich_vu_le_hop_dong[' + index + ']';
-                [ { n: prefix + '[dich_vu_le_id]', v: dichVuLeId }, { n: prefix + '[gia_goc]', v: String(giaGoc) }, { n: prefix + '[gia_thuc]', v: String(giaThuc) } ].forEach(function(o) {
+                [ { n: prefix + '[dich_vu_le_id]', v: dichVuLeId }, { n: prefix + '[gia_goc]', v: String(giaGoc) }, { n: prefix + '[gia_thuc]', v: String(giaThuc) }, { n: prefix + '[so_luong]', v: String(soLuong) }, { n: prefix + '[thanh_tien]', v: String(giaThuc) } ].forEach(function(o) {
                     var inp = document.createElement('input');
                     inp.type = 'hidden';
                     inp.name = o.n;
