@@ -11,8 +11,8 @@ use App\Http\Controllers\Admin\TaiChinhKeToanController as AdminTaiChinhKeToan;
 use App\Http\Controllers\Admin\DiemDanhController as AdminDiemDanh;
 use App\Http\Controllers\Admin\HeThongController as AdminHeThong;
 
-Route::get('/demo', function () {
-    return view('admin.nhan-su.demo');
+Route::get('/', function () {
+    return view('welcome');
 });
 
 // Đăng nhập / Đăng xuất / Đăng ký (guest mới vào được login, register; auth mới vào được logout)

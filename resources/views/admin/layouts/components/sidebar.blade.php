@@ -50,7 +50,7 @@
                 <li class="menu-item {{ request()->routeIs($item['route']) ? 'active' : '' }}">
                   <a href="{{ route($item['route']) }}" class="menu-link">
                     <i class="menu-icon icon-base {{ $item['icon'] ?? 'ti tabler-circle' }}"></i>
-                    <div data-i18n="{{ $item['label'] }}">{{ $item['label'] }}</div>
+                    <div>{{ $item['stt'] }}. {{ $item['label'] }}</div>
                   </a>
                 </li>
               @elseif ($item['type'] === 'group' && !empty($item['children']))
@@ -61,13 +61,13 @@
                 <li class="menu-item {{ $isOpen ? 'active open' : '' }}">
                   <a href="javascript:void(0);" class="menu-link menu-toggle">
                     <i class="menu-icon icon-base {{ $item['icon'] ?? 'ti tabler-circle' }}"></i>
-                    <div data-i18n="{{ $item['label'] }}">{{ $item['label'] }}</div>
+                    <div>{{ $item['stt'] }}. {{ $item['label'] }}</div>
                   </a>
                   <ul class="menu-sub">
                     @foreach ($item['children'] as $child)
                       <li class="menu-item {{ request()->routeIs($child['route']) ? 'active' : '' }}">
                         <a href="{{ route($child['route']) }}" class="menu-link">
-                          <div data-i18n="{{ $child['label'] }}">{{ $child['label'] }}</div>
+                          <div>{{ $child['stt'] }}. {{ $child['label'] }}</div>
                         </a>
                       </li>
                     @endforeach
