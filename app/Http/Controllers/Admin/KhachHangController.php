@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\DichVuLe;
 use App\Models\DichVuTrongHopDong;
+use App\Models\Concept;
 use App\Models\HopDong;
 use App\Models\KhachHang;
 use App\Models\NhanVien;
 use App\Models\NhomDichVu;
+use App\Models\TrangPhuc;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -138,13 +140,24 @@ class KhachHangController extends Controller
             ->where('trang_thai', DichVuLe::TRANG_THAI_HIEN_THI)
             ->orderBy('ten_dich_vu')
             ->get();
+        $danhSachConcept = Concept::query()
+            ->where('trang_thai', Concept::TRANG_THAI_ACTIVE)
+            ->orderBy('ten_concept')
+            ->get();
+
+        $danhSachTrangPhuc = TrangPhuc::query()
+            ->where('trang_thai', TrangPhuc::TRANG_THAI_ACTIVE)
+            ->orderBy('ten_san_pham')
+            ->get();
 
         return view('admin.khach-hang.hop-dong', compact(
             'danhSach',
             'danhSachKhachHang',
             'danhSachNhanVien',
             'danhSachNhomDichVu',
-            'danhSachDichVuLe'
+            'danhSachDichVuLe',
+            'danhSachConcept',
+            'danhSachTrangPhuc'
         ));
     }
 
@@ -158,7 +171,8 @@ class KhachHangController extends Controller
             'tho_edit_id' => 'nullable|exists:nhan_vien,id',
             'dia_diem' => 'nullable|string|max:255',
             'ngay_chup' => 'nullable|date',
-            'trang_phuc' => 'nullable|string',
+            'trang_phuc' => 'nullable|array',
+            'trang_phuc.*' => 'integer|exists:trang_phuc,id',
             'concept' => 'nullable|string',
             'ghi_chu_chup' => 'nullable|string',
             'trang_thai_chup' => 'nullable|string|max:50',
@@ -181,6 +195,11 @@ class KhachHangController extends Controller
 
         $dichVuLeHopDong = $request->input('dich_vu_le_hop_dong', []);
         unset($validated['dich_vu_le_hop_dong']);
+
+        // Lưu danh sách id trang_phuc vào cột text `hop_dong.trang_phuc` (chuỗi id cách nhau dấu phẩy)
+        $trangPhucIds = $validated['trang_phuc'] ?? [];
+        $validated['trang_phuc'] = !empty($trangPhucIds) ? implode(',', array_map('intval', (array) $trangPhucIds)) : null;
+
         $validated['nguoi_tao_id'] = $request->user()?->id;
 
         // --- Bước 2: Tạo hợp đồng (chỉ thông tin hợp đồng) ---
@@ -219,7 +238,8 @@ class KhachHangController extends Controller
             'tho_edit_id' => 'nullable|exists:nhan_vien,id',
             'dia_diem' => 'nullable|string|max:255',
             'ngay_chup' => 'nullable|date',
-            'trang_phuc' => 'nullable|string',
+            'trang_phuc' => 'nullable|array',
+            'trang_phuc.*' => 'integer|exists:trang_phuc,id',
             'concept' => 'nullable|string',
             'ghi_chu_chup' => 'nullable|string',
             'trang_thai_chup' => 'nullable|string|max:50',
@@ -242,6 +262,10 @@ class KhachHangController extends Controller
 
         $dichVuLeHopDong = $request->input('dich_vu_le_hop_dong', []);
         unset($validated['dich_vu_le_hop_dong']);
+
+        // Lưu danh sách id trang_phuc vào cột text `hop_dong.trang_phuc` (chuỗi id cách nhau dấu phẩy)
+        $trangPhucIds = $validated['trang_phuc'] ?? [];
+        $validated['trang_phuc'] = !empty($trangPhucIds) ? implode(',', array_map('intval', (array) $trangPhucIds)) : null;
 
         $hopDong->update($validated);
 

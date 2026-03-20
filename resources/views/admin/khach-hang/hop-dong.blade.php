@@ -49,6 +49,10 @@
             </div>
         </form>
 
+        @php
+            $trangPhucMap = ($danhSachTrangPhuc ?? collect())->keyBy('id');
+        @endphp
+
         <div class="table-responsive text-nowrap table-wrapper-bordered">
             <table class="table table-hover table-bordered mb-0">
                 <thead class="table-light">
@@ -87,7 +91,17 @@
                         <td>{{ $item->dia_diem ? str($item->dia_diem)->limit(25) : '—' }}</td>
                         <td>{{ $item->ngay_chup ? $item->ngay_chup->format('d/m/Y H:i') : '—' }}</td>
                         <td>{{ $item->ngay_hen_tra_hang ? $item->ngay_hen_tra_hang->format('d/m/Y') : '—' }}</td>
-                        <td>{{ $item->trang_phuc ? str($item->trang_phuc)->limit(30) : '—' }}</td>
+                        <td>
+                            @php
+                                $rawTrangPhuc = (string) ($item->trang_phuc ?? '');
+                                $trangPhucIds = array_filter(array_map('trim', explode(',', $rawTrangPhuc)));
+                                $trangPhucNames = collect($trangPhucIds)
+                                    ->map(fn($id) => $trangPhucMap[(int) $id]->ten_san_pham ?? null)
+                                    ->filter()
+                                    ->values();
+                            @endphp
+                            {{ $trangPhucNames->isNotEmpty() ? str($trangPhucNames->implode(', '))->limit(30) : ($item->trang_phuc ? str($item->trang_phuc)->limit(30) : '—') }}
+                        </td>
                         <td>{{ $item->ghi_chu_chup ? str($item->ghi_chu_chup)->limit(40) : '—' }}</td>
                         <td class="text-end">
                             {{ $item->tong_tien !== null ? number_format((float)$item->tong_tien, 0, ',', '.') . ' đ' : '—' }}
@@ -441,11 +455,33 @@
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="them_trang_phuc">Trang phục</label>
-                            <textarea class="form-control" id="them_trang_phuc" name="trang_phuc" rows="2" placeholder="Mô tả trang phục">{{ old('trang_phuc') }}</textarea>
+                            <select class="select2-admin form-select"
+                                    id="them_trang_phuc"
+                                    name="trang_phuc[]"
+                                    multiple
+                                    data-placeholder="Chọn trang phục">
+                                @php $oldTrangPhucIds = old('trang_phuc', []); @endphp
+                                @foreach($danhSachTrangPhuc ?? [] as $sp)
+                                    <option value="{{ $sp->id }}"
+                                            data-avatar="{{ !empty($sp->hinh_anh) ? asset('storage/' . $sp->hinh_anh) : '' }}"
+                                        {{ is_array($oldTrangPhucIds) && in_array($sp->id, $oldTrangPhucIds) ? 'selected' : '' }}>
+                                        {{ $sp->ten_san_pham }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="them_concept">Concept</label>
-                            <textarea class="form-control" id="them_concept" name="concept" rows="2" placeholder="Concept chụp">{{ old('concept') }}</textarea>
+                            <select class="select2-admin form-select" id="them_concept" name="concept" data-placeholder="Chọn concept">
+                                <option value="">-- Chọn concept --</option>
+                                @foreach($danhSachConcept ?? [] as $c)
+                                <option value="{{ $c->ten_concept }}"
+                                        data-avatar="{{ !empty($c->hinh_anh) ? asset('storage/' . $c->hinh_anh) : '' }}"
+                                    {{ (string)old('concept') === (string)($c->ten_concept ?? '') ? 'selected' : '' }}>
+                                    {{ $c->ten_concept }}
+                                </option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="them_ghi_chu_chup">Ghi chú chụp</label>
@@ -668,11 +704,30 @@
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="sua_trang_phuc">Trang phục</label>
-                            <textarea class="form-control" id="sua_trang_phuc" name="trang_phuc" rows="2" placeholder="Mô tả trang phục"></textarea>
+                            <select class="select2-admin form-select"
+                                    id="sua_trang_phuc"
+                                    name="trang_phuc[]"
+                                    multiple
+                                    data-placeholder="Chọn trang phục">
+                                @foreach($danhSachTrangPhuc ?? [] as $sp)
+                                    <option value="{{ $sp->id }}"
+                                            data-avatar="{{ !empty($sp->hinh_anh) ? asset('storage/' . $sp->hinh_anh) : '' }}">
+                                        {{ $sp->ten_san_pham }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="sua_concept">Concept</label>
-                            <textarea class="form-control" id="sua_concept" name="concept" rows="2" placeholder="Concept chụp"></textarea>
+                            <select class="select2-admin form-select" id="sua_concept" name="concept" data-placeholder="Chọn concept">
+                                <option value="">-- Chọn concept --</option>
+                                @foreach($danhSachConcept ?? [] as $c)
+                                <option value="{{ $c->ten_concept }}"
+                                        data-avatar="{{ !empty($c->hinh_anh) ? asset('storage/' . $c->hinh_anh) : '' }}">
+                                    {{ $c->ten_concept }}
+                                </option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-12">
                             <label class="form-label" for="sua_ghi_chu_chup">Ghi chú chụp</label>
@@ -899,6 +954,55 @@ document.addEventListener('DOMContentLoaded', function() {
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.map(function (el) { return new bootstrap.Tooltip(el); });
 
+    // --- Select2 (Concept) render thumbnail kèm ảnh ---
+    function renderConceptWithAvatar(option) {
+        if (!option.id) return option.text;
+
+        var text = option.text || '';
+        var avatar = '';
+        try {
+            avatar = (option.element && option.element.dataset && option.element.dataset.avatar) ? option.element.dataset.avatar : '';
+        } catch (e) {}
+
+        var avatarHtml = avatar
+            ? "<img src=\"" + avatar + "\" alt=\"avatar\" class=\"rounded-circle\" style=\"width: 32px; height: 32px; object-fit: cover;\" onerror=\"this.style.visibility='hidden'\" />"
+            : "<span class=\"rounded-circle bg-label-secondary d-inline-flex align-items-center justify-content-center\" style=\"width: 32px; height: 32px;\">—</span>";
+
+        return "<div class='d-flex flex-wrap align-items-center'>" +
+            "<div class='me-2'>" + avatarHtml + "</div>" +
+            "<div>" + text + "</div>" +
+            "</div>";
+    }
+
+    function initConceptSelect2(selectId) {
+        var el = document.getElementById(selectId);
+        if (!el) return;
+
+        var jq = window.jQuery || window.$;
+        if (!jq || !jq.fn || !jq.fn.select2) return;
+
+        // destroy rồi init lại để gắn template render ảnh (đã init sẵn bởi scripts blade)
+        if (jq(el).data('select2')) jq(el).select2('destroy');
+
+        var $modal = jq(el).closest('.modal');
+        var placeholder = el.getAttribute('data-placeholder') || 'Chọn...';
+
+        jq(el).select2({
+            placeholder: placeholder,
+            allowClear: true,
+            width: '100%',
+            dropdownParent: $modal && $modal.length ? $modal : undefined,
+            templateResult: renderConceptWithAvatar,
+            templateSelection: renderConceptWithAvatar,
+            escapeMarkup: function (es) { return es; }
+        });
+    }
+
+    initConceptSelect2('them_concept');
+    initConceptSelect2('sua_concept');
+    initConceptSelect2('them_trang_phuc');
+    initConceptSelect2('sua_trang_phuc');
+
     @if($errors->any())
     var modalThem = document.getElementById('modalThemHopDong');
     if (modalThem) {
@@ -921,8 +1025,39 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('sua_khach_hang_id_hidden').value = khachHangId;
             document.getElementById('sua_dia_diem').value = btn.getAttribute('data-dia-diem') || '';
             if (window.setAdminDateTimeInput && window.setAdminDateInput) { setAdminDateTimeInput('sua_ngay_chup', btn.getAttribute('data-ngay-chup') || ''); setAdminDateInput('sua_ngay_hen_tra_hang', btn.getAttribute('data-ngay-hen-tra-hang') || ''); } else { document.getElementById('sua_ngay_chup').value = btn.getAttribute('data-ngay-chup') || ''; document.getElementById('sua_ngay_hen_tra_hang').value = btn.getAttribute('data-ngay-hen-tra-hang') || ''; }
-            document.getElementById('sua_trang_phuc').value = btn.getAttribute('data-trang-phuc') || '';
-            document.getElementById('sua_concept').value = btn.getAttribute('data-concept') || '';
+            // trang_phuc là select (select2) nhiều lựa chọn, nên cần set value + trigger change
+            var suaTrangPhucSelect = document.getElementById('sua_trang_phuc');
+            if (suaTrangPhucSelect) {
+                var rawTrangPhuc = btn.getAttribute('data-trang-phuc') || '';
+                var trangPhucIds = [];
+                if (rawTrangPhuc) {
+                    trangPhucIds = rawTrangPhuc.split(',').map(function (s) { return (s || '').trim(); }).filter(function (x) { return x; });
+                }
+                var jq = window.jQuery || window.$;
+                if (jq && jq.fn && jq.fn.select2) jq(suaTrangPhucSelect).val(trangPhucIds).trigger('change');
+                else {
+                    Array.from(suaTrangPhucSelect.options).forEach(function (opt) {
+                        opt.selected = trangPhucIds.indexOf(String(opt.value)) !== -1;
+                    });
+                    suaTrangPhucSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            }
+            // concept là select (select2), nên cần set value + trigger change
+            var suaConceptSelect = document.getElementById('sua_concept');
+            if (suaConceptSelect) {
+                var suaConceptVal = btn.getAttribute('data-concept') || '';
+                // Trường hợp concept hiện tại không có trong danh sách option (dữ liệu cũ), tạo option tạm.
+                if (suaConceptVal && !Array.from(suaConceptSelect.options).some(function(opt) { return String(opt.value) === String(suaConceptVal); })) {
+                    var opt = document.createElement('option');
+                    opt.value = suaConceptVal;
+                    opt.textContent = suaConceptVal;
+                    suaConceptSelect.appendChild(opt);
+                }
+                suaConceptSelect.value = suaConceptVal;
+                var jq = window.jQuery || window.$;
+                if (jq && jq.fn && jq.fn.select2) jq(suaConceptSelect).val(suaConceptVal).trigger('change');
+                else suaConceptSelect.dispatchEvent(new Event('change', { bubbles: true }));
+            }
             document.getElementById('sua_ghi_chu_chup').value = btn.getAttribute('data-ghi-chu-chup') || '';
             window._suaHopDongTongFallback = btn.getAttribute('data-tong-tien') || '0';
             var inpSuaLan1 = document.getElementById('sua_thanh_toan_lan_1');
@@ -1232,6 +1367,27 @@ document.addEventListener('DOMContentLoaded', function() {
             if (tableDichVuLe) tableDichVuLe.querySelectorAll('.cb-dich-vu-le').forEach(function(cb) { cb.checked = false; });
             if (boxDichVuLe) { boxDichVuLe.classList.add('d-none'); }
             if (tbodyDichVuLe) tbodyDichVuLe.innerHTML = '';
+            var themConceptSelect = document.getElementById('them_concept');
+            if (themConceptSelect) {
+                var themConceptOldValue = @json((string) old('concept', ''));
+                themConceptSelect.value = themConceptOldValue || '';
+                var jq = window.jQuery || window.$;
+                if (jq && jq.fn && jq.fn.select2) jq(themConceptSelect).val(themConceptOldValue || '').trigger('change');
+                else themConceptSelect.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+            var themTrangPhucSelect = document.getElementById('them_trang_phuc');
+            if (themTrangPhucSelect) {
+                var themTrangPhucOldIds = @json(old('trang_phuc', []));
+                var idsArr = Array.isArray(themTrangPhucOldIds) ? themTrangPhucOldIds : [];
+                var jq2 = window.jQuery || window.$;
+                if (jq2 && jq2.fn && jq2.fn.select2) jq2(themTrangPhucSelect).val(idsArr).trigger('change');
+                else {
+                    Array.from(themTrangPhucSelect.options).forEach(function (opt) {
+                        opt.selected = idsArr.indexOf(String(opt.value)) !== -1;
+                    });
+                    themTrangPhucSelect.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            }
             var tTong = document.getElementById('them_tong_tien');
             var tTongDisp = document.getElementById('them_tong_tien_display');
             var tLan1 = document.getElementById('them_thanh_toan_lan_1');
