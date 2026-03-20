@@ -17,6 +17,7 @@ return [
     'admin.tai-chinh.phieu-thu-chi' => 'Phiếu thu chi',
     'admin.tai-chinh.tinh-luong' => 'Tính lương',
     'admin.diem-danh.diem-danh' => 'Điểm danh',
+    'admin.concept.concept' => 'Concept',
     'admin.diem-danh.cham-cong' => 'Chấm công',
     'admin.diem-danh.check-in' => 'Check-in',
     'admin.diem-danh.check-out' => 'Check-out',

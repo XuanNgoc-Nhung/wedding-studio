@@ -29,6 +29,17 @@ return [
     [
         'stt' => 3,
         'type' => 'group',
+        'routes' => ['admin.concept.concept'],
+        'route_prefix' => 'admin.concept.concept',
+        'label' => 'Concept',
+        'icon' => 'ti tabler-tag',
+        'children' => [
+            ['stt' => 1, 'route' => 'admin.concept.concept', 'label' => 'Concept'],
+        ],
+    ],
+    [
+        'stt' => 4,
+        'type' => 'group',
         'routes' => ['admin.nhan-su.danh-sach', 'admin.nhan-su.phan-quyen', 'admin.nhan-su.lich-lam-viec'],
         'route_prefix' => 'admin.nhan-su.',
         'label' => 'Nhân sự',
@@ -40,7 +51,7 @@ return [
         ],
     ],
     [
-        'stt' => 4,
+        'stt' => 5,
         'type' => 'group',
         'routes' => ['admin.khach-hang.danh-sach', 'admin.khach-hang.hop-dong'],
         'route_prefix' => 'admin.khach-hang.',
@@ -52,7 +63,7 @@ return [
         ],
     ],
     [
-        'stt' => 5,
+        'stt' => 6,
         'type' => 'group',
         'routes' => ['admin.tai-chinh.cong-no', 'admin.tai-chinh.phieu-thu-chi', 'admin.tai-chinh.tinh-luong'],
         'route_prefix' => 'admin.tai-chinh.',
@@ -65,7 +76,7 @@ return [
         ],
     ],
     [
-        'stt' => 6,
+        'stt' => 7,
         'type' => 'group',
         'routes' => ['admin.trang-phuc.san-pham', 'admin.trang-phuc.kho-hang', 'admin.trang-phuc.hop-dong'],
         'route_prefix' => 'admin.trang-phuc.',
@@ -78,7 +89,7 @@ return [
         ],
     ],
     [
-        'stt' => 7,
+        'stt' => 8,
         'type' => 'group',
         'routes' => ['admin.dich-vu.dich-vu-le', 'admin.dich-vu.nhom-dich-vu'],
         'route_prefix' => 'admin.dich-vu.',
@@ -90,14 +101,14 @@ return [
         ],
     ],
     [
-        'stt' => 8,
+        'stt' => 9,
         'type' => 'single',
         'route' => 'admin.thong-tin-ca-nhan',
         'label' => 'Thông tin cá nhân',
         'icon' => 'ti tabler-user-circle',
     ],
     [
-        'stt' => 9,
+        'stt' => 10,
         'type' => 'group',
         'routes' => ['admin.he-thong.phong-ban'],
         'route_prefix' => 'admin.he-thong.',

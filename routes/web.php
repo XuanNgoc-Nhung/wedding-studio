@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\KhachHangController as AdminKhachHang;
 use App\Http\Controllers\Admin\TrangPhucController as AdminTrangPhuc;
 use App\Http\Controllers\Admin\TaiChinhKeToanController as AdminTaiChinhKeToan;
 use App\Http\Controllers\Admin\DiemDanhController as AdminDiemDanh;
+use App\Http\Controllers\Admin\ConceptController as AdminConcept;
 use App\Http\Controllers\Admin\HeThongController as AdminHeThong;
 
 Route::get('/', function () {
@@ -109,6 +110,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'c
         Route::post('/dieu-phoi-cong-viec', [AdminDiemDanh::class, 'storeDieuPhoiCongViec'])->name('diem-danh.store-dieu-phoi-cong-viec');
         Route::put('/dieu-phoi-cong-viec/{dieuPhoiCongViec}', [AdminDiemDanh::class, 'updateDieuPhoiCongViec'])->name('diem-danh.update-dieu-phoi-cong-viec');
         Route::delete('/dieu-phoi-cong-viec/{dieuPhoiCongViec}', [AdminDiemDanh::class, 'destroyDieuPhoiCongViec'])->name('diem-danh.destroy-dieu-phoi-cong-viec');
+    });
+    // Route cho Concept (tách khỏi nhóm điểm danh)
+    Route::group(['prefix' => 'concept'], function () {
+        Route::get('/', [AdminConcept::class, 'concept'])->name('concept.concept');
+        Route::post('/', [AdminConcept::class, 'store'])->name('concept.concept.store');
+        Route::put('/{concept}', [AdminConcept::class, 'update'])->name('concept.concept.update');
+        Route::delete('/{concept}', [AdminConcept::class, 'destroy'])->name('concept.concept.destroy');
     });
     //Route cho hệ thống
     Route::group(['prefix' => 'he-thong'], function () {
