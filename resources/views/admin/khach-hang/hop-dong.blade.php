@@ -62,7 +62,7 @@
                         <th>Khách hàng</th>
                         <th>Địa điểm</th>
                         <th>Ngày chụp</th>
-                        <th>Ngày hẹn trả hàng</th>
+                        <th>Ngày hẹn trả demo</th>
                         <th>Trang phục</th>
                         <th>Ghi chú</th>
                         <th class="text-end">Tổng tiền</th>
@@ -312,7 +312,7 @@
                             <input type="text" class="flatpickr-datetime-admin form-control" id="them_ngay_chup" name="ngay_chup" value="{{ old('ngay_chup') }}" placeholder="dd/mm/yyyy hh:mm" autocomplete="off">
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
-                            <label class="form-label" for="them_ngay_hen_tra_hang">Ngày hẹn trả hàng (Dự kiến)</label>
+                            <label class="form-label" for="them_ngay_hen_tra_hang">Ngày hẹn trả demo (Dự kiến)</label>
                             <input type="text" class="flatpickr-date-admin form-control" id="them_ngay_hen_tra_hang" name="ngay_hen_tra_hang" value="{{ old('ngay_hen_tra_hang') }}" placeholder="dd/mm/yyyy" autocomplete="off">
                         </div>
                         {{-- Tabs: Nhóm dịch vụ & Dịch vụ lẻ (Filled Pills) --}}
@@ -431,22 +431,23 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th style="width: 40px;" class="text-center">Chọn</th>
-                                            <th>Nhóm dịch vụ</th>
-                                            <th style="width: 50px;">STT</th>
-                                            <th>Tên dịch vụ</th>
+                                            <th>Nhóm</th>
+                                            <th>Tên</th>
                                             <th>Mã</th>
                                             <th class="text-end">Giá gốc</th>
                                             <th class="text-end">Giá thực</th>
-                                            <th>Ghi chú</th>
+                                            <th style="width: 110px;">Số lượng</th>
+                                            <th class="text-end">Thành tiền</th>
                                         </tr>
                                     </thead>
                                     <tbody id="tbodyDichVuLeTheoNhom">
                                     </tbody>
                                     <tfoot id="tfootDichVuLeTheoNhom" class="table-light">
                                         <tr>
-                                            <td colspan="5" class="text-end fw-medium">Tổng</td>
+                                            <td colspan="4" class="text-end fw-medium">Tổng</td>
                                             <td class="text-end fw-medium" id="tdTongGiaGoc">0 đ</td>
                                             <td class="text-end fw-medium" id="tdTongGiaThuc">0 đ</td>
+                                            <td></td>
                                             <td></td>
                                         </tr>
                                     </tfoot>
@@ -542,7 +543,7 @@
                 @endif
                 <div class="modal-body">
                     <div class="row g-3">
-                        {{-- Hàng 1: Khách hàng (disabled) + Địa điểm + Ngày chụp + Ngày hẹn trả hàng --}}
+                        {{-- Hàng 1: Khách hàng (disabled) + Địa điểm + Ngày chụp + Ngày hẹn trả demo --}}
                         <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="sua_khach_hang_id">Khách hàng <span class="text-danger">*</span></label>
                             <input type="hidden" name="khach_hang_id" id="sua_khach_hang_id_hidden">
@@ -562,7 +563,7 @@
                             <input type="text" class="flatpickr-datetime-admin form-control" id="sua_ngay_chup" name="ngay_chup" placeholder="dd/mm/yyyy hh:mm" autocomplete="off">
                         </div>
                         <div class="col-12 col-sm-6 col-lg-3">
-                            <label class="form-label" for="sua_ngay_hen_tra_hang">Ngày hẹn trả hàng (Dự kiến)</label>
+                            <label class="form-label" for="sua_ngay_hen_tra_hang">Ngày hẹn trả demo (Dự kiến)</label>
                             <input type="text" class="flatpickr-date-admin form-control" id="sua_ngay_hen_tra_hang" name="ngay_hen_tra_hang" placeholder="dd/mm/yyyy" autocomplete="off">
                         </div>
                         {{-- Tabs: Nhóm dịch vụ & Dịch vụ lẻ (Sua) --}}
@@ -681,21 +682,22 @@
                                     <thead class="table-light">
                                         <tr>
                                             <th style="width: 40px;" class="text-center">Chọn</th>
-                                            <th>Nhóm dịch vụ</th>
-                                            <th style="width: 50px;">STT</th>
-                                            <th>Tên dịch vụ</th>
+                                            <th>Nhóm</th>
+                                            <th>Tên</th>
                                             <th>Mã</th>
                                             <th class="text-end">Giá gốc</th>
                                             <th class="text-end">Giá thực</th>
-                                            <th>Ghi chú</th>
+                                            <th style="width: 110px;">Số lượng</th>
+                                            <th class="text-end">Thành tiền</th>
                                         </tr>
                                     </thead>
                                     <tbody id="tbodyDichVuLeTheoNhomSua"></tbody>
                                     <tfoot id="tfootDichVuLeTheoNhomSua" class="table-light">
                                         <tr>
-                                            <td colspan="5" class="text-end fw-medium">Tổng</td>
+                                            <td colspan="4" class="text-end fw-medium">Tổng</td>
                                             <td class="text-end fw-medium" id="tdTongGiaGocSua">0 đ</td>
                                             <td class="text-end fw-medium" id="tdTongGiaThucSua">0 đ</td>
+                                            <td></td>
                                             <td></td>
                                         </tr>
                                     </tfoot>
@@ -1119,12 +1121,12 @@ document.addEventListener('DOMContentLoaded', function() {
                             tr.innerHTML =
                                 '<td class="text-center"><input type="checkbox" class="form-check-input cb-dich-vu-le-hop-dong" checked value="' + escapeHtml(String(row.id_dich_vu)) + '" aria-label="Chọn lưu dịch vụ"></td>' +
                                 '<td>' + escapeHtml('—') + '</td>' +
-                                '<td>' + stt + '</td>' +
                                 '<td>' + escapeHtml(row.ten_dich_vu) + '</td>' +
                                 '<td>' + escapeHtml(row.ma_dich_vu) + '</td>' +
                                 '<td class="text-end">' + escapeHtml(formatMoney(giaGoc) + ' đ') + '</td>' +
                                 '<td class="text-end"><input type="number" class="form-control form-control-sm input-gia-thuc" min="0" step="10" value="' + escapeHtml(String(giaThuc)) + '" style="width: 100px; display: inline-block;" placeholder="Tròn chục" inputmode="numeric"></td>' +
-                                '<td>' + escapeHtml(row.ghi_chu) + '</td>';
+                                '<td class="text-end"><input type="number" class="form-control form-control-sm input-so-luong" min="0" step="1" value="1" style="width: 95px; display: inline-block;" inputmode="numeric"></td>' +
+                                '<td class="text-end"><span class="thanh-tien-display">' + escapeHtml(formatMoney(giaThuc)) + ' đ</span></td>';
                             tbodyDichVuLeSua.appendChild(tr);
                         });
                         updateTongDichVuLeTheoNhomSua();
@@ -1209,8 +1211,17 @@ document.addEventListener('DOMContentLoaded', function() {
         allItems.forEach(function(item) {
             var ma = (item.dvl.ma_dich_vu != null && item.dvl.ma_dich_vu !== '') ? String(item.dvl.ma_dich_vu).trim() : null;
             var key = ma !== null ? ma : '__empty_' + (item.dvl.id != null ? item.dvl.id : uniqueItems.length);
-            if (seenMa[key]) return;
-            seenMa[key] = true;
+            if (Object.prototype.hasOwnProperty.call(seenMa, key)) {
+                // Nếu bị trùng dịch vụ (do chọn thêm dịch vụ lẻ + từ nhóm), cộng dồn số lượng.
+                var existing = uniqueItems[seenMa[key]];
+                var soLuong1 = existing.dvl.so_luong != null ? Number(existing.dvl.so_luong) : 0;
+                var soLuong2 = item.dvl.so_luong != null ? Number(item.dvl.so_luong) : 0;
+                if (isNaN(soLuong1) || soLuong1 < 0) soLuong1 = 0;
+                if (isNaN(soLuong2) || soLuong2 < 0) soLuong2 = 0;
+                existing.dvl.so_luong = soLuong1 + soLuong2;
+                return;
+            }
+            seenMa[key] = uniqueItems.length;
             uniqueItems.push(item);
         });
         tbodyDichVuLe.innerHTML = '';
@@ -1233,8 +1244,13 @@ document.addEventListener('DOMContentLoaded', function() {
             var dvl = item.dvl;
             var stt = idx + 1;
             var giaGoc = dvl.gia_goc != null ? Number(dvl.gia_goc) : 0;
-            var giaThucTronChuc = Math.round(giaGoc / 10) * 10;
+            var giaThucUnitInit = dvl.gia_thuc != null ? Number(dvl.gia_thuc) : Math.round(giaGoc / 10) * 10;
+            if (isNaN(giaThucUnitInit) || giaThucUnitInit < 0) giaThucUnitInit = 0;
+            var giaThucTronChuc = Math.round(giaThucUnitInit / 10) * 10;
             var giaGocDisplay = dvl.gia_dich_vu != null && dvl.gia_dich_vu !== '' ? dvl.gia_dich_vu : '—';
+            var soLuong = dvl.so_luong != null ? Number(dvl.so_luong) : 1;
+            if (isNaN(soLuong) || soLuong < 0) soLuong = 0;
+            var thanhTienInit = giaThucTronChuc * soLuong;
             var tr = document.createElement('tr');
             tr.setAttribute('data-dich-vu-le-id', dvl.id);
             tr.setAttribute('data-gia-goc', String(giaGoc));
@@ -1242,12 +1258,12 @@ document.addEventListener('DOMContentLoaded', function() {
             tr.innerHTML =
                 '<td class="text-center"><input type="checkbox" class="form-check-input cb-dich-vu-le-hop-dong" checked value="' + escapeHtml(String(dvl.id)) + '" aria-label="Chọn lưu dịch vụ"></td>' +
                 '<td>' + escapeHtml(tenNhom) + '</td>' +
-                '<td>' + stt + '</td>' +
                 '<td>' + escapeHtml(dvl.ten_dich_vu) + '</td>' +
                 '<td>' + escapeHtml(dvl.ma_dich_vu) + '</td>' +
                 '<td class="text-end">' + escapeHtml(giaGocDisplay) + '</td>' +
                 '<td class="text-end"><input type="number" class="form-control form-control-sm input-gia-thuc" min="0" step="10" value="' + escapeHtml(String(giaThucTronChuc)) + '" style="width: 100px; display: inline-block;" placeholder="Tròn chục" inputmode="numeric"></td>' +
-                '<td>' + escapeHtml(dvl.ghi_chu) + '</td>';
+                '<td class="text-end"><input type="number" class="form-control form-control-sm input-so-luong" min="0" step="1" value="' + escapeHtml(String(soLuong)) + '" style="width: 95px; display: inline-block;" inputmode="numeric"></td>' +
+                '<td class="text-end"><span class="thanh-tien-display">' + escapeHtml(formatMoney(thanhTienInit)) + ' đ</span></td>';
             tbodyDichVuLe.appendChild(tr);
         });
         updateTongDichVuLeTheoNhom();
@@ -1274,9 +1290,21 @@ document.addEventListener('DOMContentLoaded', function() {
         var rows = tbodyDichVuLe.querySelectorAll('tr[data-dich-vu-le-id]');
         var tongGoc = 0, tongThuc = 0;
         rows.forEach(function(tr) {
-            tongGoc += parseFloat(tr.getAttribute('data-gia-goc')) || 0;
-            var inp = tr.querySelector('.input-gia-thuc');
-            tongThuc += inp ? (parseFloat(inp.value) || 0) : 0;
+            var cb = tr.querySelector('.cb-dich-vu-le-hop-dong');
+            if (cb && !cb.checked) return;
+            var unitGiaGoc = parseFloat(tr.getAttribute('data-gia-goc')) || 0;
+            var inpGia = tr.querySelector('.input-gia-thuc');
+            var inpSoLuong = tr.querySelector('.input-so-luong');
+            var unitGiaThuc = inpGia ? (parseFloat(inpGia.value) || 0) : 0;
+            var soLuong = inpSoLuong ? (parseFloat(inpSoLuong.value) || 0) : 0;
+            var thanhTien = unitGiaThuc * soLuong;
+
+            // Update thành tiền hiển thị theo từng dòng
+            var elThanhTien = tr.querySelector('.thanh-tien-display');
+            if (elThanhTien) elThanhTien.textContent = formatMoney(thanhTien) + ' đ';
+
+            tongGoc += unitGiaGoc * soLuong;
+            tongThuc += thanhTien;
         });
         tdTongGiaGoc.textContent = formatMoney(tongGoc) + ' đ';
         tdTongGiaThuc.textContent = formatMoney(tongThuc) + ' đ';
@@ -1295,7 +1323,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 var cb = tr.querySelector('.cb-dich-vu-le-hop-dong');
                 if (!cb || !cb.checked) return;
                 var inpGia = tr.querySelector('.input-gia-thuc');
-                tong += inpGia ? (parseFloat(inpGia.value) || 0) : 0;
+                var inpSoLuong = tr.querySelector('.input-so-luong');
+                var unitGiaThuc = inpGia ? (parseFloat(inpGia.value) || 0) : 0;
+                var soLuong = inpSoLuong ? (parseFloat(inpSoLuong.value) || 0) : 0;
+                tong += unitGiaThuc * soLuong;
             });
         }
         var tongRounded = Math.round(tong * 100) / 100;
@@ -1334,12 +1365,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if (boxDichVuLe) {
         boxDichVuLe.addEventListener('input', function(e) {
-            if (!e.target.classList.contains('input-gia-thuc')) return;
-            var inp = e.target;
-            if (inp.value.indexOf('.') !== -1) {
-                inp.value = roundToTen(inp.value);
+            if (e.target.classList.contains('input-gia-thuc')) {
+                var inp = e.target;
+                if (inp.value.indexOf('.') !== -1) {
+                    inp.value = roundToTen(inp.value);
+                }
+                updateTongDichVuLeTheoNhom();
+                return;
             }
-            updateTongDichVuLeTheoNhom();
+            if (e.target.classList.contains('input-so-luong')) {
+                updateTongDichVuLeTheoNhom();
+            }
         });
         boxDichVuLe.addEventListener('change', function(e) {
             if (e.target.classList.contains('input-gia-thuc')) {
@@ -1347,8 +1383,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 inp.value = roundToTen(inp.value);
                 updateTongDichVuLeTheoNhom();
             }
+            if (e.target.classList.contains('input-so-luong')) {
+                updateTongDichVuLeTheoNhom();
+            }
             if (e.target.classList.contains('cb-dich-vu-le-hop-dong')) {
-                syncThemTongTienVaConLai();
+                updateTongDichVuLeTheoNhom();
             }
         });
     }
@@ -1410,9 +1449,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 var cb = tr.querySelector('.cb-dich-vu-le-hop-dong');
                 if (!cb || !cb.checked) return;
                 var dichVuLeId = tr.getAttribute('data-dich-vu-le-id');
-                var giaGoc = tr.getAttribute('data-gia-goc') || '0';
+                var unitGiaGoc = parseFloat(tr.getAttribute('data-gia-goc')) || 0;
                 var inputGiaThuc = tr.querySelector('.input-gia-thuc');
-                var giaThuc = inputGiaThuc ? inputGiaThuc.value : giaGoc;
+                var unitGiaThuc = inputGiaThuc ? (parseFloat(inputGiaThuc.value) || 0) : unitGiaGoc;
+                var inputSoLuong = tr.querySelector('.input-so-luong');
+                var soLuong = inputSoLuong ? (parseFloat(inputSoLuong.value) || 0) : 0;
+                var giaGoc = unitGiaGoc * soLuong;
+                var giaThuc = unitGiaThuc * soLuong;
                 var prefix = 'dich_vu_le_hop_dong[' + index + ']';
                 [ { n: prefix + '[dich_vu_le_id]', v: dichVuLeId }, { n: prefix + '[gia_goc]', v: String(giaGoc) }, { n: prefix + '[gia_thuc]', v: String(giaThuc) } ].forEach(function(o) {
                     var inp = document.createElement('input');
@@ -1467,8 +1510,17 @@ document.addEventListener('DOMContentLoaded', function() {
         allItems.forEach(function(item) {
             var ma = (item.dvl.ma_dich_vu != null && item.dvl.ma_dich_vu !== '') ? String(item.dvl.ma_dich_vu).trim() : null;
             var key = ma !== null ? ma : '__empty_' + (item.dvl.id != null ? item.dvl.id : uniqueItems.length);
-            if (seenMa[key]) return;
-            seenMa[key] = true;
+            if (Object.prototype.hasOwnProperty.call(seenMa, key)) {
+                // Nếu bị trùng dịch vụ (do chọn thêm dịch vụ lẻ + từ nhóm), cộng dồn số lượng.
+                var existing = uniqueItems[seenMa[key]];
+                var soLuong1 = existing.dvl.so_luong != null ? Number(existing.dvl.so_luong) : 0;
+                var soLuong2 = item.dvl.so_luong != null ? Number(item.dvl.so_luong) : 0;
+                if (isNaN(soLuong1) || soLuong1 < 0) soLuong1 = 0;
+                if (isNaN(soLuong2) || soLuong2 < 0) soLuong2 = 0;
+                existing.dvl.so_luong = soLuong1 + soLuong2;
+                return;
+            }
+            seenMa[key] = uniqueItems.length;
             uniqueItems.push(item);
         });
         tbodyDichVuLeSua.innerHTML = '';
@@ -1493,6 +1545,9 @@ document.addEventListener('DOMContentLoaded', function() {
             var giaGoc = dvl.gia_goc != null ? Number(dvl.gia_goc) : 0;
             var giaThucTronChuc = Math.round(giaGoc / 10) * 10;
             var giaGocDisplay = dvl.gia_dich_vu != null && dvl.gia_dich_vu !== '' ? dvl.gia_dich_vu : '—';
+            var soLuong = dvl.so_luong != null ? Number(dvl.so_luong) : 1;
+            if (isNaN(soLuong) || soLuong < 0) soLuong = 0;
+            var thanhTienInit = giaThucTronChuc * soLuong;
             var tr = document.createElement('tr');
             tr.setAttribute('data-dich-vu-le-id', dvl.id);
             tr.setAttribute('data-gia-goc', String(giaGoc));
@@ -1500,12 +1555,12 @@ document.addEventListener('DOMContentLoaded', function() {
             tr.innerHTML =
                 '<td class="text-center"><input type="checkbox" class="form-check-input cb-dich-vu-le-hop-dong" checked value="' + escapeHtml(String(dvl.id)) + '" aria-label="Chọn lưu dịch vụ"></td>' +
                 '<td>' + escapeHtml(tenNhom) + '</td>' +
-                '<td>' + stt + '</td>' +
                 '<td>' + escapeHtml(dvl.ten_dich_vu) + '</td>' +
                 '<td>' + escapeHtml(dvl.ma_dich_vu) + '</td>' +
                 '<td class="text-end">' + escapeHtml(giaGocDisplay) + '</td>' +
                 '<td class="text-end"><input type="number" class="form-control form-control-sm input-gia-thuc" min="0" step="10" value="' + escapeHtml(String(giaThucTronChuc)) + '" style="width: 100px; display: inline-block;" placeholder="Tròn chục" inputmode="numeric"></td>' +
-                '<td>' + escapeHtml(dvl.ghi_chu) + '</td>';
+                '<td class="text-end"><input type="number" class="form-control form-control-sm input-so-luong" min="0" step="1" value="' + escapeHtml(String(soLuong)) + '" style="width: 95px; display: inline-block;" inputmode="numeric"></td>' +
+                '<td class="text-end"><span class="thanh-tien-display">' + escapeHtml(formatMoney(thanhTienInit)) + ' đ</span></td>';
             tbodyDichVuLeSua.appendChild(tr);
         });
         updateTongDichVuLeTheoNhomSua();
@@ -1526,7 +1581,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 var cb = tr.querySelector('.cb-dich-vu-le-hop-dong');
                 if (!cb || !cb.checked) return;
                 var inpGia = tr.querySelector('.input-gia-thuc');
-                tong += inpGia ? (parseFloat(inpGia.value) || 0) : 0;
+                var inpSoLuong = tr.querySelector('.input-so-luong');
+                var unitGiaThuc = inpGia ? (parseFloat(inpGia.value) || 0) : 0;
+                var soLuong = inpSoLuong ? (parseFloat(inpSoLuong.value) || 0) : 0;
+                tong += unitGiaThuc * soLuong;
             });
         }
         var tongRounded = Math.round(tong * 100) / 100;
@@ -1543,9 +1601,20 @@ document.addEventListener('DOMContentLoaded', function() {
         var rows = tbodyDichVuLeSua.querySelectorAll('tr[data-dich-vu-le-id]');
         var tongGoc = 0, tongThuc = 0;
         rows.forEach(function(tr) {
-            tongGoc += parseFloat(tr.getAttribute('data-gia-goc')) || 0;
-            var inp = tr.querySelector('.input-gia-thuc');
-            tongThuc += inp ? (parseFloat(inp.value) || 0) : 0;
+            var cb = tr.querySelector('.cb-dich-vu-le-hop-dong');
+            if (cb && !cb.checked) return;
+            var unitGiaGoc = parseFloat(tr.getAttribute('data-gia-goc')) || 0;
+            var inpGia = tr.querySelector('.input-gia-thuc');
+            var inpSoLuong = tr.querySelector('.input-so-luong');
+            var unitGiaThuc = inpGia ? (parseFloat(inpGia.value) || 0) : 0;
+            var soLuong = inpSoLuong ? (parseFloat(inpSoLuong.value) || 0) : 0;
+            var thanhTien = unitGiaThuc * soLuong;
+
+            var elThanhTien = tr.querySelector('.thanh-tien-display');
+            if (elThanhTien) elThanhTien.textContent = formatMoney(thanhTien) + ' đ';
+
+            tongGoc += unitGiaGoc * soLuong;
+            tongThuc += thanhTien;
         });
         tdTongGiaGocSua.textContent = formatMoney(tongGoc) + ' đ';
         tdTongGiaThucSua.textContent = formatMoney(tongThuc) + ' đ';
@@ -1570,18 +1639,26 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if (boxDichVuLeSua) {
         boxDichVuLeSua.addEventListener('input', function(e) {
-            if (!e.target.classList.contains('input-gia-thuc')) return;
-            var inp = e.target;
-            if (inp.value.indexOf('.') !== -1) inp.value = roundToTen(inp.value);
-            updateTongDichVuLeTheoNhomSua();
+            if (e.target.classList.contains('input-gia-thuc')) {
+                var inp = e.target;
+                if (inp.value.indexOf('.') !== -1) inp.value = roundToTen(inp.value);
+                updateTongDichVuLeTheoNhomSua();
+                return;
+            }
+            if (e.target.classList.contains('input-so-luong')) {
+                updateTongDichVuLeTheoNhomSua();
+            }
         });
         boxDichVuLeSua.addEventListener('change', function(e) {
             if (e.target.classList.contains('input-gia-thuc')) {
                 e.target.value = roundToTen(e.target.value);
                 updateTongDichVuLeTheoNhomSua();
             }
+            if (e.target.classList.contains('input-so-luong')) {
+                updateTongDichVuLeTheoNhomSua();
+            }
             if (e.target.classList.contains('cb-dich-vu-le-hop-dong')) {
-                syncSuaTongTienVaConLai();
+                updateTongDichVuLeTheoNhomSua();
             }
         });
     }
@@ -1602,9 +1679,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 var cb = tr.querySelector('.cb-dich-vu-le-hop-dong');
                 if (!cb || !cb.checked) return;
                 var dichVuLeId = tr.getAttribute('data-dich-vu-le-id');
-                var giaGoc = tr.getAttribute('data-gia-goc') || '0';
+                var unitGiaGoc = parseFloat(tr.getAttribute('data-gia-goc')) || 0;
                 var inputGiaThuc = tr.querySelector('.input-gia-thuc');
-                var giaThuc = inputGiaThuc ? inputGiaThuc.value : giaGoc;
+                var unitGiaThuc = inputGiaThuc ? (parseFloat(inputGiaThuc.value) || 0) : unitGiaGoc;
+                var inputSoLuong = tr.querySelector('.input-so-luong');
+                var soLuong = inputSoLuong ? (parseFloat(inputSoLuong.value) || 0) : 0;
+                var giaGoc = unitGiaGoc * soLuong;
+                var giaThuc = unitGiaThuc * soLuong;
                 var prefix = 'dich_vu_le_hop_dong[' + index + ']';
                 [ { n: prefix + '[dich_vu_le_id]', v: dichVuLeId }, { n: prefix + '[gia_goc]', v: String(giaGoc) }, { n: prefix + '[gia_thuc]', v: String(giaThuc) } ].forEach(function(o) {
                     var inp = document.createElement('input');
