@@ -20,7 +20,7 @@
         <form action="{{ route('admin.khach-hang.danh-sach') }}" method="GET" class="mb-4">
             <div class="row g-3 align-items-end">
                 <div class="col-md-6 col-lg-4">
-                    <label class="form-label" for="search">Tên, email/SĐT hoặc địa chỉ</label>
+                    <label class="form-label" for="search">Tên hoặc email/SĐT</label>
                     <input type="text"
                            class="form-control"
                            id="search"
@@ -55,15 +55,16 @@
                     <tr>
                         <th style="width: 50px;">STT</th>
                         <th>Họ tên chú rể</th>
-                        <th>Ngày sinh CR</th>
-                        <th>Giới tính CR</th>
+                        {{-- <th>Ngày sinh CR</th>
+                        <th>Giới tính CR</th> --}}
                         <th>Email/SĐT chú rể</th>
-                        <th>Địa chỉ chú rể</th>
+                        {{-- <th>Địa chỉ chú rể</th> --}}
                         <th>Họ tên cô dâu</th>
-                        <th>Ngày sinh CD</th>
-                        <th>Giới tính CD</th>
-                        <th>Địa chỉ cô dâu</th>
+                        {{-- <th>Ngày sinh CD</th>
+                        <th>Giới tính CD</th> --}}
+                        {{-- <th>Địa chỉ cô dâu</th> --}}
                         <th>Email/SĐT cô dâu</th>
+                        <th>Nguồn khách</th>
                         <th>Ghi chú</th>
                         <th class="text-center" style="width: 100px;">Thao tác</th>
                     </tr>
@@ -73,15 +74,16 @@
                     <tr>
                         <td>{{ ($danhSach->currentPage() - 1) * $danhSach->perPage() + $index + 1 }}</td>
                         <td><span class="fw-medium">{{ $item->ho_ten_chu_re ?? '—' }}</span></td>
-                        <td>{{ $item->ngay_sinh_chu_re ? $item->ngay_sinh_chu_re->format('d/m/Y') : '—' }}</td>
-                        <td>{{ $item->gioi_tinh_chu_re ?? '—' }}</td>
+                        {{-- <td>{{ $item->ngay_sinh_chu_re ? $item->ngay_sinh_chu_re->format('d/m/Y') : '—' }}</td>
+                        <td>{{ $item->gioi_tinh_chu_re ?? '—' }}</td> --}}
                         <td>{{ $item->email_hoac_sdt_chu_re ?? '—' }}</td>
-                        <td>{{ $item->dia_chi_chu_re ? str($item->dia_chi_chu_re)->limit(30) : '—' }}</td>
+                        {{-- <td>{{ $item->dia_chi_chu_re ? str($item->dia_chi_chu_re)->limit(30) : '—' }}</td> --}}
                         <td><span class="fw-medium">{{ $item->ho_ten_co_dau ?? '—' }}</span></td>
-                        <td>{{ $item->ngay_sinh_co_dau ? $item->ngay_sinh_co_dau->format('d/m/Y') : '—' }}</td>
-                        <td>{{ $item->gioi_tinh_co_dau ?? '—' }}</td>
-                        <td>{{ $item->dia_chi_co_dau ? str($item->dia_chi_co_dau)->limit(30) : '—' }}</td>
+                        {{-- <td>{{ $item->ngay_sinh_co_dau ? $item->ngay_sinh_co_dau->format('d/m/Y') : '—' }}</td>
+                        <td>{{ $item->gioi_tinh_co_dau ?? '—' }}</td> --}}
+                        {{-- <td>{{ $item->dia_chi_co_dau ? str($item->dia_chi_co_dau)->limit(30) : '—' }}</td> --}}
                         <td>{{ $item->email_hoac_sdt_co_dau ?? '—' }}</td>
+                        <td>{{ $item->nguon_khach ? str($item->nguon_khach)->limit(40) : '—' }}</td>
                         <td>{{ $item->ghi_chu ? str($item->ghi_chu)->limit(30) : '—' }}</td>
                         <td>
                             <div class="dropdown">
@@ -95,15 +97,16 @@
                                        data-bs-target="#modalSuaKhachHang"
                                        data-url="{{ route('admin.khach-hang.update', $item) }}"
                                        data-ho-ten-chu-re="{{ e($item->ho_ten_chu_re ?? '') }}"
-                                       data-ngay-sinh-chu-re="{{ $item->ngay_sinh_chu_re?->format('Y-m-d') ?? '' }}"
-                                       data-gioi-tinh-chu-re="{{ e($item->gioi_tinh_chu_re ?? '') }}"
+                                       {{-- data-ngay-sinh-chu-re="{{ $item->ngay_sinh_chu_re?->format('Y-m-d') ?? '' }}"
+                                       data-gioi-tinh-chu-re="{{ e($item->gioi_tinh_chu_re ?? '') }}" --}}
                                        data-email-sdt-chu-re="{{ e($item->email_hoac_sdt_chu_re ?? '') }}"
-                                       data-dia-chi-chu-re="{{ e($item->dia_chi_chu_re ?? '') }}"
+                                       {{-- data-dia-chi-chu-re="{{ e($item->dia_chi_chu_re ?? '') }}" --}}
                                        data-ho-ten-co-dau="{{ e($item->ho_ten_co_dau ?? '') }}"
-                                       data-ngay-sinh-co-dau="{{ $item->ngay_sinh_co_dau?->format('Y-m-d') ?? '' }}"
-                                       data-gioi-tinh-co-dau="{{ e($item->gioi_tinh_co_dau ?? '') }}"
-                                       data-dia-chi-co-dau="{{ e($item->dia_chi_co_dau ?? '') }}"
+                                       {{-- data-ngay-sinh-co-dau="{{ $item->ngay_sinh_co_dau?->format('Y-m-d') ?? '' }}"
+                                       data-gioi-tinh-co-dau="{{ e($item->gioi_tinh_co_dau ?? '') }}" --}}
+                                       {{-- data-dia-chi-co-dau="{{ e($item->dia_chi_co_dau ?? '') }}" --}}
                                        data-email-sdt-co-dau="{{ e($item->email_hoac_sdt_co_dau ?? '') }}"
+                                       data-nguon-khach="{{ e($item->nguon_khach ?? '') }}"
                                        data-ghi-chu="{{ e($item->ghi_chu ?? '') }}">
                                         <i class="fa-solid fa-pen me-2"></i> Sửa
                                     </a>
@@ -120,7 +123,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="13" class="text-center py-4 text-muted">Chưa có dữ liệu khách hàng.</td>
+                        <td colspan="8" class="text-center py-4 text-muted">Chưa có dữ liệu khách hàng.</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -154,11 +157,11 @@
                 <div class="modal-body">
                     <h6 class="text-primary mb-2">Thông tin chú rể</h6>
                     <div class="row g-3 mb-3">
-                        <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="col-12 col-sm-6 col-lg-6">
                             <label class="form-label" for="them_ho_ten_chu_re">Họ tên chú rể</label>
                             <input type="text" class="form-control" id="them_ho_ten_chu_re" name="ho_ten_chu_re" value="{{ old('ho_ten_chu_re') }}" placeholder="Nhập họ tên">
                         </div>
-                        <div class="col-12 col-sm-6 col-lg-3">
+                        {{-- <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="them_ngay_sinh_chu_re">Ngày sinh</label>
                             <input type="text" class="flatpickr-date-admin form-control" id="them_ngay_sinh_chu_re" name="ngay_sinh_chu_re" value="{{ old('ngay_sinh_chu_re') }}" placeholder="dd/mm/yyyy" autocomplete="off">
                         </div>
@@ -170,23 +173,23 @@
                                 <option value="nu" {{ old('gioi_tinh_chu_re') == 'nu' ? 'selected' : '' }}>Nữ</option>
                                 <option value="khac" {{ old('gioi_tinh_chu_re') == 'khac' ? 'selected' : '' }}>Khác</option>
                             </select>
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-3">
+                        </div> --}}
+                        <div class="col-12 col-sm-6 col-lg-6">
                             <label class="form-label" for="them_email_sdt_chu_re">Email hoặc SĐT</label>
                             <input type="text" class="form-control" id="them_email_sdt_chu_re" name="email_hoac_sdt_chu_re" value="{{ old('email_hoac_sdt_chu_re') }}" placeholder="Email hoặc số điện thoại">
                         </div>
-                        <div class="col-12">
+                        {{-- <div class="col-12">
                             <label class="form-label" for="them_dia_chi_chu_re">Địa chỉ chú rể</label>
                             <textarea class="form-control" id="them_dia_chi_chu_re" name="dia_chi_chu_re" rows="2" placeholder="Địa chỉ">{{ old('dia_chi_chu_re') }}</textarea>
-                        </div>
+                        </div> --}}
                     </div>
                     <h6 class="text-primary mb-2">Thông tin cô dâu</h6>
                     <div class="row g-3 mb-3">
-                        <div class="col-12 col-sm-6 col-lg-3">
+                        <div class="col-12 col-sm-6 col-lg-6">
                             <label class="form-label" for="them_ho_ten_co_dau">Họ tên cô dâu</label>
                             <input type="text" class="form-control" id="them_ho_ten_co_dau" name="ho_ten_co_dau" value="{{ old('ho_ten_co_dau') }}" placeholder="Nhập họ tên">
                         </div>
-                        <div class="col-12 col-sm-6 col-lg-3">
+                        {{-- <div class="col-12 col-sm-6 col-lg-3">
                             <label class="form-label" for="them_ngay_sinh_co_dau">Ngày sinh</label>
                             <input type="text" class="flatpickr-date-admin form-control" id="them_ngay_sinh_co_dau" name="ngay_sinh_co_dau" value="{{ old('ngay_sinh_co_dau') }}" placeholder="dd/mm/yyyy" autocomplete="off">
                         </div>
@@ -198,15 +201,19 @@
                                 <option value="nu" {{ old('gioi_tinh_co_dau') == 'nu' ? 'selected' : '' }}>Nữ</option>
                                 <option value="khac" {{ old('gioi_tinh_co_dau') == 'khac' ? 'selected' : '' }}>Khác</option>
                             </select>
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-3">
+                        </div> --}}
+                        <div class="col-12 col-sm-6 col-lg-6">
                             <label class="form-label" for="them_email_sdt_co_dau">Email hoặc SĐT</label>
                             <input type="text" class="form-control" id="them_email_sdt_co_dau" name="email_hoac_sdt_co_dau" value="{{ old('email_hoac_sdt_co_dau') }}" placeholder="Email hoặc số điện thoại">
                         </div>
-                        <div class="col-12">
+                        {{-- <div class="col-12">
                             <label class="form-label" for="them_dia_chi_co_dau">Địa chỉ cô dâu</label>
                             <textarea class="form-control" id="them_dia_chi_co_dau" name="dia_chi_co_dau" rows="2" placeholder="Địa chỉ">{{ old('dia_chi_co_dau') }}</textarea>
-                        </div>
+                        </div> --}}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="them_nguon_khach">Nguồn khách</label>
+                        <input type="text" class="form-control" id="them_nguon_khach" name="nguon_khach" value="{{ old('nguon_khach') }}" placeholder="Nhập nguồn khách (Facebook, giới thiệu, ...)">
                     </div>
                     <div class="mb-0">
                         <label class="form-label" for="them_ghi_chu">Ghi chú</label>
@@ -249,11 +256,11 @@
                 <div class="modal-body">
                     <h6 class="text-primary mb-2">Thông tin chú rể</h6>
                     <div class="row g-3 mb-3">
-                        <div class="col-12 col-sm-6 col-lg-4">
+                        <div class="col-12 col-sm-6 col-lg-6">
                             <label class="form-label" for="sua_ho_ten_chu_re">Họ tên chú rể</label>
                             <input type="text" class="form-control" id="sua_ho_ten_chu_re" name="ho_ten_chu_re" placeholder="Nhập họ tên">
                         </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
+                        {{-- <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="sua_ngay_sinh_chu_re">Ngày sinh</label>
                             <input type="text" class="flatpickr-date-admin form-control" id="sua_ngay_sinh_chu_re" name="ngay_sinh_chu_re" placeholder="dd/mm/yyyy" autocomplete="off">
                         </div>
@@ -265,23 +272,23 @@
                                 <option value="nu">Nữ</option>
                                 <option value="khac">Khác</option>
                             </select>
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
+                        </div> --}}
+                        <div class="col-12 col-sm-6 col-lg-6">
                             <label class="form-label" for="sua_email_sdt_chu_re">Email hoặc SĐT</label>
                             <input type="text" class="form-control" id="sua_email_sdt_chu_re" name="email_hoac_sdt_chu_re" placeholder="Email hoặc số điện thoại">
                         </div>
-                        <div class="col-12">
+                        {{-- <div class="col-12">
                             <label class="form-label" for="sua_dia_chi_chu_re">Địa chỉ chú rể</label>
                             <textarea class="form-control" id="sua_dia_chi_chu_re" name="dia_chi_chu_re" rows="2" placeholder="Địa chỉ"></textarea>
-                        </div>
+                        </div> --}}
                     </div>
                     <h6 class="text-primary mb-2">Thông tin cô dâu</h6>
                     <div class="row g-3 mb-3">
-                        <div class="col-12 col-sm-6 col-lg-4">
+                        <div class="col-12 col-sm-6 col-lg-6">
                             <label class="form-label" for="sua_ho_ten_co_dau">Họ tên cô dâu</label>
                             <input type="text" class="form-control" id="sua_ho_ten_co_dau" name="ho_ten_co_dau" placeholder="Nhập họ tên">
                         </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
+                        {{-- <div class="col-12 col-sm-6 col-lg-4">
                             <label class="form-label" for="sua_ngay_sinh_co_dau">Ngày sinh</label>
                             <input type="text" class="flatpickr-date-admin form-control" id="sua_ngay_sinh_co_dau" name="ngay_sinh_co_dau" placeholder="dd/mm/yyyy" autocomplete="off">
                         </div>
@@ -293,15 +300,19 @@
                                 <option value="nu">Nữ</option>
                                 <option value="khac">Khác</option>
                             </select>
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
+                        </div> --}}
+                        <div class="col-12 col-sm-6 col-lg-6">
                             <label class="form-label" for="sua_email_sdt_co_dau">Email hoặc SĐT</label>
                             <input type="text" class="form-control" id="sua_email_sdt_co_dau" name="email_hoac_sdt_co_dau" placeholder="Email hoặc số điện thoại">
                         </div>
-                        <div class="col-12">
+                        {{-- <div class="col-12">
                             <label class="form-label" for="sua_dia_chi_co_dau">Địa chỉ cô dâu</label>
                             <textarea class="form-control" id="sua_dia_chi_co_dau" name="dia_chi_co_dau" rows="2" placeholder="Địa chỉ"></textarea>
-                        </div>
+                        </div> --}}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="sua_nguon_khach">Nguồn khách</label>
+                        <input type="text" class="form-control" id="sua_nguon_khach" name="nguon_khach" placeholder="Nhập nguồn khách (Facebook, giới thiệu, ...)">
                     </div>
                     <div class="mb-0">
                         <label class="form-label" for="sua_ghi_chu">Ghi chú</label>
@@ -367,7 +378,7 @@
 }
 .table-wrapper-bordered .table {
     border-collapse: collapse;
-    min-width: 1200px;
+    min-width: 900px;
 }
 .table-wrapper-bordered .table th,
 .table-wrapper-bordered .table td {
@@ -402,15 +413,16 @@ document.addEventListener('DOMContentLoaded', function() {
             var url = btn.getAttribute('data-url');
             if (url) formSua.action = url;
             document.getElementById('sua_ho_ten_chu_re').value = btn.getAttribute('data-ho-ten-chu-re') || '';
-            if (window.setAdminDateInput) setAdminDateInput('sua_ngay_sinh_chu_re', btn.getAttribute('data-ngay-sinh-chu-re') || ''); else document.getElementById('sua_ngay_sinh_chu_re').value = btn.getAttribute('data-ngay-sinh-chu-re') || '';
-            document.getElementById('sua_gioi_tinh_chu_re').value = btn.getAttribute('data-gioi-tinh-chu-re') || '';
+            // if (window.setAdminDateInput) setAdminDateInput('sua_ngay_sinh_chu_re', btn.getAttribute('data-ngay-sinh-chu-re') || ''); else document.getElementById('sua_ngay_sinh_chu_re').value = btn.getAttribute('data-ngay-sinh-chu-re') || '';
+            // document.getElementById('sua_gioi_tinh_chu_re').value = btn.getAttribute('data-gioi-tinh-chu-re') || '';
             document.getElementById('sua_email_sdt_chu_re').value = btn.getAttribute('data-email-sdt-chu-re') || '';
-            document.getElementById('sua_dia_chi_chu_re').value = btn.getAttribute('data-dia-chi-chu-re') || '';
+            // document.getElementById('sua_dia_chi_chu_re').value = btn.getAttribute('data-dia-chi-chu-re') || '';
             document.getElementById('sua_ho_ten_co_dau').value = btn.getAttribute('data-ho-ten-co-dau') || '';
-            if (window.setAdminDateInput) setAdminDateInput('sua_ngay_sinh_co_dau', btn.getAttribute('data-ngay-sinh-co-dau') || ''); else document.getElementById('sua_ngay_sinh_co_dau').value = btn.getAttribute('data-ngay-sinh-co-dau') || '';
-            document.getElementById('sua_gioi_tinh_co_dau').value = btn.getAttribute('data-gioi-tinh-co-dau') || '';
-            document.getElementById('sua_dia_chi_co_dau').value = btn.getAttribute('data-dia-chi-co-dau') || '';
+            // if (window.setAdminDateInput) setAdminDateInput('sua_ngay_sinh_co_dau', btn.getAttribute('data-ngay-sinh-co-dau') || ''); else document.getElementById('sua_ngay_sinh_co_dau').value = btn.getAttribute('data-ngay-sinh-co-dau') || '';
+            // document.getElementById('sua_gioi_tinh_co_dau').value = btn.getAttribute('data-gioi-tinh-co-dau') || '';
+            // document.getElementById('sua_dia_chi_co_dau').value = btn.getAttribute('data-dia-chi-co-dau') || '';
             document.getElementById('sua_email_sdt_co_dau').value = btn.getAttribute('data-email-sdt-co-dau') || '';
+            document.getElementById('sua_nguon_khach').value = btn.getAttribute('data-nguon-khach') || '';
             document.getElementById('sua_ghi_chu').value = btn.getAttribute('data-ghi-chu') || '';
         });
     }

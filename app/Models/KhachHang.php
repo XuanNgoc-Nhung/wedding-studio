@@ -34,6 +34,7 @@ class KhachHang extends Model
         'dia_chi_co_dau',
         'email_hoac_sdt_co_dau',
         'ghi_chu',
+        'nguon_khach',
     ];
 
     /**

@@ -129,6 +129,7 @@ return [
         'ten_cong_no' => 'tên công nợ',
         'user_id' => 'nhân sự',
         'khach_hang_id' => 'khách hàng',
+        'nguon_khach' => 'nguồn khách',
         'trang_phuc_id' => 'trang phục',
     ],
 ];

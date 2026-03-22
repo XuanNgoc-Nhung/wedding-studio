@@ -66,6 +66,17 @@
 .modal .modal-body{
   max-height: calc(100vh - 200px);
 }
+.select2-selection__choice__remove{
+
+    color: red !important;
+    padding-top: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 12px
+}
+.select2-container .select2-search--inline .select2-search__field{
+  margin-top:10px !important;
+}
 </style>
 
 @stack('styles')

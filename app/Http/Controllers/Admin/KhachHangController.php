@@ -58,7 +58,8 @@ class KhachHangController extends Controller
                     ->orWhere('email_hoac_sdt_co_dau', 'like', "%{$search}%")
                     ->orWhere('dia_chi_chu_re', 'like', "%{$search}%")
                     ->orWhere('dia_chi_co_dau', 'like', "%{$search}%")
-                    ->orWhere('ghi_chu', 'like', "%{$search}%");
+                    ->orWhere('ghi_chu', 'like', "%{$search}%")
+                    ->orWhere('nguon_khach', 'like', "%{$search}%");
             })
             ->orderBy('id')
             ->paginate(15)
@@ -81,6 +82,7 @@ class KhachHangController extends Controller
             'dia_chi_co_dau' => 'nullable|string',
             'email_hoac_sdt_co_dau' => 'nullable|string|max:255',
             'ghi_chu' => 'nullable|string',
+            'nguon_khach' => 'nullable|string|max:2000',
         ]);
 
         KhachHang::create($validated);
@@ -102,6 +104,7 @@ class KhachHangController extends Controller
             'dia_chi_co_dau' => 'nullable|string',
             'email_hoac_sdt_co_dau' => 'nullable|string|max:255',
             'ghi_chu' => 'nullable|string',
+            'nguon_khach' => 'nullable|string|max:2000',
         ]);
 
         $khachHang->update($validated);
