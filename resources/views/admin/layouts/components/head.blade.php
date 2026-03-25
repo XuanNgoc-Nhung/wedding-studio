@@ -79,4 +79,7 @@
 }
 </style>
 
+<!-- Admin: responsive — font/table gọn trên tablet & mobile -->
+<link rel="stylesheet" href="{{ asset('assets/css/admin-responsive.css') }}" />
+
 @stack('styles')
