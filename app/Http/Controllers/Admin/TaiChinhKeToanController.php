@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ChamCong;
+use App\Models\HopDong;
 use App\Models\PhieuThuChi;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -15,9 +16,37 @@ class TaiChinhKeToanController extends Controller
     {
         return view('admin.tai-chinh.index');
     }
-    public function congNo()
+    public function congNo(Request $request)
     {
-        return view('admin.tai-chinh.cong-no');
+        $request->validate([
+            'tu_ngay' => 'nullable|date',
+            'den_ngay' => 'nullable|date',
+            'trang_thai_tt' => 'nullable|in:chua,da',
+        ]);
+
+        $conLaiExpr = '(COALESCE(tong_tien,0) - COALESCE(so_tien_giam_gia,0) - COALESCE(thanh_toan_lan_1,0) - COALESCE(thanh_toan_lan_2,0) - COALESCE(thanh_toan_lan_3,0))';
+
+        $query = HopDong::query()
+            ->with(['khachHang'])
+            ->orderByDesc('id');
+
+        if ($request->filled('tu_ngay')) {
+            $query->whereDate('created_at', '>=', $request->input('tu_ngay'));
+        }
+        if ($request->filled('den_ngay')) {
+            $query->whereDate('created_at', '<=', $request->input('den_ngay'));
+        }
+
+        $trangThaiTt = $request->input('trang_thai_tt');
+        if ($trangThaiTt === 'chua') {
+            $query->whereRaw("{$conLaiExpr} > 0");
+        } elseif ($trangThaiTt === 'da') {
+            $query->whereRaw("{$conLaiExpr} <= 0");
+        }
+
+        $danhSach = $query->paginate(15)->withQueryString();
+
+        return view('admin.tai-chinh.cong-no', compact('danhSach'));
     }
     public function phieuThuChi(Request $request)
     {
