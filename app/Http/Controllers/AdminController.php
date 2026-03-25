@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HopDong;
+use App\Models\KhachHang;
+use App\Models\NhanVien;
+use App\Models\PhieuThuChi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
@@ -12,7 +18,104 @@ class AdminController extends Controller
 {
     public function index()
     {
-        return view('admin.index');
+        $conLaiExpr = '(COALESCE(tong_tien,0) - COALESCE(so_tien_giam_gia,0) - COALESCE(thanh_toan_lan_1,0) - COALESCE(thanh_toan_lan_2,0) - COALESCE(thanh_toan_lan_3,0))';
+
+        $tongNhanVien = NhanVien::query()->count();
+        $tongKhachHang = KhachHang::query()->count();
+        $tongHopDong = HopDong::query()->count();
+
+        $tongCongNo = (float) HopDong::query()
+            ->selectRaw('COALESCE(SUM(GREATEST(0, '.$conLaiExpr.')),0) as t')
+            ->value('t');
+
+        $soHopDongConNo = HopDong::query()->whereRaw("{$conLaiExpr} > 0")->count();
+
+        $tongDaThuTuHopDong = (float) HopDong::query()
+            ->selectRaw('COALESCE(SUM(COALESCE(thanh_toan_lan_1,0) + COALESCE(thanh_toan_lan_2,0) + COALESCE(thanh_toan_lan_3,0)),0) as t')
+            ->value('t');
+
+        $tongGiaTriHopDong = (float) HopDong::query()
+            ->selectRaw('COALESCE(SUM(COALESCE(tong_tien,0) - COALESCE(so_tien_giam_gia,0)),0) as t')
+            ->value('t');
+
+        // Trạng thái HĐ trên dashboard: chỉ 2 nhóm — các giá trị lưu trong DB được coi là "đã hoàn thành"
+        $giaTriTrangThaiDaHoanThanh = [
+            'Đã hoàn thành',
+            'đã hoàn thành',
+            'Hoàn thành',
+            'hoàn thành',
+            'hoan_thanh',
+            'da_hoan_thanh',
+            '1'
+        ];
+        $soHopDongDaHoanThanh = HopDong::query()
+            ->whereIn('trang_thai_hop_dong', $giaTriTrangThaiDaHoanThanh)
+            ->count();
+        $soHopDongChuaHoanThanh = max(0, $tongHopDong - $soHopDongDaHoanThanh);
+
+        $hopDongTheoTrangThai = collect([
+            ['trang_thai' => 'Đã hoàn thành', 'so_luong' => $soHopDongDaHoanThanh],
+            ['trang_thai' => 'Chưa hoàn thành', 'so_luong' => $soHopDongChuaHoanThanh],
+        ]);
+
+        $tuThang = Carbon::now()->startOfMonth()->subMonths(5);
+        $denCuoiThang = Carbon::now()->endOfMonth();
+
+        $thangNhanLabels = [];
+        $thangNhanKeys = [];
+        for ($d = $tuThang->copy(); $d->lte($denCuoiThang); $d->addMonth()) {
+            $thangNhanKeys[] = $d->format('Y-m');
+            $thangNhanLabels[] = $d->format('m/Y');
+        }
+
+        $giaTriHopDongTheoThang = HopDong::query()
+            ->where('created_at', '>=', $tuThang)
+            ->selectRaw("DATE_FORMAT(created_at, '%Y-%m') as ym")
+            ->selectRaw('SUM(COALESCE(tong_tien,0) - COALESCE(so_tien_giam_gia,0)) as total')
+            ->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%m')"))
+            ->pluck('total', 'ym');
+
+        $phieuThuTheoThang = PhieuThuChi::query()
+            ->where('loai_phieu', PhieuThuChi::LOAI_THU)
+            ->whereIn('trang_thai', [
+                PhieuThuChi::TRANG_THAI_DONG_Y,
+                PhieuThuChi::TRANG_THAI_HOAN_THANH,
+            ])
+            ->whereRaw('COALESCE(ngay_duyet, created_at) >= ?', [$tuThang])
+            ->selectRaw("DATE_FORMAT(COALESCE(ngay_duyet, created_at), '%Y-%m') as ym")
+            ->selectRaw('SUM(COALESCE(so_tien,0)) as total')
+            ->groupBy(DB::raw("DATE_FORMAT(COALESCE(ngay_duyet, created_at), '%Y-%m')"))
+            ->pluck('total', 'ym');
+
+        $seriesGiaTriHopDong = [];
+        $seriesPhieuThu = [];
+        $bangDoanhThuThang = [];
+        foreach ($thangNhanKeys as $i => $key) {
+            $gv = (float) ($giaTriHopDongTheoThang[$key] ?? 0);
+            $pt = (float) ($phieuThuTheoThang[$key] ?? 0);
+            $seriesGiaTriHopDong[] = round($gv, 2);
+            $seriesPhieuThu[] = round($pt, 2);
+            $bangDoanhThuThang[] = [
+                'label' => $thangNhanLabels[$i],
+                'gia_tri_hd_moi' => $gv,
+                'phieu_thu_duyet' => $pt,
+            ];
+        }
+
+        return view('admin.index', compact(
+            'tongNhanVien',
+            'tongKhachHang',
+            'tongHopDong',
+            'tongCongNo',
+            'soHopDongConNo',
+            'tongDaThuTuHopDong',
+            'tongGiaTriHopDong',
+            'hopDongTheoTrangThai',
+            'thangNhanLabels',
+            'seriesGiaTriHopDong',
+            'seriesPhieuThu',
+            'bangDoanhThuThang',
+        ));
     }
 
     public function thongTinCaNhan()
