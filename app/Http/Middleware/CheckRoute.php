@@ -22,6 +22,13 @@ class CheckRoute
         'admin.doi-mat-khau',
     ];
 
+    /** Route phụ (API/modal) được phép nếu user đã có route nền tương ứng trong ds_menu. */
+    private const EXTRA_ROUTES_BY_BASE = [
+        'admin.khach-hang.hop-dong' => [
+            'admin.khach-hang.kiem-tra-ma-gioi-thieu',
+        ],
+    ];
+
     public function handle(Request $request, Closure $next): Response
     {
         $user = $request->user();
@@ -44,6 +51,11 @@ class CheckRoute
             : self::ALLOWED_WITHOUT_DS_MENU;
 
         if (! in_array($routeName, $allowed, true)) {
+            foreach (self::EXTRA_ROUTES_BY_BASE as $base => $extras) {
+                if (in_array($routeName, $extras, true) && in_array($base, $allowed, true)) {
+                    return $next($request);
+                }
+            }
             abort(403, 'Bạn không có quyền truy cập trang này.');
         }
 

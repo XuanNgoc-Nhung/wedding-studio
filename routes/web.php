@@ -46,6 +46,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'c
         Route::put('/danh-sach/{khachHang}', [AdminKhachHang::class, 'update'])->name('khach-hang.update');
         Route::delete('/danh-sach/{khachHang}', [AdminKhachHang::class, 'destroy'])->name('khach-hang.destroy');
         Route::get('/hop-dong', [AdminKhachHang::class, 'hopDong'])->name('khach-hang.hop-dong');
+        Route::post('/hop-dong/kiem-tra-ma-gioi-thieu', [AdminKhachHang::class, 'kiemTraMaGioiThieu'])->name('khach-hang.kiem-tra-ma-gioi-thieu');
         Route::post('/hop-dong', [AdminKhachHang::class, 'storeHopDong'])->name('khach-hang.store-hop-dong');
         Route::get('/hop-dong/{hopDong}/dich-vu', [AdminKhachHang::class, 'dichVuTrongHopDong'])->name('khach-hang.hop-dong.dich-vu');
         Route::post('/hop-dong/upload-anh-thanh-toan', [AdminKhachHang::class, 'uploadAnhThanhToan'])->name('khach-hang.hop-dong.upload-anh-thanh-toan');

@@ -200,6 +200,8 @@
                                        data-ghi-chu-chup="{{ e($item->ghi_chu_chup ?? '') }}"
                                        data-trang-thai-chup="{{ e($item->trang_thai_chup ?? '') }}"
                                        data-tong-tien="{{ $item->tong_tien !== null ? $item->tong_tien : '' }}"
+                                       data-nguoi-gioi-thieu="{{ $item->nguoi_gioi_thieu ?? '' }}"
+                                       data-so-tien-giam-gia="{{ $item->so_tien_giam_gia !== null ? $item->so_tien_giam_gia : '' }}"
                                        data-thanh-toan-lan-1="{{ $item->thanh_toan_lan_1 !== null ? $item->thanh_toan_lan_1 : '' }}"
                                        data-thanh-toan-lan-2="{{ $item->thanh_toan_lan_2 !== null ? $item->thanh_toan_lan_2 : '' }}"
                                        data-thanh-toan-lan-3="{{ $item->thanh_toan_lan_3 !== null ? $item->thanh_toan_lan_3 : '' }}"
@@ -502,20 +504,37 @@
                             <label class="form-label" for="them_ghi_chu_chup">Ghi chú chụp</label>
                             <textarea class="form-control" id="them_ghi_chu_chup" name="ghi_chu_chup" rows="2" placeholder="Ghi chú">{{ old('ghi_chu_chup') }}</textarea>
                         </div>
-                        {{-- Tổng tiền (theo nhóm) + thanh toán lần 1 + còn lại --}}
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="them_tong_tien_display">Tổng tiền</label>
-                            <input type="hidden" name="tong_tien" id="them_tong_tien" value="{{ old('tong_tien', '0') }}">
-                            <input type="text" class="form-control bg-body-secondary text-end fw-semibold fs-5" id="them_tong_tien_display" readonly tabindex="-1" value="0 đ" aria-readonly="true" autocomplete="off">
-                            <small class="text-muted">Tổng giá thực tất cả dịch vụ được tích lưu trong bảng (gồm nhóm và dịch vụ lẻ ngoài nhóm).</small>
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="them_thanh_toan_lan_1">Thanh toán lần 1</label>
-                            <input type="number" class="form-control" id="them_thanh_toan_lan_1" name="thanh_toan_lan_1" value="{{ old('thanh_toan_lan_1', '0') }}" min="0" step="0.01">
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="them_con_lai">Còn lại</label>
-                            <input type="text" class="form-control bg-body-secondary" id="them_con_lai" readonly tabindex="-1" value="0 đ" aria-readonly="true" autocomplete="off">
+                        {{-- Tổng tiền → mã giới thiệu → giảm giá → cọc → còn lại (1 hàng từ lg) --}}
+                        <div class="col-12">
+                            <div class="row g-2 row-cols-1 row-cols-sm-2 row-cols-lg-5 hop-dong-tien-row align-items-end">
+                                <div class="col">
+                                    <label class="form-label mb-1" for="them_tong_tien_display">Tổng tiền</label>
+                                    <input type="hidden" name="tong_tien" id="them_tong_tien" value="{{ old('tong_tien', '0') }}">
+                                    <input type="text" class="form-control hop-dong-tien-control bg-body-secondary text-end fw-semibold fs-5" id="them_tong_tien_display" readonly tabindex="-1" value="0 đ" aria-readonly="true" autocomplete="off">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label mb-1" for="them_nguoi_gioi_thieu">Mã giới thiệu</label>
+                                    <div class="input-group hop-dong-tien-control">
+                                        <input type="text" class="form-control" id="them_nguoi_gioi_thieu" name="nguoi_gioi_thieu" value="{{ old('nguoi_gioi_thieu') }}" maxlength="255" placeholder="Nhập mã giới thiệu (nếu có)" autocomplete="off">
+                                        <button type="button" class="btn btn-outline-primary" id="btnKiemTraMaGioiThieuThem" title="Kiểm tra mã giới thiệu">
+                                            <i class="fa-solid fa-check"></i>
+                                        </button>
+                                    </div>
+                                    <small class="text-muted d-block mt-1" id="them_ma_gioi_thieu_feedback" role="status"></small>
+                                </div>
+                                <div class="col">
+                                    <label class="form-label mb-1" for="them_so_tien_giam_gia">Số tiền giảm giá</label>
+                                    <input type="number" class="form-control hop-dong-tien-control text-end bg-body-secondary" id="them_so_tien_giam_gia" name="so_tien_giam_gia" value="{{ old('so_tien_giam_gia', '0') }}" min="0" step="0.01" inputmode="decimal" placeholder="0" readonly tabindex="-1" aria-readonly="true" title="Áp dụng tự động sau khi kiểm tra mã giới thiệu">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label mb-1" for="them_thanh_toan_lan_1">Tiền cọc</label>
+                                    <input type="number" class="form-control hop-dong-tien-control" id="them_thanh_toan_lan_1" name="thanh_toan_lan_1" value="{{ old('thanh_toan_lan_1', '0') }}" min="0" step="0.01">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label mb-1" for="them_con_lai">Còn lại</label>
+                                    <input type="text" class="form-control hop-dong-tien-control bg-body-secondary" id="them_con_lai" readonly tabindex="-1" value="0 đ" aria-readonly="true" autocomplete="off">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -749,20 +768,37 @@
                             <label class="form-label" for="sua_ghi_chu_chup">Ghi chú chụp</label>
                             <textarea class="form-control" id="sua_ghi_chu_chup" name="ghi_chu_chup" rows="2" placeholder="Ghi chú"></textarea>
                         </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="sua_tong_tien_display">Tổng tiền</label>
-                            <input type="hidden" name="tong_tien" id="sua_tong_tien" value="">
-                            <input type="text" class="form-control bg-body-secondary text-end fw-semibold fs-5" id="sua_tong_tien_display" readonly tabindex="-1" value="0 đ" aria-readonly="true" autocomplete="off">
-                            <small class="text-muted">Tự tính theo dịch vụ được tích lưu trong bảng (hoặc tổng đang lưu nếu chưa có dòng).</small>
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="sua_thanh_toan_lan_1">Thanh toán lần 1</label>
-                            <input type="number" class="form-control" id="sua_thanh_toan_lan_1" name="thanh_toan_lan_1" min="0" step="0.01">
-                            <small class="text-muted d-none" id="sua_thanh_toan_lan_1_ghi_chu">Đã có ảnh chứng từ thanh toán lần 1 — không chỉnh sửa số tiền.</small>
-                        </div>
-                        <div class="col-12 col-sm-6 col-lg-4">
-                            <label class="form-label" for="sua_con_lai">Còn lại</label>
-                            <input type="text" class="form-control bg-body-secondary" id="sua_con_lai" readonly tabindex="-1" value="0 đ" aria-readonly="true" autocomplete="off">
+                        <div class="col-12">
+                            <div class="row g-2 row-cols-1 row-cols-sm-2 row-cols-lg-5 hop-dong-tien-row align-items-end">
+                                <div class="col">
+                                    <label class="form-label mb-1" for="sua_tong_tien_display">Tổng tiền</label>
+                                    <input type="hidden" name="tong_tien" id="sua_tong_tien" value="">
+                                    <input type="text" class="form-control hop-dong-tien-control bg-body-secondary text-end fw-semibold fs-5" id="sua_tong_tien_display" readonly tabindex="-1" value="0 đ" aria-readonly="true" autocomplete="off">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label mb-1" for="sua_nguoi_gioi_thieu">Mã giới thiệu</label>
+                                    <div class="input-group hop-dong-tien-control">
+                                        <input type="text" class="form-control  hop-dong-tien-control text-end bg-body-secondary" id="sua_nguoi_gioi_thieu" name="nguoi_gioi_thieu" maxlength="255" placeholder="Nhập mã giới thiệu" autocomplete="off">
+                                        <button type="button" class="btn btn-outline-primary" id="btnKiemTraMaGioiThieuSua" title="Kiểm tra mã giới thiệu">
+                                            <i class="fa-solid fa-check"></i>
+                                        </button>
+                                    </div>
+                                    <small class="text-muted d-block mt-1" id="sua_ma_gioi_thieu_feedback" role="status"></small>
+                                </div>
+                                <div class="col">
+                                    <label class="form-label mb-1" for="sua_so_tien_giam_gia">Số tiền giảm giá</label>
+                                    <input type="number" class="form-control hop-dong-tien-control text-end bg-body-secondary" id="sua_so_tien_giam_gia" name="so_tien_giam_gia" min="0" step="0.01" inputmode="decimal" placeholder="0" readonly tabindex="-1" aria-readonly="true" title="Áp dụng tự động sau khi kiểm tra mã giới thiệu">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label mb-1" for="sua_thanh_toan_lan_1">Tiền cọc</label>
+                                    <input type="number" class="form-control hop-dong-tien-control" id="sua_thanh_toan_lan_1" name="thanh_toan_lan_1" min="0" step="0.01">
+                                </div>
+                                <div class="col">
+                                    <label class="form-label mb-1" for="sua_con_lai">Còn lại</label>
+                                    <input type="text" class="form-control hop-dong-tien-control bg-body-secondary" id="sua_con_lai" readonly tabindex="-1" value="0 đ" aria-readonly="true" autocomplete="off">
+                                </div>
+                            </div>
+                            <small class="text-muted d-block mt-1">Tự tính theo dịch vụ được tích lưu trong bảng.</small>
                         </div>
                     </div>
                 </div>
@@ -961,12 +997,41 @@
 .table-wrapper-bordered .table td {
     border: 1px solid var(--bs-border-color, #dee2e6);
 }
+/* Hàng tổng tiền / mã GT / giảm giá / cọc / còn lại: cùng chiều cao control */
+#modalThemHopDong .hop-dong-tien-row,
+#modalSuaHopDong .hop-dong-tien-row {
+    --hop-dong-tien-ctrl-h: calc(1.5em + 0.75rem + 2px);
+}
+#modalThemHopDong .hop-dong-tien-row .hop-dong-tien-control.form-control,
+#modalSuaHopDong .hop-dong-tien-row .hop-dong-tien-control.form-control {
+    min-height: var(--hop-dong-tien-ctrl-h);
+}
+#modalThemHopDong .hop-dong-tien-row .input-group.hop-dong-tien-control,
+#modalSuaHopDong .hop-dong-tien-row .input-group.hop-dong-tien-control {
+    min-height: var(--hop-dong-tien-ctrl-h);
+    align-items: stretch;
+}
+#modalThemHopDong .hop-dong-tien-row .input-group.hop-dong-tien-control > .form-control,
+#modalSuaHopDong .hop-dong-tien-row .input-group.hop-dong-tien-control > .form-control {
+    min-height: 100%;
+    align-self: stretch;
+}
+#modalThemHopDong .hop-dong-tien-row .input-group.hop-dong-tien-control > .btn,
+#modalSuaHopDong .hop-dong-tien-row .input-group.hop-dong-tien-control > .btn {
+    display: inline-flex;
+    align-items: center;
+    align-self: stretch;
+}
 </style>
 @endpush
 
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    var CSRF_TOKEN = (document.querySelector('meta[name="csrf-token"]') && document.querySelector('meta[name="csrf-token"]').getAttribute('content')) || @json(csrf_token());
+    var URL_KIEM_TRA_MA_GIOI_THIEU = @json(route('admin.khach-hang.kiem-tra-ma-gioi-thieu'));
+    var MIN_ORDER_GIOI_THIEU = 300000;
+
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.map(function (el) { return new bootstrap.Tooltip(el); });
 
@@ -1075,9 +1140,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 else suaConceptSelect.dispatchEvent(new Event('change', { bubbles: true }));
             }
             document.getElementById('sua_ghi_chu_chup').value = btn.getAttribute('data-ghi-chu-chup') || '';
+            var inpNguoiGioiThieu = document.getElementById('sua_nguoi_gioi_thieu');
+            if (inpNguoiGioiThieu) inpNguoiGioiThieu.value = btn.getAttribute('data-nguoi-gioi-thieu') || '';
+            var inpSuaGiam = document.getElementById('sua_so_tien_giam_gia');
+            if (inpSuaGiam) {
+                var rawGiam = btn.getAttribute('data-so-tien-giam-gia');
+                inpSuaGiam.value = (rawGiam !== null && rawGiam !== '') ? rawGiam : '0';
+            }
             window._suaHopDongTongFallback = btn.getAttribute('data-tong-tien') || '0';
             var inpSuaLan1 = document.getElementById('sua_thanh_toan_lan_1');
-            var ghiChuLan1 = document.getElementById('sua_thanh_toan_lan_1_ghi_chu');
             if (inpSuaLan1) {
                 inpSuaLan1.value = btn.getAttribute('data-thanh-toan-lan-1') || '0';
                 var khoaLan1 = btn.getAttribute('data-khoa-thanh-toan-lan-1') === '1';
@@ -1098,7 +1169,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (oldH2) oldH2.remove();
                     inpSuaLan1.setAttribute('name', 'thanh_toan_lan_1');
                 }
-                if (ghiChuLan1) ghiChuLan1.classList.toggle('d-none', !khoaLan1);
             }
             var tableNhomSua = document.getElementById('tableNhomDichVuSua');
             var tableDichVuLeSua = document.getElementById('tableDichVuLeSua');
@@ -1411,6 +1481,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var inpTongHidden = document.getElementById('them_tong_tien');
         var inpTongDisplay = document.getElementById('them_tong_tien_display');
         var inpLan1 = document.getElementById('them_thanh_toan_lan_1');
+        var inpGiam = document.getElementById('them_so_tien_giam_gia');
         var inpConLai = document.getElementById('them_con_lai');
         if (!inpTongHidden || !inpConLai) return;
         var tong = 0;
@@ -1428,8 +1499,18 @@ document.addEventListener('DOMContentLoaded', function() {
         var tongRounded = Math.round(tong * 100) / 100;
         inpTongHidden.value = String(tongRounded);
         if (inpTongDisplay) inpTongDisplay.value = formatMoney(tongRounded) + ' đ';
+        if (inpGiam) {
+            var gv0 = parseFloat(inpGiam.value) || 0;
+            if (tongRounded < MIN_ORDER_GIOI_THIEU && gv0 > 0) {
+                inpGiam.value = '0';
+            }
+        }
+        var giam = inpGiam ? (parseFloat(inpGiam.value) || 0) : 0;
+        if (giam < 0) giam = 0;
+        if (giam > tongRounded) giam = tongRounded;
+        var sauGiam = Math.max(0, tongRounded - giam);
         var lan1 = inpLan1 ? (parseFloat(inpLan1.value) || 0) : 0;
-        var conLai = Math.max(0, tongRounded - lan1);
+        var conLai = Math.max(0, sauGiam - lan1);
         inpConLai.value = formatMoney(conLai) + ' đ';
     }
 
@@ -1538,11 +1619,18 @@ document.addEventListener('DOMContentLoaded', function() {
             var tTong = document.getElementById('them_tong_tien');
             var tTongDisp = document.getElementById('them_tong_tien_display');
             var tLan1 = document.getElementById('them_thanh_toan_lan_1');
+            var tGiam = document.getElementById('them_so_tien_giam_gia');
             var tConLai = document.getElementById('them_con_lai');
             if (tTong) tTong.value = '0';
             if (tTongDisp) tTongDisp.value = '0 đ';
             if (tLan1) tLan1.value = '0';
+            if (tGiam) tGiam.value = '0';
             if (tConLai) tConLai.value = '0 đ';
+            var tFb = document.getElementById('them_ma_gioi_thieu_feedback');
+            if (tFb) {
+                tFb.textContent = '';
+                tFb.className = 'text-muted d-block mt-1';
+            }
         });
     }
 
@@ -1678,6 +1766,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var hidden = document.getElementById('sua_tong_tien');
         var display = document.getElementById('sua_tong_tien_display');
         var lan1El = document.getElementById('sua_thanh_toan_lan_1');
+        var giamEl = document.getElementById('sua_so_tien_giam_gia');
         var conLaiEl = document.getElementById('sua_con_lai');
         if (!hidden || !conLaiEl) return;
         var rowEls = tbodyDichVuLeSua ? tbodyDichVuLeSua.querySelectorAll('tr[data-dich-vu-le-id]') : [];
@@ -1698,8 +1787,18 @@ document.addEventListener('DOMContentLoaded', function() {
         var tongRounded = Math.round(tong * 100) / 100;
         hidden.value = String(tongRounded);
         if (display) display.value = formatMoney(tongRounded) + ' đ';
+        if (giamEl) {
+            var gv0s = parseFloat(giamEl.value) || 0;
+            if (tongRounded < MIN_ORDER_GIOI_THIEU && gv0s > 0) {
+                giamEl.value = '0';
+            }
+        }
+        var giam = giamEl ? (parseFloat(giamEl.value) || 0) : 0;
+        if (giam < 0) giam = 0;
+        if (giam > tongRounded) giam = tongRounded;
+        var sauGiam = Math.max(0, tongRounded - giam);
         var l1 = lan1El ? (parseFloat(lan1El.value) || 0) : 0;
-        conLaiEl.value = formatMoney(Math.max(0, tongRounded - l1)) + ' đ';
+        conLaiEl.value = formatMoney(Math.max(0, sauGiam - l1)) + ' đ';
     }
 
     function updateTongDichVuLeTheoNhomSua() {
@@ -1775,6 +1874,103 @@ document.addEventListener('DOMContentLoaded', function() {
     if (inpSuaThanhToanLan1) {
         inpSuaThanhToanLan1.addEventListener('input', syncSuaTongTienVaConLai);
         inpSuaThanhToanLan1.addEventListener('change', syncSuaTongTienVaConLai);
+    }
+
+    function setMaGioiThieuFeedback(prefix, message, variant) {
+        var el = document.getElementById(prefix + '_ma_gioi_thieu_feedback');
+        if (!el) return;
+        el.textContent = message || '';
+        el.className = 'd-block mt-1 ' + (variant === 'danger' ? 'text-danger' : variant === 'success' ? 'text-success' : 'text-muted');
+    }
+
+    function getKhachHangIdChoKiemTraThem() {
+        var sel = document.getElementById('them_khach_hang_id');
+        if (!sel) return '';
+        var jq = window.jQuery || window.$;
+        if (jq && jq.fn && jq.fn.select2) {
+            var v = jq(sel).val();
+            return v != null && v !== '' ? String(v) : '';
+        }
+        return sel.value || '';
+    }
+
+    function goiKiemTraMaGioiThieu(prefix) {
+        var inpMa = document.getElementById(prefix + '_nguoi_gioi_thieu');
+        var inpGiam = document.getElementById(prefix + '_so_tien_giam_gia');
+        var inpTong = document.getElementById(prefix + '_tong_tien');
+        var khId = prefix === 'them' ? getKhachHangIdChoKiemTraThem() : (function() {
+            var h = document.getElementById('sua_khach_hang_id_hidden');
+            return h ? (h.value || '') : '';
+        })();
+        if (!khId) {
+            alert('Vui lòng chọn khách hàng (hợp đồng) trước khi kiểm tra mã giới thiệu.');
+            return;
+        }
+        if (prefix === 'them') syncThemTongTienVaConLai();
+        else syncSuaTongTienVaConLai();
+        var tong = inpTong ? (parseFloat(inpTong.value) || 0) : 0;
+        var fd = new FormData();
+        fd.append('_token', CSRF_TOKEN);
+        fd.append('nguoi_gioi_thieu', inpMa ? inpMa.value.trim() : '');
+        fd.append('khach_hang_id', khId);
+        fd.append('tong_tien', String(tong));
+        fetch(URL_KIEM_TRA_MA_GIOI_THIEU, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+            body: fd,
+            credentials: 'same-origin'
+        })
+            .then(function(res) {
+                return res.json().then(function(data) {
+                    return { ok: res.ok, status: res.status, data: data };
+                });
+            })
+            .then(function(payload) {
+                var data = payload.data || {};
+                if (!payload.ok) {
+                    var msg = (data && data.message) ? data.message : (payload.status === 422 ? 'Dữ liệu không hợp lệ.' : 'Không kiểm tra được mã.');
+                    setMaGioiThieuFeedback(prefix, msg, 'danger');
+                    if (inpGiam) inpGiam.value = '0';
+                    if (prefix === 'them') syncThemTongTienVaConLai();
+                    else syncSuaTongTienVaConLai();
+                    return;
+                }
+                var soGiam = data.so_tien_giam_gia != null ? Number(data.so_tien_giam_gia) : 0;
+                if (inpGiam) inpGiam.value = isNaN(soGiam) ? '0' : String(soGiam);
+                setMaGioiThieuFeedback(prefix, data.message || '', data.matched && soGiam > 0 ? 'success' : (data.matched ? 'muted' : 'danger'));
+                if (prefix === 'them') syncThemTongTienVaConLai();
+                else syncSuaTongTienVaConLai();
+            })
+            .catch(function() {
+                setMaGioiThieuFeedback(prefix, 'Lỗi kết nối, thử lại sau.', 'danger');
+                if (inpGiam) inpGiam.value = '0';
+                if (prefix === 'them') syncThemTongTienVaConLai();
+                else syncSuaTongTienVaConLai();
+            });
+    }
+
+    var btnKiemTraThem = document.getElementById('btnKiemTraMaGioiThieuThem');
+    if (btnKiemTraThem) btnKiemTraThem.addEventListener('click', function() { goiKiemTraMaGioiThieu('them'); });
+    var btnKiemTraSua = document.getElementById('btnKiemTraMaGioiThieuSua');
+    if (btnKiemTraSua) btnKiemTraSua.addEventListener('click', function() { goiKiemTraMaGioiThieu('sua'); });
+
+    var inpMaGtThem = document.getElementById('them_nguoi_gioi_thieu');
+    if (inpMaGtThem) {
+        inpMaGtThem.addEventListener('input', function() {
+            var g = document.getElementById('them_so_tien_giam_gia');
+            if (g) g.value = '0';
+            setMaGioiThieuFeedback('them', '', 'muted');
+            syncThemTongTienVaConLai();
+        });
+    }
+    var inpMaGtSua = document.getElementById('sua_nguoi_gioi_thieu');
+    if (inpMaGtSua) {
+        inpMaGtSua.addEventListener('input', function() {
+            var g = document.getElementById('sua_so_tien_giam_gia');
+            if (g) g.value = '0';
+            setMaGioiThieuFeedback('sua', '', 'muted');
+            syncSuaTongTienVaConLai();
+        });
     }
 
     // Submit form Sửa HĐ: gửi dịch vụ lẻ được tích chọn (giống Thêm)

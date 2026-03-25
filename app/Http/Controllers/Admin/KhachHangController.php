@@ -16,6 +16,12 @@ use Illuminate\Support\Facades\Storage;
 
 class KhachHangController extends Controller
 {
+    /** Đơn tối thiểu (VNĐ) để áp dụng giảm giá giới thiệu. */
+    private const GIOI_THIEU_DON_TOI_THIEU = 300_000;
+
+    /** Số tiền giảm (VNĐ) khi mã giới thiệu hợp lệ và đơn đạt ngưỡng. */
+    private const GIOI_THIEU_SO_TIEN_GIAM = 300_000;
+
     public function dichVuTrongHopDong(HopDong $hopDong)
     {
         $rows = DichVuTrongHopDong::query()
@@ -38,6 +44,54 @@ class KhachHangController extends Controller
 
         return response()->json([
             'data' => $rows,
+        ]);
+    }
+
+    /**
+     * Kiểm tra mã giới thiệu: trùng email hoặc SĐT (cột email_hoac_sdt_chu_re / co_dau) của một khách khác trong bảng khach_hang.
+     */
+    public function kiemTraMaGioiThieu(Request $request)
+    {
+        $validated = $request->validate([
+            'nguoi_gioi_thieu' => 'required|string|max:255',
+            'khach_hang_id' => 'required|exists:khach_hang,id',
+            'tong_tien' => 'nullable|numeric|min:0',
+        ]);
+
+        $ma = trim((string) $validated['nguoi_gioi_thieu']);
+        $khachHangId = (int) $validated['khach_hang_id'];
+        $tongTien = (float) ($validated['tong_tien'] ?? 0);
+
+        if ($ma === '') {
+            return response()->json([
+                'matched' => false,
+                'so_tien_giam_gia' => 0,
+                'message' => 'Vui lòng nhập email hoặc số điện thoại người giới thiệu (đã có trong danh sách khách hàng).',
+            ]);
+        }
+
+        $matched = $this->nguoiGioiThieuKhopKhachHang($ma, $khachHangId);
+
+        if (! $matched) {
+            return response()->json([
+                'matched' => false,
+                'so_tien_giam_gia' => 0,
+                'message' => 'Không tìm thấy khách hàng trùng email/SĐT cô dâu hoặc chú rể với mã đã nhập.',
+            ]);
+        }
+
+        if ($tongTien < self::GIOI_THIEU_DON_TOI_THIEU) {
+            return response()->json([
+                'matched' => true,
+                'so_tien_giam_gia' => 0,
+                'message' => 'Mã hợp lệ. Giảm '.number_format(self::GIOI_THIEU_SO_TIEN_GIAM, 0, ',', '.').'đ chỉ áp dụng khi tổng đơn từ '.number_format(self::GIOI_THIEU_DON_TOI_THIEU, 0, ',', '.').'đ trở lên.',
+            ]);
+        }
+
+        return response()->json([
+            'matched' => true,
+            'so_tien_giam_gia' => (float) self::GIOI_THIEU_SO_TIEN_GIAM,
+            'message' => 'Mã hợp lệ. Đã áp dụng giảm '.number_format(self::GIOI_THIEU_SO_TIEN_GIAM, 0, ',', '.').'đ.',
         ]);
     }
 
@@ -182,6 +236,8 @@ class KhachHangController extends Controller
             'ghi_chu_chup' => 'nullable|string',
             'trang_thai_chup' => 'nullable|string|max:50',
             'tong_tien' => 'nullable|numeric|min:0',
+            'nguoi_gioi_thieu' => 'nullable|string|max:255',
+            'so_tien_giam_gia' => 'nullable|numeric|min:0',
             'thanh_toan_lan_1' => 'nullable|numeric|min:0',
             'thanh_toan_lan_2' => 'nullable|numeric|min:0',
             'thanh_toan_lan_3' => 'nullable|numeric|min:0',
@@ -208,6 +264,11 @@ class KhachHangController extends Controller
         $validated['trang_phuc'] = !empty($trangPhucIds) ? implode(',', array_map('intval', (array) $trangPhucIds)) : null;
 
         $validated['nguoi_tao_id'] = $request->user()?->id;
+        $validated['so_tien_giam_gia'] = $this->resolveSoTienGiamGiaFromIntro(
+            $validated['nguoi_gioi_thieu'] ?? null,
+            (int) $validated['khach_hang_id'],
+            (float) ($validated['tong_tien'] ?? 0)
+        );
 
         // --- Bước 2: Tạo hợp đồng (chỉ thông tin hợp đồng) ---
         $hopDong = HopDong::create($validated);
@@ -257,6 +318,8 @@ class KhachHangController extends Controller
             'ghi_chu_chup' => 'nullable|string',
             'trang_thai_chup' => 'nullable|string|max:50',
             'tong_tien' => 'nullable|numeric|min:0',
+            'nguoi_gioi_thieu' => 'nullable|string|max:255',
+            'so_tien_giam_gia' => 'nullable|numeric|min:0',
             'thanh_toan_lan_1' => 'nullable|numeric|min:0',
             'thanh_toan_lan_2' => 'nullable|numeric|min:0',
             'thanh_toan_lan_3' => 'nullable|numeric|min:0',
@@ -281,6 +344,12 @@ class KhachHangController extends Controller
         // Lưu danh sách id trang_phuc vào cột text `hop_dong.trang_phuc` (chuỗi id cách nhau dấu phẩy)
         $trangPhucIds = $validated['trang_phuc'] ?? [];
         $validated['trang_phuc'] = !empty($trangPhucIds) ? implode(',', array_map('intval', (array) $trangPhucIds)) : null;
+
+        $validated['so_tien_giam_gia'] = $this->resolveSoTienGiamGiaFromIntro(
+            $validated['nguoi_gioi_thieu'] ?? null,
+            (int) $validated['khach_hang_id'],
+            (float) ($validated['tong_tien'] ?? 0)
+        );
 
         $hopDong->update($validated);
 
@@ -359,5 +428,34 @@ class KhachHangController extends Controller
         return redirect()
             ->route('admin.khach-hang.hop-dong')
             ->with('success', 'Đã cập nhật thanh toán thành công.');
+    }
+
+    private function nguoiGioiThieuKhopKhachHang(string $ma, int $excludeKhachHangId): bool
+    {
+        $needle = mb_strtolower(trim($ma));
+        if ($needle === '') {
+            return false;
+        }
+
+        return KhachHang::query()
+            ->where('id', '!=', $excludeKhachHangId)
+            ->where(function ($q) use ($needle) {
+                $q->whereRaw('LOWER(TRIM(COALESCE(email_hoac_sdt_chu_re, \'\'))) = ?', [$needle])
+                    ->orWhereRaw('LOWER(TRIM(COALESCE(email_hoac_sdt_co_dau, \'\'))) = ?', [$needle]);
+            })
+            ->exists();
+    }
+
+    private function resolveSoTienGiamGiaFromIntro(?string $nguoiGioiThieu, int $khachHangId, float $tongTien): float
+    {
+        $ma = trim((string) ($nguoiGioiThieu ?? ''));
+        if ($ma === '' || $tongTien < self::GIOI_THIEU_DON_TOI_THIEU) {
+            return 0.0;
+        }
+        if (! $this->nguoiGioiThieuKhopKhachHang($ma, $khachHangId)) {
+            return 0.0;
+        }
+
+        return (float) self::GIOI_THIEU_SO_TIEN_GIAM;
     }
 }
