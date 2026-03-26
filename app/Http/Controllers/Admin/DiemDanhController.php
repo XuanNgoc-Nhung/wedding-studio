@@ -263,6 +263,7 @@ class DiemDanhController extends Controller
             'trang_phuc' => 'nullable|string|max:255',
             'ngay_chup' => 'nullable|date',
             'ngay_hen_tra_hang' => 'nullable|date',
+            'ngay_tra_link_in' => 'nullable|date',
         ]);
 
         $hopDong->update([
@@ -273,6 +274,7 @@ class DiemDanhController extends Controller
             'trang_phuc' => $validated['trang_phuc'] ?? null,
             'ngay_chup' => $validated['ngay_chup'] ?? null,
             'ngay_hen_tra_hang' => $validated['ngay_hen_tra_hang'] ?? null,
+            'ngay_tra_link_in' => $validated['ngay_tra_link_in'] ?? null,
         ]);
 
         return redirect()->route('admin.diem-danh.dieu-phoi-cong-viec')->with('success', 'Phân công công việc đã được cập nhật.');

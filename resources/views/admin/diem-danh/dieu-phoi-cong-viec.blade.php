@@ -50,8 +50,9 @@
                         <th>Thợ edit</th>
                         <th>Địa điểm</th>
                         <th>Ngày chụp</th>
+                        <th>Ngày trả link in</th>
                         <th>Ngày hẹn trả hàng</th>
-                        <th>Trang phục</th>
+                        {{-- <th>Trang phục</th> --}}
                         {{-- <th>Ghi chú</th> --}}
                         <th class="text-end">Tổng tiền</th>
                         <th>Trạng thái chụp</th>
@@ -68,6 +69,54 @@
                             $parts = array_filter([$item->khachHang->ho_ten_chu_re ?? '', $item->khachHang->ho_ten_co_dau ?? '']);
                             $tenKhachHang = implode(' / ', $parts) ?: '—';
                         }
+
+                        $homNay = now()->startOfDay();
+                        $ngayChup = $item->ngay_chup ? $item->ngay_chup->copy()->startOfDay() : null;
+                        $coFileDemo = !empty($item->link_file_demo);
+
+                        if ($coFileDemo) {
+                            $tinhTrangChup = 'Đã chụp';
+                            $tinhTrangChupClass = 'bg-success';
+                        } elseif ($ngayChup && $ngayChup->greaterThan($homNay)) {
+                            $tinhTrangChup = 'Đợi chụp';
+                            $tinhTrangChupClass = 'bg-secondary';
+                        } elseif ($ngayChup && $ngayChup->equalTo($homNay)) {
+                            $tinhTrangChup = 'Cần chụp';
+                            $tinhTrangChupClass = 'bg-warning';
+                        } elseif ($ngayChup && $ngayChup->lessThan($homNay)) {
+                            $tinhTrangChup = 'Trễ chụp';
+                            $tinhTrangChupClass = 'bg-danger';
+                        } else {
+                            $tinhTrangChup = 'Cần chụp';
+                            $tinhTrangChupClass = 'bg-warning';
+                        }
+
+                        $rawNgayTraLinkIn = $item->ngay_tra_link_in ?? null;
+                        if ($rawNgayTraLinkIn instanceof \Carbon\CarbonInterface) {
+                            $ngayTraLinkIn = $rawNgayTraLinkIn->copy()->startOfDay();
+                        } elseif (!empty($rawNgayTraLinkIn)) {
+                            $ngayTraLinkIn = \Carbon\Carbon::parse($rawNgayTraLinkIn)->startOfDay();
+                        } else {
+                            $ngayTraLinkIn = null;
+                        }
+
+                        $coFileIn = !empty($item->link_file_in);
+                        if ($coFileIn) {
+                            $tinhTrangEdit = 'Đã edit';
+                            $tinhTrangEditClass = 'bg-success';
+                        } elseif ($ngayTraLinkIn && $ngayTraLinkIn->greaterThan($homNay)) {
+                            $tinhTrangEdit = 'Đợi edit';
+                            $tinhTrangEditClass = 'bg-secondary';
+                        } elseif ($ngayTraLinkIn && $ngayTraLinkIn->equalTo($homNay)) {
+                            $tinhTrangEdit = 'Cần edit';
+                            $tinhTrangEditClass = 'bg-warning';
+                        } elseif ($ngayTraLinkIn && $ngayTraLinkIn->lessThan($homNay)) {
+                            $tinhTrangEdit = 'Trễ edit';
+                            $tinhTrangEditClass = 'bg-danger';
+                        } else {
+                            $tinhTrangEdit = 'Cần edit';
+                            $tinhTrangEditClass = 'bg-warning';
+                        }
                     @endphp
                     <tr>
                         <td>{{ ($danhSach->currentPage() - 1) * $danhSach->perPage() + $index + 1 }}</td>
@@ -77,12 +126,13 @@
                         <td>{{ $item->thoEdit?->user?->name ?? '—' }}</td>
                         <td>{{ $item->dia_diem ? str($item->dia_diem)->limit(25) : '—' }}</td>
                         <td>{{ $item->ngay_chup ? $item->ngay_chup->format('d/m/Y') : '—' }}</td>
+                        <td>{{ $item->ngay_tra_link_in ? $item->ngay_tra_link_in->format('d/m/Y') : '—' }}</td>
                         <td>{{ $item->ngay_hen_tra_hang ? $item->ngay_hen_tra_hang->format('d/m/Y') : '—' }}</td>
-                        <td>{{ $item->trang_phuc ? str($item->trang_phuc)->limit(30) : '—' }}</td>
+                        {{-- <td>{{ $item->trang_phuc ? str($item->trang_phuc)->limit(30) : '—' }}</td> --}}
                         {{-- <td>{{ $item->ghi_chu_chup ? str($item->ghi_chu_chup)->limit(40) : '—' }}</td> --}}
                         <td class="text-end">{{ $item->tong_tien !== null ? number_format((float)$item->tong_tien, 0, ',', '.') . ' đ' : '—' }}</td>
-                        <td>{{ $item->trang_thai_chup ?? '—' }}</td>
-                        <td>{{ $item->trang_thai_edit ?? '—' }}</td>
+                        <td><span class="badge {{ $tinhTrangChupClass ?? 'bg-secondary' }}">{{ $tinhTrangChup ?? '—' }}</span></td>
+                        <td><span class="badge {{ $tinhTrangEditClass ?? 'bg-secondary' }}">{{ $tinhTrangEdit ?? '—' }}</span></td>
                         <td>{{ $item->trang_thai_hop_dong ?? '—' }}</td>
                         <td>
                             <button type="button"
@@ -94,7 +144,8 @@
                                     data-dia-diem="{{ e($item->dia_diem ?? '') }}"
                                     data-ngay-chup="{{ $item->ngay_chup ? $item->ngay_chup->format('Y-m-d H:i') : '' }}"
                                     data-ngay-hen-tra-hang="{{ $item->ngay_hen_tra_hang ? $item->ngay_hen_tra_hang->format('Y-m-d') : '' }}"
-                                    data-trang-phuc="{{ e($item->trang_phuc ?? '') }}"
+                                    data-ngay-tra-link-in="{{ $item->ngay_tra_link_in ? $item->ngay_tra_link_in->format('Y-m-d') : '' }}"
+                                    {{-- data-trang-phuc="{{ e($item->trang_phuc ?? '') }}" --}}
                                     data-tong-tien="{{ $item->tong_tien !== null ? number_format((float)$item->tong_tien, 0, ',', '.') . ' đ' : '—' }}"
                                     data-trang-thai-chup="{{ e($item->trang_thai_chup ?? '') }}"
                                     data-trang-thai-edit="{{ e($item->trang_thai_edit ?? '') }}"
@@ -107,7 +158,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="15" class="text-center py-4 text-muted">Chưa có dữ liệu.</td>
+                        <td colspan="16" class="text-center py-4 text-muted">Chưa có dữ liệu.</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -147,10 +198,10 @@
                                 <label class="form-label" for="pv-ngay-hen-tra-hang">Ngày hẹn trả hàng</label>
                                 <input type="text" class="flatpickr-date-admin form-control" id="pv-ngay-hen-tra-hang" name="ngay_hen_tra_hang" value="" placeholder="dd/mm/yyyy" autocomplete="off">
                             </div>
-                            <div class="col-12 col-sm-6 col-lg-3">
+                            {{-- <div class="col-12 col-sm-6 col-lg-3">
                                 <label class="form-label" for="pv-trang-phuc">Trang phục</label>
                                 <input type="text" class="form-control" id="pv-trang-phuc" name="trang_phuc" value="" placeholder="Nhập trang phục...">
-                            </div>
+                            </div> --}}
                             <div class="col-12 col-sm-6 col-lg-3">
                                 <label class="form-label" for="pv-tong-tien">Tổng tiền</label>
                                 <input type="text" class="form-control" id="pv-tong-tien" disabled value="" placeholder="—">
@@ -166,7 +217,7 @@
                         </div>
                     </div>
                     <div class="row g-3">
-                        <div class="col-12 col-md-4">
+                        <div class="col-12 col-md-3">
                             <label class="form-label" for="phan_cong_tho_chup_id">Thợ chụp</label>
                             <select id="phan_cong_tho_chup_id" name="tho_chup_id" class="select2-admin form-select" data-placeholder="Chọn thợ chụp" style="width: 100%;">
                                 <option value="">— Chọn thợ chụp —</option>
@@ -175,7 +226,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-12 col-md-4">
+                        <div class="col-12 col-md-3">
                             <label class="form-label" for="phan_cong_tho_make_id">Thợ make</label>
                             <select id="phan_cong_tho_make_id" name="tho_make_id" class="select2-admin form-select" data-placeholder="Chọn thợ make" style="width: 100%;">
                                 <option value="">— Chọn thợ make —</option>
@@ -184,7 +235,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-12 col-md-4">
+                        <div class="col-12 col-md-3">
                             <label class="form-label" for="phan_cong_tho_edit_id">Thợ chỉnh sửa</label>
                             <select id="phan_cong_tho_edit_id" name="tho_edit_id" class="select2-admin form-select" data-placeholder="Chọn thợ chỉnh sửa" style="width: 100%;">
                                 <option value="">— Chọn thợ chỉnh sửa —</option>
@@ -193,6 +244,10 @@
                                 @endforeach
                             </select>
                         </div>
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <label class="form-label" for="pv-ngay-tra-link-in">Ngày trả link in</label>
+                                <input type="text" class="flatpickr-date-admin form-control" id="pv-ngay-tra-link-in" name="ngay_tra_link_in" value="" placeholder="dd/mm/yyyy" autocomplete="off">
+                            </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -231,8 +286,16 @@ document.addEventListener('DOMContentLoaded', function() {
             formPhanCong.action = btn.getAttribute('data-url') || '';
             document.getElementById('pv-ten-khach-hang').value = btn.getAttribute('data-ten-khach-hang') || '—';
             document.getElementById('pv-dia-diem').value = btn.getAttribute('data-dia-diem') || '';
-            if (window.setAdminDateTimeInput && window.setAdminDateInput) { setAdminDateTimeInput('pv-ngay-chup', btn.getAttribute('data-ngay-chup') || ''); setAdminDateInput('pv-ngay-hen-tra-hang', btn.getAttribute('data-ngay-hen-tra-hang') || ''); } else { document.getElementById('pv-ngay-chup').value = btn.getAttribute('data-ngay-chup') || ''; document.getElementById('pv-ngay-hen-tra-hang').value = btn.getAttribute('data-ngay-hen-tra-hang') || ''; }
-            document.getElementById('pv-trang-phuc').value = btn.getAttribute('data-trang-phuc') || '';
+            if (window.setAdminDateTimeInput && window.setAdminDateInput) {
+                setAdminDateTimeInput('pv-ngay-chup', btn.getAttribute('data-ngay-chup') || '');
+                setAdminDateInput('pv-ngay-hen-tra-hang', btn.getAttribute('data-ngay-hen-tra-hang') || '');
+                setAdminDateInput('pv-ngay-tra-link-in', btn.getAttribute('data-ngay-tra-link-in') || '');
+            } else {
+                document.getElementById('pv-ngay-chup').value = btn.getAttribute('data-ngay-chup') || '';
+                document.getElementById('pv-ngay-hen-tra-hang').value = btn.getAttribute('data-ngay-hen-tra-hang') || '';
+                document.getElementById('pv-ngay-tra-link-in').value = btn.getAttribute('data-ngay-tra-link-in') || '';
+            }
+            // document.getElementById('pv-trang-phuc').value = btn.getAttribute('data-trang-phuc') || '';
             document.getElementById('pv-tong-tien').value = btn.getAttribute('data-tong-tien') || '—';
             document.getElementById('pv-trang-thai-chup').value = btn.getAttribute('data-trang-thai-chup') || '—';
             document.getElementById('pv-trang-thai-edit').value = btn.getAttribute('data-trang-thai-edit') || '—';
