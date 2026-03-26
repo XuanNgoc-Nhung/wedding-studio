@@ -18,7 +18,7 @@
               <!-- /Search -->
 
               <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-                <li class="nav-item dropdown-language dropdown me-2 me-xl-0">
+                {{-- <li class=" nav-item dropdown-language dropdown me-2 me-xl-0">
                   <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <i class="icon-base ti tabler-language icon-22px text-heading"></i>
                   </a>
@@ -49,7 +49,7 @@
                       </a>
                     </li>
                   </ul>
-                </li>
+                </li> --}}
                 <!--/ Language -->
 
                 <!-- Style Switcher -->
@@ -116,79 +116,111 @@
                     <div class="dropdown-menu-header border-bottom">
                       <div class="dropdown-header d-flex align-items-center py-3">
                         <h6 class="mb-0 me-auto">Lối tắt</h6>
-                        <a
+                        {{-- <a
                           href="javascript:void(0)"
                           class="dropdown-shortcuts-add py-2 btn btn-text-secondary rounded-pill btn-icon"
                           data-bs-toggle="tooltip"
                           data-bs-placement="top"
                           title="Thêm lối tắt"
                           ><i class="icon-base ti tabler-plus icon-20px text-heading"></i
-                        ></a>
+                        ></a> --}}
                       </div>
                     </div>
                     <div class="dropdown-shortcuts-list scrollable-container">
                       <div class="row row-bordered overflow-visible g-0">
                         <div class="dropdown-shortcuts-item col">
                           <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                            <i class="icon-base ti tabler-calendar icon-26px text-heading"></i>
-                          </span>
-                          <a href="app-calendar.html" class="stretched-link">Lịch</a>
-                          <small>Lịch hẹn</small>
-                        </div>
-                        <div class="dropdown-shortcuts-item col">
-                          <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                            <i class="icon-base ti tabler-file-dollar icon-26px text-heading"></i>
-                          </span>
-                          <a href="app-invoice-list.html" class="stretched-link">Hóa đơn</a>
-                          <small>Quản lý tài khoản</small>
-                        </div>
-                      </div>
-                      <div class="row row-bordered overflow-visible g-0">
-                        <div class="dropdown-shortcuts-item col">
-                          <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                            <i class="icon-base ti tabler-user icon-26px text-heading"></i>
-                          </span>
-                          <a href="app-user-list.html" class="stretched-link">Người dùng</a>
-                          <small>Quản lý người dùng</small>
-                        </div>
-                        <div class="dropdown-shortcuts-item col">
-                          <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                            <i class="icon-base ti tabler-users icon-26px text-heading"></i>
-                          </span>
-                          <a href="app-access-roles.html" class="stretched-link">Phân quyền</a>
-                          <small>Quyền hạn</small>
-                        </div>
-                      </div>
-                      <div class="row row-bordered overflow-visible g-0">
-                        <div class="dropdown-shortcuts-item col">
-                          <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                            <i class="icon-base ti tabler-device-desktop-analytics icon-26px text-heading"></i>
+                            <i class="icon-base ti tabler-layout-dashboard icon-26px text-heading"></i>
                           </span>
                           <a href="{{ route('admin.index') }}" class="stretched-link">Tổng quan</a>
                           <small>Bảng điều khiển</small>
                         </div>
                         <div class="dropdown-shortcuts-item col">
                           <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                            <i class="icon-base ti tabler-settings icon-26px text-heading"></i>
+                            <i class="icon-base ti tabler-users icon-26px text-heading"></i>
                           </span>
-                          <a href="{{ route('admin.thong-tin-ca-nhan') }}" class="stretched-link">Thông tin cá nhân</a>
-                          <small>Cài đặt tài khoản</small>
+                          <a href="{{ route('admin.khach-hang.danh-sach') }}" class="stretched-link">Khách hàng</a>
+                          <small>Danh sách khách</small>
                         </div>
                       </div>
                       <div class="row row-bordered overflow-visible g-0">
                         <div class="dropdown-shortcuts-item col">
                           <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                            <i class="icon-base ti tabler-help-circle icon-26px text-heading"></i>
+                            <i class="icon-base ti tabler-file-description icon-26px text-heading"></i>
                           </span>
-                          <a href="pages-faq.html" class="stretched-link">Câu hỏi thường gặp</a>
-                          <small>FAQ & Bài viết</small>
+                          <a href="{{ route('admin.khach-hang.hop-dong') }}" class="stretched-link">Hợp đồng</a>
+                          <small>Khách hàng &amp; hợp đồng</small>
                         </div>
                         <div class="dropdown-shortcuts-item col">
                           <span class="dropdown-shortcuts-icon rounded-circle mb-3">
-                            <i class="icon-base ti tabler-square icon-26px text-heading"></i>
+                            <i class="icon-base ti tabler-file-dollar icon-26px text-heading"></i>
                           </span>
-                          <a href="modal-examples.html" class="stretched-link">Hộp thoại</a>
-                          <small>Cửa sổ popup</small>
+                          <a href="{{ route('admin.tai-chinh.cong-no') }}" class="stretched-link">Công nợ</a>
+                          <small>Tài chính</small>
+                        </div>
+                      </div>
+                      <div class="row row-bordered overflow-visible g-0">
+                        <div class="dropdown-shortcuts-item col">
+                          <span class="dropdown-shortcuts-icon rounded-circle mb-3">
+                            <i class="icon-base ti tabler-receipt icon-26px text-heading"></i>
+                          </span>
+                          <a href="{{ route('admin.tai-chinh.phieu-thu-chi') }}" class="stretched-link">Phiếu thu chi</a>
+                          <small>Thu — chi</small>
+                        </div>
+                        <div class="dropdown-shortcuts-item col">
+                          <span class="dropdown-shortcuts-icon rounded-circle mb-3">
+                            <i class="icon-base ti tabler-adjustments-horizontal icon-26px text-heading"></i>
+                          </span>
+                          <a href="{{ route('admin.diem-danh.dieu-phoi-cong-viec') }}" class="stretched-link">Điều phối</a>
+                          <small>Công việc &amp; phân công</small>
+                        </div>
+                      </div>
+                      <div class="row row-bordered overflow-visible g-0">
+                        <div class="dropdown-shortcuts-item col">
+                          <span class="dropdown-shortcuts-icon rounded-circle mb-3">
+                            <i class="icon-base ti tabler-calendar icon-26px text-heading"></i>
+                          </span>
+                          <a href="{{ route('admin.nhan-su.lich-lam-viec') }}" class="stretched-link">Lịch làm việc</a>
+                          <small>Nhân sự</small>
+                        </div>
+                        <div class="dropdown-shortcuts-item col">
+                          <span class="dropdown-shortcuts-icon rounded-circle mb-3">
+                            <i class="icon-base ti tabler-address-book icon-26px text-heading"></i>
+                          </span>
+                          <a href="{{ route('admin.nhan-su.danh-sach') }}" class="stretched-link">Nhân sự</a>
+                          <small>Danh sách &amp; tài khoản</small>
+                        </div>
+                      </div>
+                      <div class="row row-bordered overflow-visible g-0">
+                        <div class="dropdown-shortcuts-item col">
+                          <span class="dropdown-shortcuts-icon rounded-circle mb-3">
+                            <i class="icon-base ti tabler-briefcase icon-26px text-heading"></i>
+                          </span>
+                          <a href="{{ route('admin.dich-vu.dich-vu-le') }}" class="stretched-link">Dịch vụ</a>
+                          <small>Dịch vụ lẻ</small>
+                        </div>
+                        <div class="dropdown-shortcuts-item col">
+                          <span class="dropdown-shortcuts-icon rounded-circle mb-3">
+                            <i class="icon-base ti tabler-shirt icon-26px text-heading"></i>
+                          </span>
+                          <a href="{{ route('admin.trang-phuc.san-pham') }}" class="stretched-link">Trang phục</a>
+                          <small>Sản phẩm</small>
+                        </div>
+                      </div>
+                      <div class="row row-bordered overflow-visible g-0">
+                        <div class="dropdown-shortcuts-item col">
+                          <span class="dropdown-shortcuts-icon rounded-circle mb-3">
+                            <i class="icon-base ti tabler-camera icon-26px text-heading"></i>
+                          </span>
+                          <a href="{{ route('admin.concept.concept') }}" class="stretched-link">Concept</a>
+                          <small>Gói concept</small>
+                        </div>
+                        <div class="dropdown-shortcuts-item col">
+                          <span class="dropdown-shortcuts-icon rounded-circle mb-3">
+                            <i class="icon-base ti tabler-user-circle icon-26px text-heading"></i>
+                          </span>
+                          <a href="{{ route('admin.thong-tin-ca-nhan') }}" class="stretched-link">Thông tin cá nhân</a>
+                          <small>Tài khoản</small>
                         </div>
                       </div>
                     </div>
@@ -487,19 +519,19 @@
                     <li>
                       <div class="dropdown-divider my-1 mx-n2"></div>
                     </li>
-                    <li>
+                    {{-- <li>
                       <a class="dropdown-item" href="pages-profile-user.html">
                         <i class="icon-base ti tabler-user me-3 icon-md"></i
                         ><span class="align-middle">Hồ sơ của tôi</span>
                       </a>
-                    </li>
+                    </li> --}}
                     <li>
                       <a class="dropdown-item" href="{{ route('admin.thong-tin-ca-nhan') }}">
                         <i class="icon-base ti tabler-user-circle me-3 icon-md"></i
                         ><span class="align-middle">Thông tin cá nhân</span>
                       </a>
                     </li>
-                    <li>
+                    {{-- <li>
                       <a class="dropdown-item" href="pages-account-settings-billing.html">
                         <span class="d-flex align-items-center align-middle">
                           <i class="flex-shrink-0 icon-base ti tabler-file-dollar me-3 icon-md"></i
@@ -524,7 +556,7 @@
                         <i class="icon-base ti tabler-question-mark me-3 icon-md"></i
                         ><span class="align-middle">Câu hỏi thường gặp</span>
                       </a>
-                    </li>
+                    </li> --}}
                     <li>
                       <div class="d-grid px-2 pt-2 pb-1">
                         <form method="POST" action="{{ route('logout') }}" class="d-inline">
