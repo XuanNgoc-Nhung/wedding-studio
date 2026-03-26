@@ -48,6 +48,7 @@ return [
             ['stt' => 1, 'route' => 'admin.nhan-su.danh-sach', 'label' => 'Danh sách nhân sự'],
             ['stt' => 2, 'route' => 'admin.nhan-su.phan-quyen', 'label' => 'Phân quyền'],
             ['stt' => 3, 'route' => 'admin.nhan-su.lich-lam-viec', 'label' => 'Lịch làm việc'],
+            ['stt' => 4, 'route' => 'admin.nhan-su.cong-viec-cua-toi', 'label' => 'Công việc của tôi'],
         ],
     ],
     [

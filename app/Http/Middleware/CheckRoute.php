@@ -27,6 +27,9 @@ class CheckRoute
         'admin.khach-hang.hop-dong' => [
             'admin.khach-hang.kiem-tra-ma-gioi-thieu',
         ],
+        'admin.nhan-su.cong-viec-cua-toi' => [
+            'admin.nhan-su.cong-viec-cua-toi.cap-nhat-link',
+        ],
     ];
 
     public function handle(Request $request, Closure $next): Response

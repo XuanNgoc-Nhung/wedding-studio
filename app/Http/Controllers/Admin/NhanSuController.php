@@ -7,6 +7,7 @@ use App\Models\HopDong;
 use App\Models\NhanVien;
 use App\Models\PhongBan;
 use App\Models\User;
+use App\Models\TrangPhuc;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
@@ -580,5 +581,93 @@ class NhanSuController extends Controller
             'date' => $day,
             'items' => $items,
         ]);
+    }
+
+    public function congViecCuaToi(Request $request)
+    {
+        $user = auth()->user();
+        $isAdmin = (int) ($user?->role) === User::ROLE_ADMIN;
+        $nhanVienId = $user?->nhanVien?->id;
+
+        $search = $request->get('search');
+
+        $danhSach = HopDong::query()
+            ->with(['khachHang', 'nguoiTao', 'thoChup.user', 'thoMake.user', 'thoEdit.user'])
+            ->when($search, function ($q) use ($search) {
+                $q->whereHas('khachHang', function ($q2) use ($search) {
+                    $q2->where('ho_ten_chu_re', 'like', "%{$search}%")
+                        ->orWhere('ho_ten_co_dau', 'like', "%{$search}%")
+                        ->orWhere('email_hoac_sdt_chu_re', 'like', "%{$search}%")
+                        ->orWhere('email_hoac_sdt_co_dau', 'like', "%{$search}%");
+                });
+            })
+            ->when(!$isAdmin, function ($q) use ($nhanVienId) {
+                if (!$nhanVienId) {
+                    // Tài khoản không có nhanVien liên kết => không có dữ liệu.
+                    $q->whereRaw('1=0');
+                    return;
+                }
+
+                $q->where(function ($qq) use ($nhanVienId) {
+                    $qq->where('tho_chup_id', $nhanVienId)
+                        ->orWhere('tho_make_id', $nhanVienId)
+                        ->orWhere('tho_edit_id', $nhanVienId);
+                });
+            })
+            ->orderByDesc('id')
+            ->paginate(15)
+            ->withQueryString();
+
+        $danhSachTrangPhuc = TrangPhuc::query()
+            ->where('trang_thai', TrangPhuc::TRANG_THAI_ACTIVE)
+            ->orderBy('ten_san_pham')
+            ->get();
+
+        return view('admin.nhan-su.cong-viec-cua-toi', compact(
+            'danhSach',
+            'danhSachTrangPhuc',
+            'nhanVienId',
+            'isAdmin'
+        ));
+    }
+
+    public function capNhatLinkFileCongViec(Request $request, HopDong $hopDong)
+    {
+        $user = $request->user();
+        $isAdmin = (int) ($user?->role) === User::ROLE_ADMIN;
+        $nhanVienId = $user?->nhanVien?->id;
+
+        $validated = $request->validate([
+            'type' => ['required', 'string', Rule::in(['demo', 'in'])],
+            'link' => ['nullable', 'string', 'max:500'],
+        ], [
+            'type.required' => 'Thiếu loại link cần cập nhật.',
+            'type.in' => 'Loại link không hợp lệ.',
+            'link.max' => 'Link không được quá 500 ký tự.',
+        ]);
+
+        $type = $validated['type'];
+        $link = $validated['link'] ?? null;
+
+        if (! $isAdmin) {
+            if (! $nhanVienId) {
+                abort(403, 'Bạn không có quyền cập nhật link.');
+            }
+
+            if ($type === 'demo' && (int) ($hopDong->tho_chup_id ?? 0) !== (int) $nhanVienId) {
+                abort(403, 'Chỉ thợ chụp mới được cập nhật link file chụp.');
+            }
+            if ($type === 'in' && (int) ($hopDong->tho_edit_id ?? 0) !== (int) $nhanVienId) {
+                abort(403, 'Chỉ thợ edit mới được cập nhật link file edit.');
+            }
+        }
+
+        if ($type === 'demo') {
+            $hopDong->update(['link_file_demo' => $link]);
+            return back()->with('success', 'Đã cập nhật link file chụp.');
+        }
+
+        $hopDong->update(['link_file_in' => $link]);
+        return back()->with('success', 'Đã cập nhật link file edit.');
     }
 }

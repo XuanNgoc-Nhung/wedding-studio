@@ -38,6 +38,10 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => ['auth', 'c
         Route::get('/lich-lam-viec', [AdminNhanSu::class, 'lichLamViec'])->name('nhan-su.lich-lam-viec');
         Route::get('/lich-lam-viec/data', [AdminNhanSu::class, 'lichLamViecData'])->name('nhan-su.lich-lam-viec.data');
         Route::get('/lich-lam-viec/chi-tiet-ngay', [AdminNhanSu::class, 'lichLamViecChiTietNgay'])->name('nhan-su.lich-lam-viec.chi-tiet-ngay');
+        //Công việc của tôi
+        Route::get('/cong-viec-cua-toi', [AdminNhanSu::class, 'congViecCuaToi'])->name('nhan-su.cong-viec-cua-toi');
+        Route::put('/cong-viec-cua-toi/{hopDong}/cap-nhat-link', [AdminNhanSu::class, 'capNhatLinkFileCongViec'])
+            ->name('nhan-su.cong-viec-cua-toi.cap-nhat-link');
     });
     //Route cho khách hàng
     Route::group(['prefix' => 'khach-hang'], function () {

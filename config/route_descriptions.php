@@ -22,4 +22,5 @@ return [
     'admin.diem-danh.check-in' => 'Check-in',
     'admin.diem-danh.check-out' => 'Check-out',
     'admin.diem-danh.dieu-phoi-cong-viec' => 'Điều phối công việc',
+    'admin.nhan-su.cong-viec-cua-toi' => 'Công việc của tôi',
 ];
