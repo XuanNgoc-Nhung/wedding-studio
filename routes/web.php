@@ -13,7 +13,7 @@ use App\Http\Controllers\Admin\ConceptController as AdminConcept;
 use App\Http\Controllers\Admin\HeThongController as AdminHeThong;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('user.index');
 });
 
 // Đăng nhập / Đăng xuất / Đăng ký (guest mới vào được login, register; auth mới vào được logout)
