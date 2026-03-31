@@ -97,6 +97,17 @@ class HopDong extends Model
         return $this->belongsTo(NhanVien::class, 'tho_edit_id', 'id');
     }
 
+    /**
+     * Người chụp (user) theo cột id_nguoi_chup.
+     *
+     * Một số database đang lưu trực tiếp user_id của người chụp ở cột id_nguoi_chup
+     * (khác với cấu trúc tho_chup_id -> nhan_vien -> user).
+     */
+    public function nguoiChupUser(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'id_nguoi_chup', 'id');
+    }
+
     /** Trang phục thuê (hợp đồng thuê trang phục — cột trang_phuc_id). */
     public function trangPhuc(): BelongsTo
     {

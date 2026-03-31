@@ -592,7 +592,7 @@ class NhanSuController extends Controller
         $search = $request->get('search');
 
         $danhSach = HopDong::query()
-            ->with(['khachHang', 'nguoiTao', 'thoChup.user', 'thoMake.user', 'thoEdit.user'])
+            ->with(['khachHang', 'nguoiTao', 'thoChup.user', 'thoMake.user', 'thoEdit.user', 'nguoiChupUser'])
             ->when($search, function ($q) use ($search) {
                 $q->whereHas('khachHang', function ($q2) use ($search) {
                     $q2->where('ho_ten_chu_re', 'like', "%{$search}%")

@@ -195,6 +195,21 @@
                             </td>
                             <td>
                                 <div class="d-flex gap-2 flex-wrap">
+                                    <button type="button"
+                                            class="btn btn-sm btn-outline-dark btn-in-brief"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modalInBrief"
+                                            data-khach-hang="{{ e($tenKhachHang) }}"
+                                            data-sdt="{{ e(($item->khachHang->email_hoac_sdt_chu_re ?? '') ?: ($item->khachHang->email_hoac_sdt_co_dau ?? '')) }}"
+                                            data-ngay-chup="{{ $item->ngay_chup ? $item->ngay_chup->format('d/m/Y H:i') : '—' }}"
+                                            data-nguoi-chup="{{ $item->nguoiChupUser?->name ?? ($item->thoChup?->user?->name ?? '—') }}"
+                                            data-dia-diem="{{ e($item->dia_diem ?? '—') }}"
+                                            data-concept="{{ e($item->concept ?? '—') }}"
+                                            data-trang-phuc="{{ e($trangPhucNames->isNotEmpty() ? $trangPhucNames->implode(', ') : ($item->trang_phuc ?? '—')) }}"
+                                            data-ghi-chu="{{ e($item->ghi_chu_chup ?? '—') }}">
+                                        In brief
+                                    </button>
+
                                     @if(in_array('Chụp', $roles ?? [], true))
                                         <button type="button"
                                                 class="btn btn-sm btn-outline-primary btn-cap-nhat-link"
@@ -221,10 +236,6 @@
                                                 data-current="{{ e($item->link_file_in ?? '') }}">
                                             Up file edit
                                         </button>
-                                    @endif
-
-                                    @if(empty($roles))
-                                        <span class="text-muted">—</span>
                                     @endif
                                 </div>
                             </td>
@@ -275,6 +286,64 @@
     </div>
 </div>
 
+{{-- Modal in brief --}}
+<div class="modal fade" id="modalInBrief" tabindex="-1" aria-labelledby="modalInBriefLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalInBriefLabel">Brief lịch chụp</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Đóng"></button>
+            </div>
+            <div class="modal-body">
+                <div id="briefCaptureArea" class="p-3" style="background: #fff;">
+                    <div class="table-responsive">
+                        <table class="table table-bordered mb-0">
+                            <tbody>
+                                <tr>
+                                    <th style="width: 170px;">Khách hàng</th>
+                                    <td id="briefKhachHang">—</td>
+                                </tr>
+                                <tr>
+                                    <th>Email/SĐT</th>
+                                    <td id="briefSdt">—</td>
+                                </tr>
+                                <tr>
+                                    <th style="width: 170px;">Ngày chụp</th>
+                                    <td id="briefNgayChup">—</td>
+                                </tr>
+                                <tr>
+                                    <th>Người chụp</th>
+                                    <td id="briefNguoiChup">—</td>
+                                </tr>
+                                <tr>
+                                    <th>Địa điểm</th>
+                                    <td id="briefDiaDiem">—</td>
+                                </tr>
+                                <tr>
+                                    <th>Concept</th>
+                                    <td id="briefConcept">—</td>
+                                </tr>
+                                <tr>
+                                    <th>Trang phục</th>
+                                    <td id="briefTrangPhuc">—</td>
+                                </tr>
+                                <tr>
+                                    <th>Ghi chú</th>
+                                    <td id="briefGhiChu" style="white-space: pre-wrap;">—</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnTaiBriefPng">Tải xuống</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     (function () {
         var modal = document.getElementById('modalCapNhatLink');
@@ -306,6 +375,78 @@
         modal.addEventListener('shown.bs.modal', function () {
             var input = document.getElementById('capNhatLinkInput');
             if (input) input.focus();
+        });
+    })();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script>
+    (function () {
+        var btn = document.getElementById('btnTaiBriefPng');
+        if (!btn) return;
+
+        btn.addEventListener('click', async function () {
+            var captureEl = document.getElementById('briefCaptureArea');
+            if (!captureEl) return;
+
+            if (typeof window.html2canvas !== 'function') {
+                alert('Thiếu thư viện tạo ảnh (html2canvas). Vui lòng tải lại trang.');
+                return;
+            }
+
+            var oldHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.textContent = 'Đang tạo ảnh...';
+
+            try {
+                var canvas = await window.html2canvas(captureEl, {
+                    backgroundColor: '#ffffff',
+                    scale: 2,
+                    useCORS: true,
+                });
+
+                var dataUrl = canvas.toDataURL('image/png');
+                var link = document.createElement('a');
+                link.href = dataUrl;
+
+                var ngay = (document.getElementById('briefNgayChup')?.textContent || '')
+                    .trim()
+                    .replace(/[^\d]/g, '');
+                link.download = 'brief-lich-chup' + (ngay ? ('-' + ngay) : '') + '.png';
+
+                document.body.appendChild(link);
+                link.click();
+                link.remove();
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = oldHtml;
+            }
+        });
+    })();
+</script>
+
+<script>
+    (function () {
+        var modal = document.getElementById('modalInBrief');
+        if (!modal) return;
+
+        function setText(id, value) {
+            var el = document.getElementById(id);
+            if (el) el.textContent = (value && String(value).trim()) ? value : '—';
+        }
+
+        modal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            if (!button) return;
+
+            setText('briefKhachHang', button.getAttribute('data-khach-hang'));
+            setText('briefSdt', button.getAttribute('data-sdt'));
+            setText('briefNgayChup', button.getAttribute('data-ngay-chup'));
+            setText('briefNguoiChup', button.getAttribute('data-nguoi-chup'));
+            setText('briefDiaDiem', button.getAttribute('data-dia-diem'));
+            setText('briefConcept', button.getAttribute('data-concept'));
+            setText('briefTrangPhuc', button.getAttribute('data-trang-phuc'));
+            setText('briefGhiChu', button.getAttribute('data-ghi-chu'));
         });
     })();
 </script>
