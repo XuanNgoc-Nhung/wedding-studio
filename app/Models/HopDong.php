@@ -19,6 +19,7 @@ class HopDong extends Model
      * @var list<string>
      */
     protected $fillable = [
+        'ma_hop_dong',
         'nguoi_tao_id',
         'khach_hang_id',
         'tho_chup_id',

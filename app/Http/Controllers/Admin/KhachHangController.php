@@ -48,35 +48,35 @@ class KhachHangController extends Controller
     }
 
     /**
-     * Kiểm tra mã giới thiệu: trùng email hoặc SĐT (cột email_hoac_sdt_chu_re / co_dau) của một khách khác trong bảng khach_hang.
+     * Kiểm tra mã giới thiệu: dùng mã hợp đồng (hop_dong.ma_hop_dong).
      */
     public function kiemTraMaGioiThieu(Request $request)
     {
         $validated = $request->validate([
             'nguoi_gioi_thieu' => 'required|string|max:255',
-            'khach_hang_id' => 'required|exists:khach_hang,id',
+            'hop_dong_id' => 'nullable|integer|exists:hop_dong,id',
             'tong_tien' => 'nullable|numeric|min:0',
         ]);
 
         $ma = trim((string) $validated['nguoi_gioi_thieu']);
-        $khachHangId = (int) $validated['khach_hang_id'];
+        $excludeHopDongId = isset($validated['hop_dong_id']) ? (int) $validated['hop_dong_id'] : null;
         $tongTien = (float) ($validated['tong_tien'] ?? 0);
 
         if ($ma === '') {
             return response()->json([
                 'matched' => false,
                 'so_tien_giam_gia' => 0,
-                'message' => 'Vui lòng nhập email hoặc số điện thoại người giới thiệu (đã có trong danh sách khách hàng).',
+                'message' => 'Vui lòng nhập mã hợp đồng (ma_hop_dong) người giới thiệu.',
             ]);
         }
 
-        $matched = $this->nguoiGioiThieuKhopKhachHang($ma, $khachHangId);
+        $matched = $this->nguoiGioiThieuKhopMaHopDong($ma, $excludeHopDongId);
 
         if (! $matched) {
             return response()->json([
                 'matched' => false,
                 'so_tien_giam_gia' => 0,
-                'message' => 'Không tìm thấy khách hàng trùng email/SĐT cô dâu hoặc chú rể với mã đã nhập.',
+                'message' => 'Không tìm thấy hợp đồng có mã '.$ma.'.',
             ]);
         }
 
@@ -266,12 +266,19 @@ class KhachHangController extends Controller
         $validated['nguoi_tao_id'] = $request->user()?->id;
         $validated['so_tien_giam_gia'] = $this->resolveSoTienGiamGiaFromIntro(
             $validated['nguoi_gioi_thieu'] ?? null,
-            (int) $validated['khach_hang_id'],
+            null,
             (float) ($validated['tong_tien'] ?? 0)
         );
 
         // --- Bước 2: Tạo hợp đồng (chỉ thông tin hợp đồng) ---
         $hopDong = HopDong::create($validated);
+
+        // Sinh mã hợp đồng theo quy tắc: ddmmyy + id (vd: 31032612)
+        if ($hopDong->id && empty($hopDong->ma_hop_dong)) {
+            $hopDong->forceFill([
+                'ma_hop_dong' => now()->format('dmy') . $hopDong->id,
+            ])->save();
+        }
 
         // --- Bước 3: Chỉ khi đã có id hợp đồng mới thêm dịch vụ lẻ vào bảng dich_vu_trong_hop_dong ---
         if ($hopDong->id && ! empty($dichVuLeHopDong)) {
@@ -347,7 +354,7 @@ class KhachHangController extends Controller
 
         $validated['so_tien_giam_gia'] = $this->resolveSoTienGiamGiaFromIntro(
             $validated['nguoi_gioi_thieu'] ?? null,
-            (int) $validated['khach_hang_id'],
+            (int) $hopDong->id,
             (float) ($validated['tong_tien'] ?? 0)
         );
 
@@ -430,29 +437,26 @@ class KhachHangController extends Controller
             ->with('success', 'Đã cập nhật thanh toán thành công.');
     }
 
-    private function nguoiGioiThieuKhopKhachHang(string $ma, int $excludeKhachHangId): bool
+    private function nguoiGioiThieuKhopMaHopDong(string $ma, ?int $excludeHopDongId = null): bool
     {
-        $needle = mb_strtolower(trim($ma));
+        $needle = trim($ma);
         if ($needle === '') {
             return false;
         }
 
-        return KhachHang::query()
-            ->where('id', '!=', $excludeKhachHangId)
-            ->where(function ($q) use ($needle) {
-                $q->whereRaw('LOWER(TRIM(COALESCE(email_hoac_sdt_chu_re, \'\'))) = ?', [$needle])
-                    ->orWhereRaw('LOWER(TRIM(COALESCE(email_hoac_sdt_co_dau, \'\'))) = ?', [$needle]);
-            })
+        return HopDong::query()
+            ->when($excludeHopDongId, fn ($q) => $q->where('id', '!=', $excludeHopDongId))
+            ->where('ma_hop_dong', $needle)
             ->exists();
     }
 
-    private function resolveSoTienGiamGiaFromIntro(?string $nguoiGioiThieu, int $khachHangId, float $tongTien): float
+    private function resolveSoTienGiamGiaFromIntro(?string $nguoiGioiThieu, ?int $excludeHopDongId, float $tongTien): float
     {
         $ma = trim((string) ($nguoiGioiThieu ?? ''));
         if ($ma === '' || $tongTien < self::GIOI_THIEU_DON_TOI_THIEU) {
             return 0.0;
         }
-        if (! $this->nguoiGioiThieuKhopKhachHang($ma, $khachHangId)) {
+        if (! $this->nguoiGioiThieuKhopMaHopDong($ma, $excludeHopDongId)) {
             return 0.0;
         }
 

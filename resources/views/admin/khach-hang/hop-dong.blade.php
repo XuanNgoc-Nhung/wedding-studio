@@ -58,6 +58,7 @@
                 <thead class="table-light">
                     <tr>
                         <th style="width: 50px;">STT</th>
+                        <th>Mã HĐ</th>
                         <th>Người tạo</th>
                         <th>Khách hàng</th>
                         <th>Địa điểm</th>
@@ -86,6 +87,7 @@
                     @endphp
                     <tr>
                         <td>{{ ($danhSach->currentPage() - 1) * $danhSach->perPage() + $index + 1 }}</td>
+                        <td>{{ $item->ma_hop_dong ?? '—' }}</td>
                         <td>{{ $item->nguoiTao?->name ?? '—' }}</td>
                         <td><span class="fw-medium">{{ $tenKhachHang }}</span></td>
                         <td>{{ $item->dia_diem ? str($item->dia_diem)->limit(25) : '—' }}</td>
@@ -187,6 +189,7 @@
                                        href="javascript:void(0);"
                                        data-bs-toggle="modal"
                                        data-bs-target="#modalSuaHopDong"
+                                       data-hop-dong-id="{{ $item->id }}"
                                        data-url="{{ route('admin.khach-hang.update-hop-dong', $item) }}"
                                        data-dich-vu-url="{{ route('admin.khach-hang.hop-dong.dich-vu', $item) }}"
                                        data-khach-hang-id="{{ $item->khach_hang_id ?? '' }}"
@@ -510,17 +513,16 @@
                                 <div class="col">
                                     <label class="form-label mb-1" for="them_tong_tien_display">Tổng tiền</label>
                                     <input type="hidden" name="tong_tien" id="them_tong_tien" value="{{ old('tong_tien', '0') }}">
-                                    <input type="text" class="form-control hop-dong-tien-control bg-body-secondary text-end fw-semibold fs-5" id="them_tong_tien_display" readonly tabindex="-1" value="0 đ" aria-readonly="true" autocomplete="off">
+                                    <input type="text" class="form-control hop-dong-tien-control bg-body-secondary text-end fw-semibold" id="them_tong_tien_display" readonly tabindex="-1" value="0 đ" aria-readonly="true" autocomplete="off">
                                 </div>
                                 <div class="col">
-                                    <label class="form-label mb-1" for="them_nguoi_gioi_thieu">Mã giới thiệu</label>
+                                    <label class="form-label mb-1" for="them_nguoi_gioi_thieu">Mã giới thiệu (mã HĐ)</label>
                                     <div class="input-group hop-dong-tien-control">
-                                        <input type="text" class="form-control" id="them_nguoi_gioi_thieu" name="nguoi_gioi_thieu" value="{{ old('nguoi_gioi_thieu') }}" maxlength="255" placeholder="Nhập mã giới thiệu (nếu có)" autocomplete="off">
+                                        <input type="text" class="form-control" id="them_nguoi_gioi_thieu" name="nguoi_gioi_thieu" value="{{ old('nguoi_gioi_thieu') }}" maxlength="255" placeholder="Mã hợp đồng" autocomplete="off">
                                         <button type="button" class="btn btn-outline-primary" id="btnKiemTraMaGioiThieuThem" title="Kiểm tra mã giới thiệu">
                                             <i class="fa-solid fa-check"></i>
                                         </button>
                                     </div>
-                                    <small class="text-muted d-block mt-1" id="them_ma_gioi_thieu_feedback" role="status"></small>
                                 </div>
                                 <div class="col">
                                     <label class="form-label mb-1" for="them_so_tien_giam_gia">Số tiền giảm giá</label>
@@ -563,6 +565,7 @@
             <form id="formSuaHopDong" method="POST" action="">
                 @csrf
                 @method('PUT')
+                                <input type="hidden" id="sua_hop_dong_id" value="">
                 @if($errors->any())
                 <div class="modal-body py-0">
                     <div class="alert alert-danger">
@@ -776,14 +779,13 @@
                                     <input type="text" class="form-control hop-dong-tien-control bg-body-secondary text-end fw-semibold fs-5" id="sua_tong_tien_display" readonly tabindex="-1" value="0 đ" aria-readonly="true" autocomplete="off">
                                 </div>
                                 <div class="col">
-                                    <label class="form-label mb-1" for="sua_nguoi_gioi_thieu">Mã giới thiệu</label>
+                                    <label class="form-label mb-1" for="sua_nguoi_gioi_thieu">Mã giới thiệu (mã HĐ)</label>
                                     <div class="input-group hop-dong-tien-control">
                                         <input type="text" class="form-control  hop-dong-tien-control text-end bg-body-secondary" id="sua_nguoi_gioi_thieu" name="nguoi_gioi_thieu" maxlength="255" placeholder="Nhập mã giới thiệu" autocomplete="off">
                                         <button type="button" class="btn btn-outline-primary" id="btnKiemTraMaGioiThieuSua" title="Kiểm tra mã giới thiệu">
                                             <i class="fa-solid fa-check"></i>
                                         </button>
                                     </div>
-                                    <small class="text-muted d-block mt-1" id="sua_ma_gioi_thieu_feedback" role="status"></small>
                                 </div>
                                 <div class="col">
                                     <label class="form-label mb-1" for="sua_so_tien_giam_gia">Số tiền giảm giá</label>
@@ -933,6 +935,20 @@
     </div>
 </div>
 
+{{-- Toast thông báo --}}
+<div class="toast-container position-fixed top-0 end-0 p-3 hop-dong-toast-container">
+    <div id="toastHopDong"
+         class="toast align-items-center text-bg-success border-0"
+         role="alert"
+         aria-live="assertive"
+         aria-atomic="true">
+        <div class="d-flex">
+            <div class="toast-body" id="toastHopDongBody">—</div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Đóng"></button>
+        </div>
+    </div>
+</div>
+
 @push('styles')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" />
 <style>
@@ -1022,6 +1038,9 @@
     align-items: center;
     align-self: stretch;
 }
+.hop-dong-toast-container {
+    z-index: 2500;
+}
 </style>
 @endpush
 
@@ -1034,6 +1053,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
     var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
     tooltipTriggerList.map(function (el) { return new bootstrap.Tooltip(el); });
+
+    // Toast helper (Bootstrap)
+    var toastEl = document.getElementById('toastHopDong');
+    var toastBodyEl = document.getElementById('toastHopDongBody');
+    var toastInstance = (toastEl && window.bootstrap && bootstrap.Toast) ? bootstrap.Toast.getOrCreateInstance(toastEl, { delay: 2500 }) : null;
+    function showToast(message, variant) {
+        if (!toastEl || !toastBodyEl || !toastInstance) {
+            alert(message);
+            return;
+        }
+        variant = variant || 'success';
+        toastEl.classList.remove('text-bg-success', 'text-bg-danger', 'text-bg-warning', 'text-bg-info', 'text-bg-secondary');
+        toastEl.classList.add('text-bg-' + variant);
+        toastBodyEl.textContent = message || '';
+        toastInstance.show();
+    }
 
     // --- Select2 (Concept) render thumbnail kèm ảnh ---
     function renderConceptWithAvatar(option) {
@@ -1101,6 +1136,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!btn || !btn.classList.contains('btn-sua-hop-dong')) return;
             var url = btn.getAttribute('data-url');
             if (url) formSua.action = url;
+            var hdId = btn.getAttribute('data-hop-dong-id') || '';
+            var hdInp = document.getElementById('sua_hop_dong_id');
+            if (hdInp) hdInp.value = hdId;
             var khachHangId = btn.getAttribute('data-khach-hang-id') || '';
             document.getElementById('sua_khach_hang_id').value = khachHangId;
             document.getElementById('sua_khach_hang_id_hidden').value = khachHangId;
@@ -1626,11 +1664,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (tLan1) tLan1.value = '0';
             if (tGiam) tGiam.value = '0';
             if (tConLai) tConLai.value = '0 đ';
-            var tFb = document.getElementById('them_ma_gioi_thieu_feedback');
-            if (tFb) {
-                tFb.textContent = '';
-                tFb.className = 'text-muted d-block mt-1';
-            }
         });
     }
 
@@ -1877,43 +1910,27 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function setMaGioiThieuFeedback(prefix, message, variant) {
-        var el = document.getElementById(prefix + '_ma_gioi_thieu_feedback');
-        if (!el) return;
-        el.textContent = message || '';
-        el.className = 'd-block mt-1 ' + (variant === 'danger' ? 'text-danger' : variant === 'success' ? 'text-success' : 'text-muted');
-    }
-
-    function getKhachHangIdChoKiemTraThem() {
-        var sel = document.getElementById('them_khach_hang_id');
-        if (!sel) return '';
-        var jq = window.jQuery || window.$;
-        if (jq && jq.fn && jq.fn.select2) {
-            var v = jq(sel).val();
-            return v != null && v !== '' ? String(v) : '';
-        }
-        return sel.value || '';
+        if (!message) return;
+        var v = (variant === 'success') ? 'success' : (variant === 'danger') ? 'danger' : (variant === 'warning') ? 'warning' : (variant === 'info') ? 'info' : 'info';
+        showToast(message, v);
     }
 
     function goiKiemTraMaGioiThieu(prefix) {
         var inpMa = document.getElementById(prefix + '_nguoi_gioi_thieu');
         var inpGiam = document.getElementById(prefix + '_so_tien_giam_gia');
         var inpTong = document.getElementById(prefix + '_tong_tien');
-        var khId = prefix === 'them' ? getKhachHangIdChoKiemTraThem() : (function() {
-            var h = document.getElementById('sua_khach_hang_id_hidden');
-            return h ? (h.value || '') : '';
-        })();
-        if (!khId) {
-            alert('Vui lòng chọn khách hàng (hợp đồng) trước khi kiểm tra mã giới thiệu.');
-            return;
-        }
         if (prefix === 'them') syncThemTongTienVaConLai();
         else syncSuaTongTienVaConLai();
         var tong = inpTong ? (parseFloat(inpTong.value) || 0) : 0;
         var fd = new FormData();
         fd.append('_token', CSRF_TOKEN);
         fd.append('nguoi_gioi_thieu', inpMa ? inpMa.value.trim() : '');
-        fd.append('khach_hang_id', khId);
         fd.append('tong_tien', String(tong));
+            if (prefix === 'sua') {
+                var hopDongIdEl = document.getElementById('sua_hop_dong_id');
+                var hopDongId = hopDongIdEl ? (hopDongIdEl.value || '').trim() : '';
+                if (hopDongId) fd.append('hop_dong_id', hopDongId);
+            }
         fetch(URL_KIEM_TRA_MA_GIOI_THIEU, {
             method: 'POST',
             headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
@@ -1937,7 +1954,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 var soGiam = data.so_tien_giam_gia != null ? Number(data.so_tien_giam_gia) : 0;
                 if (inpGiam) inpGiam.value = isNaN(soGiam) ? '0' : String(soGiam);
-                setMaGioiThieuFeedback(prefix, data.message || '', data.matched && soGiam > 0 ? 'success' : (data.matched ? 'muted' : 'danger'));
+                setMaGioiThieuFeedback(prefix, data.message || '', data.matched && soGiam > 0 ? 'success' : (data.matched ? 'info' : 'danger'));
                 if (prefix === 'them') syncThemTongTienVaConLai();
                 else syncSuaTongTienVaConLai();
             })
@@ -1959,7 +1976,6 @@ document.addEventListener('DOMContentLoaded', function() {
         inpMaGtThem.addEventListener('input', function() {
             var g = document.getElementById('them_so_tien_giam_gia');
             if (g) g.value = '0';
-            setMaGioiThieuFeedback('them', '', 'muted');
             syncThemTongTienVaConLai();
         });
     }
@@ -1968,7 +1984,6 @@ document.addEventListener('DOMContentLoaded', function() {
         inpMaGtSua.addEventListener('input', function() {
             var g = document.getElementById('sua_so_tien_giam_gia');
             if (g) g.value = '0';
-            setMaGioiThieuFeedback('sua', '', 'muted');
             syncSuaTongTienVaConLai();
         });
     }
