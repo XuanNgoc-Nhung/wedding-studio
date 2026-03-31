@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\HopDong;
 use App\Models\HopDongThueTrangPhuc;
 use App\Models\KhoHang;
 use App\Models\TrangPhuc;
@@ -248,7 +249,57 @@ class TrangPhucController extends Controller
                 return [$sp->id => $available];
             });
 
-        return view('admin.trang-phuc.hop-dong', compact('danhSach', 'danhSachSanPham', 'stockByProduct'));
+        // Map: trang_phuc_id => ['dd/mm/YYYY', ...] (chỉ ngày chụp >= hôm nay, theo hợp đồng chụp ảnh — giống màn khách hàng)
+        $today = now()->toDateString();
+        $trangPhucSuDungTuHomNay = [];
+        $hopDongTuHomNay = HopDong::query()
+            ->whereDate('ngay_chup', '>=', $today)
+            ->whereNotNull('trang_phuc')
+            ->select(['ngay_chup', 'trang_phuc'])
+            ->orderBy('ngay_chup')
+            ->get();
+
+        foreach ($hopDongTuHomNay as $hd) {
+            $raw = (string) ($hd->trang_phuc ?? '');
+            $ids = array_filter(array_map('trim', explode(',', $raw)));
+            if (empty($ids)) {
+                continue;
+            }
+
+            $date = null;
+            if (! empty($hd->ngay_chup)) {
+                try {
+                    $date = ($hd->ngay_chup instanceof Carbon)
+                        ? $hd->ngay_chup->format('d/m/Y')
+                        : Carbon::parse($hd->ngay_chup)->format('d/m/Y');
+                } catch (\Throwable $e) {
+                    $date = null;
+                }
+            }
+            if ($date === null) {
+                continue;
+            }
+
+            foreach ($ids as $id) {
+                $idInt = (int) $id;
+                if ($idInt <= 0) {
+                    continue;
+                }
+                $trangPhucSuDungTuHomNay[$idInt] ??= [];
+                $trangPhucSuDungTuHomNay[$idInt][$date] = true;
+            }
+        }
+
+        foreach ($trangPhucSuDungTuHomNay as $id => $dateSet) {
+            $trangPhucSuDungTuHomNay[$id] = array_keys($dateSet);
+        }
+
+        return view('admin.trang-phuc.hop-dong', compact(
+            'danhSach',
+            'danhSachSanPham',
+            'stockByProduct',
+            'trangPhucSuDungTuHomNay'
+        ));
     }
 
     public function storeHopDong(Request $request)
@@ -256,7 +307,8 @@ class TrangPhucController extends Controller
         $validated = $request->validate([
             'ten_khach_hang' => 'required|string|max:255',
             'so_dien_thoai' => 'required|string|max:20',
-            'trang_phuc_id' => 'required|exists:trang_phuc,id',
+            'trang_phuc' => 'required|array|min:1',
+            'trang_phuc.*' => 'integer|exists:trang_phuc,id',
             'so_luong_thue' => 'required|integer|min:1',
             'gia_thue' => 'required|numeric|min:0',
             'thoi_gian_thue_bat_dau' => 'required|date',
@@ -266,32 +318,47 @@ class TrangPhucController extends Controller
             'trang_thai' => 'nullable|in:moi,dang_thue,hoan_thanh',
         ]);
 
-        $kho = (int) (KhoHang::where('trang_phuc_id', $validated['trang_phuc_id'])->value('so_luong') ?? 0);
-        $dangThue = (int) (HopDongThueTrangPhuc::where('san_pham_id', $validated['trang_phuc_id'])
-            ->whereIn('trang_thai', ['moi', 'dang_thue'])
-            ->sum('so_luong') ?? 0);
-        $available = max($kho - $dangThue, 0);
-        if ($validated['so_luong_thue'] > $available) {
-            return redirect()->back()
-                ->withErrors(['so_luong_thue' => 'Số lượng thuê không được vượt quá số lượng còn khả dụng (còn ' . $available . ' trong kho).'])
-                ->withInput();
+        $productIds = array_values(array_unique(array_map('intval', $validated['trang_phuc'])));
+
+        foreach ($productIds as $trangPhucId) {
+            $kho = (int) (KhoHang::where('trang_phuc_id', $trangPhucId)->value('so_luong') ?? 0);
+            $dangThue = (int) (HopDongThueTrangPhuc::where('san_pham_id', $trangPhucId)
+                ->whereIn('trang_thai', ['moi', 'dang_thue'])
+                ->sum('so_luong') ?? 0);
+            $available = max($kho - $dangThue, 0);
+            if ($validated['so_luong_thue'] > $available) {
+                return redirect()->back()
+                    ->withErrors(['trang_phuc' => 'Số lượng thuê vượt quá tồn cho một hoặc nhiều sản phẩm đã chọn (SP id ' . $trangPhucId . ' còn ' . $available . ').'])
+                    ->withInput();
+            }
         }
 
-        HopDongThueTrangPhuc::create([
-            'ten_khach_hang' => $validated['ten_khach_hang'],
-            'sdt_khach_hang' => $validated['so_dien_thoai'],
-            'san_pham_id' => $validated['trang_phuc_id'],
-            'so_luong' => $validated['so_luong_thue'],
-            'gia_thue' => $validated['gia_thue'],
-            'ngay_thue' => Carbon::parse($validated['thoi_gian_thue_bat_dau'])->startOfDay(),
-            'ngay_tra_du_kien' => Carbon::parse($validated['thoi_gian_du_kien_tra'])->startOfDay(),
-            'ngay_tra_thuc_te' => isset($validated['thoi_gian_tra_hang_thuc_te']) ? Carbon::parse($validated['thoi_gian_tra_hang_thuc_te'])->startOfDay() : null,
-            'ghi_chu' => $validated['ghi_chu'] ?? null,
-            'trang_thai' => $validated['trang_thai'] ?? 'moi',
-            'nguoi_cho_thue' => $request->user()?->id,
-        ]);
+        $ngayTraThucTe = isset($validated['thoi_gian_tra_hang_thuc_te'])
+            ? Carbon::parse($validated['thoi_gian_tra_hang_thuc_te'])->startOfDay()
+            : null;
 
-        return redirect()->route('admin.trang-phuc.hop-dong')->with('success', 'Đã thêm hợp đồng thành công.');
+        foreach ($productIds as $trangPhucId) {
+            HopDongThueTrangPhuc::create([
+                'ten_khach_hang' => $validated['ten_khach_hang'],
+                'sdt_khach_hang' => $validated['so_dien_thoai'],
+                'san_pham_id' => $trangPhucId,
+                'so_luong' => $validated['so_luong_thue'],
+                'gia_thue' => $validated['gia_thue'],
+                'ngay_thue' => Carbon::parse($validated['thoi_gian_thue_bat_dau'])->startOfDay(),
+                'ngay_tra_du_kien' => Carbon::parse($validated['thoi_gian_du_kien_tra'])->startOfDay(),
+                'ngay_tra_thuc_te' => $ngayTraThucTe,
+                'ghi_chu' => $validated['ghi_chu'] ?? null,
+                'trang_thai' => $validated['trang_thai'] ?? 'moi',
+                'nguoi_cho_thue' => $request->user()?->id,
+            ]);
+        }
+
+        $n = count($productIds);
+        $msg = $n === 1
+            ? 'Đã thêm hợp đồng thành công.'
+            : 'Đã thêm ' . $n . ' hợp đồng (mỗi sản phẩm một dòng) thành công.';
+
+        return redirect()->route('admin.trang-phuc.hop-dong')->with('success', $msg);
     }
 
     public function updateHopDong(Request $request, HopDongThueTrangPhuc $hopDong)

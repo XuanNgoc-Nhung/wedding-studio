@@ -198,15 +198,27 @@
                             <label class="form-label" for="them_so_dien_thoai">Số điện thoại <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="them_so_dien_thoai" name="so_dien_thoai" value="{{ old('so_dien_thoai') }}" placeholder="0912345678" maxlength="20" required>
                         </div>
-                        <div class="col-12 col-md-6">
-                            <label class="form-label" for="them_trang_phuc_id">Sản phẩm (ID) <span class="text-danger">*</span></label>
-                            <select class="select2-admin form-select" id="them_trang_phuc_id" name="trang_phuc_id" required data-placeholder="Chọn sản phẩm">
-                                <option value="">-- Chọn sản phẩm --</option>
+                        <div class="col-12">
+                            <label class="form-label" for="them_trang_phuc">Sản phẩm <span class="text-danger">*</span></label>
+                            @php $oldTrangPhucThem = old('trang_phuc', []); @endphp
+                            <select class="select2-admin form-select"
+                                    id="them_trang_phuc"
+                                    name="trang_phuc[]"
+                                    multiple
+                                    data-placeholder="Chọn một hoặc nhiều sản phẩm">
                                 @foreach($danhSachSanPham ?? [] as $sp)
-                                <option value="{{ $sp->id }}" data-stock="{{ $stockByProduct[$sp->id] ?? 0 }}" {{ (string)old('trang_phuc_id') === (string)$sp->id ? 'selected' : '' }}>{{ $sp->ten_san_pham }} (code: {{ $sp->ma_san_pham }}) — Trong kho: {{ $stockByProduct[$sp->id] ?? 0 }}</option>
+                                @php
+                                    $sdDates = $trangPhucSuDungTuHomNay[$sp->id] ?? [];
+                                    $sdLabel = !empty($sdDates) ? ' - (SD: ' . implode(', ', $sdDates) . ')' : '';
+                                @endphp
+                                <option value="{{ $sp->id }}"
+                                        data-stock="{{ $stockByProduct[$sp->id] ?? 0 }}"
+                                        {{ in_array((int) $sp->id, array_map('intval', (array) $oldTrangPhucThem), true) ? 'selected' : '' }}>
+                                    {{ $sp->ten_san_pham }} (code: {{ $sp->ma_san_pham }}) — Trong kho: {{ $stockByProduct[$sp->id] ?? 0 }}{{ $sdLabel }}
+                                </option>
                                 @endforeach
                             </select>
-                            <div class="form-text" id="them_tong_kho_text">Trong kho còn: <strong id="them_tong_kho">—</strong></div>
+                            <div class="form-text" id="them_tong_kho_text">Còn khả dụng (theo SP đã chọn): <strong id="them_tong_kho">—</strong></div>
                         </div>
                         <div class="col-12 col-md-3">
                             <label class="form-label" for="them_so_luong_thue">Số lượng thuê <span class="text-danger">*</span></label>
@@ -283,7 +295,7 @@
                             <label class="form-label" for="sua_so_dien_thoai">Số điện thoại</label>
                             <input type="text" class="form-control" id="sua_so_dien_thoai" name="so_dien_thoai" placeholder="0912345678" maxlength="20">
                         </div>
-                        <div class="col-12 col-md-6">
+                        <div class="col-12">
                             <label class="form-label" for="sua_trang_phuc_id">Sản phẩm (ID) <span class="text-danger">*</span></label>
                             <select class="select2-admin form-select" id="sua_trang_phuc_id" name="trang_phuc_id" required data-placeholder="Chọn sản phẩm">
                                 @foreach($danhSachSanPham ?? [] as $sp)
@@ -402,19 +414,38 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     @endif
 
-    // Cập nhật "Trong kho còn" và max số lượng thuê khi chọn sản phẩm
+    // Cập nhật tồn kho (lấy min theo các SP đã chọn) và max số lượng thuê
     function updateThemTongKho() {
-        var sel = document.getElementById('them_trang_phuc_id');
+        var $ = window.jQuery || window.$;
+        var sel = document.getElementById('them_trang_phuc');
         var span = document.getElementById('them_tong_kho');
         var num = document.getElementById('them_so_luong_thue');
         if (!sel || !span) return;
-        var opt = sel.options[sel.selectedIndex];
-        var stock = opt && opt.value ? parseInt(opt.getAttribute('data-stock'), 10) : 0;
-        if (isNaN(stock)) stock = 0;
-        span.textContent = stock;
+        var selected = [];
+        if ($ && $(sel).length && typeof $(sel).val === 'function') {
+            var v = $(sel).val();
+            if (v != null && v !== '') selected = Array.isArray(v) ? v : [v];
+        }
+        if (!selected.length) {
+            selected = [].filter.call(sel.options, function(o) { return o.selected; }).map(function(o) { return o.value; });
+        }
+        if (!selected || !selected.length) {
+            span.textContent = '—';
+            if (num) num.removeAttribute('max');
+            return;
+        }
+        var minStock = null;
+        for (var i = 0; i < selected.length; i++) {
+            var opt = sel.querySelector('option[value="' + String(selected[i]).replace(/"/g, '\\"') + '"]');
+            var stock = opt ? parseInt(opt.getAttribute('data-stock'), 10) : 0;
+            if (isNaN(stock)) stock = 0;
+            if (minStock === null || stock < minStock) minStock = stock;
+        }
+        if (minStock === null) minStock = 0;
+        span.textContent = minStock;
         if (num) {
-            num.setAttribute('max', stock > 0 ? stock : '');
-            if (num.value && parseInt(num.value, 10) > stock) num.value = Math.max(1, stock);
+            num.setAttribute('max', minStock > 0 ? minStock : '');
+            if (num.value && parseInt(num.value, 10) > minStock) num.value = Math.max(1, minStock);
         }
     }
     function updateSuaTongKho() {
@@ -428,12 +459,16 @@ document.addEventListener('DOMContentLoaded', function() {
         span.textContent = stock;
         if (num) num.setAttribute('max', stock > 0 ? stock : '');
     }
-    var themTrangPhucId = document.getElementById('them_trang_phuc_id');
-    var suaTrangPhucId = document.getElementById('sua_trang_phuc_id');
-    if (themTrangPhucId) {
-        themTrangPhucId.addEventListener('change', updateThemTongKho);
+    var themTrangPhuc = document.getElementById('them_trang_phuc');
+    var $themTP = window.jQuery ? window.jQuery('#them_trang_phuc') : null;
+    if ($themTP && $themTP.length) {
+        $themTP.on('change', updateThemTongKho);
+        updateThemTongKho();
+    } else if (themTrangPhuc) {
+        themTrangPhuc.addEventListener('change', updateThemTongKho);
         updateThemTongKho();
     }
+    var suaTrangPhucId = document.getElementById('sua_trang_phuc_id');
     if (suaTrangPhucId) {
         suaTrangPhucId.addEventListener('change', updateSuaTongKho);
     }
