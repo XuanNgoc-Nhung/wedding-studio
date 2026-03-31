@@ -46,7 +46,7 @@
                         <th style="width: 130px;">Trạng thái chụp</th>
                         <th>Trang phục</th>
                         <th>Ghi chú</th>
-                        <th style="width: 150px;">Ngày hẹn trả hàng</th>
+                        <th style="width: 150px;">Ngày hẹn trả demo</th>
                         <th>Trạng thái edit</th>
                         <th>Trạng thái HĐ</th>
                         <th>Vai trò của tôi</th>

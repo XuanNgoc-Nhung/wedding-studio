@@ -482,10 +482,14 @@
                                     data-placeholder="Chọn trang phục">
                                 @php $oldTrangPhucIds = old('trang_phuc', []); @endphp
                                 @foreach($danhSachTrangPhuc ?? [] as $sp)
+                                    @php
+                                        $sdDates = $trangPhucSuDungTuHomNay[$sp->id] ?? [];
+                                        $sdLabel = !empty($sdDates) ? ' - (SD: ' . implode(', ', $sdDates) . ')' : '';
+                                    @endphp
                                     <option value="{{ $sp->id }}"
                                             data-avatar="{{ !empty($sp->hinh_anh) ? asset('storage/' . $sp->hinh_anh) : '' }}"
                                         {{ is_array($oldTrangPhucIds) && in_array($sp->id, $oldTrangPhucIds) ? 'selected' : '' }}>
-                                        {{ $sp->ten_san_pham }}
+                                        {{ $sp->ten_san_pham }}{{ $sdLabel }}
                                     </option>
                                 @endforeach
                             </select>
@@ -748,9 +752,13 @@
                                     multiple
                                     data-placeholder="Chọn trang phục">
                                 @foreach($danhSachTrangPhuc ?? [] as $sp)
+                                    @php
+                                        $sdDates = $trangPhucSuDungTuHomNay[$sp->id] ?? [];
+                                        $sdLabel = !empty($sdDates) ? '  -  (SD: ' . implode(', ', $sdDates) . ')' : '';
+                                    @endphp
                                     <option value="{{ $sp->id }}"
                                             data-avatar="{{ !empty($sp->hinh_anh) ? asset('storage/' . $sp->hinh_anh) : '' }}">
-                                        {{ $sp->ten_san_pham }}
+                                        {{ $sp->ten_san_pham }}{{ $sdLabel }}
                                     </option>
                                 @endforeach
                             </select>

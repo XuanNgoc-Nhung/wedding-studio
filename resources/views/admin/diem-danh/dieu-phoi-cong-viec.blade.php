@@ -51,7 +51,7 @@
                         <th>Địa điểm</th>
                         <th>Ngày chụp</th>
                         <th>Ngày trả link in</th>
-                        <th>Ngày hẹn trả hàng</th>
+                        <th>Ngày hẹn trả demo</th>
                         {{-- <th>Trang phục</th> --}}
                         {{-- <th>Ghi chú</th> --}}
                         <th class="text-end">Tổng tiền</th>
@@ -195,7 +195,7 @@
                                 <input type="text" class="flatpickr-datetime-admin form-control" id="pv-ngay-chup" name="ngay_chup" value="" placeholder="dd/mm/yyyy hh:mm" autocomplete="off">
                             </div>
                             <div class="col-12 col-sm-6 col-lg-3">
-                                <label class="form-label" for="pv-ngay-hen-tra-hang">Ngày hẹn trả hàng</label>
+                                <label class="form-label" for="pv-ngay-hen-tra-hang">Ngày hẹn trả demo</label>
                                 <input type="text" class="flatpickr-date-admin form-control" id="pv-ngay-hen-tra-hang" name="ngay_hen_tra_hang" value="" placeholder="dd/mm/yyyy" autocomplete="off">
                             </div>
                             {{-- <div class="col-12 col-sm-6 col-lg-3">

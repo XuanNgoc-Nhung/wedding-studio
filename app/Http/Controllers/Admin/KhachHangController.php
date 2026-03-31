@@ -13,6 +13,7 @@ use App\Models\NhomDichVu;
 use App\Models\TrangPhuc;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Carbon;
 
 class KhachHangController extends Controller
 {
@@ -209,6 +210,50 @@ class KhachHangController extends Controller
             ->orderBy('ten_san_pham')
             ->get();
 
+        // Map: trang_phuc_id => ['dd/mm/YYYY', ...] (chỉ các ngày >= hôm nay)
+        $today = now()->toDateString();
+        $trangPhucSuDungTuHomNay = [];
+        $hopDongTuHomNay = HopDong::query()
+            ->whereDate('ngay_chup', '>=', $today)
+            ->whereNotNull('trang_phuc')
+            ->select(['ngay_chup', 'trang_phuc'])
+            ->orderBy('ngay_chup')
+            ->get();
+
+        foreach ($hopDongTuHomNay as $hd) {
+            $raw = (string) ($hd->trang_phuc ?? '');
+            $ids = array_filter(array_map('trim', explode(',', $raw)));
+            if (empty($ids)) {
+                continue;
+            }
+
+            $date = null;
+            if (! empty($hd->ngay_chup)) {
+                try {
+                    $date = ($hd->ngay_chup instanceof Carbon)
+                        ? $hd->ngay_chup->format('d/m/Y')
+                        : Carbon::parse($hd->ngay_chup)->format('d/m/Y');
+                } catch (\Throwable $e) {
+                    $date = null;
+                }
+            }
+            if ($date === null) {
+                continue;
+            }
+
+            foreach ($ids as $id) {
+                $idInt = (int) $id;
+                if ($idInt <= 0) continue;
+                $trangPhucSuDungTuHomNay[$idInt] ??= [];
+                $trangPhucSuDungTuHomNay[$idInt][$date] = true; // set để unique theo ngày
+            }
+        }
+
+        // Chuẩn hóa về array ngày (unique + đã sort theo query)
+        foreach ($trangPhucSuDungTuHomNay as $id => $dateSet) {
+            $trangPhucSuDungTuHomNay[$id] = array_keys($dateSet);
+        }
+
         return view('admin.khach-hang.hop-dong', compact(
             'danhSach',
             'danhSachKhachHang',
@@ -216,7 +261,8 @@ class KhachHangController extends Controller
             'danhSachNhomDichVu',
             'danhSachDichVuLe',
             'danhSachConcept',
-            'danhSachTrangPhuc'
+            'danhSachTrangPhuc',
+            'trangPhucSuDungTuHomNay'
         ));
     }
 
