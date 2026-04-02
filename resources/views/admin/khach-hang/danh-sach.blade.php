@@ -213,7 +213,17 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="them_nguon_khach">Nguồn khách</label>
-                        <input type="text" class="form-control" id="them_nguon_khach" name="nguon_khach" value="{{ old('nguon_khach') }}" placeholder="Nhập nguồn khách (Facebook, giới thiệu, ...)">
+                        <select class="select2-admin form-select" id="them_nguon_khach" name="nguon_khach" data-placeholder="Chọn nguồn khách">
+                            <option value="">-- Chọn --</option>
+                            <option value="Insta" {{ old('nguon_khach') == 'Insta' ? 'selected' : '' }}>Insta</option>
+                            <option value="Threads" {{ old('nguon_khach') == 'Threads' ? 'selected' : '' }}>Threads</option>
+                            <option value="FB" {{ old('nguon_khach') == 'FB' ? 'selected' : '' }}>FB</option>
+                            <option value="Tiktok" {{ old('nguon_khach') == 'Tiktok' ? 'selected' : '' }}>Tiktok</option>
+                            <option value="Google" {{ old('nguon_khach') == 'Google' ? 'selected' : '' }}>Google</option>
+                            <option value="Bạn giới thiệu" {{ old('nguon_khach') == 'Bạn giới thiệu' ? 'selected' : '' }}>Bạn giới thiệu</option>
+                            <option value="Đi qua thì thấy" {{ old('nguon_khach') == 'Đi qua thì thấy' ? 'selected' : '' }}>Đi qua thì thấy</option>
+                            <option value="Youtube" {{ old('nguon_khach') == 'Youtube' ? 'selected' : '' }}>Youtube</option>
+                        </select>
                     </div>
                     <div class="mb-0">
                         <label class="form-label" for="them_ghi_chu">Ghi chú</label>
@@ -312,7 +322,17 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="sua_nguon_khach">Nguồn khách</label>
-                        <input type="text" class="form-control" id="sua_nguon_khach" name="nguon_khach" placeholder="Nhập nguồn khách (Facebook, giới thiệu, ...)">
+                        <select class="select2-admin form-select" id="sua_nguon_khach" name="nguon_khach" data-placeholder="Chọn nguồn khách">
+                            <option value="">-- Chọn --</option>
+                            <option value="Insta">Insta</option>
+                            <option value="Threads">Threads</option>
+                            <option value="FB">FB</option>
+                            <option value="Tiktok">Tiktok</option>
+                            <option value="Google">Google</option>
+                            <option value="Bạn giới thiệu">Bạn giới thiệu</option>
+                            <option value="Đi qua thì thấy">Đi qua thì thấy</option>
+                            <option value="Youtube">Youtube</option>
+                        </select>
                     </div>
                     <div class="mb-0">
                         <label class="form-label" for="sua_ghi_chu">Ghi chú</label>
@@ -422,7 +442,28 @@ document.addEventListener('DOMContentLoaded', function() {
             // document.getElementById('sua_gioi_tinh_co_dau').value = btn.getAttribute('data-gioi-tinh-co-dau') || '';
             // document.getElementById('sua_dia_chi_co_dau').value = btn.getAttribute('data-dia-chi-co-dau') || '';
             document.getElementById('sua_email_sdt_co_dau').value = btn.getAttribute('data-email-sdt-co-dau') || '';
-            document.getElementById('sua_nguon_khach').value = btn.getAttribute('data-nguon-khach') || '';
+            // Set value cho select Nguồn khách (kể cả khi giá trị cũ không có sẵn trong option)
+            var nguonKhach = btn.getAttribute('data-nguon-khach') || '';
+            var suaNguonSelect = document.getElementById('sua_nguon_khach');
+            if (suaNguonSelect) {
+                if (nguonKhach) {
+                    var exists = Array.from(suaNguonSelect.options).some(function(opt) { return opt.value === nguonKhach; });
+                    if (!exists) {
+                        var opt = document.createElement('option');
+                        opt.value = nguonKhach;
+                        opt.textContent = nguonKhach;
+                        suaNguonSelect.appendChild(opt);
+                    }
+                    suaNguonSelect.value = nguonKhach;
+                } else {
+                    suaNguonSelect.value = '';
+                }
+
+                var $ = window.jQuery || window.$;
+                if ($ && $.fn && $.fn.select2 && $(suaNguonSelect).data('select2')) {
+                    $(suaNguonSelect).trigger('change');
+                }
+            }
             document.getElementById('sua_ghi_chu').value = btn.getAttribute('data-ghi-chu') || '';
         });
     }
