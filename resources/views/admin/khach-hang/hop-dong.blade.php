@@ -45,6 +45,7 @@
 
         @php
             $trangPhucMap = ($danhSachTrangPhuc ?? collect())->keyBy('id');
+            $conceptMap = ($danhSachConcept ?? collect())->keyBy('id');
         @endphp
 
         <div class="table-responsive text-nowrap table-wrapper-bordered">
@@ -194,6 +195,7 @@
                                        data-ngay-chup="{{ $item->ngay_chup?->format('Y-m-d H:i') ?? '' }}"
                                        data-trang-phuc="{{ e($item->trang_phuc ?? '') }}"
                                        data-concept="{{ e($item->concept ?? '') }}"
+                                       data-concept-label="{{ e(optional($conceptMap->get((int)($item->concept ?? 0)))->ten_concept ?? ($item->concept ?? '')) }}"
                                        data-ghi-chu-chup="{{ e($item->ghi_chu_chup ?? '') }}"
                                        data-trang-thai-chup="{{ e($item->trang_thai_chup ?? '') }}"
                                        data-tong-tien="{{ $item->tong_tien !== null ? $item->tong_tien : '' }}"
@@ -493,9 +495,9 @@
                             <select class="select2-admin form-select" id="them_concept" name="concept" data-placeholder="Chọn concept">
                                 <option value="">-- Chọn concept --</option>
                                 @foreach($danhSachConcept ?? [] as $c)
-                                <option value="{{ $c->ten_concept }}"
+                                <option value="{{ $c->id }}"
                                         data-avatar="{{ !empty($c->hinh_anh) ? asset('storage/' . $c->hinh_anh) : '' }}"
-                                    {{ (string)old('concept') === (string)($c->ten_concept ?? '') ? 'selected' : '' }}>
+                                    {{ (string)old('concept') === (string)($c->id ?? '') ? 'selected' : '' }}>
                                     {{ $c->ten_concept }}
                                 </option>
                                 @endforeach
@@ -762,7 +764,7 @@
                             <select class="select2-admin form-select" id="sua_concept" name="concept" data-placeholder="Chọn concept">
                                 <option value="">-- Chọn concept --</option>
                                 @foreach($danhSachConcept ?? [] as $c)
-                                <option value="{{ $c->ten_concept }}"
+                                <option value="{{ $c->id }}"
                                         data-avatar="{{ !empty($c->hinh_anh) ? asset('storage/' . $c->hinh_anh) : '' }}">
                                     {{ $c->ten_concept }}
                                 </option>
@@ -1182,11 +1184,12 @@ document.addEventListener('DOMContentLoaded', function() {
             var suaConceptSelect = document.getElementById('sua_concept');
             if (suaConceptSelect) {
                 var suaConceptVal = btn.getAttribute('data-concept') || '';
+                var suaConceptLabel = btn.getAttribute('data-concept-label') || suaConceptVal;
                 // Trường hợp concept hiện tại không có trong danh sách option (dữ liệu cũ), tạo option tạm.
                 if (suaConceptVal && !Array.from(suaConceptSelect.options).some(function(opt) { return String(opt.value) === String(suaConceptVal); })) {
                     var opt = document.createElement('option');
                     opt.value = suaConceptVal;
-                    opt.textContent = suaConceptVal;
+                    opt.textContent = suaConceptLabel;
                     suaConceptSelect.appendChild(opt);
                 }
                 suaConceptSelect.value = suaConceptVal;
@@ -1653,6 +1656,13 @@ document.addEventListener('DOMContentLoaded', function() {
             var themConceptSelect = document.getElementById('them_concept');
             if (themConceptSelect) {
                 var themConceptOldValue = @json((string) old('concept', ''));
+                // Nếu old concept là tên (dữ liệu cũ), tạo option tạm để Select2 hiển thị đúng.
+                if (themConceptOldValue && !Array.from(themConceptSelect.options).some(function(opt) { return String(opt.value) === String(themConceptOldValue); })) {
+                    var opt = document.createElement('option');
+                    opt.value = themConceptOldValue;
+                    opt.textContent = themConceptOldValue;
+                    themConceptSelect.appendChild(opt);
+                }
                 themConceptSelect.value = themConceptOldValue || '';
                 var jq = window.jQuery || window.$;
                 if (jq && jq.fn && jq.fn.select2) jq(themConceptSelect).val(themConceptOldValue || '').trigger('change');

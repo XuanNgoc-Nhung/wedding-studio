@@ -204,7 +204,7 @@
                                             data-ngay-chup="{{ $item->ngay_chup ? $item->ngay_chup->format('d/m/Y H:i') : '—' }}"
                                             data-nguoi-chup="{{ $item->nguoiChupUser?->name ?? ($item->thoChup?->user?->name ?? '—') }}"
                                             data-dia-diem="{{ e($item->dia_diem ?? '—') }}"
-                                            data-concept="{{ e($item->concept ?? '—') }}"
+                                            data-concept="{{ e(optional($conceptMap->get((int)($item->concept ?? 0)))->ten_concept ?? ($item->concept ?? '—')) }}"
                                             data-trang-phuc="{{ e($trangPhucNames->isNotEmpty() ? $trangPhucNames->implode(', ') : ($item->trang_phuc ?? '—')) }}"
                                             data-ghi-chu="{{ e($item->ghi_chu_chup ?? '—') }}">
                                         In brief

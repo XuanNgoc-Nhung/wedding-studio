@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\HopDong;
+use App\Models\Concept;
 use App\Models\NhanVien;
 use App\Models\PhongBan;
 use App\Models\TrangPhuc;
@@ -682,9 +683,16 @@ class NhanSuController extends Controller
             ->orderBy('ten_san_pham')
             ->get();
 
+        $conceptMap = Concept::query()
+            ->where('trang_thai', Concept::TRANG_THAI_ACTIVE)
+            ->orderBy('ten_concept')
+            ->get()
+            ->keyBy('id');
+
         return view('admin.nhan-su.cong-viec-cua-toi', compact(
             'danhSach',
             'danhSachTrangPhuc',
+            'conceptMap',
             'nhanVienId',
             'isAdmin'
         ));

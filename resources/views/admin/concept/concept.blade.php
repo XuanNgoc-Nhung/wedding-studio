@@ -58,6 +58,7 @@
                         <th style="width: 50px;">STT</th>
                         <th style="width: 120px;">Hình ảnh</th>
                         <th>Tên concept</th>
+                        <th class="text-center" style="width: 120px;">Đã sử dụng</th>
                         <th class="text-center" style="width: 120px;">Trạng thái</th>
                         <th class="text-center" style="width: 120px;">Thao tác</th>
                     </tr>
@@ -81,6 +82,11 @@
                                 @endif
                             </td>
                             <td><span class="fw-medium">{{ $item->ten_concept ?? '—' }}</span></td>
+                            <td class="text-center">
+                                <span class="fw-medium">
+                                    {{ $soLuotSuDungByConcept[$item->ten_concept ?? ''] ?? 0 }}
+                                </span>
+                            </td>
                             <td class="text-center">
                                 <span class="badge {{ $trangThaiBadge }}">{{ $trangThaiLabel }}</span>
                             </td>
@@ -114,7 +120,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="text-center py-4 text-muted">Chưa có dữ liệu concept.</td>
+                            <td colspan="6" class="text-center py-4 text-muted">Chưa có dữ liệu concept.</td>
                         </tr>
                     @endforelse
                 </tbody>

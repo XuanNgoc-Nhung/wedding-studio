@@ -319,6 +319,10 @@ class KhachHangController extends Controller
             (float) ($validated['tong_tien'] ?? 0)
         );
 
+        // Lưu vào cột `hop_dong.concept` bằng ID concept (không lưu tên).
+        // Hỗ trợ tương thích: nếu client gửi tên concept cũ thì map về id.
+        $validated['concept'] = $this->resolveConceptIdForHopDong($validated['concept'] ?? null);
+
         // --- Bước 2: Tạo hợp đồng (chỉ thông tin hợp đồng) ---
         $hopDong = HopDong::create($validated);
 
@@ -406,6 +410,9 @@ class KhachHangController extends Controller
             (int) $hopDong->id,
             (float) ($validated['tong_tien'] ?? 0)
         );
+
+        // Lưu vào cột `hop_dong.concept` bằng ID concept (không lưu tên).
+        $validated['concept'] = $this->resolveConceptIdForHopDong($validated['concept'] ?? null);
 
         $hopDong->update($validated);
 
@@ -497,6 +504,29 @@ class KhachHangController extends Controller
             ->when($excludeHopDongId, fn ($q) => $q->where('id', '!=', $excludeHopDongId))
             ->where('ma_hop_dong', $needle)
             ->exists();
+    }
+
+    /**
+     * Resolve giá trị gửi từ form (có thể là ID hoặc tên) về ID concept.
+     * - Nếu không tìm thấy thì trả về null để cột `hop_dong.concept` trống.
+     */
+    private function resolveConceptIdForHopDong(null|string $conceptValue): ?int
+    {
+        $raw = trim((string) ($conceptValue ?? ''));
+        if ($raw === '') {
+            return null;
+        }
+
+        // Trường hợp client gửi ID concept
+        if (ctype_digit($raw)) {
+            $id = (int) $raw;
+            return Concept::query()->whereKey($id)->exists() ? $id : null;
+        }
+
+        // Trường hợp client gửi tên concept cũ
+        return Concept::query()
+            ->where('ten_concept', $raw)
+            ->value('id');
     }
 
     private function resolveSoTienGiamGiaFromIntro(?string $nguoiGioiThieu, ?int $excludeHopDongId, float $tongTien): float

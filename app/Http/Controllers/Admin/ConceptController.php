@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Concept;
+use App\Models\HopDong;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class ConceptController extends Controller
@@ -23,7 +25,48 @@ class ConceptController extends Controller
             ->paginate(15)
             ->withQueryString();
 
-        return view('admin.concept.concept', compact('danhSach'));
+        // Tính số lần concept đang được dùng trong các hợp đồng.
+        // Sau thay đổi: `hop_dong.concept` lưu ID concept (không lưu tên).
+        // Vẫn hỗ trợ tương thích dữ liệu cũ: có thể còn tồn tại các hàng lưu bằng `ten_concept`.
+        $tenConcepts = $danhSach->getCollection()
+            ->pluck('ten_concept')
+            ->filter(fn ($v) => !empty($v))
+            ->values()
+            ->all();
+
+        $conceptIds = $danhSach->getCollection()
+            ->pluck('id')
+            ->filter(fn ($v) => !empty($v))
+            ->values()
+            ->all();
+
+        $soLuotSuDungByConcept = collect();
+        if (!empty($conceptIds)) {
+            // Đếm theo ID concept (mới)
+            $countsByTenFromIds = HopDong::query()
+                ->join('concept', 'concept.id', '=', 'hop_dong.concept')
+                ->select('concept.ten_concept', DB::raw('COUNT(*) as so_luot_su_dung'))
+                ->whereIn('concept.id', $conceptIds)
+                ->groupBy('concept.ten_concept')
+                ->pluck('so_luot_su_dung', 'concept.ten_concept');
+
+            $soLuotSuDungByConcept = $countsByTenFromIds;
+
+            // Nếu dữ liệu cũ còn lưu bằng tên, cộng thêm phần đó
+            if (!empty($tenConcepts)) {
+                $countsByTenFromOldNames = HopDong::query()
+                    ->select('concept', DB::raw('COUNT(*) as so_luot_su_dung'))
+                    ->whereIn('concept', $tenConcepts)
+                    ->groupBy('concept')
+                    ->pluck('so_luot_su_dung', 'concept');
+
+                foreach ($countsByTenFromOldNames as $ten => $cnt) {
+                    $soLuotSuDungByConcept[$ten] = (int) ($soLuotSuDungByConcept[$ten] ?? 0) + (int) $cnt;
+                }
+            }
+        }
+
+        return view('admin.concept.concept', compact('danhSach', 'soLuotSuDungByConcept'));
     }
 
     public function store(Request $request)
