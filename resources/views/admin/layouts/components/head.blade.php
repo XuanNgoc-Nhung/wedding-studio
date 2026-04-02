@@ -77,6 +77,9 @@
 .select2-container .select2-search--inline .select2-search__field{
   margin-top:10px !important;
 }
+.fc-h-event{
+  background-color: #fff !important;
+}
 </style>
 
 <!-- Admin: responsive — font/table gọn trên tablet & mobile -->

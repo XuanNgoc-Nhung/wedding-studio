@@ -178,11 +178,14 @@ class KhachHangController extends Controller
         $danhSach = HopDong::query()
             ->with(['khachHang', 'nguoiTao', 'thoChup.user', 'thoMake.user', 'thoEdit.user'])
             ->when($search, function ($q) use ($search) {
-                $q->whereHas('khachHang', function ($q2) use ($search) {
-                    $q2->where('ho_ten_chu_re', 'like', "%{$search}%")
-                        ->orWhere('ho_ten_co_dau', 'like', "%{$search}%")
-                        ->orWhere('email_hoac_sdt_chu_re', 'like', "%{$search}%")
-                        ->orWhere('email_hoac_sdt_co_dau', 'like', "%{$search}%");
+                $q->where(function ($w) use ($search) {
+                    $w->where('ma_hop_dong', 'like', "%{$search}%")
+                        ->orWhereHas('khachHang', function ($q2) use ($search) {
+                            $q2->where('ho_ten_chu_re', 'like', "%{$search}%")
+                                ->orWhere('ho_ten_co_dau', 'like', "%{$search}%")
+                                ->orWhere('email_hoac_sdt_chu_re', 'like', "%{$search}%")
+                                ->orWhere('email_hoac_sdt_co_dau', 'like', "%{$search}%");
+                        });
                 });
             })
             ->orderByDesc('id')

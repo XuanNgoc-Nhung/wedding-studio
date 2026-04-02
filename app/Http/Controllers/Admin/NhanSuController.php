@@ -6,16 +6,16 @@ use App\Http\Controllers\Controller;
 use App\Models\HopDong;
 use App\Models\NhanVien;
 use App\Models\PhongBan;
-use App\Models\User;
 use App\Models\TrangPhuc;
+use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class NhanSuController extends Controller
 {
@@ -136,10 +136,12 @@ class NhanSuController extends Controller
             $nhanVien->phongBans()->sync($request->input('phong_ban_ids', []));
 
             DB::commit();
+
             return redirect()->route('admin.nhan-su.danh-sach')->with('success', 'Đã thêm nhân sự mới thành công.');
         } catch (\Throwable $e) {
             DB::rollBack();
-            return back()->withInput()->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Có lỗi xảy ra: '.$e->getMessage());
         }
     }
 
@@ -232,10 +234,12 @@ class NhanSuController extends Controller
             }
 
             DB::commit();
+
             return redirect()->route('admin.nhan-su.danh-sach')->with('success', 'Đã cập nhật nhân sự thành công.');
         } catch (\Throwable $e) {
             DB::rollBack();
-            return back()->withInput()->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Có lỗi xảy ra: '.$e->getMessage());
         }
     }
 
@@ -253,6 +257,7 @@ class NhanSuController extends Controller
         ]);
 
         $user->update(['password' => Hash::make($request->password)]);
+
         return redirect()->route('admin.nhan-su.danh-sach')->with('success', 'Đã đổi mật khẩu thành công.');
     }
 
@@ -269,10 +274,12 @@ class NhanSuController extends Controller
             }
             $user->delete();
             DB::commit();
+
             return redirect()->route('admin.nhan-su.danh-sach')->with('success', 'Đã xóa nhân sự thành công.');
         } catch (\Throwable $e) {
             DB::rollBack();
-            return back()->with('error', 'Có lỗi xảy ra: ' . $e->getMessage());
+
+            return back()->with('error', 'Có lỗi xảy ra: '.$e->getMessage());
         }
     }
 
@@ -294,13 +301,15 @@ class NhanSuController extends Controller
         $adminGetRoutes = collect(Route::getRoutes())
             ->filter(function ($route) {
                 $name = $route->getName();
-                if (!$name || !str_starts_with($name, 'admin.')) {
+                if (! $name || ! str_starts_with($name, 'admin.')) {
                     return false;
                 }
+
                 return in_array('GET', $route->methods());
             })
             ->map(function ($route) use ($routeDescriptions) {
                 $name = $route->getName();
+
                 return [
                     'name' => $name,
                     'uri' => $route->uri(),
@@ -331,7 +340,7 @@ class NhanSuController extends Controller
         $dsMenu = $request->input('permissions', []);
 
         $nhanVien = $user->nhanVien;
-        if (!$nhanVien) {
+        if (! $nhanVien) {
             NhanVien::create([
                 'user_id' => $user->id,
                 'ds_menu' => $dsMenu,
@@ -362,7 +371,7 @@ class NhanSuController extends Controller
             $hopDongTrongTuan = HopDong::query()
                 ->with(['khachHang', 'thoChup', 'thoMake', 'thoEdit'])
                 ->whereBetween('ngay_chup', [$batDauTuan->toDateString(), $ketThucTuan->toDateString()])
-                ->when(!$isAdmin, function ($q) use ($nhanVienId) {
+                ->when(! $isAdmin, function ($q) use ($nhanVienId) {
                     $q->where(function ($qq) use ($nhanVienId) {
                         $qq->where('tho_chup_id', $nhanVienId)
                             ->orWhere('tho_make_id', $nhanVienId)
@@ -388,14 +397,14 @@ class NhanSuController extends Controller
         $user = auth()->user();
         $isAdmin = (int) ($user?->role) === User::ROLE_ADMIN;
         $nhanVienId = $user?->nhanVien?->id;
-        if (!$isAdmin && !$nhanVienId) {
+        if (! $isAdmin && ! $nhanVienId) {
             return response()->json([]);
         }
 
         $start = $request->query('start');
         $end = $request->query('end');
         $view = (string) $request->query('view', 'dayGridMonth');
-        if (!$start || !$end) {
+        if (! $start || ! $end) {
             return response()->json([]);
         }
 
@@ -406,10 +415,10 @@ class NhanSuController extends Controller
         // View tuần/ngày: trả event theo từng hợp đồng (có giờ)
         if (in_array($view, ['timeGridDay', 'timeGridWeek'], true)) {
             $items = HopDong::query()
-                ->with(['khachHang'])
+                ->with(['khachHang', 'thoChup.user', 'thoMake.user', 'thoEdit.user'])
                 ->where('ngay_chup', '>=', $startDt)
                 ->where('ngay_chup', '<', $endDtExclusive)
-                ->when(!$isAdmin, function ($q) use ($nhanVienId) {
+                ->when(! $isAdmin, function ($q) use ($nhanVienId) {
                     $q->where(function ($qq) use ($nhanVienId) {
                         $qq->where('tho_chup_id', $nhanVienId)
                             ->orWhere('tho_make_id', $nhanVienId)
@@ -421,27 +430,53 @@ class NhanSuController extends Controller
 
             $events = $items->map(function (HopDong $hd) use ($nhanVienId, $tz) {
                 $start = $hd->ngay_chup ? Carbon::parse($hd->ngay_chup, $tz) : null;
-                if (!$start) {
+                if (! $start) {
                     return null;
                 }
 
                 $roles = [];
-                if (!$nhanVienId) {
-                    if ($hd->tho_chup_id) $roles[] = 'Chụp';
-                    if ($hd->tho_make_id) $roles[] = 'Make';
-                    if ($hd->tho_edit_id) $roles[] = 'Edit';
+                if (! $nhanVienId) {
+                    if ($hd->tho_chup_id) {
+                        $roles[] = 'Chụp';
+                    }
+                    if ($hd->tho_make_id) {
+                        $roles[] = 'Make';
+                    }
+                    if ($hd->tho_edit_id) {
+                        $roles[] = 'Edit';
+                    }
                 } else {
-                    if ((int) $hd->tho_chup_id === (int) $nhanVienId) $roles[] = 'Chụp';
-                    if ((int) $hd->tho_make_id === (int) $nhanVienId) $roles[] = 'Make';
-                    if ((int) $hd->tho_edit_id === (int) $nhanVienId) $roles[] = 'Edit';
+                    if ((int) $hd->tho_chup_id === (int) $nhanVienId) {
+                        $roles[] = 'Chụp';
+                    }
+                    if ((int) $hd->tho_make_id === (int) $nhanVienId) {
+                        $roles[] = 'Make';
+                    }
+                    if ((int) $hd->tho_edit_id === (int) $nhanVienId) {
+                        $roles[] = 'Edit';
+                    }
                 }
                 $roleText = implode(', ', $roles);
 
+                $badges = [];
+                $chupTen = trim((string) ($hd->thoChup?->user?->name ?? ''));
+                if ($chupTen !== '') {
+                    $badges[] = ['code' => 'C', 'name' => $chupTen];
+                }
+                $makeTen = trim((string) ($hd->thoMake?->user?->name ?? ''));
+                if ($makeTen !== '') {
+                    $badges[] = ['code' => 'M', 'name' => $makeTen];
+                }
+                $editTen = trim((string) ($hd->thoEdit?->user?->name ?? ''));
+                if ($editTen !== '') {
+                    $badges[] = ['code' => 'E', 'name' => $editTen];
+                }
+
                 $kh = $hd->khachHang;
-                $ten = $kh->ten_khach_hang ?? $kh->ten ?? $kh->ho_ten ?? $kh->name ?? ('HĐ #' . $hd->id);
+                $ten = $kh->ten_khach_hang ?? $kh->ten ?? $kh->ho_ten ?? $kh->name ?? ('HĐ #'.$hd->id);
 
                 return [
-                    'id' => 'hd-' . $hd->id,
+                    'id' => 'hd-'.$hd->id,
                     'title' => $ten,
                     'start' => $start->toIso8601String(),
                     'end' => $start->copy()->addMinutes(60)->toIso8601String(),
@@ -449,6 +484,7 @@ class NhanSuController extends Controller
                     'extendedProps' => [
                         'hop_dong_id' => $hd->id,
                         'role' => $roleText,
+                        'badges' => $badges,
                     ],
                 ];
             })->filter()->values();
@@ -456,54 +492,63 @@ class NhanSuController extends Controller
             return response()->json($events);
         }
 
-        // View tháng/danh sách: tổng hợp theo ngày như hiện tại
+        // View tháng/danh sách: theo ngày, mỗi dòng C/M/E + tên nhân sự
         $startDate = $startDt->toDateString();
         $endDate = $endDtExclusive->copy()->subDay()->toDateString();
 
-        $rows = HopDong::query()
+        $hopDongs = HopDong::query()
+            ->with(['thoChup.user', 'thoMake.user', 'thoEdit.user'])
             ->whereBetween(DB::raw('DATE(ngay_chup)'), [$startDate, $endDate])
-            ->when(!$isAdmin, function ($q) use ($nhanVienId) {
+            ->when(! $isAdmin, function ($q) use ($nhanVienId) {
                 $q->where(function ($qq) use ($nhanVienId) {
                     $qq->where('tho_chup_id', $nhanVienId)
                         ->orWhere('tho_make_id', $nhanVienId)
                         ->orWhere('tho_edit_id', $nhanVienId);
                 });
             })
-            ->selectRaw('DATE(ngay_chup) as ngay')
-            ->when($isAdmin, function ($q) {
-                $q->selectRaw('SUM(CASE WHEN tho_chup_id IS NOT NULL THEN 1 ELSE 0 END) as chup')
-                    ->selectRaw('SUM(CASE WHEN tho_make_id IS NOT NULL THEN 1 ELSE 0 END) as make')
-                    ->selectRaw('SUM(CASE WHEN tho_edit_id IS NOT NULL THEN 1 ELSE 0 END) as edit');
-            }, function ($q) use ($nhanVienId) {
-                $q->selectRaw('SUM(CASE WHEN tho_chup_id = ? THEN 1 ELSE 0 END) as chup', [$nhanVienId])
-                    ->selectRaw('SUM(CASE WHEN tho_make_id = ? THEN 1 ELSE 0 END) as make', [$nhanVienId])
-                    ->selectRaw('SUM(CASE WHEN tho_edit_id = ? THEN 1 ELSE 0 END) as edit', [$nhanVienId]);
-            })
-            ->selectRaw('COUNT(*) as tong')
-            ->groupBy(DB::raw('DATE(ngay_chup)'))
-            ->orderBy(DB::raw('DATE(ngay_chup)'))
+            ->orderBy('ngay_chup')
+            ->orderBy('id')
             ->get();
 
-        $events = $rows->map(function ($r) {
-            $chup = (int) ($r->chup ?? 0);
-            $make = (int) ($r->make ?? 0);
-            $edit = (int) ($r->edit ?? 0);
-            $tong = (int) ($r->tong ?? ($chup + $make + $edit));
+        $grouped = $hopDongs->groupBy(function (HopDong $hd) use ($tz) {
+            if (! $hd->ngay_chup) {
+                return null;
+            }
+
+            return Carbon::parse($hd->ngay_chup, $tz)->toDateString();
+        })->filter(fn ($_, $key) => $key !== null && $key !== '');
+
+        $events = $grouped->map(function ($group, $ngay) {
+            $badges = [];
+            foreach ($group as $hd) {
+                $chupTen = trim((string) ($hd->thoChup?->user?->name ?? ''));
+                if ($chupTen !== '') {
+                    $badges[] = ['code' => 'C', 'name' => $chupTen];
+                }
+                $makeTen = trim((string) ($hd->thoMake?->user?->name ?? ''));
+                if ($makeTen !== '') {
+                    $badges[] = ['code' => 'M', 'name' => $makeTen];
+                }
+                $editTen = trim((string) ($hd->thoEdit?->user?->name ?? ''));
+                if ($editTen !== '') {
+                    $badges[] = ['code' => 'E', 'name' => $editTen];
+                }
+            }
+            if ($badges === []) {
+                return null;
+            }
 
             return [
-                'id' => 'work-' . $r->ngay,
-                'start' => $r->ngay,
+                'id' => 'work-'.$ngay,
+                'start' => $ngay,
                 'allDay' => true,
                 'display' => 'block',
                 'title' => '',
                 'extendedProps' => [
-                    'chup' => $chup,
-                    'make' => $make,
-                    'edit' => $edit,
-                    'tong' => $tong,
+                    'badges' => $badges,
                 ],
             ];
-        })->values();
+        })->filter()->values();
 
         return response()->json($events);
     }
@@ -513,12 +558,12 @@ class NhanSuController extends Controller
         $user = auth()->user();
         $isAdmin = (int) ($user?->role) === User::ROLE_ADMIN;
         $nhanVienId = $user?->nhanVien?->id;
-        if (!$isAdmin && !$nhanVienId) {
+        if (! $isAdmin && ! $nhanVienId) {
             return response()->json(['date' => null, 'items' => []]);
         }
 
         $date = $request->query('date');
-        if (!$date) {
+        if (! $date) {
             return response()->json(['date' => null, 'items' => []]);
         }
 
@@ -532,7 +577,7 @@ class NhanSuController extends Controller
         $items = HopDong::query()
             ->with(['khachHang', 'thoChup.user', 'thoMake.user', 'thoEdit.user'])
             ->whereDate('ngay_chup', $day)
-            ->when(!$isAdmin, function ($q) use ($nhanVienId) {
+            ->when(! $isAdmin, function ($q) use ($nhanVienId) {
                 $q->where(function ($qq) use ($nhanVienId) {
                     $qq->where('tho_chup_id', $nhanVienId)
                         ->orWhere('tho_make_id', $nhanVienId)
@@ -545,14 +590,26 @@ class NhanSuController extends Controller
                 $dt = $hd->ngay_chup ? Carbon::parse($hd->ngay_chup, $tz) : null;
 
                 $roles = [];
-                if ($isAdmin || !$nhanVienId) {
-                    if ($hd->tho_chup_id) $roles[] = 'Chụp';
-                    if ($hd->tho_make_id) $roles[] = 'Make';
-                    if ($hd->tho_edit_id) $roles[] = 'Edit';
+                if ($isAdmin || ! $nhanVienId) {
+                    if ($hd->tho_chup_id) {
+                        $roles[] = 'Chụp';
+                    }
+                    if ($hd->tho_make_id) {
+                        $roles[] = 'Make';
+                    }
+                    if ($hd->tho_edit_id) {
+                        $roles[] = 'Edit';
+                    }
                 } else {
-                    if ((int) $hd->tho_chup_id === (int) $nhanVienId) $roles[] = 'Chụp';
-                    if ((int) $hd->tho_make_id === (int) $nhanVienId) $roles[] = 'Make';
-                    if ((int) $hd->tho_edit_id === (int) $nhanVienId) $roles[] = 'Edit';
+                    if ((int) $hd->tho_chup_id === (int) $nhanVienId) {
+                        $roles[] = 'Chụp';
+                    }
+                    if ((int) $hd->tho_make_id === (int) $nhanVienId) {
+                        $roles[] = 'Make';
+                    }
+                    if ((int) $hd->tho_edit_id === (int) $nhanVienId) {
+                        $roles[] = 'Edit';
+                    }
                 }
 
                 $kh = $hd->khachHang;
@@ -562,6 +619,7 @@ class NhanSuController extends Controller
                     'id' => $hd->id,
                     'time' => $dt ? $dt->format('H:i') : null,
                     'datetime' => $dt ? $dt->toIso8601String() : null,
+                    'ma_hop_dong' => $hd->ma_hop_dong ? (string) $hd->ma_hop_dong : null,
                     'khach_hang' => $ten,
                     'dia_diem' => $hd->dia_diem,
                     'concept' => $hd->concept,
@@ -601,10 +659,11 @@ class NhanSuController extends Controller
                         ->orWhere('email_hoac_sdt_co_dau', 'like', "%{$search}%");
                 });
             })
-            ->when(!$isAdmin, function ($q) use ($nhanVienId) {
-                if (!$nhanVienId) {
+            ->when(! $isAdmin, function ($q) use ($nhanVienId) {
+                if (! $nhanVienId) {
                     // Tài khoản không có nhanVien liên kết => không có dữ liệu.
                     $q->whereRaw('1=0');
+
                     return;
                 }
 
@@ -664,10 +723,12 @@ class NhanSuController extends Controller
 
         if ($type === 'demo') {
             $hopDong->update(['link_file_demo' => $link]);
+
             return back()->with('success', 'Đã cập nhật link file chụp.');
         }
 
         $hopDong->update(['link_file_in' => $link]);
+
         return back()->with('success', 'Đã cập nhật link file edit.');
     }
 }

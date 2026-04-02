@@ -16,36 +16,30 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Đóng"></button>
         </div>
         @endif
-        {{-- Bộ lọc + Thêm mới --}}
+        {{-- Bộ lọc + Thêm mới: một hàng (input + nút) để gọn chiều cao --}}
         <form action="{{ route('admin.khach-hang.hop-dong') }}" method="GET" class="mb-4">
-            <div class="row g-3 align-items-end">
-                <div class="col-md-6 col-lg-4">
-                    <label class="form-label" for="search">Tên khách hàng hoặc Email/SĐT</label>
-                    <input type="text"
-                           class="form-control"
-                           id="search"
-                           name="search"
-                           value="{{ request('search') }}"
-                           placeholder="Nhập để tìm kiếm...">
-                </div>
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fa-solid fa-magnifying-glass me-1"></i> Lọc
+            <label class="form-label mb-1" for="search">Tên khách, Email/SĐT hoặc mã hợp đồng</label>
+            <div class="d-flex flex-nowrap align-items-center gap-2">
+                <input type="text"
+                       class="form-control flex-grow-1 min-w-0"
+                       id="search"
+                       name="search"
+                       value="{{ request('search') }}"
+                       placeholder="Tên, SĐT, email hoặc mã HĐ...">
+                <button type="submit" class="btn btn-primary flex-shrink-0">
+                    <i class="fa-solid fa-magnifying-glass me-1"></i> Lọc
+                </button>
+                @if(request('search'))
+                <a href="{{ route('admin.khach-hang.hop-dong') }}" class="btn btn-outline-secondary flex-shrink-0">Bỏ lọc</a>
+                @endif
+                <span class="flex-shrink-0 ms-auto" data-bs-toggle="tooltip" title="Thêm hợp đồng mới">
+                    <button type="button"
+                            class="btn btn-primary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalThemHopDong">
+                        <i class="fa-solid fa-plus me-1"></i> Thêm mới
                     </button>
-                    @if(request('search'))
-                    <a href="{{ route('admin.khach-hang.hop-dong') }}" class="btn btn-outline-secondary">Bỏ lọc</a>
-                    @endif
-                </div>
-                <div class="col-auto ms-md-auto">
-                    <span data-bs-toggle="tooltip" title="Thêm hợp đồng mới">
-                        <button type="button"
-                                class="btn btn-primary"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalThemHopDong">
-                            <i class="fa-solid fa-plus me-1"></i> Thêm mới
-                        </button>
-                    </span>
-                </div>
+                </span>
             </div>
         </form>
 
@@ -332,27 +326,27 @@
                                         <button type="button" class="nav-link" id="tab-dich-vu-le-btn" role="tab" data-bs-toggle="tab" data-bs-target="#tab-dich-vu-le" aria-controls="tab-dich-vu-le" aria-selected="false">Dịch vụ lẻ</button>
                                     </li>
                                 </ul>
-                                {{-- Ô tìm kiếm nhanh cho tab Nhóm dịch vụ + Dịch vụ lẻ --}}
-                                    <div class="row g-2 align-items-end mb-3">
-                                        <div class="col-12 col-md-3">
-                                            <label class="form-label d-block" for="them_tim_dich_vu">Tìm theo tên hoặc mã</label>
+                                {{-- Ô tìm kiếm nhanh: luôn cùng một hàng (flex-nowrap) --}}
+                                    <div class="d-flex flex-nowrap align-items-end gap-2 mb-3">
+                                        <div class="flex-grow-1 min-w-0">
+                                            <label class="form-label d-block mb-1" for="them_tim_dich_vu">Tìm theo tên hoặc mã</label>
                                             <input type="text"
                                                    class="form-control"
                                                    id="them_tim_dich_vu"
                                                    placeholder="Nhập tên hoặc mã dịch vụ...">
                                         </div>
-                                        <div class="col-auto">
+                                        <div class="flex-shrink-0">
                                             <button type="button" class="btn btn-outline-secondary" id="btnXoaLocThemDichVu">Bỏ lọc</button>
                                         </div>
                                     </div>
                                 <div class="tab-content p-3 bg-light rounded" id="tabDichVuThemHopDongContent">
                                     
                                 <div class="tab-pane fade show active" id="tab-nhom-dich-vu" role="tabpanel">
-                                    <div class="table-responsive" style="max-height: 220px; overflow-y: auto;">
+                                    <div class="table-responsive hop-dong-dich-vu-wide">
                                         <table class="table table-sm table-hover table-bordered mb-0" id="tableNhomDichVuThem">
                                             <thead class="table-light sticky-top">
                                                 <tr>
-                                                    <th style="width: 40px;" class="text-center">Chọn</th>
+                                                    <th style="width: 40px;" class="text-center"></th>
                                                     <th style="width: 50px;">STT</th>
                                                     <th>Tên nhóm</th>
                                                     <th>Mã</th>
@@ -397,11 +391,11 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="tab-dich-vu-le" role="tabpanel">
-                                    <div class="table-responsive" style="max-height: 220px; overflow-y: auto;">
+                                    <div class="table-responsive hop-dong-dich-vu-wide">
                                         <table class="table table-sm table-hover table-bordered mb-0" id="tableDichVuLeThem">
                                             <thead class="table-light sticky-top">
                                                 <tr>
-                                                    <th style="width: 40px;" class="text-center">Chọn</th>
+                                                    <th style="width: 40px;" class="text-center"></th>
                                                     <th style="width: 50px;">STT</th>
                                                     <th>Tên dịch vụ</th>
                                                     <th>Mã</th>
@@ -445,7 +439,7 @@
                         {{-- Bảng riêng: Dịch vụ lẻ của nhóm đã chọn (tách khỏi tabs, trên Trang phục) --}}
                         <div class="col-12 d-none" id="boxDichVuLeTheoNhom">
                             <label class="form-label fw-medium">Dịch vụ lẻ của nhóm đã chọn</label>
-                            <div class="table-responsive border rounded" style="max-height: 200px; overflow-y: auto;">
+                            <div class="table-responsive hop-dong-dich-vu-wide hop-dong-dich-vu-wide--compact border rounded">
                                         <table class="table table-sm table-bordered mb-0">
                                     <thead class="table-light">
                                         <tr>
@@ -624,7 +618,7 @@
                                         <table class="table table-sm table-hover table-bordered mb-0" id="tableNhomDichVuSua">
                                             <thead class="table-light sticky-top">
                                                 <tr>
-                                                    <th style="width: 40px;" class="text-center">Chọn</th>
+                                                    <th style="width: 40px;" class="text-center"></th>
                                                     <th style="width: 50px;">STT</th>
                                                     <th>Tên nhóm</th>
                                                     <th>Mã</th>
@@ -673,7 +667,7 @@
                                         <table class="table table-sm table-hover table-bordered mb-0" id="tableDichVuLeSua">
                                             <thead class="table-light sticky-top">
                                                 <tr>
-                                                    <th style="width: 40px;" class="text-center">Chọn</th>
+                                                    <th style="width: 40px;" class="text-center"></th>
                                                     <th style="width: 50px;">STT</th>
                                                     <th>Tên dịch vụ</th>
                                                     <th>Mã</th>
@@ -1020,6 +1014,21 @@
 .table-wrapper-bordered .table th,
 .table-wrapper-bordered .table td {
     border: 1px solid var(--bs-border-color, #dee2e6);
+}
+/* Modal Thêm HĐ: bảng dịch vụ rộng tối thiểu; tràn ngang màn hình → thanh cuộn ngang */
+#modalThemHopDong .table-responsive.hop-dong-dich-vu-wide {
+    max-height: 220px;
+    overflow-x: auto;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+#modalThemHopDong .table-responsive.hop-dong-dich-vu-wide.hop-dong-dich-vu-wide--compact {
+    max-height: 200px;
+}
+#modalThemHopDong .table-responsive.hop-dong-dich-vu-wide > .table {
+    min-width: 1100px;
+    width: max-content;
+    max-width: none;
 }
 /* Hàng tổng tiền / mã GT / giảm giá / cọc / còn lại: cùng chiều cao control */
 #modalThemHopDong .hop-dong-tien-row,
