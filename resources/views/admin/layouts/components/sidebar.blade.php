@@ -46,6 +46,9 @@
               $menusFromSidebarDsMenu = $sidebarMenuItems ?? [];
             @endphp
             @foreach($menusFromSidebarDsMenu as $item)
+            <li class="menu-header small">
+              <span class="menu-header-text">{{ $item['label'] }}</span>
+            </li>
               @if ($item['type'] === 'single')
                 <li class="menu-item {{ request()->routeIs($item['route']) ? 'active' : '' }}">
                   <a href="{{ route($item['route']) }}" class="menu-link">

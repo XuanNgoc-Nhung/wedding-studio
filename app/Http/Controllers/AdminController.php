@@ -16,29 +16,103 @@ use Illuminate\Validation\Rules\Password;
 
 class AdminController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $conLaiExpr = '(COALESCE(tong_tien,0) - COALESCE(so_tien_giam_gia,0) - COALESCE(thanh_toan_lan_1,0) - COALESCE(thanh_toan_lan_2,0) - COALESCE(thanh_toan_lan_3,0))';
 
-        $tongNhanVien = NhanVien::query()->count();
-        $tongKhachHang = KhachHang::query()->count();
-        $tongHopDong = HopDong::query()->count();
+        $tz = config('app.timezone') ?: 'Asia/Ho_Chi_Minh';
+        $now = Carbon::now($tz);
 
-        $tongCongNo = (float) HopDong::query()
+        $allowedPresets = ['tuan_nay', 'tuan_truoc', 'thang_nay', 'thang_truoc'];
+        $filterPreset = $request->query('preset');
+        if (! is_string($filterPreset) || ! in_array($filterPreset, $allowedPresets, true)) {
+            $filterPreset = null;
+        }
+
+        $tuKy = null;
+        $denKy = null;
+        $filterTuNgay = null;
+        $filterDenNgay = null;
+
+        if ($filterPreset) {
+            switch ($filterPreset) {
+                case 'tuan_nay':
+                    $tuKy = $now->copy()->startOfWeek();
+                    $denKy = $now->copy()->endOfWeek();
+                    break;
+                case 'tuan_truoc':
+                    $ref = $now->copy()->subWeek();
+                    $tuKy = $ref->copy()->startOfWeek();
+                    $denKy = $ref->copy()->endOfWeek();
+                    break;
+                case 'thang_nay':
+                    $tuKy = $now->copy()->startOfMonth();
+                    $denKy = $now->copy()->endOfMonth();
+                    break;
+                case 'thang_truoc':
+                    $ref = $now->copy()->subMonthNoOverflow();
+                    $tuKy = $ref->copy()->startOfMonth();
+                    $denKy = $ref->copy()->endOfMonth();
+                    break;
+            }
+        } else {
+            $tuStr = $request->query('tu_ngay');
+            $denStr = $request->query('den_ngay');
+            if (is_string($tuStr) && $tuStr !== '' && is_string($denStr) && $denStr !== '') {
+                try {
+                    $tuKy = Carbon::parse($tuStr, $tz)->startOfDay();
+                    $denKy = Carbon::parse($denStr, $tz)->endOfDay();
+                    if ($tuKy->gt($denKy)) {
+                        [$tuKy, $denKy] = [$denKy->copy()->startOfDay(), $tuKy->copy()->endOfDay()];
+                    }
+                } catch (\Throwable $e) {
+                    $tuKy = $denKy = null;
+                }
+            }
+        }
+
+        $modeLocKy = $tuKy !== null && $denKy !== null;
+
+        if ($modeLocKy) {
+            if ($tuKy->diffInDays($denKy) > 730) {
+                $denKy = $tuKy->copy()->addDays(730)->endOfDay();
+            }
+            $filterTuNgay = $tuKy->format('Y-m-d');
+            $filterDenNgay = $denKy->format('Y-m-d');
+        }
+
+        $hdTrongKy = fn () => HopDong::query()->when(
+            $modeLocKy,
+            fn ($b) => $b->whereBetween('created_at', [$tuKy, $denKy])
+        );
+
+        $tongNhanVien = NhanVien::query()
+            ->when($modeLocKy, fn ($q) => $q->whereBetween('created_at', [$tuKy, $denKy]))
+            ->count();
+
+        $tongKhachHang = KhachHang::query()
+            ->when($modeLocKy, fn ($q) => $q->whereBetween('created_at', [$tuKy, $denKy]))
+            ->count();
+
+        $tongHopDong = $hdTrongKy()->count();
+
+        $tongCongNo = (float) $hdTrongKy()
             ->selectRaw('COALESCE(SUM(GREATEST(0, '.$conLaiExpr.')),0) as t')
             ->value('t');
 
-        $soHopDongConNo = HopDong::query()->whereRaw("{$conLaiExpr} > 0")->count();
+        $soHopDongConNo = $hdTrongKy()
+            ->whereRaw("{$conLaiExpr} > 0")
+            ->count();
 
-        $tongDaThuTuHopDong = (float) HopDong::query()
+        $tongDaThuTuHopDong = (float) $hdTrongKy()
             ->selectRaw('COALESCE(SUM(COALESCE(thanh_toan_lan_1,0) + COALESCE(thanh_toan_lan_2,0) + COALESCE(thanh_toan_lan_3,0)),0) as t')
             ->value('t');
 
-        $tongGiaTriHopDong = (float) HopDong::query()
+        $tongGiaTriHopDong = (float) $hdTrongKy()
             ->selectRaw('COALESCE(SUM(COALESCE(tong_tien,0) - COALESCE(so_tien_giam_gia,0)),0) as t')
             ->value('t');
 
-        // Trạng thái HĐ trên dashboard: chỉ 2 nhóm — các giá trị lưu trong DB được coi là "đã hoàn thành"
+        // Trạng thái HĐ: trong kỳ lọc chỉ tính các HĐ có created_at trong khoảng
         $giaTriTrangThaiDaHoanThanh = [
             'Đã hoàn thành',
             'đã hoàn thành',
@@ -46,9 +120,9 @@ class AdminController extends Controller
             'hoàn thành',
             'hoan_thanh',
             'da_hoan_thanh',
-            '1'
+            '1',
         ];
-        $soHopDongDaHoanThanh = HopDong::query()
+        $soHopDongDaHoanThanh = $hdTrongKy()
             ->whereIn('trang_thai_hop_dong', $giaTriTrangThaiDaHoanThanh)
             ->count();
         $soHopDongChuaHoanThanh = max(0, $tongHopDong - $soHopDongDaHoanThanh);
@@ -58,34 +132,116 @@ class AdminController extends Controller
             ['trang_thai' => 'Chưa hoàn thành', 'so_luong' => $soHopDongChuaHoanThanh],
         ]);
 
-        $tuThang = Carbon::now()->startOfMonth()->subMonths(5);
-        $denCuoiThang = Carbon::now()->endOfMonth();
+        $tomTatKy = null;
+        $chartTheoNgay = false;
 
-        $thangNhanLabels = [];
-        $thangNhanKeys = [];
-        for ($d = $tuThang->copy(); $d->lte($denCuoiThang); $d->addMonth()) {
-            $thangNhanKeys[] = $d->format('Y-m');
-            $thangNhanLabels[] = $d->format('m/Y');
+        if (! $modeLocKy) {
+            $tuThang = $now->copy()->startOfMonth()->subMonths(5);
+            $denCuoiThang = $now->copy()->endOfMonth();
+
+            $thangNhanLabels = [];
+            $thangNhanKeys = [];
+            for ($d = $tuThang->copy(); $d->lte($denCuoiThang); $d->addMonth()) {
+                $thangNhanKeys[] = $d->format('Y-m');
+                $thangNhanLabels[] = $d->format('m/Y');
+            }
+
+            $giaTriHopDongTheoThang = HopDong::query()
+                ->where('created_at', '>=', $tuThang)
+                ->selectRaw("DATE_FORMAT(created_at, '%Y-%m') as ym")
+                ->selectRaw('SUM(COALESCE(tong_tien,0) - COALESCE(so_tien_giam_gia,0)) as total')
+                ->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%m')"))
+                ->pluck('total', 'ym');
+
+            $phieuThuTheoThang = PhieuThuChi::query()
+                ->where('loai_phieu', PhieuThuChi::LOAI_THU)
+                ->whereIn('trang_thai', [
+                    PhieuThuChi::TRANG_THAI_DONG_Y,
+                    PhieuThuChi::TRANG_THAI_HOAN_THANH,
+                ])
+                ->whereRaw('COALESCE(ngay_duyet, created_at) >= ?', [$tuThang])
+                ->selectRaw("DATE_FORMAT(COALESCE(ngay_duyet, created_at), '%Y-%m') as ym")
+                ->selectRaw('SUM(COALESCE(so_tien,0)) as total')
+                ->groupBy(DB::raw("DATE_FORMAT(COALESCE(ngay_duyet, created_at), '%Y-%m')"))
+                ->pluck('total', 'ym');
+        } else {
+            $spanDays = $tuKy->copy()->startOfDay()->diffInDays($denKy->copy()->startOfDay()) + 1;
+            $chartTheoNgay = $spanDays <= 45;
+
+            $thangNhanLabels = [];
+            $thangNhanKeys = [];
+
+            if ($chartTheoNgay) {
+                for ($d = $tuKy->copy()->startOfDay(); $d->lte($denKy); $d->addDay()) {
+                    $thangNhanKeys[] = $d->format('Y-m-d');
+                    $thangNhanLabels[] = $d->format('d/m');
+                }
+            } else {
+                $startM = $tuKy->copy()->startOfMonth();
+                $endM = $denKy->copy()->endOfMonth();
+                for ($d = $startM->copy(); $d->lte($endM); $d->addMonth()) {
+                    $thangNhanKeys[] = $d->format('Y-m');
+                    $thangNhanLabels[] = $d->format('m/Y');
+                }
+            }
+
+            $tomTatKy = [
+                'so_hd_moi' => HopDong::query()->whereBetween('created_at', [$tuKy, $denKy])->count(),
+                'gia_tri_hd_moi' => (float) HopDong::query()
+                    ->whereBetween('created_at', [$tuKy, $denKy])
+                    ->selectRaw('COALESCE(SUM(COALESCE(tong_tien,0) - COALESCE(so_tien_giam_gia,0)),0) as t')
+                    ->value('t'),
+                'phieu_thu' => (float) PhieuThuChi::query()
+                    ->where('loai_phieu', PhieuThuChi::LOAI_THU)
+                    ->whereIn('trang_thai', [
+                        PhieuThuChi::TRANG_THAI_DONG_Y,
+                        PhieuThuChi::TRANG_THAI_HOAN_THANH,
+                    ])
+                    ->whereRaw('COALESCE(ngay_duyet, created_at) BETWEEN ? AND ?', [$tuKy, $denKy])
+                    ->selectRaw('COALESCE(SUM(COALESCE(so_tien,0)),0) as t')
+                    ->value('t'),
+            ];
+
+            if ($chartTheoNgay) {
+                $giaTriHopDongTheoThang = HopDong::query()
+                    ->whereBetween('created_at', [$tuKy, $denKy])
+                    ->selectRaw('DATE(created_at) as d')
+                    ->selectRaw('SUM(COALESCE(tong_tien,0) - COALESCE(so_tien_giam_gia,0)) as total')
+                    ->groupBy(DB::raw('DATE(created_at)'))
+                    ->pluck('total', 'd');
+
+                $phieuThuTheoThang = PhieuThuChi::query()
+                    ->where('loai_phieu', PhieuThuChi::LOAI_THU)
+                    ->whereIn('trang_thai', [
+                        PhieuThuChi::TRANG_THAI_DONG_Y,
+                        PhieuThuChi::TRANG_THAI_HOAN_THANH,
+                    ])
+                    ->whereRaw('COALESCE(ngay_duyet, created_at) BETWEEN ? AND ?', [$tuKy, $denKy])
+                    ->selectRaw('DATE(COALESCE(ngay_duyet, created_at)) as d')
+                    ->selectRaw('SUM(COALESCE(so_tien,0)) as total')
+                    ->groupBy(DB::raw('DATE(COALESCE(ngay_duyet, created_at))'))
+                    ->pluck('total', 'd');
+            } else {
+                $giaTriHopDongTheoThang = HopDong::query()
+                    ->whereBetween('created_at', [$tuKy, $denKy])
+                    ->selectRaw("DATE_FORMAT(created_at, '%Y-%m') as ym")
+                    ->selectRaw('SUM(COALESCE(tong_tien,0) - COALESCE(so_tien_giam_gia,0)) as total')
+                    ->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%m')"))
+                    ->pluck('total', 'ym');
+
+                $phieuThuTheoThang = PhieuThuChi::query()
+                    ->where('loai_phieu', PhieuThuChi::LOAI_THU)
+                    ->whereIn('trang_thai', [
+                        PhieuThuChi::TRANG_THAI_DONG_Y,
+                        PhieuThuChi::TRANG_THAI_HOAN_THANH,
+                    ])
+                    ->whereRaw('COALESCE(ngay_duyet, created_at) BETWEEN ? AND ?', [$tuKy, $denKy])
+                    ->selectRaw("DATE_FORMAT(COALESCE(ngay_duyet, created_at), '%Y-%m') as ym")
+                    ->selectRaw('SUM(COALESCE(so_tien,0)) as total')
+                    ->groupBy(DB::raw("DATE_FORMAT(COALESCE(ngay_duyet, created_at), '%Y-%m')"))
+                    ->pluck('total', 'ym');
+            }
         }
-
-        $giaTriHopDongTheoThang = HopDong::query()
-            ->where('created_at', '>=', $tuThang)
-            ->selectRaw("DATE_FORMAT(created_at, '%Y-%m') as ym")
-            ->selectRaw('SUM(COALESCE(tong_tien,0) - COALESCE(so_tien_giam_gia,0)) as total')
-            ->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%m')"))
-            ->pluck('total', 'ym');
-
-        $phieuThuTheoThang = PhieuThuChi::query()
-            ->where('loai_phieu', PhieuThuChi::LOAI_THU)
-            ->whereIn('trang_thai', [
-                PhieuThuChi::TRANG_THAI_DONG_Y,
-                PhieuThuChi::TRANG_THAI_HOAN_THANH,
-            ])
-            ->whereRaw('COALESCE(ngay_duyet, created_at) >= ?', [$tuThang])
-            ->selectRaw("DATE_FORMAT(COALESCE(ngay_duyet, created_at), '%Y-%m') as ym")
-            ->selectRaw('SUM(COALESCE(so_tien,0)) as total')
-            ->groupBy(DB::raw("DATE_FORMAT(COALESCE(ngay_duyet, created_at), '%Y-%m')"))
-            ->pluck('total', 'ym');
 
         $seriesGiaTriHopDong = [];
         $seriesPhieuThu = [];
@@ -115,6 +271,12 @@ class AdminController extends Controller
             'seriesGiaTriHopDong',
             'seriesPhieuThu',
             'bangDoanhThuThang',
+            'modeLocKy',
+            'filterTuNgay',
+            'filterDenNgay',
+            'filterPreset',
+            'tomTatKy',
+            'chartTheoNgay',
         ));
     }
 

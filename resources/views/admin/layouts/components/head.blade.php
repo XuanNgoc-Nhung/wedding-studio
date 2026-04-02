@@ -80,6 +80,9 @@
 .fc-h-event{
   background-color: #fff !important;
 }
+.menu-vertical .menu-header{
+  padding: 0.5rem 0.5rem 0 1.3rem !important;
+}
 </style>
 
 <!-- Admin: responsive — font/table gọn trên tablet & mobile -->
