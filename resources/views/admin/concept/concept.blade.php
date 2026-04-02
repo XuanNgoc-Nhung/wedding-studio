@@ -160,8 +160,8 @@
                                     </div>
                                     <img id="them_hinh_anh_preview" src="" alt="Preview" class="rounded w-100 d-none" style="max-height: 240px; object-fit: cover;">
                                 </div>
-                                <input type="file" class="form-control" id="them_hinh_anh" name="hinh_anh" accept="image/jpeg,image/png,image/gif,image/webp">
-                                <small class="text-muted d-block mt-1">JPEG, PNG, GIF, WebP — tối đa 5MB</small>
+                                <input type="file" class="form-control" id="them_hinh_anh" name="hinh_anh" accept="image/*">
+                                <small class="text-muted d-block mt-1">Mọi loại ảnh — tối đa 10MB</small>
                                 <div id="them_hinh_anh_error" class="alert alert-danger mt-2 d-none" role="alert"></div>
                             </div>
                         </div>
@@ -248,7 +248,8 @@
                                     <img id="sua_hinh_anh_preview" src="" alt="Preview" class="rounded w-100 d-none" style="max-height: 240px; object-fit: cover;">
                                 </div>
                                 <label class="form-label" for="sua_hinh_anh">Hình ảnh mới (tuỳ chọn)</label>
-                                <input type="file" class="form-control" id="sua_hinh_anh" name="hinh_anh" accept="image/jpeg,image/png,image/gif,image/webp">
+                                <input type="file" class="form-control" id="sua_hinh_anh" name="hinh_anh" accept="image/*">
+                                <small class="text-muted d-block mt-1">Mọi loại ảnh — tối đa 10MB</small>
                                 <div id="sua_hinh_anh_error" class="alert alert-danger mt-2 d-none" role="alert"></div>
                             </div>
                         </div>
@@ -365,8 +366,12 @@ document.addEventListener('DOMContentLoaded', function () {
     @endif
 
     // --- Upload ảnh: Preview cho modal Thêm + Sửa ---
-    var MAX_SIZE = 5 * 1024 * 1024; // 5MB
-    var ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    var MAX_SIZE = 10 * 1024 * 1024; // 10MB
+
+    function isImageFile(file) {
+        // Dựa vào MIME type của trình duyệt; nếu rỗng thì để backend kiểm tra tiếp.
+        return !!file && (!file.type || file.type.startsWith('image/'));
+    }
 
     // Modal Thêm
     var modalThem = document.getElementById('modalThemConcept');
@@ -408,9 +413,9 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        if (!ALLOWED_TYPES.includes(file.type)) {
+        if (!isImageFile(file)) {
             if (themErrorDiv) {
-                themErrorDiv.textContent = 'Vui lòng chọn file ảnh (JPEG, PNG, GIF hoặc WebP).';
+                themErrorDiv.textContent = 'Vui lòng chọn đúng file ảnh.';
                 themErrorDiv.classList.remove('d-none');
             }
             if (themPreviewImg) {
@@ -424,7 +429,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (file.size > MAX_SIZE) {
             if (themErrorDiv) {
-                themErrorDiv.textContent = 'Kích thước file không được vượt quá 5MB. File của bạn: ' + (file.size / 1024 / 1024).toFixed(2) + 'MB.';
+                themErrorDiv.textContent = 'Kích thước file không được vượt quá 10MB. File của bạn: ' + (file.size / 1024 / 1024).toFixed(2) + 'MB.';
                 themErrorDiv.classList.remove('d-none');
             }
             if (themPreviewImg) {
@@ -496,9 +501,9 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        if (!ALLOWED_TYPES.includes(file.type)) {
+        if (!isImageFile(file)) {
             if (suaErrorDiv) {
-                suaErrorDiv.textContent = 'Vui lòng chọn file ảnh (JPEG, PNG, GIF hoặc WebP).';
+                suaErrorDiv.textContent = 'Vui lòng chọn đúng file ảnh.';
                 suaErrorDiv.classList.remove('d-none');
             }
             showSuaExistingOrPlaceholder();
@@ -508,7 +513,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (file.size > MAX_SIZE) {
             if (suaErrorDiv) {
-                suaErrorDiv.textContent = 'Kích thước file không được vượt quá 5MB. File của bạn: ' + (file.size / 1024 / 1024).toFixed(2) + 'MB.';
+                suaErrorDiv.textContent = 'Kích thước file không được vượt quá 10MB. File của bạn: ' + (file.size / 1024 / 1024).toFixed(2) + 'MB.';
                 suaErrorDiv.classList.remove('d-none');
             }
             showSuaExistingOrPlaceholder();

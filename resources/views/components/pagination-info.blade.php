@@ -14,7 +14,8 @@
     </div>
     @if($paginator->hasPages())
     <div>
-        {{ $paginator->withQueryString()->links() }}
+        {{-- Dùng template simple để chỉ render nút phân trang (tránh bị lặp phần "Showing ... results") --}}
+        {{ $paginator->withQueryString()->links('pagination::simple-bootstrap-5') }}
     </div>
     @endif
 </div>

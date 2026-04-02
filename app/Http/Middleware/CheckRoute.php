@@ -30,6 +30,11 @@ class CheckRoute
         'admin.nhan-su.cong-viec-cua-toi' => [
             'admin.nhan-su.cong-viec-cua-toi.cap-nhat-link',
         ],
+        'admin.concept.concept' => [
+            'admin.concept.concept.store',
+            'admin.concept.concept.update',
+            'admin.concept.concept.destroy',
+        ],
     ];
 
     public function handle(Request $request, Closure $next): Response

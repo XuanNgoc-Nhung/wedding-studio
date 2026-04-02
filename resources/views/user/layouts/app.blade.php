@@ -1,1732 +1,1564 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sora Bridal Studio — Hà Nội</title>
+    <meta name="generator" content="Astro v5.13.2">
+    <title>PhotoCuller - Photo Culling Software for Mac Photographers</title>
+    <meta name="description"
+        content="PhotoCuller is photo culling software for macOS that helps photographers ingest cards, compare similar shots, edit IPTC metadata, and deliver selects faster.">
+    <meta name="keywords"
+        content="photo culling software for macOS, photo culling app for Mac, photo workflow software, IPTC metadata editor, photo ingest software, photo selection tool, wedding photo culling software, photographer workflow app">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://photoculler.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="PhotoCuller">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content="PhotoCuller - Photo Culling Software for Mac Photographers">
+    <meta property="og:description"
+        content="PhotoCuller is photo culling software for macOS that helps photographers ingest cards, compare similar shots, edit IPTC metadata, and deliver selects faster.">
+    <meta property="og:url" content="https://photoculler.com/">
+    <meta property="og:image" content="https://photoculler.com/screenshot.png">
+    <meta property="og:image:alt" content="PhotoCuller photo culling workflow on macOS">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PhotoCuller - Photo Culling Software for Mac Photographers">
+    <meta name="twitter:description"
+        content="PhotoCuller is photo culling software for macOS that helps photographers ingest cards, compare similar shots, edit IPTC metadata, and deliver selects faster.">
+    <meta name="twitter:image" content="https://photoculler.com/screenshot.png">
+    <meta name="twitter:image:alt" content="PhotoCuller photo culling workflow on macOS">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Aldrich&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0&family=Noto+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    @include('user.layouts.partials.styles')
+    <script type="application/ld+json">
+        {
+            "@@context": "https://schema.org",
+            "@@type": "SoftwareApplication",
+            "name": "PhotoCuller",
+            "applicationCategory": "MultimediaApplication",
+            "operatingSystem": "macOS 15 or later",
+            "description": "PhotoCuller is photo culling software for macOS that helps photographers ingest cards, compare similar shots, edit IPTC metadata, and deliver selects faster.",
+            "url": "https://photoculler.com/",
+            "image": "https://photoculler.com/screenshot.png",
+            "keywords": "photo culling software for macOS, photo culling app for Mac, photo workflow software, IPTC metadata editor, photo ingest software, photo selection tool, wedding photo culling software, photographer workflow app",
+            "featureList": ["Photo ingest from cards and source folders", "Side-by-side compare and synchronized zoom",
+                "IPTC metadata editing and reusable templates", "Multi-destination delivery workflows",
+                "Apple Photos and filesystem support"
+            ]
+        }
+
+    </script>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    @include('user.layouts.partials.assets', ['type' => 'css'])
 </head>
 
-<body>
-
-    <!-- ══════════════ NAV ══════════════ -->
-    <nav class="nav" id="main-nav">
-        <a class="nav-logo" href="#" onclick="return false;">
-            <div class="nav-logo-mark">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c8a878" stroke-width="1.5">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" opacity=".4" />
-                    <path d="M12 8v4l3 3" />
+<body data-mobile-download-modal-enabled="true">
+    <nav>
+        <div class="nav-content"> <a href="/" class="logo"> <img src="/app-icon.png" alt="PhotoCuller"
+                    class="logo-icon"> <span class="logo-wordmark">PhotoCuller</span> </a>
+            <div class="nav-buttons"> <a href="/docs/getting-started" class="nav-link">Help</a> <a href="/releases"
+                    class="nav-link">Releases</a> <a href="/pricing" class="nav-buy"> Buy Now </a> </div> <button
+                class="hamburger" aria-label="Toggle menu" aria-expanded="false"> <span></span> <span></span>
+                <span></span> </button>
+        </div>
+    </nav> <!-- Mobile menu overlay -->
+    <div class="mobile-menu-overlay"></div>
+    <div class="mobile-menu"> <a href="/docs/getting-started" class="mobile-menu-link">Help</a> <a href="/releases"
+            class="mobile-menu-link">Releases</a> <a href="/pricing" class="mobile-menu-cta">Buy Now</a> </div>
+    <div class="download-modal-overlay" data-download-modal-overlay hidden></div>
+    <div class="download-modal" data-download-modal role="dialog" aria-modal="true"
+        aria-labelledby="download-modal-title" hidden>
+        <div class="download-modal-card"> <button type="button" class="download-modal-close" data-download-modal-close
+                aria-label="Close dialog"> <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg> </button>
+            <h2 id="download-modal-title" data-download-modal-title>
+                Get the Mac download link
+            </h2>
+            <p class="download-modal-description" data-download-modal-description>
+                Not on your Mac right now? Enter your email and we will send the
+                download link so you can install later.
+            </p>
+            <form class="download-modal-form" data-download-link-form data-turnstile-site-key="0x4AAAAAAB9i3m_wZUXw3nBL"
+                novalidate> <label for="download-modal-email">Email address</label> <input id="download-modal-email"
+                    type="email" name="email" autocomplete="email" required placeholder="you@example.com">
+                <div class="download-modal-turnstile-wrap">
+                    <div id="download-modal-turnstile" class="download-modal-turnstile"></div>
+                </div>
+                <p class="download-modal-status" data-download-link-status aria-live="polite"></p> <button type="submit"
+                    class="download-modal-submit" data-download-link-submit>
+                    Send me the Mac link
+                </button>
+            </form>
+            <div class="download-modal-success" data-download-modal-success hidden aria-live="polite"> <svg width="48"
+                    height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent, #34d399)" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
                 </svg>
-            </div>
-            Sora Bridal
-        </a>
-        <div class="nav-links">
-            <a class="nav-link active" id="nl-home" onclick="go('home')">Trang chủ</a>
-            <a class="nav-link" id="nl-services" onclick="go('services')">Dịch vụ</a>
-            <a class="nav-link" id="nl-concept" onclick="go('concept')">Concept</a>
-            <a class="nav-link" id="nl-portfolio" onclick="go('portfolio')">Portfolio</a>
-            <a class="nav-link" id="nl-studio" onclick="go('studio')">Studio</a>
-            <a class="nav-link" id="nl-blog" onclick="go('blog')">Blog cưới</a>
-        </div>
-        <div class="nav-actions">
-            <span class="nav-tel">0901 234 567</span>
-            <button class="btn-nav" onclick="go('booking')">Đặt lịch tư vấn</button>
-        </div>
-        <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
-            <span></span><span></span><span></span>
-        </button>
-    </nav>
-
-    <!-- Mobile Drawer -->
-    <div class="mobile-menu" id="mobile-menu">
-        <div class="mm-link" onclick="go('home');closeMenu()">Trang chủ</div>
-        <div class="mm-link" onclick="go('services');closeMenu()">Dịch vụ & Bảng giá</div>
-        <div class="mm-link" onclick="go('concept');closeMenu()">Concept & Phim trường</div>
-        <div class="mm-link" onclick="go('portfolio');closeMenu()">Portfolio</div>
-        <div class="mm-link" onclick="go('studio');closeMenu()">Studio</div>
-        <div class="mm-link" onclick="go('blog');closeMenu()">Blog cưới</div>
-        <button class="mm-book" onclick="go('booking');closeMenu()">Đặt lịch tư vấn miễn phí →</button>
-        <div class="mm-tel">Hotline: 0901 234 567 · Zalo</div>
-    </div>
-
-    <!-- ══════════════════════════════════
-     PAGE: TRANG CHỦ
-══════════════════════════════════ -->
-    <div class="page active" id="page-home">
-
-        <!-- Hero -->
-        <div class="hero">
-            <div class="hero-left">
-                <div class="hero-deco"></div>
-                <div class="hero-deco2"></div>
-                <div class="hero-tag">Studio ảnh cưới Hà Nội · Thành lập 2018</div>
-                <h1 class="hero-h1">
-                    Lưu giữ những<br>
-                    khoảnh khắc<br>
-                    <em>đẹp nhất đời bạn</em>
-                </h1>
-                <p class="hero-desc">Sora Bridal — nơi mỗi bộ ảnh cưới là một tác phẩm nghệ thuật, được tạo ra bằng cả
-                    trái tim, chuyên nghiệp và tinh tế.</p>
-                <div class="hero-btns">
-                    <button class="btn btn-dark" onclick="go('booking')">Đặt lịch tư vấn miễn phí</button>
-                    <button class="btn btn-outline" onclick="go('portfolio')">Xem tác phẩm →</button>
-                </div>
-                <div class="hero-stats">
-                    <div>
-                        <div class="hs-num">1.200<em>+</em></div>
-                        <div class="hs-lbl">Cặp đôi tin tưởng</div>
-                    </div>
-                    <div>
-                        <div class="hs-num">7</div>
-                        <div class="hs-lbl">Năm kinh nghiệm</div>
-                    </div>
-                    <div>
-                        <div class="hs-num">4.9<em>★</em></div>
-                        <div class="hs-lbl">Đánh giá Google</div>
-                    </div>
-                </div>
-            </div>
-            <div class="hero-right">
-                <div class="hero-img-grid">
-                    <div class="hig-a">
-                        <div class="ph gk1" style="height:100%;">
-                            <div class="ph-icon-wrap"><svg width="44" height="44" viewBox="0 0 24 24" fill="none"
-                                    stroke="#7a5a34" stroke-width="1">
-                                    <rect x="3" y="3" width="18" height="18" rx="1" />
-                                    <circle cx="8.5" cy="8.5" r="1.5" />
-                                    <polyline points="21 15 16 10 5 21" /></svg></div>
-                        </div>
-                    </div>
-                    <div class="hig-b">
-                        <div class="ph gk3" style="height:100%;">
-                            <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                    stroke="#7a5a34" stroke-width="1">
-                                    <rect x="3" y="3" width="18" height="18" rx="1" />
-                                    <circle cx="8.5" cy="8.5" r="1.5" />
-                                    <polyline points="21 15 16 10 5 21" /></svg></div>
-                        </div>
-                    </div>
-                    <div class="hig-c">
-                        <div class="ph gk5" style="height:100%;">
-                            <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                    stroke="#7a5a34" stroke-width="1">
-                                    <rect x="3" y="3" width="18" height="18" rx="1" />
-                                    <circle cx="8.5" cy="8.5" r="1.5" />
-                                    <polyline points="21 15 16 10 5 21" /></svg></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="hero-card">
-                    <div class="hc-stars">★★★★★</div>
-                    <div class="hc-val">1.200+</div>
-                    <div class="hc-lbl">cặp đôi hài lòng</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Marquee -->
-        <div class="marquee-wrap">
-            <div class="marquee-track">
-                <div class="mi">
-                    <div class="mi-dot"></div>Ảnh cưới<div class="mi-dot"></div>Pre-wedding<div class="mi-dot"></div>
-                    Album cao cấp<div class="mi-dot"></div>Video highlight<div class="mi-dot"></div>Makeup cưới<div
-                        class="mi-dot"></div>Trang phục<div class="mi-dot"></div>Concept cưới<div class="mi-dot"></div>
-                    Hà Nội
-                </div>
-                <div class="mi">
-                    <div class="mi-dot"></div>Ảnh cưới<div class="mi-dot"></div>Pre-wedding<div class="mi-dot"></div>
-                    Album cao cấp<div class="mi-dot"></div>Video highlight<div class="mi-dot"></div>Makeup cưới<div
-                        class="mi-dot"></div>Trang phục<div class="mi-dot"></div>Concept cưới<div class="mi-dot"></div>
-                    Hà Nội
-                </div>
-            </div>
-        </div>
-
-        <!-- About -->
-        <section class="sec" style="background:var(--b1);">
-            <div class="wrap">
-                <div class="about-grid">
-                    <div class="about-imgs r">
-                        <div class="about-main">
-                            <div class="ph gk2" style="height:100%;">
-                                <div class="ph-icon-wrap"><svg width="44" height="44" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                        </div>
-                        <div class="about-sub">
-                            <div class="ph gk4" style="height:100%;">
-                                <div class="ph-icon-wrap"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                        </div>
-                        <div class="about-deco"></div>
-                    </div>
-                    <div class="r d2">
-                        <div class="eyebrow">Về chúng tôi</div>
-                        <h2 class="h2" style="margin-bottom:20px;">Nghệ thuật<br><span class="em-text">nhiếp ảnh
-                                cưới</span></h2>
-                        <p class="about-quote">"Mỗi cặp đôi mang một câu chuyện riêng — và chúng tôi ở đây để kể câu
-                            chuyện đó bằng ánh sáng."</p>
-                        <p class="about-body">Sora Bridal thành lập năm 2018, ra đời từ niềm đam mê nghệ thuật và khát
-                            vọng nâng tầm ảnh cưới Việt Nam. Hơn 7 năm đồng hành cùng hơn 1.200 cặp đôi trên hành trình
-                            đến với hạnh phúc.</p>
-                        <p class="about-body">Phong cách chụp của Sora chú trọng cảm xúc thật, ánh sáng tự nhiên và từng
-                            khoảnh khắc không thể tái hiện.</p>
-                        <div style="margin-top:24px;">
-                            <button class="btn btn-outline" onclick="go('studio')">Tìm hiểu thêm về studio →</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- ═══ PHIM TRƯỜNG ═══ -->
-
-        <!-- Studio intro banner -->
-        <div class="studio-intro">
-            <div class="wrap" style="position:relative;z-index:1;">
-                <div class="si-eyebrow r">Hệ thống phim trường</div>
-                <h2 class="si-title r">Phim trường cưới<br><em>lớn nhất Hà Nội</em></h2>
-                <p class="si-sub r">Sora Bridal sở hữu hệ thống 2 phim trường quy mô với hơn 40 concept độc quyền —
-                    không gian chụp ảnh đa phong cách, đầy đủ ánh sáng chuyên nghiệp và ekip hỗ trợ toàn diện.</p>
-                <div class="r">
-                    <button class="btn btn-white" onclick="go('concept')">✦ Concept hot tại Sora</button>
-                </div>
-                <div class="si-stats r">
-                    <div class="si-stat">
-                        <div class="si-stat-num">2</div>
-                        <div class="si-stat-lbl">Phim trường độc quyền</div>
-                    </div>
-                    <div class="si-stat">
-                        <div class="si-stat-num">40+</div>
-                        <div class="si-stat-lbl">Concept đa phong cách</div>
-                    </div>
-                    <div class="si-stat">
-                        <div class="si-stat-num">3.000m²</div>
-                        <div class="si-stat-lbl">Tổng diện tích</div>
-                    </div>
-                    <div class="si-stat">
-                        <div class="si-stat-num">100%</div>
-                        <div class="si-stat-lbl">Ánh sáng chuyên nghiệp</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Services -->
-        <section class="sec">
-            <div class="wrap">
-                <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;">
-                    <div class="r">
-                        <div class="eyebrow">Dịch vụ</div>
-                        <h2 class="h2">Gói chụp <span class="em-text">phù hợp với bạn</span></h2>
-                    </div>
-                    <button class="btn btn-outline r d1" onclick="go('services')">Xem tất cả →</button>
-                </div>
-                <div class="svc-grid r">
-                    <div class="svc-card" onclick="go('services')">
-                        <div class="svc-img">
-                            <div class="ph gk1" style="height:100%;">
-                                <div class="ph-icon-wrap"><svg width="36" height="36" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                            <div class="svc-badge">Phổ biến nhất</div>
-                        </div>
-                        <div class="svc-body">
-                            <div class="svc-title">Gói Studio</div>
-                            <p class="svc-desc">Chụp tại studio với concept độc đáo, trang phục đa dạng và makeup chuyên
-                                nghiệp.</p>
-                            <div class="svc-footer"><span class="svc-price">Từ 8.500.000đ</span>
-                                <div class="svc-arrow">›</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="svc-card" onclick="go('services')">
-                        <div class="svc-img">
-                            <div class="ph gk4" style="height:100%;">
-                                <div class="ph-icon-wrap"><svg width="36" height="36" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                            <div class="svc-badge">Được yêu thích</div>
-                        </div>
-                        <div class="svc-body">
-                            <div class="svc-title">Gói Premium</div>
-                            <p class="svc-desc">Trọn gói studio + ngoại cảnh, video highlight và album cao cấp hoàn
-                                chỉnh.</p>
-                            <div class="svc-footer"><span class="svc-price">Từ 15.000.000đ</span>
-                                <div class="svc-arrow">›</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="svc-card" onclick="go('services')">
-                        <div class="svc-img">
-                            <div class="ph gk6" style="height:100%;">
-                                <div class="ph-icon-wrap"><svg width="36" height="36" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                        </div>
-                        <div class="svc-body">
-                            <div class="svc-title">Gói Luxury</div>
-                            <p class="svc-desc">Trải nghiệm đẳng cấp từ A–Z: nhiều ngày, đa địa điểm, êkíp riêng.</p>
-                            <div class="svc-footer"><span class="svc-price">Từ 25.000.000đ</span>
-                                <div class="svc-arrow">›</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Portfolio -->
-        <section class="sec" style="background:var(--b1);">
-            <div class="wrap">
-                <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:40px;">
-                    <div class="r">
-                        <div class="eyebrow">Tác phẩm</div>
-                        <h2 class="h2">Những câu chuyện <span class="em-text">đã được kể</span></h2>
-                    </div>
-                    <button class="btn btn-outline r d1" onclick="go('portfolio')">Xem toàn bộ →</button>
-                </div>
-                <div class="port-grid r">
-                    <div class="port-item">
-                        <div class="ph gk1" style="height:100%;">
-                            <div class="ph-icon-wrap"><svg width="36" height="36" viewBox="0 0 24 24" fill="none"
-                                    stroke="#7a5a34" stroke-width="1">
-                                    <rect x="3" y="3" width="18" height="18" rx="1" />
-                                    <circle cx="8.5" cy="8.5" r="1.5" />
-                                    <polyline points="21 15 16 10 5 21" /></svg></div>
-                        </div>
-                        <div class="port-overlay"></div>
-                        <div class="port-info">
-                            <div class="port-couple">Minh & Hoàng Lan</div>
-                            <div class="port-type">Studio · Concept</div>
-                        </div>
-                    </div>
-                    <div class="port-item">
-                        <div class="ph gk3" style="height:100%;">
-                            <div class="ph-icon-wrap"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"
-                                    stroke="#7a5a34" stroke-width="1">
-                                    <rect x="3" y="3" width="18" height="18" rx="1" />
-                                    <circle cx="8.5" cy="8.5" r="1.5" />
-                                    <polyline points="21 15 16 10 5 21" /></svg></div>
-                        </div>
-                        <div class="port-overlay"></div>
-                        <div class="port-info">
-                            <div class="port-couple">Hùng & Thu Hà</div>
-                            <div class="port-type">Hồ Tây · Ngoại cảnh</div>
-                        </div>
-                    </div>
-                    <div class="port-item">
-                        <div class="ph gk5" style="height:100%;">
-                            <div class="ph-icon-wrap"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"
-                                    stroke="#7a5a34" stroke-width="1">
-                                    <rect x="3" y="3" width="18" height="18" rx="1" />
-                                    <circle cx="8.5" cy="8.5" r="1.5" />
-                                    <polyline points="21 15 16 10 5 21" /></svg></div>
-                        </div>
-                        <div class="port-overlay"></div>
-                        <div class="port-info">
-                            <div class="port-couple">An & Linh Chi</div>
-                            <div class="port-type">Phố cổ Hà Nội</div>
-                        </div>
-                    </div>
-                    <div class="port-item">
-                        <div class="ph gk2" style="height:100%;">
-                            <div class="ph-icon-wrap"><svg width="36" height="36" viewBox="0 0 24 24" fill="none"
-                                    stroke="#7a5a34" stroke-width="1">
-                                    <rect x="3" y="3" width="18" height="18" rx="1" />
-                                    <circle cx="8.5" cy="8.5" r="1.5" />
-                                    <polyline points="21 15 16 10 5 21" /></svg></div>
-                        </div>
-                        <div class="port-overlay"></div>
-                        <div class="port-info">
-                            <div class="port-couple">Tuấn & Bảo Mai</div>
-                            <div class="port-type">Đà Lạt · Luxury</div>
-                        </div>
-                    </div>
-                    <div class="port-item">
-                        <div class="ph gk7" style="height:100%;">
-                            <div class="ph-icon-wrap"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"
-                                    stroke="#7a5a34" stroke-width="1">
-                                    <rect x="3" y="3" width="18" height="18" rx="1" />
-                                    <circle cx="8.5" cy="8.5" r="1.5" />
-                                    <polyline points="21 15 16 10 5 21" /></svg></div>
-                        </div>
-                        <div class="port-overlay"></div>
-                        <div class="port-info">
-                            <div class="port-couple">Nam & Thanh Thu</div>
-                            <div class="port-type">Film tone</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Process -->
-        <section class="sec">
-            <div class="wrap">
-                <div class="r" style="text-align:center;margin-bottom:56px;">
-                    <div class="eyebrow" style="justify-content:center;">Quy trình</div>
-                    <h2 class="h2">5 bước đến <span class="em-text">bộ ảnh hoàn hảo</span></h2>
-                </div>
-                <div class="proc-grid r">
-                    <div class="proc-step">
-                        <div class="proc-num">1</div>
-                        <div class="proc-title">Tư vấn miễn phí</div>
-                        <p class="proc-desc">Trao đổi concept, phong cách và ngày chụp phù hợp</p>
-                    </div>
-                    <div class="proc-step">
-                        <div class="proc-num">2</div>
-                        <div class="proc-title">Ký hợp đồng</div>
-                        <p class="proc-desc">Xác nhận gói, đặt cọc và lên lịch chi tiết</p>
-                    </div>
-                    <div class="proc-step">
-                        <div class="proc-num">3</div>
-                        <div class="proc-title">Ngày chụp</div>
-                        <p class="proc-desc">Trải nghiệm cùng đội ngũ chuyên nghiệp</p>
-                    </div>
-                    <div class="proc-step">
-                        <div class="proc-num">4</div>
-                        <div class="proc-title">Chọn ảnh demo</div>
-                        <p class="proc-desc">Duyệt và chọn ảnh ưng ý để chỉnh màu</p>
-                    </div>
-                    <div class="proc-step">
-                        <div class="proc-num">5</div>
-                        <div class="proc-title">Nhận thành phẩm</div>
-                        <p class="proc-desc">Ảnh, video, album trong 30 ngày</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Reviews -->
-        <section class="sec" style="background:var(--b1);">
-            <div class="wrap">
-                <div class="r" style="text-align:center;margin-bottom:40px;">
-                    <div class="eyebrow" style="justify-content:center;">Cảm nhận</div>
-                    <h2 class="h2">Khách hàng <span class="em-text">nói gì về chúng tôi</span></h2>
-                </div>
-                <div class="rev-grid r">
-                    <div class="rev-card">
-                        <div class="rev-stars">★★★★★</div>
-                        <p class="rev-text">"Sora đã làm tôi khóc khi nhìn thấy bộ ảnh. Không ngờ mình có thể đẹp đến
-                            vậy trong ngày cưới!"</p>
-                        <div class="rev-author">
-                            <div class="rev-av">HL</div>
-                            <div>
-                                <div class="rev-name">Hoàng Linh & Minh Khoa</div>
-                                <div class="rev-date">Tháng 3, 2026</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="rev-card">
-                        <div class="rev-stars">★★★★★</div>
-                        <p class="rev-text">"Gói Premium rất xứng đáng. Từ makeup đến chụp đều chuyên nghiệp. Bộ ảnh đẹp
-                            hơn mọi kỳ vọng."</p>
-                        <div class="rev-author">
-                            <div class="rev-av">TH</div>
-                            <div>
-                                <div class="rev-name">Thu Hà & Tiến Hùng</div>
-                                <div class="rev-date">Tháng 1, 2026</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="rev-card">
-                        <div class="rev-stars">★★★★★</div>
-                        <p class="rev-text">"Studio đẹp, ekip thân thiện, concept phong phú. Đã giới thiệu Sora cho 3
-                            cặp bạn bè chuẩn bị cưới!"</p>
-                        <div class="rev-author">
-                            <div class="rev-av">BN</div>
-                            <div>
-                                <div class="rev-name">Bích Ngọc & Quốc Tuấn</div>
-                                <div class="rev-date">Tháng 12, 2025</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA -->
-        <div class="cta-band">
-            <div class="wrap" style="position:relative;z-index:1;">
-                <div class="eyebrow" style="justify-content:center;color:var(--br-l);">Bắt đầu ngay hôm nay</div>
-                <div class="cta-h">Để Sora kể <em>câu chuyện của bạn</em></div>
-                <p class="cta-sub">Tư vấn hoàn toàn miễn phí · Không áp lực · Phản hồi trong 2 giờ</p>
-                <button class="btn btn-white" onclick="go('booking')">Đặt lịch tư vấn ngay →</button>
-            </div>
-        </div>
-
-    </div><!-- /page-home -->
-
-    <!-- ══════════════════════════════════
-     PAGE: DỊCH VỤ
-══════════════════════════════════ -->
-    <div class="page" id="page-services">
-        <div class="page-hero">
-            <div class="page-hero-inner">
-                <div class="wrap">
-                    <div class="r" style="text-align:center;">
-                        <div class="eyebrow" style="justify-content:center;">Dịch vụ & Bảng giá</div>
-                        <h1 class="h1" style="margin-bottom:14px;">Gói chụp <span class="em-text">cho mọi cặp đôi</span>
-                        </h1>
-                        <p class="lead" style="margin:0 auto;text-align:center;max-width:460px;">Mỗi gói đều bao gồm tư
-                            vấn concept miễn phí và cam kết chất lượng từ Sora.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="pkg-grid r">
-            <div class="pkg-card">
-                <div class="pkg-img">
-                    <div class="ph gk1" style="height:100%;">
-                        <div class="ph-icon-wrap"><svg width="36" height="36" viewBox="0 0 24 24" fill="none"
-                                stroke="#7a5a34" stroke-width="1">
-                                <rect x="3" y="3" width="18" height="18" rx="1" />
-                                <circle cx="8.5" cy="8.5" r="1.5" />
-                                <polyline points="21 15 16 10 5 21" /></svg></div>
-                    </div>
-                </div>
-                <div class="pkg-body">
-                    <div class="pkg-name">Gói Studio</div>
-                    <div class="pkg-sub">Studio Package</div>
-                    <div class="pkg-price">8.500.000đ</div>
-                    <div class="pkg-note">Trọn gói — không phát sinh thêm</div>
-                    <div class="pkg-sep"></div>
-                    <ul class="pkg-list">
-                        <li>
-                            <div class="pkg-check">✓</div>Chụp 1 ngày tại studio Sora
-                        </li>
-                        <li>
-                            <div class="pkg-check">✓</div>2 concept trang phục khác nhau
-                        </li>
-                        <li>
-                            <div class="pkg-check">✓</div>Makeup & làm tóc chuyên nghiệp
-                        </li>
-                        <li>
-                            <div class="pkg-check">✓</div>40 ảnh chỉnh màu hoàn chỉnh
-                        </li>
-                        <li>
-                            <div class="pkg-check">✓</div>File RAW gốc không giới hạn
-                        </li>
-                        <li>
-                            <div class="pkg-check">✓</div>Giao ảnh trong 21 ngày
-                        </li>
-                    </ul>
-                    <button class="pkg-btn" onclick="go('booking')">Đặt lịch tư vấn</button>
-                </div>
-            </div>
-            <div class="pkg-card featured">
-                <div class="pkg-ribbon">Được chọn nhiều nhất</div>
-                <div class="pkg-img">
-                    <div class="ph gk4" style="height:100%;">
-                        <div class="ph-icon-wrap"><svg width="36" height="36" viewBox="0 0 24 24" fill="none"
-                                stroke="#7a5a34" stroke-width="1">
-                                <rect x="3" y="3" width="18" height="18" rx="1" />
-                                <circle cx="8.5" cy="8.5" r="1.5" />
-                                <polyline points="21 15 16 10 5 21" /></svg></div>
-                    </div>
-                </div>
-                <div class="pkg-body">
-                    <div class="pkg-name">Gói Premium</div>
-                    <div class="pkg-sub">Premium Package</div>
-                    <div class="pkg-price">15.000.000đ</div>
-                    <div class="pkg-note">Studio + Ngoại cảnh trọn gói</div>
-                    <div class="pkg-sep"></div>
-                    <ul class="pkg-list">
-                        <li>
-                            <div class="pkg-check">✓</div>Tất cả dịch vụ gói Studio
-                        </li>
-                        <li>
-                            <div class="pkg-check">✓</div>Chụp ngoại cảnh 1 ngày (2 địa điểm)
-                        </li>
-                        <li>
-                            <div class="pkg-check">✓</div>4 concept + 4 váy cưới
-                        </li>
-                        <li>
-                            <div class="pkg-check">✓</div>80 ảnh chỉnh màu cao cấp
-                        </li>
-                        <li>
-                            <div class="pkg-check">✓</div>Video highlight 3 phút
-                        </li>
-                        <li>
-                            <div class="pkg-check">✓</div>Album photobook 30×40cm (30 trang)
-                        </li>
-                        <li>
-                            <div class="pkg-check">✓</div>Giao thành phẩm trong 30 ngày
-                        </li>
-                    </ul>
-                    <button class="pkg-btn" onclick="go('booking')">Đặt lịch tư vấn</button>
-                </div>
-            </div>
-            <div class="pkg-card">
-                <div class="pkg-img">
-                    <div class="ph gk6" style="height:100%;">
-                        <div class="ph-icon-wrap"><svg width="36" height="36" viewBox="0 0 24 24" fill="none"
-                                stroke="#7a5a34" stroke-width="1">
-                                <rect x="3" y="3" width="18" height="18" rx="1" />
-                                <circle cx="8.5" cy="8.5" r="1.5" />
-                                <polyline points="21 15 16 10 5 21" /></svg></div>
-                    </div>
-                </div>
-                <div class="pkg-body">
-                    <div class="pkg-name">Gói Luxury</div>
-                    <div class="pkg-sub">Luxury Package</div>
-                    <div class="pkg-price">25.000.000đ</div>
-                    <div class="pkg-note">Trải nghiệm toàn diện từ A đến Z</div>
-                    <div class="pkg-sep"></div>
-                    <ul class="pkg-list">
-                        <li>
-                            <div class="pkg-check">✓</div>Tất cả dịch vụ gói Premium
-                        </li>
-                        <li>
-                            <div class="pkg-check">✓</div>2 ngày studio + 2 ngày ngoại cảnh
-                        </li>
-                        <li>
-                            <div class="pkg-check">✓</div>Nhiếp ảnh gia senior riêng
-                        </li>
-                        <li>
-                            <div class="pkg-check">✓</div>150 ảnh + ảnh phóng lớn
-                        </li>
-                        <li>
-                            <div class="pkg-check">✓</div>Phim tình yêu 10–15 phút
-                        </li>
-                        <li>
-                            <div class="pkg-check">✓</div>Album luxury in UV cao cấp
-                        </li>
-                        <li>
-                            <div class="pkg-check">✓</div>Có thể chụp Hà Nội / Đà Lạt / Hội An
-                        </li>
-                    </ul>
-                    <button class="pkg-btn" onclick="go('booking')">Đặt lịch tư vấn</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Add-ons -->
-        <section style="padding:0 0 80px;">
-            <div class="wrap">
-                <div class="r" style="margin-bottom:32px;">
-                    <div class="eyebrow">Dịch vụ bổ sung</div>
-                    <h2 class="h2">Tuỳ chỉnh <span class="em-text">theo nhu cầu</span></h2>
-                </div>
-                <div class="addon-grid r">
-                    <div class="addon-card">
-                        <div class="addon-icon">💄</div>
-                        <div class="addon-name">Makeup thêm lần</div>
-                        <p class="addon-desc">Thay đổi phong cách makeup cho từng concept</p>
-                        <div class="addon-price">+ 500.000đ / lần</div>
-                    </div>
-                    <div class="addon-card">
-                        <div class="addon-icon">📸</div>
-                        <div class="addon-name">Ảnh chỉnh thêm</div>
-                        <p class="addon-desc">Chỉnh màu bổ sung ngoài gói ban đầu</p>
-                        <div class="addon-price">+ 80.000đ / ảnh</div>
-                    </div>
-                    <div class="addon-card">
-                        <div class="addon-icon">🎬</div>
-                        <div class="addon-name">Teaser video 60s</div>
-                        <p class="addon-desc">Clip ngắn tối ưu cho reels và TikTok</p>
-                        <div class="addon-price">+ 2.000.000đ</div>
-                    </div>
-                    <div class="addon-card">
-                        <div class="addon-icon">📖</div>
-                        <div class="addon-name">Album bổ sung</div>
-                        <p class="addon-desc">Album photobook in thêm tặng gia đình</p>
-                        <div class="addon-price">+ 3.500.000đ</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="cta-band">
-            <div class="wrap" style="position:relative;z-index:1;">
-                <div class="cta-h">Chưa biết chọn gói nào? <em>Để Sora tư vấn</em></div>
-                <p class="cta-sub">Hoàn toàn miễn phí · Không áp lực</p><button class="btn btn-white"
-                    onclick="go('booking')">Đặt lịch tư vấn →</button>
+                <p class="download-modal-success-text">
+                    Check your inbox for the Mac download link.
+                </p>
             </div>
         </div>
     </div>
-
-    <!-- ══════════════════════════════════
-     PAGE: PORTFOLIO
-══════════════════════════════════ -->
-    <div class="page" id="page-portfolio">
-        <div class="page-hero">
-            <div class="page-hero-inner">
-                <div class="wrap">
-                    <div class="r">
-                        <div class="eyebrow">Tác phẩm</div>
-                        <h1 class="h1" style="margin-bottom:14px;">Những câu chuyện <span class="em-text">chúng tôi đã
-                                kể</span></h1>
-                        <p class="lead">Hơn 1.200 cặp đôi — mỗi bộ ảnh là một tác phẩm độc nhất.</p>
-                        <div class="pf-filters" id="pf-filters">
-                            <button class="pf-btn on" data-filter="all">Tất cả</button>
-                            <button class="pf-btn" data-filter="studio">Studio</button>
-                            <button class="pf-btn" data-filter="ngoai-canh">Ngoại cảnh HN</button>
-                            <button class="pf-btn" data-filter="da-lat">Đà Lạt</button>
-                            <button class="pf-btn" data-filter="hoi-an">Hội An</button>
-                            <button class="pf-btn" data-filter="han-quoc">Concept Hàn</button>
-                        </div>
-                    </div>
+    <section class="hero" data-astro-cid-bbe6dxrz>
+        <div class="hero-content section-shell-wide" data-astro-cid-bbe6dxrz>
+            <h1 class="hero-title" data-astro-cid-bbe6dxrz>
+                From ingest to selects at
+                <span class="accent-text" data-astro-cid-bbe6dxrz>Lightning Speed</span> </h1>
+            <p class="hero-description" data-astro-cid-bbe6dxrz>
+                The fastest way to get from a full card to your final selects on Mac.
+            </p>
+            <div class="hero-cta" data-astro-cid-bbe6dxrz>
+                <div class="download-btn-wrap" data-astro-cid-sle7k2hz> <a href="/download"
+                        class="download-btn hero-download-btn" data-download-cta data-modal-text="Email me the Mac link"
+                        data-astro-cid-sle7k2hz>
+                        <div class="download-btn__comet" aria-hidden="true" data-astro-cid-sle7k2hz></div> <span
+                            class="download-btn__inner" data-astro-cid-sle7k2hz> <svg width="18" height="18"
+                                viewBox="0 0 814 1000" fill="currentColor" aria-hidden="true" data-astro-cid-sle7k2hz>
+                                <path
+                                    d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.3 134.4-316.8 266.5-316.8 70.1 0 128.4 46.4 171.5 46.4 41.3 0 106.9-49.4 185.2-49.4 29.5 0 108.1 2.6 168.5 71.9zm-234.5-172.9c31.3-36.9 53.1-88.1 53.1-139.3 0-7.1-.6-14.3-1.9-20.1-50.6 1.9-110.8 33.7-147.1 75.8-28.5 32.4-55.1 83.6-55.1 135.5 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 45.4 0 102.5-30.4 135.5-71.3z"
+                                    data-astro-cid-sle7k2hz></path>
+                            </svg> <span data-download-cta-label data-astro-cid-sle7k2hz>Download for Mac</span> </span>
+                    </a>
+                    <p class="download-btn-meta" data-astro-cid-sle7k2hz>macOS 15 Sequoia or later &nbsp;·&nbsp; Apple
+                        Silicon</p>
+                </div>
+                <p class="hero-cta-helper" data-download-helper hidden data-astro-cid-bbe6dxrz>
+                    On mobile right now? You can download directly from your Mac, or use the
+                    email link above.
+                </p>
+            </div>
+            <div class="compare-shell" data-astro-cid-bbe6dxrz>
+                <div class="compare-container" data-compare style="--pos: 50%" data-astro-cid-bbe6dxrz> <img
+                        class="compare-base" src="/images/hero-light.webp" alt="PhotoCuller in light mode" width="1650"
+                        height="1100" fetchpriority="high" draggable="false" data-astro-cid-bbe6dxrz>
+                    <div class="compare-overlay" aria-hidden="true" data-astro-cid-bbe6dxrz> <img
+                            src="/images/hero-dark.webp" alt="" width="1650" height="1100" fetchpriority="high"
+                            draggable="false" data-astro-cid-bbe6dxrz> </div>
+                    <div class="slider-line" aria-hidden="true" data-astro-cid-bbe6dxrz> <span class="slider-handle"
+                            data-astro-cid-bbe6dxrz> <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+                                data-astro-cid-bbe6dxrz>
+                                <polyline points="9,6 4,12 9,18" data-astro-cid-bbe6dxrz></polyline>
+                                <polyline points="15,6 20,12 15,18" data-astro-cid-bbe6dxrz></polyline>
+                            </svg> </span> </div> <span class="sr-only" data-astro-cid-bbe6dxrz>
+                        Drag the slider to compare dark mode and light mode
+                    </span>
                 </div>
             </div>
         </div>
-        <div class="wrap">
-            <div class="pf-masonry r" id="pf-grid">
-                <div class="pf-card" data-cat="studio">
-                    <div class="ph gk1" style="aspect-ratio:3/4;">
-                        <div class="ph-icon-wrap"><svg width="36" height="36" viewBox="0 0 24 24" fill="none"
-                                stroke="#7a5a34" stroke-width="1">
-                                <rect x="3" y="3" width="18" height="18" rx="1" />
-                                <circle cx="8.5" cy="8.5" r="1.5" />
-                                <polyline points="21 15 16 10 5 21" /></svg></div>
-                    </div>
-                    <div class="pf-info">
-                        <div class="pf-couple">Minh & Hoàng Lan</div>
-                        <div class="pf-type">Studio · Concept Hàn Quốc</div>
-                    </div>
-                </div>
-                <div class="pf-card" data-cat="ngoai-canh">
-                    <div class="ph gk3" style="aspect-ratio:3/4;">
-                        <div class="ph-icon-wrap"><svg width="36" height="36" viewBox="0 0 24 24" fill="none"
-                                stroke="#7a5a34" stroke-width="1">
-                                <rect x="3" y="3" width="18" height="18" rx="1" />
-                                <circle cx="8.5" cy="8.5" r="1.5" />
-                                <polyline points="21 15 16 10 5 21" /></svg></div>
-                    </div>
-                    <div class="pf-info">
-                        <div class="pf-couple">Hùng & Thu Hà</div>
-                        <div class="pf-type">Hồ Tây · Ngoại cảnh</div>
-                    </div>
-                </div>
-                <div class="pf-card" data-cat="ngoai-canh">
-                    <div class="ph gk5" style="aspect-ratio:3/4;">
-                        <div class="ph-icon-wrap"><svg width="36" height="36" viewBox="0 0 24 24" fill="none"
-                                stroke="#7a5a34" stroke-width="1">
-                                <rect x="3" y="3" width="18" height="18" rx="1" />
-                                <circle cx="8.5" cy="8.5" r="1.5" />
-                                <polyline points="21 15 16 10 5 21" /></svg></div>
-                    </div>
-                    <div class="pf-info">
-                        <div class="pf-couple">An & Linh Chi</div>
-                        <div class="pf-type">Phố cổ Hà Nội</div>
-                    </div>
-                </div>
-                <div class="pf-card" data-cat="da-lat">
-                    <div class="ph gk2" style="aspect-ratio:3/4;">
-                        <div class="ph-icon-wrap"><svg width="36" height="36" viewBox="0 0 24 24" fill="none"
-                                stroke="#7a5a34" stroke-width="1">
-                                <rect x="3" y="3" width="18" height="18" rx="1" />
-                                <circle cx="8.5" cy="8.5" r="1.5" />
-                                <polyline points="21 15 16 10 5 21" /></svg></div>
-                    </div>
-                    <div class="pf-info">
-                        <div class="pf-couple">Tuấn & Bảo Mai</div>
-                        <div class="pf-type">Đà Lạt · Luxury</div>
-                    </div>
-                </div>
-                <div class="pf-card" data-cat="studio">
-                    <div class="ph gk7" style="aspect-ratio:3/4;">
-                        <div class="ph-icon-wrap"><svg width="36" height="36" viewBox="0 0 24 24" fill="none"
-                                stroke="#7a5a34" stroke-width="1">
-                                <rect x="3" y="3" width="18" height="18" rx="1" />
-                                <circle cx="8.5" cy="8.5" r="1.5" />
-                                <polyline points="21 15 16 10 5 21" /></svg></div>
-                    </div>
-                    <div class="pf-info">
-                        <div class="pf-couple">Nam & Thanh Thu</div>
-                        <div class="pf-type">Studio · Film tone</div>
-                    </div>
-                </div>
-                <div class="pf-card" data-cat="hoi-an">
-                    <div class="ph gk4" style="aspect-ratio:3/4;">
-                        <div class="ph-icon-wrap"><svg width="36" height="36" viewBox="0 0 24 24" fill="none"
-                                stroke="#7a5a34" stroke-width="1">
-                                <rect x="3" y="3" width="18" height="18" rx="1" />
-                                <circle cx="8.5" cy="8.5" r="1.5" />
-                                <polyline points="21 15 16 10 5 21" /></svg></div>
-                    </div>
-                    <div class="pf-info">
-                        <div class="pf-couple">Khoa & Mỹ Linh</div>
-                        <div class="pf-type">Hội An · Pre-wedding</div>
-                    </div>
-                </div>
+    </section>
+    <script type="module">
+        document.querySelectorAll("[data-compare]").forEach(e=>{let s=!1;const r=t=>{const i=e.getBoundingClientRect(),a=t-i.left;return Math.min(100,Math.max(0,a/i.width*100))},d=t=>{e.style.setProperty("--pos",`${t}%`)};e.addEventListener("pointerdown",t=>{s=!0,e.setPointerCapture(t.pointerId),d(r(t.clientX)),e.classList.add("is-dragging")}),e.addEventListener("pointermove",t=>{s&&(t.preventDefault(),d(r(t.clientX)))});const n=()=>{s=!1,e.classList.remove("is-dragging")};e.addEventListener("pointerup",n),e.addEventListener("pointercancel",n)});
+    </script>
+    <section class="audience-section landing-section" data-astro-cid-ijmr2pup>
+        <div class="audience-container section-shell" data-astro-cid-ijmr2pup>
+            <h2 class="section-headline section-title" data-astro-cid-ijmr2pup>
+                Built for photographers who <span class="accent-text" data-astro-cid-ijmr2pup>shoot more than they can
+                    sort</span> </h2>
+            <p class="section-description section-subtitle" data-astro-cid-ijmr2pup>
+                Whether you come back from a weekend hike with 400 frames or a wedding
+                with 4,000, the bottleneck is the same. PhotoCuller helps you get from
+                everything to the good ones without burning out.
+            </p>
+            <div class="audience-grid" data-astro-cid-ijmr2pup>
+                <article class="audience-card" data-astro-cid-ijmr2pup>
+                    <h3 class="feature-title card-title" data-astro-cid-ijmr2pup>Passionate Photographers</h3>
+                    <p class="feature-description card-body" data-astro-cid-ijmr2pup>
+                        You want a better way to work through large shoots, compare similar
+                        frames, and keep the best images. PhotoCuller gives you focus
+                        peaking, side-by-side compare, and smart stacking so the best
+                        shots surface faster.
+                    </p>
+                </article>
+                <article class="audience-card" data-astro-cid-ijmr2pup>
+                    <h3 class="feature-title card-title" data-astro-cid-ijmr2pup>Working Photographers</h3>
+                    <p class="feature-description card-body" data-astro-cid-ijmr2pup>
+                        You need to ingest from multiple SD cards, apply IPTC metadata, and
+                        set up repeatable delivery workflows. PhotoCuller covers the session
+                        from card to handoff.
+                    </p>
+                </article>
             </div>
         </div>
-    </div>
-
-    <!-- ══════════════════════════════════
-     PAGE: STUDIO
-══════════════════════════════════ -->
-    <div class="page" id="page-studio">
-        <div class="page-hero">
-            <div class="page-hero-inner">
-                <div class="wrap r">
-                    <div class="eyebrow">Về chúng tôi</div>
-                    <h1 class="h1">Câu chuyện của <span class="em-text">Sora Bridal</span></h1>
-                    <p class="lead">Thành lập 2018 từ niềm đam mê nghệ thuật và khát vọng nâng tầm ảnh cưới Việt Nam.
+    </section>
+    <section class="steps-section landing-section" id="session" data-astro-cid-oxn5q4ar>
+        <div class="steps-container section-shell-wide" data-astro-cid-oxn5q4ar>
+            <h2 class="section-headline section-title" data-astro-cid-oxn5q4ar>
+                One session. <span class="accent-text" data-astro-cid-oxn5q4ar>Three steps.</span> </h2>
+            <p class="section-description section-subtitle" data-astro-cid-oxn5q4ar>
+                PhotoCuller is designed around a single review session. Open a folder or
+                ingest a card, make your decisions, route the output, move on.
+            </p>
+            <div class="steps-list" data-astro-cid-oxn5q4ar>
+                <article class="step-row" data-astro-cid-oxn5q4ar>
+                    <div class="step-copy" data-astro-cid-oxn5q4ar> <span class="step-badge"
+                            data-astro-cid-oxn5q4ar>1</span>
+                        <h3 data-astro-cid-oxn5q4ar>Ingest</h3>
+                        <p data-astro-cid-oxn5q4ar>
+                            Plug in an SD card and PhotoCuller can detect it automatically.
+                            Choose a destination template, apply an optional IPTC preset, and
+                            start copying. Files appear in the grid in real time so you can
+                            begin reviewing before ingest finishes.
+                        </p>
+                    </div>
+                    <div class="step-visual" data-astro-cid-oxn5q4ar> <img src="/images/Ingest.png"
+                            alt="PhotoCuller ingest workflow" loading="lazy" data-astro-cid-oxn5q4ar> </div>
+                </article>
+                <article class="step-row step-row-flip" data-astro-cid-oxn5q4ar>
+                    <div class="step-copy" data-astro-cid-oxn5q4ar> <span class="step-badge"
+                            data-astro-cid-oxn5q4ar>2</span>
+                        <h3 data-astro-cid-oxn5q4ar>Cull</h3>
+                        <p data-astro-cid-oxn5q4ar>
+                            Grid view is built for speed. Use WASD to navigate, number keys to
+                            rate, F to flag, R to reject, and filters to narrow quickly. Loupe
+                            helps check sharpness without leaving the grid.
+                        </p>
+                    </div>
+                    <div class="step-visual" data-astro-cid-oxn5q4ar> <img src="/images/step-culling.webp"
+                            alt="PhotoCuller culling workflow in grid view" loading="lazy" data-astro-cid-oxn5q4ar>
+                    </div>
+                </article>
+                <article class="step-row" data-astro-cid-oxn5q4ar>
+                    <div class="step-copy" data-astro-cid-oxn5q4ar> <span class="step-badge"
+                            data-astro-cid-oxn5q4ar>3</span>
+                        <h3 data-astro-cid-oxn5q4ar>Deliver</h3>
+                        <p data-astro-cid-oxn5q4ar>
+                            Build workflows with filters for rating, flags, color labels,
+                            stacks, and file type, then route to folders, NAS, or Apple Photos
+                            with template-driven naming. Enable multiple workflows and execute
+                            them in one run.
+                        </p>
+                    </div>
+                    <div class="step-visual" data-astro-cid-oxn5q4ar> <img src="/images/step-deliver.webp"
+                            alt="PhotoCuller delivery workflow setup" loading="lazy" data-astro-cid-oxn5q4ar> </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    <section class="feature-tools-section landing-section" id="features-tools" data-astro-cid-lzncpbgo>
+        <div class="feature-container-lg section-shell-wide" data-astro-cid-lzncpbgo>
+            <h2 class="section-headline section-title" data-astro-cid-lzncpbgo>
+                Tools that make every <span class="accent-text" data-astro-cid-lzncpbgo>decision faster</span> </h2>
+            <p class="section-description section-subtitle" data-astro-cid-lzncpbgo>
+                Spot the sharpest frame, catch exposure issues, and narrow thousands of
+                photos down to your best.
+            </p>
+            <div class="tools-grid" data-astro-cid-lzncpbgo>
+                <article class="feature-card feature-card--content-media card-face" data-astro-cid-lzncpbgo>
+                    <div class="feature-card-content" data-astro-cid-lzncpbgo>
+                        <h3 class="card-title" data-astro-cid-lzncpbgo>Face Panel</h3>
+                        <p class="card-body" data-astro-cid-lzncpbgo>
+                            Detect faces in the current image and review close-up crops of every
+                            detected face in one panel.
+                        </p>
+                    </div>
+                    <div class="feature-card-img feature-card-img--full-width feature-card-img--ratio-3-2"
+                        data-astro-cid-lzncpbgo> <img class="feature-card-media feature-card-media--contain"
+                            src="/images/faces-panel.webp" alt="Face Panel showing detected face crops in PhotoCuller"
+                            loading="lazy" data-astro-cid-lzncpbgo> </div>
+                </article>
+                <article class="feature-card feature-card--content-media card-focus" data-astro-cid-lzncpbgo>
+                    <div class="feature-card-content" data-astro-cid-lzncpbgo>
+                        <h3 class="card-title" data-astro-cid-lzncpbgo>Focus Peaking + Exposure Warnings</h3>
+                        <p class="card-body" data-astro-cid-lzncpbgo>
+                            Use overlays in Full View to confirm sharp focus and quickly catch
+                            blown highlights or crushed shadows.
+                        </p>
+                    </div>
+                    <div class="feature-card-img feature-card-img--full-width feature-card-img--ratio-3-2"
+                        data-astro-cid-lzncpbgo> <img
+                            class="feature-card-media feature-card-media--cover feature-card-media--top-center"
+                            src="/images/focus-peaking.webp" alt="Focus peaking and exposure warnings in PhotoCuller"
+                            loading="lazy" data-astro-cid-lzncpbgo> </div>
+                </article>
+                <article class="feature-card feature-card--content-media card-loupe" data-astro-cid-lzncpbgo>
+                    <div class="feature-card-content" data-astro-cid-lzncpbgo>
+                        <h3 class="card-title" data-astro-cid-lzncpbgo>Loupe</h3>
+                        <p class="card-body" data-astro-cid-lzncpbgo>
+                            Use a magnifier in Grid View to inspect detail without switching
+                            views.
+                        </p>
+                    </div>
+                    <div class="feature-card-img feature-card-img--full-width feature-card-img--ratio-15-16"
+                        data-astro-cid-lzncpbgo> <img class="feature-card-media feature-card-media--fill-height"
+                            src="/images/feature-loupe-square.webp" alt="Loupe tool in PhotoCuller" loading="lazy"
+                            data-astro-cid-lzncpbgo> </div>
+                </article>
+                <article class="feature-card feature-card--content-media card-grouping" data-astro-cid-lzncpbgo>
+                    <div class="feature-card-content" data-astro-cid-lzncpbgo>
+                        <h3 class="card-title" data-astro-cid-lzncpbgo>Flexible Grouping</h3>
+                        <p class="card-body" data-astro-cid-lzncpbgo>
+                            Group photos by hour, day, week, month, year, or stack to review
+                            related shots faster.
+                        </p>
+                    </div>
+                    <div class="feature-card-img feature-card-img--full-width feature-card-img--ratio-15-16"
+                        data-astro-cid-lzncpbgo> <img class="feature-card-media feature-card-media--fill-width"
+                            src="/images/grouping-portrait.webp" alt="Group by controls in PhotoCuller" loading="lazy"
+                            data-astro-cid-lzncpbgo> </div>
+                </article>
+                <article class="feature-card feature-card--content-media card-compare" data-astro-cid-lzncpbgo>
+                    <div class="feature-card-content" data-astro-cid-lzncpbgo>
+                        <h3 class="card-title" data-astro-cid-lzncpbgo>Side-by-side with synchronized zoom</h3>
+                        <p class="card-body" data-astro-cid-lzncpbgo>
+                            Compare two photos side by side and inspect the same crop area
+                            across both panels, so you can spot differences in detail.
+                        </p>
+                    </div>
+                    <div class="feature-card-img feature-card-img--full-width feature-card-img--ratio-3-2"
+                        data-astro-cid-lzncpbgo> <img class="feature-card-media feature-card-media--contain"
+                            src="/images/feature-side-by-side.webp" alt="Side-by-side compare view in PhotoCuller"
+                            loading="lazy" data-astro-cid-lzncpbgo> </div>
+                </article>
+                <article class="feature-card feature-card--content-media card-stacking" data-astro-cid-lzncpbgo>
+                    <div class="feature-card-content" data-astro-cid-lzncpbgo>
+                        <h3 class="card-title" data-astro-cid-lzncpbgo>Smart Stacking</h3>
+                        <p class="card-body" data-astro-cid-lzncpbgo>
+                            Group burst sequences and focus on top candidates with less grid
+                            clutter.
+                        </p>
+                    </div>
+                    <div class="feature-card-img feature-card-img--full-width feature-card-img--ratio-15-16"
+                        data-astro-cid-lzncpbgo> <img class="feature-card-media feature-card-media--fill-height"
+                            src="/images/stacking-square.png" alt="Smart stacking in PhotoCuller" loading="lazy"
+                            data-astro-cid-lzncpbgo> </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    <section class="feature-workflow-section landing-section" id="features-workflow" data-astro-cid-lzncpbgo>
+        <div class="feature-container-lg section-shell-wide" data-astro-cid-lzncpbgo>
+            <h2 class="section-headline section-title" data-astro-cid-lzncpbgo>
+                Workflow and metadata <span class="accent-text" data-astro-cid-lzncpbgo>controls</span> </h2>
+            <p class="section-description section-subtitle" data-astro-cid-lzncpbgo>
+                Finish the job without switching apps — apply IPTC metadata, rename
+                files, and route output to multiple destinations in one pass.
+            </p>
+            <div class="workflow-grid" data-astro-cid-lzncpbgo>
+                <article class="feature-card feature-card--content-media card-iptc" data-astro-cid-lzncpbgo>
+                    <div class="feature-card-content" data-astro-cid-lzncpbgo>
+                        <h3 class="card-title" data-astro-cid-lzncpbgo>IPTC Templates</h3>
+                        <p class="card-body" data-astro-cid-lzncpbgo>
+                            Apply reusable IPTC presets with merge modes and session variables.
+                        </p>
+                    </div>
+                    <div class="feature-card-img feature-card-img--full-width feature-card-img--ratio-281-238"
+                        data-astro-cid-lzncpbgo> <img
+                            class="feature-card-media feature-card-media--cover feature-card-media--top-center"
+                            src="/images/iptc-editing.png" alt="IPTC template editor in PhotoCuller" loading="lazy"
+                            data-astro-cid-lzncpbgo> </div>
+                </article>
+                <article class="feature-card feature-card--content-media card-route" data-astro-cid-lzncpbgo>
+                    <div class="feature-card-content" data-astro-cid-lzncpbgo>
+                        <h3 class="card-title" data-astro-cid-lzncpbgo>Multi-destination Workflows</h3>
+                        <p class="card-body" data-astro-cid-lzncpbgo>
+                            Run multiple workflows in one pass with separate filters,
+                            destinations, and IPTC settings.
+                        </p>
+                    </div>
+                    <div class="feature-card-img feature-card-img--full-width" data-astro-cid-lzncpbgo> <img
+                            src="/images/workflow-in-progress.png" alt="Multi-destination workflows in PhotoCuller"
+                            loading="lazy" data-astro-cid-lzncpbgo> </div>
+                </article>
+                <article class="feature-card feature-card--content-media card-code" data-astro-cid-lzncpbgo>
+                    <div class="feature-card-content" data-astro-cid-lzncpbgo>
+                        <h3 class="card-title" data-astro-cid-lzncpbgo>Code Replacements</h3>
+                        <p class="card-body" data-astro-cid-lzncpbgo>
+                            Expand short codes into full values inside supported template and
+                            metadata fields.
+                        </p>
+                    </div>
+                    <div class="feature-card-img feature-card-img--full-width feature-card-img--ratio-281-238"
+                        data-astro-cid-lzncpbgo> <img
+                            class="feature-card-media feature-card-media--cover feature-card-media--top-center"
+                            src="/images/code-replacement.png" alt="PhotoCuller user interface with metadata tools"
+                            loading="lazy" data-astro-cid-lzncpbgo> </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    <section class="feature-ecosystem-section landing-section" id="features-ecosystem" data-astro-cid-lzncpbgo>
+        <div class="feature-container-lg section-shell-wide ecosystem-container" data-astro-cid-lzncpbgo>
+            <h2 class="section-headline section-title" data-astro-cid-lzncpbgo>
+                Works with your <span class="accent-text" data-astro-cid-lzncpbgo>existing setup</span> </h2>
+            <p class="section-description section-subtitle" data-astro-cid-lzncpbgo>
+                PhotoCuller fits between capture and editing without forcing a new
+                ecosystem.
+            </p>
+            <div class="ecosystem-badges" data-astro-cid-lzncpbgo>
+                <div class="ecosystem-badge" data-astro-cid-lzncpbgo>
+                    <div class="ecosystem-badge-icon" data-astro-cid-lzncpbgo> <span class="material-symbol"
+                            aria-hidden="true" data-astro-cid-lzncpbgo>photo_library</span> </div>
+                    <h3 class="card-title" data-astro-cid-lzncpbgo>Apple Photos</h3>
+                    <p class="card-body" data-astro-cid-lzncpbgo>
+                        Load Apple Photos albums as sources and route output with workflow
+                        photo-version control.
+                    </p>
+                </div>
+                <div class="ecosystem-badge" data-astro-cid-lzncpbgo>
+                    <div class="ecosystem-badge-icon" data-astro-cid-lzncpbgo> <span class="material-symbol"
+                            aria-hidden="true" data-astro-cid-lzncpbgo>dns</span> </div>
+                    <h3 class="card-title" data-astro-cid-lzncpbgo>Network locations and NAS</h3>
+                    <p class="card-body" data-astro-cid-lzncpbgo>
+                        Use mounted network locations as sources and workflow destinations in
+                        studio storage setups.
+                    </p>
+                </div>
+                <div class="ecosystem-badge" data-astro-cid-lzncpbgo>
+                    <div class="ecosystem-badge-icon" data-astro-cid-lzncpbgo> <span class="material-symbol"
+                            aria-hidden="true" data-astro-cid-lzncpbgo>open_in_new</span> </div>
+                    <h3 class="card-title" data-astro-cid-lzncpbgo>External editors</h3>
+                    <p class="card-body" data-astro-cid-lzncpbgo>
+                        Send files directly to configured editors, with RAW or JPEG preference
+                        for paired files.
+                    </p>
+                </div>
+                <div class="ecosystem-badge" data-astro-cid-lzncpbgo>
+                    <div class="ecosystem-badge-icon" data-astro-cid-lzncpbgo> <span class="material-symbol"
+                            aria-hidden="true" data-astro-cid-lzncpbgo>description</span> </div>
+                    <h3 class="card-title" data-astro-cid-lzncpbgo>XMP sidecar aware</h3>
+                    <p class="card-body" data-astro-cid-lzncpbgo>
+                        For filesystem workflows, PhotoCuller can include existing XMP
+                        sidecars, and RAW metadata writes use sidecars by default.
                     </p>
                 </div>
             </div>
         </div>
-        <section class="sec">
-            <div class="wrap">
-                <div class="studio-story-grid">
-                    <div class="studio-img-col r">
-                        <div class="sic-main">
-                            <div class="ph gk2" style="height:100%;">
-                                <div class="ph-icon-wrap"><svg width="44" height="44" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                        </div>
-                        <div class="sic-sub">
-                            <div class="ph gk4" style="height:100%;">
-                                <div class="ph-icon-wrap"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                        </div>
-                        <div class="sic-sub">
-                            <div class="ph gk6" style="height:100%;">
-                                <div class="ph-icon-wrap"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="r d2">
-                        <div class="eyebrow">Câu chuyện</div>
-                        <h2 class="h2" style="margin-bottom:18px;">Hơn 7 năm <span class="em-text">đồng hành cùng
-                                bạn</span></h2>
-                        <p class="about-body">Sora Bridal được thành lập bởi những người yêu nghệ thuật và trân trọng
-                            khoảnh khắc đẹp. Từ một studio nhỏ tại Hà Nội, chúng tôi đã lớn lên cùng hơn 1.200 cặp đôi
-                            tin tưởng.</p>
-                        <p class="about-body">Chúng tôi theo đuổi phong cách tinh tế, tự nhiên — lấy cảm xúc thật làm
-                            trọng tâm. Không gượng ép, không giả tạo.</p>
-                        <div class="studio-stats">
-                            <div class="st-stat">
-                                <div class="st-val">1.200+</div>
-                                <div class="st-lbl">Cặp đôi tin tưởng</div>
-                            </div>
-                            <div class="st-stat">
-                                <div class="st-val">7+ năm</div>
-                                <div class="st-lbl">Kinh nghiệm</div>
-                            </div>
-                            <div class="st-stat">
-                                <div class="st-val">12</div>
-                                <div class="st-lbl">Nhiếp ảnh gia</div>
-                            </div>
-                            <div class="st-stat">
-                                <div class="st-val">4.9 ★</div>
-                                <div class="st-lbl">Google rating</div>
-                            </div>
-                        </div>
-                    </div>
+    </section>
+    <section class="built-for-mac" data-astro-cid-qiz6l356>
+        <div class="container section-shell-wide" data-astro-cid-qiz6l356>
+            <h2 class="section-headline" data-astro-cid-qiz6l356>Built for Mac.<br data-astro-cid-qiz6l356><span
+                    class="accent-text" data-astro-cid-qiz6l356>Exclusively.</span></h2>
+            <p class="section-description" data-astro-cid-qiz6l356>
+                Designed for macOS using modern Apple technologies for speed, efficiency, and a truly native experience.
+            </p>
+            <div class="tech-badges grid-cards-3" data-astro-cid-qiz6l356>
+                <div class="tech-badge" data-astro-cid-qiz6l356>
+                    <div class="badge-icon" data-astro-cid-qiz6l356> <span class="material-symbol" aria-hidden="true"
+                            data-astro-cid-qiz6l356>memory</span> </div>
+                    <h3 class="card-title" data-astro-cid-qiz6l356>Native Performance</h3>
+                    <p class="card-body" data-astro-cid-qiz6l356>Optimized for Apple Silicon. Browse thousands of RAW
+                        files with zero lag.</p>
+                </div>
+                <div class="tech-badge" data-astro-cid-qiz6l356>
+                    <div class="badge-icon" data-astro-cid-qiz6l356> <span class="material-symbol" aria-hidden="true"
+                            data-astro-cid-qiz6l356>shield_lock</span> </div>
+                    <h3 class="card-title" data-astro-cid-qiz6l356>Privacy First</h3>
+                    <p class="card-body" data-astro-cid-qiz6l356>Your photos never leave your Mac. No cloud uploads, no
+                        accounts, no tracking.</p>
+                </div>
+                <div class="tech-badge" data-astro-cid-qiz6l356>
+                    <div class="badge-icon" data-astro-cid-qiz6l356> <span class="material-symbol" aria-hidden="true"
+                            data-astro-cid-qiz6l356>wifi_off</span> </div>
+                    <h3 class="card-title" data-astro-cid-qiz6l356>Works Offline</h3>
+                    <p class="card-body" data-astro-cid-qiz6l356>No internet required. Cull your photos anywhere: on a
+                        plane, in the field, off the grid.</p>
                 </div>
             </div>
-        </section>
-        <section class="sec" style="background:var(--b1);">
-            <div class="wrap">
-                <div class="r" style="text-align:center;margin-bottom:48px;">
-                    <div class="eyebrow" style="justify-content:center;">Đội ngũ</div>
-                    <h2 class="h2">Những người <span class="em-text">kể câu chuyện của bạn</span></h2>
-                </div>
-                <div class="team-grid r">
-                    <div class="team-card">
-                        <div class="team-av">
-                            <div class="ph gk2" style="height:100%;">
-                                <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <circle cx="12" cy="8" r="5" />
-                                        <path d="M3 21v-2a7 7 0 0 1 14 0v2" /></svg></div>
-                            </div>
-                        </div>
-                        <div class="team-name">Hùng Nguyễn</div>
-                        <div class="team-role">Founder · Senior Photographer</div>
-                        <p class="team-desc">10 năm kinh nghiệm, chuyên ảnh cưới phong cách tự nhiên và điện ảnh.</p>
-                    </div>
-                    <div class="team-card">
-                        <div class="team-av">
-                            <div class="ph gk4" style="height:100%;">
-                                <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <circle cx="12" cy="8" r="5" />
-                                        <path d="M3 21v-2a7 7 0 0 1 14 0v2" /></svg></div>
-                            </div>
-                        </div>
-                        <div class="team-name">Linh Trần</div>
-                        <div class="team-role">Creative Director</div>
-                        <p class="team-desc">Chuyên thiết kế concept và định hướng phong cách cho từng cặp đôi.</p>
-                    </div>
-                    <div class="team-card">
-                        <div class="team-av">
-                            <div class="ph gk3" style="height:100%;">
-                                <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <circle cx="12" cy="8" r="5" />
-                                        <path d="M3 21v-2a7 7 0 0 1 14 0v2" /></svg></div>
-                            </div>
-                        </div>
-                        <div class="team-name">Mai Phương</div>
-                        <div class="team-role">Lead Makeup Artist</div>
-                        <p class="team-desc">Chuyên gia trang điểm cô dâu, phong cách tự nhiên và tinh tế.</p>
-                    </div>
-                    <div class="team-card">
-                        <div class="team-av">
-                            <div class="ph gk6" style="height:100%;">
-                                <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <circle cx="12" cy="8" r="5" />
-                                        <path d="M3 21v-2a7 7 0 0 1 14 0v2" /></svg></div>
-                            </div>
-                        </div>
-                        <div class="team-name">Nam Vũ</div>
-                        <div class="team-role">Videographer</div>
-                        <p class="team-desc">Chuyên quay và dựng video highlight, phim tài liệu tình yêu.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
+        </div>
+    </section>
+    <section class="testimonials-section" id="testimonials" data-astro-cid-aadlzisc>
+        <div class="container section-shell-wide" data-astro-cid-aadlzisc>
+            <h2 class="section-headline" data-astro-cid-aadlzisc>
+                What users are <span class="accent-text" data-astro-cid-aadlzisc>saying</span> </h2>
+            <p class="section-description" data-astro-cid-aadlzisc>
+                Real feedback from photographers who use PhotoCuller every day
+            </p>
+        </div>
+        <div class="testimonials-marquee" data-marquee data-astro-cid-aadlzisc> <button type="button"
+                class="marquee-nav marquee-nav--left" data-nav-left aria-label="Scroll testimonials left"
+                data-astro-cid-aadlzisc> <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+                    aria-hidden="true" data-astro-cid-aadlzisc>
+                    <polyline points="15 18 9 12 15 6" data-astro-cid-aadlzisc></polyline>
+                </svg> </button>
+            <div class="testimonials-track" data-track data-astro-cid-aadlzisc> <button type="button"
+                    class="testimonial-card" data-card-index="0" aria-label="Read full testimonial from Adrian"
+                    data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>I have been looking for a program which is easier to
+                        use enabling me to sort through my images after a photoshoot.
 
-    <!-- ══════════════════════════════════
-     PAGE: ĐẶT LỊCH
-══════════════════════════════════ -->
-    <div class="page" id="page-booking">
-        <div class="booking-layout">
-            <div class="booking-left">
-                <div class="eyebrow">Đặt lịch</div>
-                <h2 class="h2" style="margin-bottom:16px;">Bắt đầu <span class="em-text">hành trình của bạn</span></h2>
-                <p class="lead">Điền form bên cạnh — Sora sẽ liên hệ lại trong vòng 2 giờ, hoàn toàn miễn phí.</p>
-                <div class="bl-info">
-                    <div class="bli">
-                        <div class="bli-icon">📍</div>
-                        <div>
-                            <div class="bli-lbl">Địa chỉ</div>
-                            <div class="bli-val">18 Trần Phú, Hoàn Kiếm, Hà Nội</div>
-                        </div>
-                    </div>
-                    <div class="bli">
-                        <div class="bli-icon">📞</div>
-                        <div>
-                            <div class="bli-lbl">Hotline</div>
-                            <div class="bli-val">0901 234 567 (Zalo · Gọi điện)</div>
-                        </div>
-                    </div>
-                    <div class="bli">
-                        <div class="bli-icon">🕐</div>
-                        <div>
-                            <div class="bli-lbl">Giờ làm việc</div>
-                            <div class="bli-val">8:00 – 20:00 · Thứ 2 đến Chủ nhật</div>
-                        </div>
-                    </div>
-                    <div class="bli">
-                        <div class="bli-icon">✦</div>
-                        <div>
-                            <div class="bli-lbl">Cam kết</div>
-                            <div class="bli-val">Tư vấn miễn phí · Phản hồi trong 2 giờ</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="booking-right">
-                <div class="bf-wrap">
-                    <div class="bf-heading">Gửi yêu cầu tư vấn</div>
-                    <div class="bf-sub">Sora sẽ liên hệ lại trong vòng 2 giờ trong ngày làm việc</div>
-                    <div class="form-row">
-                        <div class="fg"><label>Tên cô dâu</label><input type="text" placeholder="Nguyễn Thị..."></div>
-                        <div class="fg"><label>Tên chú rể</label><input type="text" placeholder="Trần Văn..."></div>
-                    </div>
-                    <div class="form-row">
-                        <div class="fg"><label>Số điện thoại</label><input type="tel" placeholder="09xx xxx xxx"></div>
-                        <div class="fg"><label>Ngày cưới dự kiến</label><input type="date"></div>
-                    </div>
-                    <div class="form-row">
-                        <div class="fg">
-                            <label>Gói quan tâm</label>
-                            <select>
-                                <option value="">Chọn gói...</option>
-                                <option>Gói Studio — từ 8.500.000đ</option>
-                                <option>Gói Premium — từ 15.000.000đ</option>
-                                <option>Gói Luxury — từ 25.000.000đ</option>
-                                <option>Chưa biết, cần tư vấn</option>
-                            </select>
-                        </div>
-                        <div class="fg">
-                            <label>Ngân sách dự kiến</label>
-                            <select>
-                                <option value="">Chọn mức...</option>
-                                <option>Dưới 10 triệu</option>
-                                <option>10 – 20 triệu</option>
-                                <option>20 – 30 triệu</option>
-                                <option>Trên 30 triệu</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="fg"><label>Ghi chú / Yêu cầu đặc biệt</label><textarea
-                            placeholder="Concept mong muốn, địa điểm ngoại cảnh, hay bất kỳ điều gì muốn chia sẻ..."></textarea>
-                    </div>
-                    <button class="btn-submit"
-                        onclick="alert('Cảm ơn! Sora sẽ liên hệ với bạn trong vòng 2 giờ 🤍')">Gửi yêu cầu tư vấn
-                        →</button>
-                    <p class="form-note">Hoặc nhắn Zalo trực tiếp: 0901 234 567</p>
-                </div>
-            </div>
+                        I am a wildlife photographer and I often come home with many many photos and many many
+                        duplicates, which is where PhotoCuller has made sorting and culling much easier and even
+                        enjoyable.
+
+                        I would say to any photographer who is looking for a piece of software to give PhotoCuller a try
+                        and I guarantee they will be pleasantly surprised at the ease of use, whether they are looking
+                        for a simple way to view and cull their images or if they need to do more — PhotoCuller can do
+                        this with ease in a nice, clean, friendly interface.
+
+                        I did not hesitate to purchase PhotoCuller as soon as it was released. Having used the beta
+                        versions, I knew it was the piece of software I had been looking for, and since its release
+                        there have been further updates to enhance it. As far as I can see, it will go from strength to
+                        strength.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Adrian</span> <span class="read-hint" data-astro-cid-aadlzisc>Read
+                            full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="1"
+                    aria-label="Read full testimonial from Rob van der Most" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>As a wildlife photographer I often go home with 4,000
+                        to 6,000 pictures to be reviewed. With 10 to 15 pictures a second, it&#39;s easy to shoot series
+                        of 25 to 100, more or less similar, pictures of which you want to select the two or three best.
+
+                        Within the popular photo editors&#39; tools, this takes a lot of time, pollutes their underlying
+                        databases, and takes away the joy of taking pictures in the first place.
+
+                        I looked at AI photo culling tools but, today, they are great for wedding and fashion
+                        photography, but offer very limited help for wildlife. Via a post on Reddit, I read about
+                        PhotoCuller and decided to download a trial.
+
+                        I love this tool as it&#39;s fast, easy to understand, has no underlying database, and has great
+                        customer support. I love the possibility to compare photos zoomed in on the subject to find the
+                        best pictures from your series.
+
+                        PhotoCuller is customizable to your own liking and, depending on the capabilities of your
+                        hardware, tunable to find the performance optimum.
+
+                        On top of all this, the price is a one-time charge, so no subscriptions or auto-renewals.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Rob van der Most</span> <span class="read-hint"
+                            data-astro-cid-aadlzisc>Read full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="2"
+                    aria-label="Read full testimonial from Andrew" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>I bought PhotoCuller because EOS Utility 3 stopped
+                        working with a wired connection to the camera, and won&#39;t ingest and file the RAWs
+                        appropriately in my import folder from an SD card.
+
+                        PhotoCuller does that nicely, preserving my longstanding folder hierarchy, which I can then
+                        synchronize with the NAS. It fits seamlessly into my workflow, makes it easier to sort and star
+                        photos than DxO PhotoLab, and doesn&#39;t interfere with my preferred editors.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Andrew</span> <span class="read-hint" data-astro-cid-aadlzisc>Read
+                            full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="3"
+                    aria-label="Read full testimonial from Anonymous" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>I used to have custom scripts to separate my fresh
+                        JPGs and RAWs into different folders, then use the JPG folder for culling because they loaded
+                        faster than the RAWs and then use a custom script to delete the RAW files for which no matching
+                        JPG could be found anymore.
+
+                        PhotoCuller made that a lot easier, it&#39;s so quick.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Anonymous</span> <span class="read-hint"
+                            data-astro-cid-aadlzisc>Read full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="4"
+                    aria-label="Read full testimonial from Rory Sinclair" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller is the app I dreamed of having at my
+                        fingertips when I built out my &#39;workflow&#39;. It&#39;s deceptively simple, but lets you
+                        build some extremely powerful workflows to suit the way you want to work.
+
+                        Personally I shoot RAW+JPEG but only archive the RAWs while importing selected JPEGs to my
+                        Photos library. PhotoCuller is infinitely adaptable and it was a breeze to get things working
+                        exactly the way I wanted.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Rory Sinclair</span> <span class="read-hint"
+                            data-astro-cid-aadlzisc>Read full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="5"
+                    aria-label="Read full testimonial from Christian" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller has massively sped up my culling process.
+                        Especially when working with both RAW and JPG files, it&#39;s a real game changer and a strong
+                        helper in the first phase of my editing workflow.
+
+                        The export workflow is incredibly powerful, automatically organizing and moving files based on
+                        rules I define. I was also genuinely surprised by the speed, both the software itself and
+                        Jeff&#39;s responsiveness with feedback and new features.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Christian</span> <span class="read-hint"
+                            data-astro-cid-aadlzisc>Read full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="6"
+                    aria-label="Read full testimonial from Diego" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller has changed the way I think about photo
+                        organization. Being able to very quickly flag, rate, and tag photos, then perform multiple
+                        different move and export actions based on them is really amazing.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Diego</span> <span class="read-hint" data-astro-cid-aadlzisc>Read
+                            full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="7"
+                    aria-label="Read full testimonial from Kajetan Jagiełka" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller feels like the app I would&#39;ve built
+                        myself — if only I knew how to code. It&#39;s clearly designed by someone who actually knows the
+                        struggle of picking the keepers from a mountain of shots and doesn&#39;t want to open a
+                        full-fledged image editor just to weed out the bad snaps.
+
+                        It&#39;s fast, it&#39;s intuitive, and week after week it continues to roll out features I
+                        didn&#39;t know I needed but now can&#39;t imagine living without, like the independent
+                        side-by-side view and the fact that it maintains zoom setting while scrolling through images.
+                        What started as just a &quot;better-designed tool&quot; has quickly become an indispensable one.
+
+                        What impressed me the most, however, was the support. When I found a bug and reported it, I got
+                        a reply within 15 minutes. An hour later, the update was live. Imagine getting that kind of
+                        service from a AAA company.
+
+                        Last but not least: the one-time payment and fair pricing is a breath of fresh air. As a
+                        hobbyist, I sometimes go a month without picking up my camera. If this was yet another
+                        subscription, I&#39;d likely have to cancel because I couldn&#39;t justify the recurring cost.
+                    </p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Kajetan Jagiełka</span> <span class="read-hint"
+                            data-astro-cid-aadlzisc>Read full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="8"
+                    aria-label="Read full testimonial from Andres Villamuez" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>This is the app I had been waiting for to handle my
+                        photo culling workflow.
+
+                        After trying Photo Mechanic, I found it to be far too expensive and unnecessarily complex for my
+                        needs. I then purchased FastRawViewer, which is easy to use and offers some nice features;
+                        however, its interface feels outdated and it receives very few updates.
+
+                        When PhotoCuller was released, it immediately stood out. It&#39;s fast, packed with useful
+                        features that are consistently being improved, and has a clean, modern interface. All of this
+                        comes at a price equivalent to about a week&#39;s worth of my morning coffees, which makes it an
+                        easy decision.
+
+                        Highly recommended for photographers looking for an efficient, well-designed culling solution.
+                    </p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Andres Villamuez</span> <span class="read-hint"
+                            data-astro-cid-aadlzisc>Read full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="9"
+                    aria-label="Read full testimonial from Alexander" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>I have been looking for a simple program for my simple
+                        workflow (JPEG photos only) to locally trim my library before uploading photos to the cloud.
+
+                        PhotoCuller has been the only program that has satisfied the ease of use and the speed for me,
+                        and as a side bonus, even works on iCloud photos which positively surprised me!</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Alexander</span> <span class="read-hint"
+                            data-astro-cid-aadlzisc>Read full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="10"
+                    aria-label="Read full testimonial from Iain Dunn" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller is a powerhouse. It&#39;s dramatically
+                        sped up my photo workflow, helping me cut down on cloud storage costs, and making it easy to
+                        back everything up to my NAS. I&#39;m really excited about the future development plans —
+                        it&#39;s quickly becoming the ultimate one-stop solution for photo management.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Iain Dunn</span> <span class="read-hint"
+                            data-astro-cid-aadlzisc>Read full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="11"
+                    aria-label="Read full testimonial from Abhijit" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>I always used Photo Mechanic for culling but
+                        PhotoCuller is way smoother to use. I really love it.
+
+                        Why do I love it? It&#39;s way faster and feels more clean with its interface.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Abhijit</span> <span class="read-hint" data-astro-cid-aadlzisc>Read
+                            full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="12"
+                    aria-label="Read full testimonial from Donald Rabideau" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>Ever since Apple discontinued Aperture, I have
+                        struggled to find a workflow for culling my photos that felt right. There&#39;s no shortage of
+                        image editing apps, but apps that really get culling right are scarce to nonexistent.
+
+                        First, it has to be lightning fast; second, it has to have a clean, logical UI. Sorting through
+                        gigabytes of photos is tedious enough without having to navigate a complex and dated user
+                        interface. Lastly, I don&#39;t want to be locked into another ecosystem, especially since they
+                        inevitably require a subscription.
+
+                        PhotoCuller hits the target on all of these. This is the app I&#39;ve been looking for, and
+                        I&#39;m genuinely excited to finally have a culling app I enjoy using.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Donald Rabideau</span> <span class="read-hint"
+                            data-astro-cid-aadlzisc>Read full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="13"
+                    aria-label="Read full testimonial from Hervé" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>I have tried some other sorting apps. Most of them use
+                        AI to rate portraits but AI failed to discard bad shots (clipped subject or bad focus). I
+                        dismissed Photo Mechanic (overkill and too expensive for an amateur). My most challenging
+                        shootings are sports and airshows.
+
+                        PhotoCuller is almost as fast as the best I&#39;ve seen. Keyboard shortcuts can be modified (I
+                        use a French keyboard). Color labels work as expected. The price is adequate!</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Hervé</span> <span class="read-hint" data-astro-cid-aadlzisc>Read
+                            full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="14"
+                    aria-label="Read full testimonial from Hasse" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller aligns perfectly with my preferred
+                        workflow. I only shoot in raw, often burst sequences that yield images that differ only slightly
+                        in composition, focus, and content. The culling of images to keep is the first processing step;
+                        the second step is the selection of the best raw photos to post-process with different tools.
+
+                        PhotoCuller&#39;s performance advantage enhances the workflow with its smart stacking, Loupe
+                        Zoom, image strip, and full view with side-by-side comparison features. The support of external
+                        editors or showing the browsed image in Finder guarantees a smooth integration with other tools
+                        in my workflow.
+
+                        Furthermore, PhotoCuller&#39;s routing support and intuitive content filtering options based on
+                        file type, camera, lens, ISO value, and standard culling metadata are valuable tools when
+                        browsing through the images.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Hasse</span> <span class="read-hint" data-astro-cid-aadlzisc>Read
+                            full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="0"
+                    aria-label="Read full testimonial from Adrian" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>I have been looking for a program which is easier to
+                        use enabling me to sort through my images after a photoshoot.
+
+                        I am a wildlife photographer and I often come home with many many photos and many many
+                        duplicates, which is where PhotoCuller has made sorting and culling much easier and even
+                        enjoyable.
+
+                        I would say to any photographer who is looking for a piece of software to give PhotoCuller a try
+                        and I guarantee they will be pleasantly surprised at the ease of use, whether they are looking
+                        for a simple way to view and cull their images or if they need to do more — PhotoCuller can do
+                        this with ease in a nice, clean, friendly interface.
+
+                        I did not hesitate to purchase PhotoCuller as soon as it was released. Having used the beta
+                        versions, I knew it was the piece of software I had been looking for, and since its release
+                        there have been further updates to enhance it. As far as I can see, it will go from strength to
+                        strength.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Adrian</span> <span class="read-hint" data-astro-cid-aadlzisc>Read
+                            full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="1"
+                    aria-label="Read full testimonial from Rob van der Most" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>As a wildlife photographer I often go home with 4,000
+                        to 6,000 pictures to be reviewed. With 10 to 15 pictures a second, it&#39;s easy to shoot series
+                        of 25 to 100, more or less similar, pictures of which you want to select the two or three best.
+
+                        Within the popular photo editors&#39; tools, this takes a lot of time, pollutes their underlying
+                        databases, and takes away the joy of taking pictures in the first place.
+
+                        I looked at AI photo culling tools but, today, they are great for wedding and fashion
+                        photography, but offer very limited help for wildlife. Via a post on Reddit, I read about
+                        PhotoCuller and decided to download a trial.
+
+                        I love this tool as it&#39;s fast, easy to understand, has no underlying database, and has great
+                        customer support. I love the possibility to compare photos zoomed in on the subject to find the
+                        best pictures from your series.
+
+                        PhotoCuller is customizable to your own liking and, depending on the capabilities of your
+                        hardware, tunable to find the performance optimum.
+
+                        On top of all this, the price is a one-time charge, so no subscriptions or auto-renewals.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Rob van der Most</span> <span class="read-hint"
+                            data-astro-cid-aadlzisc>Read full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="2"
+                    aria-label="Read full testimonial from Andrew" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>I bought PhotoCuller because EOS Utility 3 stopped
+                        working with a wired connection to the camera, and won&#39;t ingest and file the RAWs
+                        appropriately in my import folder from an SD card.
+
+                        PhotoCuller does that nicely, preserving my longstanding folder hierarchy, which I can then
+                        synchronize with the NAS. It fits seamlessly into my workflow, makes it easier to sort and star
+                        photos than DxO PhotoLab, and doesn&#39;t interfere with my preferred editors.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Andrew</span> <span class="read-hint" data-astro-cid-aadlzisc>Read
+                            full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="3"
+                    aria-label="Read full testimonial from Anonymous" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>I used to have custom scripts to separate my fresh
+                        JPGs and RAWs into different folders, then use the JPG folder for culling because they loaded
+                        faster than the RAWs and then use a custom script to delete the RAW files for which no matching
+                        JPG could be found anymore.
+
+                        PhotoCuller made that a lot easier, it&#39;s so quick.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Anonymous</span> <span class="read-hint"
+                            data-astro-cid-aadlzisc>Read full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="4"
+                    aria-label="Read full testimonial from Rory Sinclair" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller is the app I dreamed of having at my
+                        fingertips when I built out my &#39;workflow&#39;. It&#39;s deceptively simple, but lets you
+                        build some extremely powerful workflows to suit the way you want to work.
+
+                        Personally I shoot RAW+JPEG but only archive the RAWs while importing selected JPEGs to my
+                        Photos library. PhotoCuller is infinitely adaptable and it was a breeze to get things working
+                        exactly the way I wanted.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Rory Sinclair</span> <span class="read-hint"
+                            data-astro-cid-aadlzisc>Read full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="5"
+                    aria-label="Read full testimonial from Christian" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller has massively sped up my culling process.
+                        Especially when working with both RAW and JPG files, it&#39;s a real game changer and a strong
+                        helper in the first phase of my editing workflow.
+
+                        The export workflow is incredibly powerful, automatically organizing and moving files based on
+                        rules I define. I was also genuinely surprised by the speed, both the software itself and
+                        Jeff&#39;s responsiveness with feedback and new features.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Christian</span> <span class="read-hint"
+                            data-astro-cid-aadlzisc>Read full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="6"
+                    aria-label="Read full testimonial from Diego" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller has changed the way I think about photo
+                        organization. Being able to very quickly flag, rate, and tag photos, then perform multiple
+                        different move and export actions based on them is really amazing.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Diego</span> <span class="read-hint" data-astro-cid-aadlzisc>Read
+                            full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="7"
+                    aria-label="Read full testimonial from Kajetan Jagiełka" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller feels like the app I would&#39;ve built
+                        myself — if only I knew how to code. It&#39;s clearly designed by someone who actually knows the
+                        struggle of picking the keepers from a mountain of shots and doesn&#39;t want to open a
+                        full-fledged image editor just to weed out the bad snaps.
+
+                        It&#39;s fast, it&#39;s intuitive, and week after week it continues to roll out features I
+                        didn&#39;t know I needed but now can&#39;t imagine living without, like the independent
+                        side-by-side view and the fact that it maintains zoom setting while scrolling through images.
+                        What started as just a &quot;better-designed tool&quot; has quickly become an indispensable one.
+
+                        What impressed me the most, however, was the support. When I found a bug and reported it, I got
+                        a reply within 15 minutes. An hour later, the update was live. Imagine getting that kind of
+                        service from a AAA company.
+
+                        Last but not least: the one-time payment and fair pricing is a breath of fresh air. As a
+                        hobbyist, I sometimes go a month without picking up my camera. If this was yet another
+                        subscription, I&#39;d likely have to cancel because I couldn&#39;t justify the recurring cost.
+                    </p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Kajetan Jagiełka</span> <span class="read-hint"
+                            data-astro-cid-aadlzisc>Read full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="8"
+                    aria-label="Read full testimonial from Andres Villamuez" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>This is the app I had been waiting for to handle my
+                        photo culling workflow.
+
+                        After trying Photo Mechanic, I found it to be far too expensive and unnecessarily complex for my
+                        needs. I then purchased FastRawViewer, which is easy to use and offers some nice features;
+                        however, its interface feels outdated and it receives very few updates.
+
+                        When PhotoCuller was released, it immediately stood out. It&#39;s fast, packed with useful
+                        features that are consistently being improved, and has a clean, modern interface. All of this
+                        comes at a price equivalent to about a week&#39;s worth of my morning coffees, which makes it an
+                        easy decision.
+
+                        Highly recommended for photographers looking for an efficient, well-designed culling solution.
+                    </p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Andres Villamuez</span> <span class="read-hint"
+                            data-astro-cid-aadlzisc>Read full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="9"
+                    aria-label="Read full testimonial from Alexander" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>I have been looking for a simple program for my simple
+                        workflow (JPEG photos only) to locally trim my library before uploading photos to the cloud.
+
+                        PhotoCuller has been the only program that has satisfied the ease of use and the speed for me,
+                        and as a side bonus, even works on iCloud photos which positively surprised me!</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Alexander</span> <span class="read-hint"
+                            data-astro-cid-aadlzisc>Read full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="10"
+                    aria-label="Read full testimonial from Iain Dunn" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller is a powerhouse. It&#39;s dramatically
+                        sped up my photo workflow, helping me cut down on cloud storage costs, and making it easy to
+                        back everything up to my NAS. I&#39;m really excited about the future development plans —
+                        it&#39;s quickly becoming the ultimate one-stop solution for photo management.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Iain Dunn</span> <span class="read-hint"
+                            data-astro-cid-aadlzisc>Read full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="11"
+                    aria-label="Read full testimonial from Abhijit" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>I always used Photo Mechanic for culling but
+                        PhotoCuller is way smoother to use. I really love it.
+
+                        Why do I love it? It&#39;s way faster and feels more clean with its interface.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Abhijit</span> <span class="read-hint" data-astro-cid-aadlzisc>Read
+                            full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="12"
+                    aria-label="Read full testimonial from Donald Rabideau" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>Ever since Apple discontinued Aperture, I have
+                        struggled to find a workflow for culling my photos that felt right. There&#39;s no shortage of
+                        image editing apps, but apps that really get culling right are scarce to nonexistent.
+
+                        First, it has to be lightning fast; second, it has to have a clean, logical UI. Sorting through
+                        gigabytes of photos is tedious enough without having to navigate a complex and dated user
+                        interface. Lastly, I don&#39;t want to be locked into another ecosystem, especially since they
+                        inevitably require a subscription.
+
+                        PhotoCuller hits the target on all of these. This is the app I&#39;ve been looking for, and
+                        I&#39;m genuinely excited to finally have a culling app I enjoy using.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Donald Rabideau</span> <span class="read-hint"
+                            data-astro-cid-aadlzisc>Read full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="13"
+                    aria-label="Read full testimonial from Hervé" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>I have tried some other sorting apps. Most of them use
+                        AI to rate portraits but AI failed to discard bad shots (clipped subject or bad focus). I
+                        dismissed Photo Mechanic (overkill and too expensive for an amateur). My most challenging
+                        shootings are sports and airshows.
+
+                        PhotoCuller is almost as fast as the best I&#39;ve seen. Keyboard shortcuts can be modified (I
+                        use a French keyboard). Color labels work as expected. The price is adequate!</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Hervé</span> <span class="read-hint" data-astro-cid-aadlzisc>Read
+                            full</span> </div>
+                </button><button type="button" class="testimonial-card" data-card-index="14"
+                    aria-label="Read full testimonial from Hasse" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28"
+                            viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                            <path
+                                d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                                data-astro-cid-aadlzisc></path>
+                        </svg> </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller aligns perfectly with my preferred
+                        workflow. I only shoot in raw, often burst sequences that yield images that differ only slightly
+                        in composition, focus, and content. The culling of images to keep is the first processing step;
+                        the second step is the selection of the best raw photos to post-process with different tools.
+
+                        PhotoCuller&#39;s performance advantage enhances the workflow with its smart stacking, Loupe
+                        Zoom, image strip, and full view with side-by-side comparison features. The support of external
+                        editors or showing the browsed image in Finder guarantees a smooth integration with other tools
+                        in my workflow.
+
+                        Furthermore, PhotoCuller&#39;s routing support and intuitive content filtering options based on
+                        file type, camera, lens, ISO value, and standard culling metadata are valuable tools when
+                        browsing through the images.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name"
+                            data-astro-cid-aadlzisc>Hasse</span> <span class="read-hint" data-astro-cid-aadlzisc>Read
+                            full</span> </div>
+                </button> </div> <button type="button" class="marquee-nav marquee-nav--right" data-nav-right
+                aria-label="Scroll testimonials right" data-astro-cid-aadlzisc> <svg width="20" height="20"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                    stroke-linejoin="round" aria-hidden="true" data-astro-cid-aadlzisc>
+                    <polyline points="9 18 15 12 9 6" data-astro-cid-aadlzisc></polyline>
+                </svg> </button>
+        </div>
+    </section> <!-- Modal lives outside the section so it sits above everything -->
+    <div class="t-backdrop" data-t-backdrop aria-hidden="true" data-astro-cid-aadlzisc></div>
+    <div class="t-modal" data-t-modal role="dialog" aria-modal="true" aria-labelledby="t-modal-author" tabindex="-1"
+        data-astro-cid-aadlzisc>
+        <div class="t-modal-card" data-t-card data-astro-cid-aadlzisc> <button type="button" class="t-close"
+                data-t-close aria-label="Close" data-astro-cid-aadlzisc> <svg width="16" height="16" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true" data-astro-cid-aadlzisc>
+                    <line x1="18" y1="6" x2="6" y2="18" data-astro-cid-aadlzisc></line>
+                    <line x1="6" y1="6" x2="18" y2="18" data-astro-cid-aadlzisc></line>
+                </svg> </button>
+            <div class="t-modal-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="30" height="30"
+                    viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc>
+                    <path
+                        d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z"
+                        data-astro-cid-aadlzisc></path>
+                </svg> </div>
+            <h3 id="t-modal-author" data-t-author data-astro-cid-aadlzisc></h3>
+            <p class="t-modal-quote" data-t-quote data-astro-cid-aadlzisc></p>
         </div>
     </div>
+    <script>
+        (function () {
+            const testimonials = [{
+                "name": "Adrian",
+                "quote": "I have been looking for a program which is easier to use enabling me to sort through my images after a photoshoot.\n\nI am a wildlife photographer and I often come home with many many photos and many many duplicates, which is where PhotoCuller has made sorting and culling much easier and even enjoyable.\n\nI would say to any photographer who is looking for a piece of software to give PhotoCuller a try and I guarantee they will be pleasantly surprised at the ease of use, whether they are looking for a simple way to view and cull their images or if they need to do more — PhotoCuller can do this with ease in a nice, clean, friendly interface.\n\nI did not hesitate to purchase PhotoCuller as soon as it was released. Having used the beta versions, I knew it was the piece of software I had been looking for, and since its release there have been further updates to enhance it. As far as I can see, it will go from strength to strength."
+            }, {
+                "name": "Rob van der Most",
+                "quote": "As a wildlife photographer I often go home with 4,000 to 6,000 pictures to be reviewed. With 10 to 15 pictures a second, it's easy to shoot series of 25 to 100, more or less similar, pictures of which you want to select the two or three best.\n\nWithin the popular photo editors' tools, this takes a lot of time, pollutes their underlying databases, and takes away the joy of taking pictures in the first place.\n\nI looked at AI photo culling tools but, today, they are great for wedding and fashion photography, but offer very limited help for wildlife. Via a post on Reddit, I read about PhotoCuller and decided to download a trial.\n\nI love this tool as it's fast, easy to understand, has no underlying database, and has great customer support. I love the possibility to compare photos zoomed in on the subject to find the best pictures from your series.\n\nPhotoCuller is customizable to your own liking and, depending on the capabilities of your hardware, tunable to find the performance optimum.\n\nOn top of all this, the price is a one-time charge, so no subscriptions or auto-renewals."
+            }, {
+                "name": "Andrew",
+                "quote": "I bought PhotoCuller because EOS Utility 3 stopped working with a wired connection to the camera, and won't ingest and file the RAWs appropriately in my import folder from an SD card.\n\nPhotoCuller does that nicely, preserving my longstanding folder hierarchy, which I can then synchronize with the NAS. It fits seamlessly into my workflow, makes it easier to sort and star photos than DxO PhotoLab, and doesn't interfere with my preferred editors."
+            }, {
+                "name": "Anonymous",
+                "quote": "I used to have custom scripts to separate my fresh JPGs and RAWs into different folders, then use the JPG folder for culling because they loaded faster than the RAWs and then use a custom script to delete the RAW files for which no matching JPG could be found anymore.\n\nPhotoCuller made that a lot easier, it's so quick."
+            }, {
+                "name": "Rory Sinclair",
+                "quote": "PhotoCuller is the app I dreamed of having at my fingertips when I built out my 'workflow'. It's deceptively simple, but lets you build some extremely powerful workflows to suit the way you want to work.\n\nPersonally I shoot RAW+JPEG but only archive the RAWs while importing selected JPEGs to my Photos library. PhotoCuller is infinitely adaptable and it was a breeze to get things working exactly the way I wanted."
+            }, {
+                "name": "Christian",
+                "quote": "PhotoCuller has massively sped up my culling process. Especially when working with both RAW and JPG files, it's a real game changer and a strong helper in the first phase of my editing workflow.\n\nThe export workflow is incredibly powerful, automatically organizing and moving files based on rules I define. I was also genuinely surprised by the speed, both the software itself and Jeff's responsiveness with feedback and new features."
+            }, {
+                "name": "Diego",
+                "quote": "PhotoCuller has changed the way I think about photo organization. Being able to very quickly flag, rate, and tag photos, then perform multiple different move and export actions based on them is really amazing."
+            }, {
+                "name": "Kajetan Jagiełka",
+                "quote": "PhotoCuller feels like the app I would've built myself — if only I knew how to code. It's clearly designed by someone who actually knows the struggle of picking the keepers from a mountain of shots and doesn't want to open a full-fledged image editor just to weed out the bad snaps.\n\nIt's fast, it's intuitive, and week after week it continues to roll out features I didn't know I needed but now can't imagine living without, like the independent side-by-side view and the fact that it maintains zoom setting while scrolling through images. What started as just a \"better-designed tool\" has quickly become an indispensable one.\n\nWhat impressed me the most, however, was the support. When I found a bug and reported it, I got a reply within 15 minutes. An hour later, the update was live. Imagine getting that kind of service from a AAA company.\n\nLast but not least: the one-time payment and fair pricing is a breath of fresh air. As a hobbyist, I sometimes go a month without picking up my camera. If this was yet another subscription, I'd likely have to cancel because I couldn't justify the recurring cost."
+            }, {
+                "name": "Andres Villamuez",
+                "quote": "This is the app I had been waiting for to handle my photo culling workflow.\n\nAfter trying Photo Mechanic, I found it to be far too expensive and unnecessarily complex for my needs. I then purchased FastRawViewer, which is easy to use and offers some nice features; however, its interface feels outdated and it receives very few updates.\n\nWhen PhotoCuller was released, it immediately stood out. It's fast, packed with useful features that are consistently being improved, and has a clean, modern interface. All of this comes at a price equivalent to about a week's worth of my morning coffees, which makes it an easy decision.\n\nHighly recommended for photographers looking for an efficient, well-designed culling solution."
+            }, {
+                "name": "Alexander",
+                "quote": "I have been looking for a simple program for my simple workflow (JPEG photos only) to locally trim my library before uploading photos to the cloud.\n\nPhotoCuller has been the only program that has satisfied the ease of use and the speed for me, and as a side bonus, even works on iCloud photos which positively surprised me!"
+            }, {
+                "name": "Iain Dunn",
+                "quote": "PhotoCuller is a powerhouse. It's dramatically sped up my photo workflow, helping me cut down on cloud storage costs, and making it easy to back everything up to my NAS. I'm really excited about the future development plans — it's quickly becoming the ultimate one-stop solution for photo management."
+            }, {
+                "name": "Abhijit",
+                "quote": "I always used Photo Mechanic for culling but PhotoCuller is way smoother to use. I really love it.\n\nWhy do I love it? It's way faster and feels more clean with its interface."
+            }, {
+                "name": "Donald Rabideau",
+                "quote": "Ever since Apple discontinued Aperture, I have struggled to find a workflow for culling my photos that felt right. There's no shortage of image editing apps, but apps that really get culling right are scarce to nonexistent.\n\nFirst, it has to be lightning fast; second, it has to have a clean, logical UI. Sorting through gigabytes of photos is tedious enough without having to navigate a complex and dated user interface. Lastly, I don't want to be locked into another ecosystem, especially since they inevitably require a subscription.\n\nPhotoCuller hits the target on all of these. This is the app I've been looking for, and I'm genuinely excited to finally have a culling app I enjoy using."
+            }, {
+                "name": "Hervé",
+                "quote": "I have tried some other sorting apps. Most of them use AI to rate portraits but AI failed to discard bad shots (clipped subject or bad focus). I dismissed Photo Mechanic (overkill and too expensive for an amateur). My most challenging shootings are sports and airshows.\n\nPhotoCuller is almost as fast as the best I've seen. Keyboard shortcuts can be modified (I use a French keyboard). Color labels work as expected. The price is adequate!"
+            }, {
+                "name": "Hasse",
+                "quote": "PhotoCuller aligns perfectly with my preferred workflow. I only shoot in raw, often burst sequences that yield images that differ only slightly in composition, focus, and content. The culling of images to keep is the first processing step; the second step is the selection of the best raw photos to post-process with different tools.\n\nPhotoCuller's performance advantage enhances the workflow with its smart stacking, Loupe Zoom, image strip, and full view with side-by-side comparison features. The support of external editors or showing the browsed image in Finder guarantees a smooth integration with other tools in my workflow.\n\nFurthermore, PhotoCuller's routing support and intuitive content filtering options based on file type, camera, lens, ISO value, and standard culling metadata are valuable tools when browsing through the images."
+            }];
 
-    <!-- ══════════════════════════════════
-     PAGE: BLOG
-══════════════════════════════════ -->
-    <div class="page" id="page-blog">
-        <div class="page-hero">
-            <div class="page-hero-inner">
-                <div class="wrap r">
-                    <div class="eyebrow">Blog cưới</div>
-                    <h1 class="h1">Cẩm nang <span class="em-text">cho ngày trọng đại</span></h1>
-                    <p class="lead">Tips chụp ảnh, xu hướng, chia sẻ concept — cập nhật mỗi tuần từ đội ngũ Sora.</p>
-                </div>
+            function initTestimonials() {
+                var backdrop = document.querySelector("[data-t-backdrop]");
+                var modal = document.querySelector("[data-t-modal]");
+                var card = document.querySelector("[data-t-card]");
+                var closeBtn = document.querySelector("[data-t-close]");
+                var authorEl = document.querySelector("[data-t-author]");
+                var quoteEl = document.querySelector("[data-t-quote]");
+                var marquee = document.querySelector("[data-marquee]");
+                var track = document.querySelector("[data-track]");
+                var navLeft = document.querySelector("[data-nav-left]");
+                var navRight = document.querySelector("[data-nav-right]");
+
+                if (!backdrop || !modal || !card || !closeBtn || !authorEl || !quoteEl)
+                    return;
+                if (!marquee || !track) return;
+
+                // Guard against double-initialisation across page navigations
+                if (modal.dataset.tInit === "1") return;
+                modal.dataset.tInit = "1";
+
+                var lastFocused = null;
+
+                // ── Modal ──────────────────────────────────────────────
+                function openModal(index) {
+                    var t = testimonials[index];
+                    if (!t) return;
+                    authorEl.textContent = t.name;
+                    quoteEl.textContent = t.quote;
+                    lastFocused = document.activeElement;
+                    backdrop.classList.add("is-open");
+                    modal.classList.add("is-open");
+                    document.body.classList.add("modal-open");
+                    closeBtn.focus();
+
+                    if (window.posthog) {
+                        window.posthog.capture("testimonial_popup_opened", {
+                            author: t.name,
+                            page_url: window.location.pathname,
+                        });
+                    }
+                }
+
+                function closeModal() {
+                    backdrop.classList.remove("is-open");
+                    modal.classList.remove("is-open");
+                    document.body.classList.remove("modal-open");
+                    if (lastFocused) lastFocused.focus();
+                }
+
+                // ── Touch-drag-vs-click discrimination (mobile only) ──
+                var hasDragged = false;
+
+                document.querySelectorAll("[data-card-index]").forEach(function (btn) {
+                    btn.addEventListener("click", function (e) {
+                        if (hasDragged) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            hasDragged = false;
+                            return;
+                        }
+                        openModal(Number(btn.dataset.cardIndex));
+                    });
+                });
+
+                closeBtn.addEventListener("click", closeModal);
+
+                modal.addEventListener("click", function (e) {
+                    if (!card.contains(e.target)) closeModal();
+                });
+
+                document.addEventListener("keydown", function (e) {
+                    if (e.key === "Escape") closeModal();
+                });
+
+                // ── Animation constants ───────────────────────────────
+                var DURATION = 60; // seconds — must match the CSS @@keyframes duration
+                var CARD_STEP = 380; // card width (360) + gap (20)
+
+                // ── Hover / focus pause (JS-based so chevrons can coexist) ──
+                var isHovering = false;
+                var isDragging = false; // for mobile touch drag
+                var isJumping = false; // for chevron animated jump
+
+                function pauseTrack() {
+                    track.style.animationPlayState = "paused";
+                }
+
+                function resumeTrack() {
+                    if (!isHovering && !isDragging && !isJumping) {
+                        track.style.animationPlayState = "running";
+                    }
+                }
+
+                marquee.addEventListener("mouseenter", function () {
+                    isHovering = true;
+                    pauseTrack();
+                });
+
+                marquee.addEventListener("mouseleave", function () {
+                    isHovering = false;
+                    resumeTrack();
+                });
+
+                marquee.addEventListener("focusin", function () {
+                    pauseTrack();
+                });
+
+                marquee.addEventListener("focusout", function (e) {
+                    if (!marquee.contains(e.relatedTarget)) {
+                        resumeTrack();
+                    }
+                });
+
+                // ── Helpers ────────────────────────────────────────────
+                function getCurrentTranslateX() {
+                    var style = window.getComputedStyle(track);
+                    var matrix = new DOMMatrix(style.transform);
+                    return matrix.m41;
+                }
+
+                function getHalfWidth() {
+                    return track.scrollWidth / 2;
+                }
+
+                function wrapX(x) {
+                    var half = getHalfWidth();
+                    x = x % half;
+                    if (x > 0) x -= half;
+                    return x;
+                }
+
+                function resumeFromPosition(x) {
+                    x = wrapX(x);
+                    var half = getHalfWidth();
+                    var progress = Math.abs(x) / half;
+                    var delay = -(progress * DURATION);
+
+                    track.style.removeProperty("transform");
+                    track.style.removeProperty("animation");
+                    track.style.removeProperty("transition");
+                    track.style.animationDelay = delay + "s";
+                    void track.offsetWidth;
+                    track.style.animationPlayState = isHovering ? "paused" : "running";
+                }
+
+                // ── Chevron nav (desktop) ─────────────────────────────
+                function jumpBy(delta) {
+                    if (isJumping) return;
+                    isJumping = true;
+
+                    var currentX = getCurrentTranslateX();
+                    var targetX = wrapX(currentX + delta);
+
+                    // 1. Freeze animation, set starting position
+                    track.style.animation = "none";
+                    track.style.transform = "translateX(" + currentX + "px)";
+                    void track.offsetWidth; // reflow so starting position is committed
+
+                    // 2. Enable transition and set target
+                    track.style.transition =
+                        "transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1)";
+                    track.style.transform = "translateX(" + targetX + "px)";
+
+                    // 3. When transition ends, hand control back to CSS animation
+                    function onEnd() {
+                        track.removeEventListener("transitionend", onEnd);
+                        isJumping = false;
+                        resumeFromPosition(targetX);
+                    }
+                    track.addEventListener("transitionend", onEnd);
+
+                    // Fallback in case transitionend doesn't fire
+                    setTimeout(function () {
+                        if (isJumping) {
+                            track.removeEventListener("transitionend", onEnd);
+                            isJumping = false;
+                            resumeFromPosition(targetX);
+                        }
+                    }, 500);
+                }
+
+                if (navLeft) {
+                    navLeft.addEventListener("click", function (e) {
+                        e.stopPropagation();
+                        jumpBy(CARD_STEP); // positive = shift track right = see earlier cards
+                    });
+                }
+
+                if (navRight) {
+                    navRight.addEventListener("click", function (e) {
+                        e.stopPropagation();
+                        jumpBy(-CARD_STEP); // negative = shift track left = see later cards
+                    });
+                }
+
+                // ── Touch drag (mobile) ───────────────────────────────
+                var dragStartX = 0;
+                var dragBaseX = 0;
+                var DRAG_THRESHOLD = 3;
+
+                function onDragStart(clientX) {
+                    isDragging = true;
+                    hasDragged = false;
+                    dragStartX = clientX;
+                    dragBaseX = getCurrentTranslateX();
+
+                    track.style.animation = "none";
+                    track.style.transform = "translateX(" + dragBaseX + "px)";
+                }
+
+                function onDragMove(clientX) {
+                    if (!isDragging) return;
+                    var delta = clientX - dragStartX;
+                    if (Math.abs(delta) > DRAG_THRESHOLD) {
+                        hasDragged = true;
+                    }
+                    var newX = wrapX(dragBaseX + delta);
+                    track.style.transform = "translateX(" + newX + "px)";
+                }
+
+                function onDragEnd() {
+                    if (!isDragging) return;
+                    isDragging = false;
+
+                    var finalX = getCurrentTranslateX();
+                    resumeFromPosition(finalX);
+
+                    setTimeout(function () {
+                        hasDragged = false;
+                    }, 0);
+                }
+
+                marquee.addEventListener(
+                    "touchstart",
+                    function (e) {
+                        if (e.touches.length !== 1) return;
+                        onDragStart(e.touches[0].clientX);
+                    }, {
+                        passive: true
+                    },
+                );
+
+                window.addEventListener(
+                    "touchmove",
+                    function (e) {
+                        if (!isDragging) return;
+                        onDragMove(e.touches[0].clientX);
+                    }, {
+                        passive: true
+                    },
+                );
+
+                window.addEventListener("touchend", function () {
+                    onDragEnd();
+                });
+
+                window.addEventListener("touchcancel", function () {
+                    onDragEnd();
+                });
+            }
+
+            initTestimonials();
+            document.addEventListener("astro:page-load", initTestimonials);
+        })();
+
+    </script>
+    <section class="trial-cta-section" id="trial" data-astro-cid-hkoc4sea>
+        <div class="trial-cta-container" data-astro-cid-hkoc4sea> <svg class="trial-apple-icon" viewBox="0 0 814 1000"
+                fill="currentColor" aria-hidden="true" data-astro-cid-hkoc4sea>
+                <path
+                    d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.3 134.4-316.8 266.5-316.8 70.1 0 128.4 46.4 171.5 46.4 41.3 0 106.9-49.4 185.2-49.4 29.5 0 108.1 2.6 168.5 71.9zm-234.5-172.9c31.3-36.9 53.1-88.1 53.1-139.3 0-7.1-.6-14.3-1.9-20.1-50.6 1.9-110.8 33.7-147.1 75.8-28.5 32.4-55.1 83.6-55.1 135.5 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 45.4 0 102.5-30.4 135.5-71.3z"
+                    data-astro-cid-hkoc4sea></path>
+            </svg>
+            <h2 class="trial-headline" data-astro-cid-hkoc4sea>Try it on a real shoot</h2>
+            <p class="trial-description" data-astro-cid-hkoc4sea>
+                Free 30-day trial — no credit card, no account. Load a recent shoot and
+                see how it feels on your own photos.
+            </p>
+            <div class="trial-buttons" data-astro-cid-hkoc4sea>
+                <div class="download-btn-wrap" data-astro-cid-sle7k2hz> <a href="/download"
+                        class="download-btn trial-download-btn" data-download-cta
+                        data-modal-text="Email me the Mac link" data-astro-cid-sle7k2hz>
+                        <div class="download-btn__comet" aria-hidden="true" data-astro-cid-sle7k2hz></div> <span
+                            class="download-btn__inner" data-astro-cid-sle7k2hz> <svg width="18" height="18"
+                                viewBox="0 0 814 1000" fill="currentColor" aria-hidden="true" data-astro-cid-sle7k2hz>
+                                <path
+                                    d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.3 134.4-316.8 266.5-316.8 70.1 0 128.4 46.4 171.5 46.4 41.3 0 106.9-49.4 185.2-49.4 29.5 0 108.1 2.6 168.5 71.9zm-234.5-172.9c31.3-36.9 53.1-88.1 53.1-139.3 0-7.1-.6-14.3-1.9-20.1-50.6 1.9-110.8 33.7-147.1 75.8-28.5 32.4-55.1 83.6-55.1 135.5 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 45.4 0 102.5-30.4 135.5-71.3z"
+                                    data-astro-cid-sle7k2hz></path>
+                            </svg> <span data-download-cta-label data-astro-cid-sle7k2hz>Download for Mac</span> </span>
+                    </a>
+                    <p class="download-btn-meta" data-astro-cid-sle7k2hz>macOS 15 Sequoia or later &nbsp;·&nbsp; Apple
+                        Silicon</p>
+                </div> <a href="/pricing" class="trial-btn secondary" data-astro-cid-hkoc4sea> See pricing </a>
             </div>
         </div>
-        <div class="wrap">
-            <div class="blog-layout">
-                <div>
-                    <div class="blog-featured">
-                        <div class="bfeat-img">
-                            <div class="ph gk1" style="height:100%;">
-                                <div class="ph-icon-wrap"><svg width="44" height="44" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                        </div>
-                        <div class="bfeat-body">
-                            <div class="bfeat-cat">Xu hướng 2026</div>
-                            <div class="bfeat-title">Concept ảnh cưới phong cách Hàn Quốc đang hot nhất 2026 — Sora giải
-                                mã tất cả</div>
-                            <p class="bfeat-excerpt">Từ tông màu nâu be ấm áp, ánh sáng mềm mại đến bố cục tinh tế —
-                                phong cách này đang chiếm lĩnh ảnh cưới Việt Nam. Cùng Sora tìm hiểu cách tái hiện
-                                aesthetic này đúng cách nhất...</p>
-                            <div class="bfeat-meta">15/03/2026 · 8 phút đọc · Hùng Nguyễn</div>
-                        </div>
+    </section>
+    <section class="faq-section" id="faq" data-astro-cid-al2ca2vr>
+        <div class="container section-shell-narrow" data-astro-cid-al2ca2vr>
+            <h2 class="section-headline" data-astro-cid-al2ca2vr>Questions & <span class="accent-text"
+                    data-astro-cid-al2ca2vr>Answers</span></h2>
+            <p class="section-description" data-astro-cid-al2ca2vr> Everything you need to know about PhotoCuller </p>
+            <div class="faq-list" data-astro-cid-al2ca2vr>
+                <details class="faq-item" data-astro-cid-al2ca2vr>
+                    <summary class="faq-question" data-astro-cid-al2ca2vr> <span data-astro-cid-al2ca2vr>How is
+                            PhotoCuller different from Lightroom?</span> <svg class="faq-icon" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            data-astro-cid-al2ca2vr>
+                            <path d="M12 5v14M5 12h14" data-astro-cid-al2ca2vr></path>
+                        </svg> </summary>
+                    <div class="faq-answer" data-astro-cid-al2ca2vr>
+                        <p data-astro-cid-al2ca2vr>PhotoCuller is focused purely on culling - quickly reviewing, rating,
+                            and organizing photos before editing. It&#39;s a one-time purchase with no subscription,
+                            runs completely offline, and integrates seamlessly with Apple Photos. Think of it as the
+                            fastest way to get from thousands of shots to your best selects.</p>
                     </div>
-                    <div class="blog-list">
-                        <div class="blog-card">
-                            <div class="bc-img">
-                                <div class="ph gk2" style="height:100%;">
-                                    <div class="ph-icon-wrap"><svg width="22" height="22" viewBox="0 0 24 24"
-                                            fill="none" stroke="#7a5a34" stroke-width="1">
-                                            <rect x="3" y="3" width="18" height="18" rx="1" />
-                                            <circle cx="8.5" cy="8.5" r="1.5" />
-                                            <polyline points="21 15 16 10 5 21" /></svg></div>
-                                </div>
-                            </div>
-                            <div class="bc-body">
-                                <div class="bc-cat">Tips cô dâu</div>
-                                <div class="bc-title">5 điều cần chuẩn bị trước ngày chụp studio để ảnh đẹp nhất</div>
-                                <div class="bc-meta">10/03/2026 · 5 phút đọc</div>
-                            </div>
-                        </div>
-                        <div class="blog-card">
-                            <div class="bc-img">
-                                <div class="ph gk4" style="height:100%;">
-                                    <div class="ph-icon-wrap"><svg width="22" height="22" viewBox="0 0 24 24"
-                                            fill="none" stroke="#7a5a34" stroke-width="1">
-                                            <rect x="3" y="3" width="18" height="18" rx="1" />
-                                            <circle cx="8.5" cy="8.5" r="1.5" />
-                                            <polyline points="21 15 16 10 5 21" /></svg></div>
-                                </div>
-                            </div>
-                            <div class="bc-body">
-                                <div class="bc-cat">Địa điểm</div>
-                                <div class="bc-title">Top 7 địa điểm chụp ảnh cưới ngoại cảnh đẹp nhất Hà Nội 2026</div>
-                                <div class="bc-meta">05/03/2026 · 6 phút đọc</div>
-                            </div>
-                        </div>
-                        <div class="blog-card">
-                            <div class="bc-img">
-                                <div class="ph gk6" style="height:100%;">
-                                    <div class="ph-icon-wrap"><svg width="22" height="22" viewBox="0 0 24 24"
-                                            fill="none" stroke="#7a5a34" stroke-width="1">
-                                            <rect x="3" y="3" width="18" height="18" rx="1" />
-                                            <circle cx="8.5" cy="8.5" r="1.5" />
-                                            <polyline points="21 15 16 10 5 21" /></svg></div>
-                                </div>
-                            </div>
-                            <div class="bc-body">
-                                <div class="bc-cat">Chia sẻ</div>
-                                <div class="bc-title">Hành trình từ concept đến bộ ảnh hoàn hảo của Minh & Lan tại Sora
-                                </div>
-                                <div class="bc-meta">01/03/2026 · 4 phút đọc</div>
-                            </div>
-                        </div>
+                </details>
+                <details class="faq-item" data-astro-cid-al2ca2vr>
+                    <summary class="faq-question" data-astro-cid-al2ca2vr> <span data-astro-cid-al2ca2vr>Does it work
+                            with Apple Photos?</span> <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-al2ca2vr>
+                            <path d="M12 5v14M5 12h14" data-astro-cid-al2ca2vr></path>
+                        </svg> </summary>
+                    <div class="faq-answer" data-astro-cid-al2ca2vr>
+                        <p data-astro-cid-al2ca2vr>Yes! You can load albums from your Apple Photos library, cull your
+                            shots with ratings and color labels, then route your picks back to Photos or to external
+                            drives.</p>
                     </div>
-                </div>
-                <div>
-                    <div class="bs-block">
-                        <div class="bs-title">Chủ đề phổ biến</div><span class="bs-tag">Xu hướng 2026</span><span
-                            class="bs-tag">Concept Hàn</span><span class="bs-tag">Tips cô dâu</span><span
-                            class="bs-tag">Film tone</span><span class="bs-tag">Địa điểm HN</span><span
-                            class="bs-tag">Đà Lạt</span><span class="bs-tag">Pre-wedding</span><span
-                            class="bs-tag">Makeup</span><span class="bs-tag">Album</span>
+                </details>
+                <details class="faq-item" data-astro-cid-al2ca2vr>
+                    <summary class="faq-question" data-astro-cid-al2ca2vr> <span data-astro-cid-al2ca2vr>Can I send
+                            photos to external editors?</span> <svg class="faq-icon" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            data-astro-cid-al2ca2vr>
+                            <path d="M12 5v14M5 12h14" data-astro-cid-al2ca2vr></path>
+                        </svg> </summary>
+                    <div class="faq-answer" data-astro-cid-al2ca2vr>
+                        <p data-astro-cid-al2ca2vr>Yes. Add your preferred external editors in Settings, then open files
+                            directly from PhotoCuller. For RAW+JPEG pairs, you can choose whether to open the RAW file
+                            or the JPEG version before handing off to your editor.</p>
                     </div>
-                    <div class="bs-newsletter">
-                        <div class="bs-nl-title">Nhận tips mỗi tuần?</div>
-                        <p class="bs-nl-sub">Đăng ký nhận newsletter — tips cưới, xu hướng và ưu đãi độc quyền từ Sora.
-                        </p>
-                        <input class="bs-nl-input" type="email" placeholder="Email của bạn...">
-                        <button class="bs-nl-btn" onclick="alert('Đăng ký thành công! Cảm ơn bạn 🤍')">Đăng ký nhận bản
-                            tin</button>
+                </details>
+                <details class="faq-item" data-astro-cid-al2ca2vr>
+                    <summary class="faq-question" data-astro-cid-al2ca2vr> <span data-astro-cid-al2ca2vr>What file
+                            formats are supported?</span> <svg class="faq-icon" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            data-astro-cid-al2ca2vr>
+                            <path d="M12 5v14M5 12h14" data-astro-cid-al2ca2vr></path>
+                        </svg> </summary>
+                    <div class="faq-answer" data-astro-cid-al2ca2vr>
+                        <p data-astro-cid-al2ca2vr>PhotoCuller supports RAW files from most major camera brands (Canon,
+                            Nikon, Sony, Fujifilm, and more), plus JPEG, HEIC, PNG, and TIFF. It automatically detects
+                            and pairs RAW+JPEG files shot together.</p>
                     </div>
-                </div>
+                </details>
+                <details class="faq-item" data-astro-cid-al2ca2vr>
+                    <summary class="faq-question" data-astro-cid-al2ca2vr> <span data-astro-cid-al2ca2vr>Can I use it
+                            completely offline?</span> <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-al2ca2vr>
+                            <path d="M12 5v14M5 12h14" data-astro-cid-al2ca2vr></path>
+                        </svg> </summary>
+                    <div class="faq-answer" data-astro-cid-al2ca2vr>
+                        <p data-astro-cid-al2ca2vr>Absolutely. PhotoCuller runs entirely on your Mac with no internet
+                            connection required. Your photos never leave your device - there&#39;s no cloud upload, no
+                            account needed, and no tracking.</p>
+                    </div>
+                </details>
             </div>
         </div>
-    </div>
-
-    <!-- ══════════════════════════════════
-     PAGE: CONCEPT & PHIM TRƯỜNG
-══════════════════════════════════ -->
-    <div class="page" id="page-concept">
-
-        <!-- Hero -->
-        <div class="page-hero">
-            <div class="page-hero-inner" style="background:var(--text);padding-bottom:0;">
-                <div class="wrap">
-                    <div class="r" style="text-align:center;">
-                        <div class="si-eyebrow" style="justify-content:center;">Hệ thống phim trường · 2 địa điểm · 40+
-                            concept</div>
-                        <h1 class="si-title" style="margin-bottom:14px;">Concept hot<br><em>tại Sora Bridal</em></h1>
-                        <p class="si-sub" style="margin-bottom:40px;">Phim trường cưới lớn nhất Hà Nội — mỗi góc phòng
-                            là một thế giới riêng, mỗi concept là một câu chuyện tình được dàn dựng công phu.</p>
-                        <!-- Stats inline -->
-                        <div class="si-stats r"
-                            style="border-top:1px solid rgba(255,255,255,.08);padding-top:36px;margin-top:0;">
-                            <div class="si-stat">
-                                <div class="si-stat-num">2</div>
-                                <div class="si-stat-lbl">Phim trường</div>
-                            </div>
-                            <div class="si-stat">
-                                <div class="si-stat-num">40+</div>
-                                <div class="si-stat-lbl">Concept độc quyền</div>
-                            </div>
-                            <div class="si-stat">
-                                <div class="si-stat-num">3.000m²</div>
-                                <div class="si-stat-lbl">Tổng diện tích</div>
-                            </div>
-                            <div class="si-stat">
-                                <div class="si-stat-num">200+</div>
-                                <div class="si-stat-lbl">Trang phục cưới</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Tab navigation -->
-        <div style="background:var(--b0);padding:52px 0 0;">
-            <div class="wrap">
-                <div class="r" style="text-align:center;margin-bottom:36px;">
-                    <div class="eyebrow" style="justify-content:center;">Khám phá phim trường</div>
-                    <h2 class="h2">Hai thế giới <span class="em-text">một tình yêu</span></h2>
-                    <p style="font-size:14px;color:var(--text2);margin-top:10px;font-weight:300;">Chọn phim trường để
-                        xem chi tiết không gian và concept</p>
-                </div>
-            </div>
-
-            <div class="tab-nav" id="concept-tabs" style="margin-bottom:0;">
-                <button class="tab-btn active" data-tab="ct-biet-thu" onclick="switchConceptTab('ct-biet-thu')">
-                    Biệt thự tình ái
-                    <span>Không gian lãng mạn · 20+ concept</span>
-                </button>
-                <button class="tab-btn" data-tab="ct-rooftop" onclick="switchConceptTab('ct-rooftop')">
-                    Sora Rooftop
-                    <span>View thành phố · 20+ concept</span>
-                </button>
-            </div>
-        </div>
-
-        <!-- ── TAB 1: Biệt thự tình ái ── -->
-        <div class="tab-panel active" id="tab-ct-biet-thu" style="background:var(--b0);">
-
-            <!-- Giới thiệu phim trường -->
-            <div style="padding:64px 0 0;">
-                <div class="wrap">
-                    <div class="tp-layout r">
-                        <div class="tp-info" style="padding-left:0;">
-                            <div class="tp-tag">✦ Phim trường 1 — Tầng 1 đến 3</div>
-                            <h3 class="tp-name">Biệt thự<br><em>Tình Ái Sora</em></h3>
-                            <div class="tp-sub">1.500m² · 20+ concept · Nội thất nhập khẩu</div>
-                            <p class="tp-desc">Không gian biệt thự cổ điển được thiết kế tỉ mỉ từng góc nhỏ, lấy cảm
-                                hứng từ kiến trúc châu Âu thế kỷ 19. Từ phòng ngủ vintage, vườn hoa trắng, thư viện cổ
-                                điển đến salon sang trọng — mỗi không gian là một concept hoàn chỉnh mang lại cảm giác
-                                chân thực và đầy cảm xúc.</p>
-                            <ul class="tp-features">
-                                <li>
-                                    <div class="tp-feat-dot"></div>Phòng ngủ Tây phương cổ điển với nội thất vintage
-                                    nhập khẩu
-                                </li>
-                                <li>
-                                    <div class="tp-feat-dot"></div>Vườn hoa trắng rộng 200m² — concept tươi sáng, lãng
-                                    mạn
-                                </li>
-                                <li>
-                                    <div class="tp-feat-dot"></div>Thư viện cổ điển & salon phong cách Pháp sang trọng
-                                </li>
-                                <li>
-                                    <div class="tp-feat-dot"></div>Phòng bếp và phòng ăn phong cách Hàn Quốc tối giản
-                                </li>
-                                <li>
-                                    <div class="tp-feat-dot"></div>Cầu thang vòng cung — điểm nhấn kiến trúc độc đáo
-                                </li>
-                                <li>
-                                    <div class="tp-feat-dot"></div>Hệ thống đèn studio chuyên nghiệp toàn bộ không gian
-                                </li>
-                                <li>
-                                    <div class="tp-feat-dot"></div>Wardrobe 200+ trang phục cưới độc quyền của Sora
-                                </li>
-                            </ul>
-                            <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                                <button class="btn btn-dark" onclick="go('booking')">Đặt lịch tham quan →</button>
-                                <button class="btn btn-outline" onclick="go('booking')">Tư vấn miễn phí</button>
-                            </div>
-                        </div>
-                        <div class="tp-imgs" style="border-radius:16px;overflow:hidden;">
-                            <div class="tp-img tp-img-main">
-                                <div class="ph gk1" style="height:100%;min-height:260px;">
-                                    <div class="ph-icon-wrap"><svg width="48" height="48" viewBox="0 0 24 24"
-                                            fill="none" stroke="#7a5a34" stroke-width="1">
-                                            <rect x="3" y="3" width="18" height="18" rx="1" />
-                                            <circle cx="8.5" cy="8.5" r="1.5" />
-                                            <polyline points="21 15 16 10 5 21" /></svg></div>
-                                </div>
-                            </div>
-                            <div class="tp-img">
-                                <div class="ph gk5" style="height:100%;min-height:180px;">
-                                    <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24"
-                                            fill="none" stroke="#7a5a34" stroke-width="1">
-                                            <rect x="3" y="3" width="18" height="18" rx="1" />
-                                            <circle cx="8.5" cy="8.5" r="1.5" />
-                                            <polyline points="21 15 16 10 5 21" /></svg></div>
-                                </div>
-                            </div>
-                            <div class="tp-img">
-                                <div class="ph gk7" style="height:100%;min-height:180px;">
-                                    <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24"
-                                            fill="none" stroke="#7a5a34" stroke-width="1">
-                                            <rect x="3" y="3" width="18" height="18" rx="1" />
-                                            <circle cx="8.5" cy="8.5" r="1.5" />
-                                            <polyline points="21 15 16 10 5 21" /></svg></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Concept grid đầy đủ -->
-            <div style="padding:64px 0 80px;background:var(--b1);margin-top:64px;">
-                <div class="wrap">
-                    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;"
-                        class="r">
-                        <div>
-                            <div class="eyebrow">20+ Concept</div>
-                            <h2 class="h2">Concept tại <span class="em-text">Biệt thự Tình Ái</span></h2>
-                        </div>
-                        <button class="btn btn-outline" onclick="go('booking')">Tư vấn chọn concept →</button>
-                    </div>
-
-                    <!-- Concept grid 4 cột -->
-                    <div class="cs-grid r" style="gap:14px;">
-                        <!-- Row 1 -->
-                        <div class="cs-item" style="border-radius:14px;">
-                            <div class="ph gk1" style="aspect-ratio:3/4;">
-                                <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                            <div class="cs-label"
-                                style="opacity:1;background:linear-gradient(to top,rgba(44,33,24,.7) 0%,transparent 70%);">
-                                <div class="cs-lbl-txt">Phòng ngủ vintage</div>
-                                <div
-                                    style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px;letter-spacing:1px;">
-                                    CLASSIC</div>
-                            </div>
-                        </div>
-                        <div class="cs-item" style="border-radius:14px;">
-                            <div class="ph gk3" style="aspect-ratio:3/4;">
-                                <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                            <div class="cs-label"
-                                style="opacity:1;background:linear-gradient(to top,rgba(44,33,24,.7) 0%,transparent 70%);">
-                                <div class="cs-lbl-txt">Vườn hoa trắng</div>
-                                <div
-                                    style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px;letter-spacing:1px;">
-                                    ROMANTIC</div>
-                            </div>
-                        </div>
-                        <div class="cs-item" style="border-radius:14px;">
-                            <div class="ph gk5" style="aspect-ratio:3/4;">
-                                <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                            <div class="cs-label"
-                                style="opacity:1;background:linear-gradient(to top,rgba(44,33,24,.7) 0%,transparent 70%);">
-                                <div class="cs-lbl-txt">Thư viện cổ điển</div>
-                                <div
-                                    style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px;letter-spacing:1px;">
-                                    EDITORIAL</div>
-                            </div>
-                        </div>
-                        <div class="cs-item" style="border-radius:14px;">
-                            <div class="ph gk7" style="aspect-ratio:3/4;">
-                                <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                            <div class="cs-label"
-                                style="opacity:1;background:linear-gradient(to top,rgba(44,33,24,.7) 0%,transparent 70%);">
-                                <div class="cs-lbl-txt">Salon châu Âu</div>
-                                <div
-                                    style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px;letter-spacing:1px;">
-                                    LUXURY</div>
-                            </div>
-                        </div>
-                        <!-- Row 2 -->
-                        <div class="cs-item" style="border-radius:14px;">
-                            <div class="ph gk2" style="aspect-ratio:3/4;">
-                                <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                            <div class="cs-label"
-                                style="opacity:1;background:linear-gradient(to top,rgba(44,33,24,.7) 0%,transparent 70%);">
-                                <div class="cs-lbl-txt">Bếp Hàn Quốc</div>
-                                <div
-                                    style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px;letter-spacing:1px;">
-                                    KOREAN</div>
-                            </div>
-                        </div>
-                        <div class="cs-item" style="border-radius:14px;">
-                            <div class="ph gk4" style="aspect-ratio:3/4;">
-                                <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                            <div class="cs-label"
-                                style="opacity:1;background:linear-gradient(to top,rgba(44,33,24,.7) 0%,transparent 70%);">
-                                <div class="cs-lbl-txt">Cầu thang vòng cung</div>
-                                <div
-                                    style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px;letter-spacing:1px;">
-                                    ICONIC</div>
-                            </div>
-                        </div>
-                        <div class="cs-item" style="border-radius:14px;">
-                            <div class="ph gk6" style="aspect-ratio:3/4;">
-                                <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                            <div class="cs-label"
-                                style="opacity:1;background:linear-gradient(to top,rgba(44,33,24,.7) 0%,transparent 70%);">
-                                <div class="cs-lbl-txt">Phòng khách tối giản</div>
-                                <div
-                                    style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px;letter-spacing:1px;">
-                                    MINIMAL</div>
-                            </div>
-                        </div>
-                        <div class="cs-item" style="border-radius:14px;">
-                            <div class="ph gk8" style="aspect-ratio:3/4;">
-                                <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                            <div class="cs-label"
-                                style="opacity:1;background:linear-gradient(to top,rgba(44,33,24,.7) 0%,transparent 70%);">
-                                <div class="cs-lbl-txt">Phòng tắm vintage</div>
-                                <div
-                                    style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px;letter-spacing:1px;">
-                                    RETRO</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- More concepts teaser -->
-                    <div class="r"
-                        style="margin-top:32px;background:var(--w);border:1px solid var(--border);border-radius:16px;padding:28px 32px;display:flex;align-items:center;gap:24px;">
-                        <div style="flex:1;">
-                            <div
-                                style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--text);margin-bottom:4px;">
-                                Còn <span style="color:var(--br-d);font-style:italic;">12+ concept</span> nữa đang chờ
-                                bạn</div>
-                            <div style="font-size:13px;color:var(--text2);font-weight:300;">Phòng ăn Pháp, góc cà phê
-                                sáng, vườn đông tuyết, nhà gỗ ấm áp... Đặt lịch tham quan để khám phá toàn bộ.</div>
-                        </div>
-                        <button class="btn btn-dark" style="flex-shrink:0;" onclick="go('booking')">Đặt lịch tham quan
-                            →</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ── TAB 2: Sora Rooftop ── -->
-        <div class="tab-panel" id="tab-ct-rooftop" style="background:var(--b0);">
-
-            <!-- Giới thiệu phim trường -->
-            <div style="padding:64px 0 0;">
-                <div class="wrap">
-                    <div class="tp-layout r">
-                        <div class="tp-info" style="padding-left:0;">
-                            <div class="tp-tag">✦ Phim trường 2 — Tầng 8 & Sân thượng</div>
-                            <h3 class="tp-name">Sora<br><em>Rooftop Studio</em></h3>
-                            <div class="tp-sub">1.500m² · 20+ concept · View panorama HN</div>
-                            <p class="tp-desc">Phim trường sân thượng độc đáo nhất Hà Nội với tầm nhìn panorama 360°
-                                toàn thành phố. Ánh sáng tự nhiên ban ngày chuyển dần thành lung linh đèn đêm tạo nên
-                                những bức ảnh mang tính điện ảnh cao, không thể tái hiện ở bất kỳ studio nào khác.</p>
-                            <ul class="tp-features">
-                                <li>
-                                    <div class="tp-feat-dot"></div>Sân thượng 500m² view toàn cảnh Hà Nội 360°
-                                </li>
-                                <li>
-                                    <div class="tp-feat-dot"></div>Sky lounge hiện đại — concept trẻ trung, sang trọng
-                                </li>
-                                <li>
-                                    <div class="tp-feat-dot"></div>Hồ bơi tràn viền phản chiếu ánh sáng nghệ thuật
-                                </li>
-                                <li>
-                                    <div class="tp-feat-dot"></div>Vườn xanh thượng tầng phong cách Nhật Bản
-                                </li>
-                                <li>
-                                    <div class="tp-feat-dot"></div>Shooting ban đêm độc quyền — đèn thành phố lung linh
-                                </li>
-                                <li>
-                                    <div class="tp-feat-dot"></div>Hệ thống đèn LED chuyên nghiệp điều chỉnh màu sắc
-                                </li>
-                                <li>
-                                    <div class="tp-feat-dot"></div>Góc bar ngoài trời phong cách Ibiza & Santorini
-                                </li>
-                            </ul>
-                            <div style="display:flex;gap:12px;flex-wrap:wrap;">
-                                <button class="btn btn-dark" onclick="go('booking')">Đặt lịch tham quan →</button>
-                                <button class="btn btn-outline" onclick="go('booking')">Tư vấn miễn phí</button>
-                            </div>
-                        </div>
-                        <div class="tp-imgs" style="border-radius:16px;overflow:hidden;">
-                            <div class="tp-img tp-img-main">
-                                <div class="ph gk4" style="height:100%;min-height:260px;">
-                                    <div class="ph-icon-wrap"><svg width="48" height="48" viewBox="0 0 24 24"
-                                            fill="none" stroke="#7a5a34" stroke-width="1">
-                                            <rect x="3" y="3" width="18" height="18" rx="1" />
-                                            <circle cx="8.5" cy="8.5" r="1.5" />
-                                            <polyline points="21 15 16 10 5 21" /></svg></div>
-                                </div>
-                            </div>
-                            <div class="tp-img">
-                                <div class="ph gk2" style="height:100%;min-height:180px;">
-                                    <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24"
-                                            fill="none" stroke="#7a5a34" stroke-width="1">
-                                            <rect x="3" y="3" width="18" height="18" rx="1" />
-                                            <circle cx="8.5" cy="8.5" r="1.5" />
-                                            <polyline points="21 15 16 10 5 21" /></svg></div>
-                                </div>
-                            </div>
-                            <div class="tp-img">
-                                <div class="ph gk6" style="height:100%;min-height:180px;">
-                                    <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24"
-                                            fill="none" stroke="#7a5a34" stroke-width="1">
-                                            <rect x="3" y="3" width="18" height="18" rx="1" />
-                                            <circle cx="8.5" cy="8.5" r="1.5" />
-                                            <polyline points="21 15 16 10 5 21" /></svg></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Concept grid Rooftop -->
-            <div style="padding:64px 0 80px;background:var(--b1);margin-top:64px;">
-                <div class="wrap">
-                    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;"
-                        class="r">
-                        <div>
-                            <div class="eyebrow">20+ Concept</div>
-                            <h2 class="h2">Concept tại <span class="em-text">Sora Rooftop</span></h2>
-                        </div>
-                        <button class="btn btn-outline" onclick="go('booking')">Tư vấn chọn concept →</button>
-                    </div>
-
-                    <div class="cs-grid r" style="gap:14px;">
-                        <div class="cs-item" style="border-radius:14px;">
-                            <div class="ph gk4" style="aspect-ratio:3/4;">
-                                <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                            <div class="cs-label"
-                                style="opacity:1;background:linear-gradient(to top,rgba(44,33,24,.7) 0%,transparent 70%);">
-                                <div class="cs-lbl-txt">Hoàng hôn thành phố</div>
-                                <div
-                                    style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px;letter-spacing:1px;">
-                                    GOLDEN HOUR</div>
-                            </div>
-                        </div>
-                        <div class="cs-item" style="border-radius:14px;">
-                            <div class="ph gk2" style="aspect-ratio:3/4;">
-                                <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                            <div class="cs-label"
-                                style="opacity:1;background:linear-gradient(to top,rgba(44,33,24,.7) 0%,transparent 70%);">
-                                <div class="cs-lbl-txt">Sky lounge ban ngày</div>
-                                <div
-                                    style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px;letter-spacing:1px;">
-                                    MODERN</div>
-                            </div>
-                        </div>
-                        <div class="cs-item" style="border-radius:14px;">
-                            <div class="ph gk6" style="aspect-ratio:3/4;">
-                                <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                            <div class="cs-label"
-                                style="opacity:1;background:linear-gradient(to top,rgba(44,33,24,.7) 0%,transparent 70%);">
-                                <div class="cs-lbl-txt">Đèn thành phố đêm</div>
-                                <div
-                                    style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px;letter-spacing:1px;">
-                                    NIGHT EDIT</div>
-                            </div>
-                        </div>
-                        <div class="cs-item" style="border-radius:14px;">
-                            <div class="ph gk8" style="aspect-ratio:3/4;">
-                                <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                            <div class="cs-label"
-                                style="opacity:1;background:linear-gradient(to top,rgba(44,33,24,.7) 0%,transparent 70%);">
-                                <div class="cs-lbl-txt">Vườn Nhật thượng tầng</div>
-                                <div
-                                    style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px;letter-spacing:1px;">
-                                    JAPANESE</div>
-                            </div>
-                        </div>
-                        <div class="cs-item" style="border-radius:14px;">
-                            <div class="ph gk3" style="aspect-ratio:3/4;">
-                                <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                            <div class="cs-label"
-                                style="opacity:1;background:linear-gradient(to top,rgba(44,33,24,.7) 0%,transparent 70%);">
-                                <div class="cs-lbl-txt">Hồ bơi phản chiếu</div>
-                                <div
-                                    style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px;letter-spacing:1px;">
-                                    REFLECTION</div>
-                            </div>
-                        </div>
-                        <div class="cs-item" style="border-radius:14px;">
-                            <div class="ph gk5" style="aspect-ratio:3/4;">
-                                <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                            <div class="cs-label"
-                                style="opacity:1;background:linear-gradient(to top,rgba(44,33,24,.7) 0%,transparent 70%);">
-                                <div class="cs-lbl-txt">Panorama bình minh</div>
-                                <div
-                                    style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px;letter-spacing:1px;">
-                                    SUNRISE</div>
-                            </div>
-                        </div>
-                        <div class="cs-item" style="border-radius:14px;">
-                            <div class="ph gk7" style="aspect-ratio:3/4;">
-                                <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                            <div class="cs-label"
-                                style="opacity:1;background:linear-gradient(to top,rgba(44,33,24,.7) 0%,transparent 70%);">
-                                <div class="cs-lbl-txt">Bar ngoài trời Ibiza</div>
-                                <div
-                                    style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px;letter-spacing:1px;">
-                                    RESORT</div>
-                            </div>
-                        </div>
-                        <div class="cs-item" style="border-radius:14px;">
-                            <div class="ph gk1" style="aspect-ratio:3/4;">
-                                <div class="ph-icon-wrap"><svg width="32" height="32" viewBox="0 0 24 24" fill="none"
-                                        stroke="#7a5a34" stroke-width="1">
-                                        <rect x="3" y="3" width="18" height="18" rx="1" />
-                                        <circle cx="8.5" cy="8.5" r="1.5" />
-                                        <polyline points="21 15 16 10 5 21" /></svg></div>
-                            </div>
-                            <div class="cs-label"
-                                style="opacity:1;background:linear-gradient(to top,rgba(44,33,24,.7) 0%,transparent 70%);">
-                                <div class="cs-lbl-txt">City lights editorial</div>
-                                <div
-                                    style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px;letter-spacing:1px;">
-                                    CINEMATIC</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="r"
-                        style="margin-top:32px;background:var(--w);border:1px solid var(--border);border-radius:16px;padding:28px 32px;display:flex;align-items:center;gap:24px;">
-                        <div style="flex:1;">
-                            <div
-                                style="font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--text);margin-bottom:4px;">
-                                Còn <span style="color:var(--br-d);font-style:italic;">12+ concept</span> rooftop độc
-                                quyền</div>
-                            <div style="font-size:13px;color:var(--text2);font-weight:300;">Sân thượng mưa nhân tạo,
-                                corner cây xanh, mini pool glass floor... Đặt lịch tham quan để trải nghiệm thực tế.
-                            </div>
-                        </div>
-                        <button class="btn btn-dark" style="flex-shrink:0;" onclick="go('booking')">Đặt lịch tham quan
-                            →</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- CTA cuối trang -->
-        <div class="cta-band">
-            <div class="wrap" style="position:relative;z-index:1;">
-                <div class="eyebrow" style="justify-content:center;color:var(--br-l);">Bắt đầu ngay hôm nay</div>
-                <div class="cta-h">Chọn concept yêu thích — <em>Sora lo phần còn lại</em></div>
-                <p class="cta-sub">Tư vấn miễn phí · Tham quan phim trường không mất phí · Phản hồi trong 2 giờ</p>
-                <button class="btn btn-white" onclick="go('booking')">Đặt lịch tư vấn & tham quan →</button>
-            </div>
-        </div>
-
-    </div><!-- /page-concept -->
-
-    <!-- FOOTER -->
+    </section>
     <footer>
-        <div class="ft-grid">
-            <div>
-                <div class="ft-brand-logo">
-                    <div class="ft-logo-dot"></div>Sora Bridal
-                </div>
-                <div class="ft-tagline">Nơi lưu giữ những khoảnh khắc đẹp nhất đời bạn.</div>
-                <div class="ft-ci"><span class="ft-ci-l">Địa chỉ</span><span class="ft-ci-v">18 Trần Phú, Hoàn Kiếm, Hà
-                        Nội</span></div>
-                <div class="ft-ci"><span class="ft-ci-l">Hotline</span><span class="ft-ci-v">0901 234 567</span></div>
-                <div class="ft-ci"><span class="ft-ci-l">Email</span><span class="ft-ci-v"><a
-                            href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                            data-cfemail="1d75787171725d6e726f7c7f6f74797c71336b73">[email&#160;protected]</a></span>
-                </div>
-                <div class="ft-ci"><span class="ft-ci-l">Giờ mở</span><span class="ft-ci-v">8:00 – 20:00 · Thứ 2 –
-                        CN</span></div>
-            </div>
-            <div>
-                <div class="ft-col-h">Dịch vụ</div>
-                <ul class="ft-links">
-                    <li><a onclick="go('services')">Gói Studio</a></li>
-                    <li><a onclick="go('services')">Gói Premium</a></li>
-                    <li><a onclick="go('services')">Gói Luxury</a></li>
-                    <li><a onclick="go('services')">Video highlight</a></li>
-                    <li><a onclick="go('services')">Trang phục cưới</a></li>
-                </ul>
-            </div>
-            <div>
-                <div class="ft-col-h">Studio</div>
-                <ul class="ft-links">
-                    <li><a onclick="go('studio')">Về chúng tôi</a></li>
-                    <li><a onclick="go('portfolio')">Portfolio</a></li>
-                    <li><a onclick="go('blog')">Blog cưới</a></li>
-                    <li><a href="#">Câu hỏi thường gặp</a></li>
-                    <li><a href="#">Chính sách hoàn tiền</a></li>
-                </ul>
-            </div>
-            <div>
-                <div class="ft-col-h">Liên hệ</div>
-                <ul class="ft-links">
-                    <li><a onclick="go('booking')">Đặt lịch tư vấn</a></li>
-                    <li><a href="#">Facebook</a></li>
-                    <li><a href="#">Instagram</a></li>
-                    <li><a href="#">TikTok</a></li>
-                    <li><a href="#">Zalo OA</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="ft-bottom">
-            <div class="ft-copy">© 2025 Sora Bridal Studio · Hà Nội · Thiết kế với ♥</div>
-            <div class="ft-social">
-                <a href="#">Facebook</a>
-                <a href="#">Instagram</a>
-                <a href="#">TikTok</a>
-                <a href="#">Zalo</a>
-            </div>
+        <div class="footer-content">
+            <div class="footer-links"> <a href="/#features-tools" class="footer-link">Features</a> <a href="/pricing"
+                    class="footer-link">Pricing</a> <a href="/docs/getting-started" class="footer-link">Docs</a> <a
+                    href="/releases" class="footer-link">Releases</a> <a href="/privacy" class="footer-link">Privacy</a>
+                <a href="/terms" class="footer-link">Terms</a> </div>
+            <p>&copy; 2026 K-Squared Labs. Built for macOS 15+</p>
+            <p class="footer-tagline">
+                Made for photographers who value their time
+            </p>
         </div>
     </footer>
-
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-    @include('user.layouts.partials.scripts')
+    <script type="module">
+        const t=document.querySelector(".hamburger"),n=document.querySelector(".mobile-menu"),i=document.querySelector(".mobile-menu-overlay"),c=document.querySelectorAll(".mobile-menu-link");function o(){const e=t?.classList.toggle("active");n?.classList.toggle("active"),i?.classList.toggle("active"),document.body.classList.toggle("menu-open"),t?.setAttribute("aria-expanded",e?"true":"false")}function s(){t?.classList.remove("active"),n?.classList.remove("active"),i?.classList.remove("active"),document.body.classList.remove("menu-open"),t?.setAttribute("aria-expanded","false")}t?.addEventListener("click",o);i?.addEventListener("click",s);c.forEach(e=>{e.addEventListener("click",s)});document.addEventListener("keydown",e=>{e.key==="Escape"&&n?.classList.contains("active")&&s()});window.addEventListener("resize",()=>{window.innerWidth>768&&n?.classList.contains("active")&&s()});
+    </script>
+    @include('user.layouts.partials.assets', ['type' => 'js'])
+    <script type="module">
+        document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",r=>{r.preventDefault();const t=r.currentTarget.getAttribute("href");if(t){const o=document.querySelector(t);o&&o.scrollIntoView({behavior:"smooth",block:"start"})}})});const c={root:null,rootMargin:"0px",threshold:.1},s=new IntersectionObserver(e=>{e.forEach(r=>{r.isIntersecting&&(r.target.classList.add("revealed"),s.unobserve(r.target))})},c);document.querySelectorAll("section").forEach(e=>{e.classList.add("reveal-on-scroll"),s.observe(e)});
+    </script>
 </body>
 
 </html>

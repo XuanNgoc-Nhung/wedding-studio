@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Astro v5.13.2">
+    <title>PhotoCuller - Photo Culling Software for Mac Photographers</title>
+    <meta name="description" content="PhotoCuller is photo culling software for macOS that helps photographers ingest cards, compare similar shots, edit IPTC metadata, and deliver selects faster.">
+    <meta name="keywords" content="photo culling software for macOS, photo culling app for Mac, photo workflow software, IPTC metadata editor, photo ingest software, photo selection tool, wedding photo culling software, photographer workflow app">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://photoculler.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="PhotoCuller">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:title" content="PhotoCuller - Photo Culling Software for Mac Photographers">
+    <meta property="og:description" content="PhotoCuller is photo culling software for macOS that helps photographers ingest cards, compare similar shots, edit IPTC metadata, and deliver selects faster.">
+    <meta property="og:url" content="https://photoculler.com/">
+    <meta property="og:image" content="https://photoculler.com/screenshot.png">
+    <meta property="og:image:alt" content="PhotoCuller photo culling workflow on macOS">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PhotoCuller - Photo Culling Software for Mac Photographers">
+    <meta name="twitter:description" content="PhotoCuller is photo culling software for macOS that helps photographers ingest cards, compare similar shots, edit IPTC metadata, and deliver selects faster.">
+    <meta name="twitter:image" content="https://photoculler.com/screenshot.png">
+    <meta name="twitter:image:alt" content="PhotoCuller photo culling workflow on macOS">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aldrich&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "PhotoCuller",
+            "applicationCategory": "MultimediaApplication",
+            "operatingSystem": "macOS 15 or later",
+            "description": "PhotoCuller is photo culling software for macOS that helps photographers ingest cards, compare similar shots, edit IPTC metadata, and deliver selects faster.",
+            "url": "https://photoculler.com/",
+            "image": "https://photoculler.com/screenshot.png",
+            "keywords": "photo culling software for macOS, photo culling app for Mac, photo workflow software, IPTC metadata editor, photo ingest software, photo selection tool, wedding photo culling software, photographer workflow app",
+            "featureList": ["Photo ingest from cards and source folders", "Side-by-side compare and synchronized zoom", "IPTC metadata editing and reusable templates", "Multi-destination delivery workflows", "Apple Photos and filesystem support"]
+        }
+    </script>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <script type="text/javascript" id="posthog-js">
+        !(function(t, e) {
+            var o, n, p, r;
+            e.__SV ||
+                ((window.posthog = e),
+                    (e._i = []),
+                    (e.init = function(i, s, a) {
+                        function g(t, e) {
+                            var o = e.split('.');
+                            2 == o.length && ((t = t[o[0]]), (e = o[1])),
+                                (t[e] = function() {
+                                    t.push([e].concat(Array.prototype.slice.call(arguments, 0)));
+                                });
+                        }
+                        ((p = t.createElement('script')).type = 'text/javascript'),
+                        (p.crossOrigin = 'anonymous'),
+                        (p.async = true),
+                        (p.src = s.api_host + '/static/array.js'),
+                        (r = t.getElementsByTagName('script')[0]).parentNode.insertBefore(p, r);
+                        var u = e;
+                        void 0 !== a ? (u = e[a] = []) : (a = 'posthog');
+                        u.people = u.people || [];
+                        u.toString = function(t) {
+                            var e = 'posthog';
+                            return 'posthog' !== a && (e += '.' + a), t || (e += ' (stub)'), e;
+                        };
+                        u.people.toString = function() {
+                            return u.toString(1) + '.people (stub)';
+                        };
+                        o =
+                            'capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys getNextSurveyStep onSessionId'.split(
+                                ' '
+                            );
+                        for (n = 0; n < o.length; n++) g(u, o[n]);
+                        e._i.push([i, s, a]);
+                    }),
+                    (e.__SV = 1));
+        })(document, window.posthog || []);
+
+        const getRuntimeDeviceContext = () => {
+            const hintedPlatform =
+                navigator.userAgentData && typeof navigator.userAgentData.platform === 'string' ?
+                navigator.userAgentData.platform :
+                '';
+            const ua = navigator.userAgent || '';
+            const platform = navigator.platform || '';
+            const hasTouch = typeof navigator.maxTouchPoints === 'number' && navigator.maxTouchPoints > 0;
+            const isIOSDevice = /iPhone|iPad|iPod/i.test(ua);
+            const isIpadPretendingToBeMac = platform === 'MacIntel' && hasTouch;
+            const isMacFromHint = hintedPlatform.toLowerCase() === 'macos';
+            const isMacFromLegacySignals = /Macintosh/i.test(ua) || /^Mac/i.test(platform);
+            const isMacDownloadEligible =
+                isMacFromHint || (isMacFromLegacySignals && !isIOSDevice && !isIpadPretendingToBeMac);
+
+            let runtimeDevice = 'other';
+            if (isIpadPretendingToBeMac) {
+                runtimeDevice = 'ipad_desktop_ua';
+            } else if (isIOSDevice) {
+                runtimeDevice = 'ios';
+            } else if (isMacDownloadEligible) {
+                runtimeDevice = 'mac_desktop';
+            }
+
+            return {
+                hasTouch,
+                isIpadPretendingToBeMac,
+                isMacDownloadEligible,
+                runtimeDevice,
+            };
+        };
+
+        posthog.init('phc_oafMpnJfeDorYS1BJgjbMSoXuiYQjjIrGySb8NHrf1', {
+            api_host: '/ph',
+            ui_host: 'https://us.i.posthog.com',
+            autocapture: false,
+            capture_pageview: true,
+            capture_pageleave: true,
+            before_send: (event) => {
+                const context = getRuntimeDeviceContext();
+                event.properties = event.properties || {};
+                event.properties.pc_runtime_device = context.runtimeDevice;
+                event.properties.pc_mac_download_eligible = context.isMacDownloadEligible;
+                event.properties.pc_is_ipad_desktop_ua = context.isIpadPretendingToBeMac;
+                event.properties.pc_has_touch = context.hasTouch;
+                return event;
+            }
+        });
+    </script>
+    <!-- Reddit Pixel -->
+    <script>
+        ! function(w, d) {
+            if (!w.rdt) {
+                var p = w.rdt = function() {
+                    p.sendEvent ? p.sendEvent.apply(p, arguments) : p.callQueue.push(arguments)
+                };
+                p.callQueue = [];
+                var t = d.createElement("script");
+                t.src = "https://www.redditstatic.com/ads/pixel.js", t.async = !0;
+                var s = d.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(t, s)
+            }
+        }(window, document);
+        rdt('init', 'a2_hihq7sm7buyn');
+        rdt('track', 'PageVisit');
+    </script>
+    <!-- End Reddit Pixel -->
+    <!-- Meta Pixel Code -->
+    <script>
+        ! function(f, b, e, v, n, t, s) {
+            if (f.fbq) return;
+            n = f.fbq = function() {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n;
+            n.push = n;
+            n.loaded = !0;
+            n.version = '2.0';
+            n.queue = [];
+            t = b.createElement(e);
+            t.async = !0;
+            t.src = v;
+            s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '774566882102675');
+        fbq('track', 'PageView');
+    </script> <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=774566882102675&ev=PageView&noscript=1"></noscript>
+    <!-- End Meta Pixel Code -->
+    <style>
+        @property --download-btn-angle {
+            syntax: "<angle>";
+            inherits: false;
+            initial-value: .5turn;
+        }
+
+        .download-btn-wrap[data-astro-cid-sle7k2hz] {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px
+        }
+
+        .download-btn-meta[data-astro-cid-sle7k2hz] {
+            font-size: .78rem;
+            color: var(--text-tertiary);
+            letter-spacing: .01em
+        }
+
+        .download-btn[data-astro-cid-sle7k2hz] {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 32px;
+            border-radius: var(--radius-md);
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            color: #fff;
+            background: linear-gradient(135deg, #fbbf242e, #fb923c1a, #1a1a1ce0);
+            border: 1px solid rgba(251, 191, 36, .25);
+            box-shadow: var(--shadow-inset);
+            position: relative;
+            overflow: hidden;
+            transition: transform var(--duration-normal) var(--ease), box-shadow var(--duration-normal) var(--ease)
+        }
+
+        .download-btn[data-astro-cid-sle7k2hz].is-full-width {
+            width: 100%
+        }
+
+        .download-btn[data-astro-cid-sle7k2hz]:hover {
+            background: linear-gradient(135deg, #fbbf2447, #fb923c29, #1a1a1ceb);
+            border-color: #fbbf2473;
+            transform: translateY(-2px);
+            box-shadow: inset 0 1px #ffffff1a, 0 8px 24px #fbbf2426
+        }
+
+        .download-btn__comet[data-astro-cid-sle7k2hz] {
+            pointer-events: none;
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius-md);
+            padding: 1.5px;
+            background: conic-gradient(from var(--download-btn-angle), transparent 60%, rgba(251, 191, 36, .95), rgba(251, 191, 36, .1) 80%, transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: download-btn-spin 2.5s linear infinite
+        }
+
+        .download-btn__inner[data-astro-cid-sle7k2hz] {
+            position: relative;
+            z-index: var(--z-base);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px
+        }
+
+        @keyframes download-btn-spin {
+            to {
+                --download-btn-angle: 1.5turn
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="/_astro/index.Db1b8UHJ.css">
+    <link rel="stylesheet" href="/_astro/thank-you.CMNyxseJ.css">
+    <style>
+        .faq-section[data-astro-cid-al2ca2vr] {
+            padding: 140px 20px;
+            background: var(--sidebar-bg)
+        }
+
+        .section-headline[data-astro-cid-al2ca2vr] {
+            text-align: center
+        }
+
+        .section-description[data-astro-cid-al2ca2vr] {
+            text-align: center;
+            margin-bottom: 60px
+        }
+
+        .faq-list[data-astro-cid-al2ca2vr] {
+            display: flex;
+            flex-direction: column;
+            gap: 16px
+        }
+
+        .faq-item[data-astro-cid-al2ca2vr] {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            transition: all var(--duration-normal) var(--ease)
+        }
+
+        .faq-item[data-astro-cid-al2ca2vr]:hover {
+            border-color: var(--text-tertiary)
+        }
+
+        .faq-item[data-astro-cid-al2ca2vr][open] {
+            border-color: var(--accent-yellow)
+        }
+
+        .faq-question[data-astro-cid-al2ca2vr] {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            list-style: none;
+            user-select: none
+        }
+
+        .faq-question[data-astro-cid-al2ca2vr]::-webkit-details-marker {
+            display: none
+        }
+
+        .faq-question[data-astro-cid-al2ca2vr] span[data-astro-cid-al2ca2vr] {
+            flex: 1;
+            padding-right: 20px
+        }
+
+        .faq-icon[data-astro-cid-al2ca2vr] {
+            flex-shrink: 0;
+            color: var(--text-tertiary);
+            transition: transform var(--duration-normal) var(--ease)
+        }
+
+        .faq-item[data-astro-cid-al2ca2vr][open] .faq-icon[data-astro-cid-al2ca2vr] {
+            transform: rotate(45deg);
+            color: var(--accent-yellow)
+        }
+
+        .faq-answer[data-astro-cid-al2ca2vr] {
+            padding: 0 24px 24px
+        }
+
+        .faq-answer[data-astro-cid-al2ca2vr] p[data-astro-cid-al2ca2vr] {
+            color: var(--text-secondary)
+        }
+
+        @media (max-width: 768px) {
+            .faq-section[data-astro-cid-al2ca2vr] {
+                padding: 100px 20px
+            }
+            .faq-question[data-astro-cid-al2ca2vr] {
+                padding: 20px;
+                font-size: 1rem
+            }
+            .faq-answer[data-astro-cid-al2ca2vr] {
+                padding: 0 20px 20px
+            }
+        }
+    </style>
+</head>
+
+<body data-mobile-download-modal-enabled="true">
+    <nav>
+        <div class="nav-content"> <a href="/" class="logo"> <img src="/app-icon.png" alt="PhotoCuller" class="logo-icon"> <span class="logo-wordmark">PhotoCuller</span> </a>
+            <div class="nav-buttons"> <a href="/docs/getting-started" class="nav-link">Help</a> <a href="/releases" class="nav-link">Releases</a> <a href="/pricing" class="nav-buy"> Buy Now </a> </div> <button class="hamburger" aria-label="Toggle menu" aria-expanded="false"> <span></span> <span></span> <span></span> </button>            </div>
+    </nav>
+    <!-- Mobile menu overlay -->
+    <div class="mobile-menu-overlay"></div>
+    <div class="mobile-menu"> <a href="/docs/getting-started" class="mobile-menu-link">Help</a> <a href="/releases" class="mobile-menu-link">Releases</a> <a href="/pricing" class="mobile-menu-cta">Buy Now</a> </div>
+    <div class="download-modal-overlay" data-download-modal-overlay
+        hidden></div>
+    <div class="download-modal" data-download-modal role="dialog" aria-modal="true" aria-labelledby="download-modal-title" hidden>
+        <div class="download-modal-card"> <button type="button" class="download-modal-close" data-download-modal-close aria-label="Close dialog"> <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"> <line x1="18" y1="6" x2="6" y2="18"></line> <line x1="6" y1="6" x2="18" y2="18"></line> </svg> </button>
+            <h2 id="download-modal-title" data-download-modal-title>
+                Get the Mac download link
+            </h2>
+            <p class="download-modal-description" data-download-modal-description>
+                Not on your Mac right now? Enter your email and we will send the download link so you can install later.
+            </p>
+            <form class="download-modal-form" data-download-link-form data-turnstile-site-key="0x4AAAAAAB9i3m_wZUXw3nBL" novalidate> <label for="download-modal-email">Email address</label> <input id="download-modal-email" type="email" name="email" autocomplete="email" required placeholder="you@example.com">
+                <div class="download-modal-turnstile-wrap">
+                    <div id="download-modal-turnstile" class="download-modal-turnstile"></div>
+                </div>
+                <p class="download-modal-status" data-download-link-status aria-live="polite"></p> <button type="submit" class="download-modal-submit" data-download-link-submit>
+Send me the Mac link
+</button> </form>
+            <div class="download-modal-success" data-download-modal-success hidden aria-live="polite"> <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-accent, #34d399)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"> <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path> <polyline points="22 4 12 14.01 9 11.01"></polyline> </svg>
+                <p class="download-modal-success-text">
+                    Check your inbox for the Mac download link.
+                </p>
+            </div>
+        </div>
+    </div>
+    <section class="hero" data-astro-cid-bbe6dxrz>
+        <div class="hero-content section-shell-wide" data-astro-cid-bbe6dxrz>
+            <h1 class="hero-title" data-astro-cid-bbe6dxrz>
+                From ingest to selects at
+                <span class="accent-text" data-astro-cid-bbe6dxrz>Lightning Speed</span> </h1>
+            <p class="hero-description" data-astro-cid-bbe6dxrz>
+                The fastest way to get from a full card to your final selects on Mac.
+            </p>
+            <div class="hero-cta" data-astro-cid-bbe6dxrz>
+                <div class="download-btn-wrap" data-astro-cid-sle7k2hz>
+                    <a href="/download" class="download-btn hero-download-btn" data-download-cta data-modal-text="Email me the Mac link" data-astro-cid-sle7k2hz>
+                        <div class="download-btn__comet" aria-hidden="true" data-astro-cid-sle7k2hz></div> <span class="download-btn__inner" data-astro-cid-sle7k2hz> <svg width="18" height="18" viewBox="0 0 814 1000" fill="currentColor" aria-hidden="true" data-astro-cid-sle7k2hz> <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.3 134.4-316.8 266.5-316.8 70.1 0 128.4 46.4 171.5 46.4 41.3 0 106.9-49.4 185.2-49.4 29.5 0 108.1 2.6 168.5 71.9zm-234.5-172.9c31.3-36.9 53.1-88.1 53.1-139.3 0-7.1-.6-14.3-1.9-20.1-50.6 1.9-110.8 33.7-147.1 75.8-28.5 32.4-55.1 83.6-55.1 135.5 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 45.4 0 102.5-30.4 135.5-71.3z" data-astro-cid-sle7k2hz></path> </svg> <span data-download-cta-label data-astro-cid-sle7k2hz>Download for Mac</span>                        </span>
+                    </a>
+                    <p class="download-btn-meta" data-astro-cid-sle7k2hz>macOS 15 Sequoia or later &nbsp;·&nbsp; Apple Silicon</p>
+                </div>
+                <p class="hero-cta-helper" data-download-helper hidden data-astro-cid-bbe6dxrz>
+                    On mobile right now? You can download directly from your Mac, or use the email link above.
+                </p>
+            </div>
+            <div class="compare-shell" data-astro-cid-bbe6dxrz>
+                <div class="compare-container" data-compare style="--pos: 50%" data-astro-cid-bbe6dxrz> <img class="compare-base" src="/images/hero-light.webp" alt="PhotoCuller in light mode" width="1650" height="1100" fetchpriority="high" draggable="false" data-astro-cid-bbe6dxrz>
+                    <div class="compare-overlay" aria-hidden="true" data-astro-cid-bbe6dxrz>
+                    <img src="/images/hero-dark.webp" alt="" width="1650" height="1100" fetchpriority="high" draggable="false" data-astro-cid-bbe6dxrz> </div>
+                    <div class="slider-line" aria-hidden="true" data-astro-cid-bbe6dxrz> <span class="slider-handle" data-astro-cid-bbe6dxrz> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" data-astro-cid-bbe6dxrz> <polyline points="9,6 4,12 9,18" data-astro-cid-bbe6dxrz></polyline> <polyline points="15,6 20,12 15,18" data-astro-cid-bbe6dxrz></polyline> </svg> </span>                        </div> <span class="sr-only" data-astro-cid-bbe6dxrz>
+Drag the slider to compare dark mode and light mode
+</span> </div>
+            </div>
+        </div>
+    </section>
+    <script type="module">document.querySelectorAll("[data-compare]").forEach(e=>{let s=!1;const r=t=>{const i=e.getBoundingClientRect(),a=t-i.left;return Math.min(100,Math.max(0,a/i.width*100))},d=t=>{e.style.setProperty("--pos",`${t}%`)};e.addEventListener("pointerdown",t=>{s=!0,e.setPointerCapture(t.pointerId),d(r(t.clientX)),e.classList.add("is-dragging")}),e.addEventListener("pointermove",t=>{s&&(t.preventDefault(),d(r(t.clientX)))});const
+        n=()=>{s=!1,e.classList.remove("is-dragging")};e.addEventListener("pointerup",n),e.addEventListener("pointercancel",n)});</script>
+    <section class="audience-section landing-section" data-astro-cid-ijmr2pup>
+        <div class="audience-container section-shell" data-astro-cid-ijmr2pup>
+            <h2 class="section-headline section-title" data-astro-cid-ijmr2pup>
+                Built for photographers who <span class="accent-text" data-astro-cid-ijmr2pup>shoot more than they can sort</span> </h2>
+            <p class="section-description section-subtitle" data-astro-cid-ijmr2pup>
+                Whether you come back from a weekend hike with 400 frames or a wedding with 4,000, the bottleneck is the same. PhotoCuller helps you get from everything to the good ones without burning out.
+            </p>
+            <div class="audience-grid" data-astro-cid-ijmr2pup>
+                <article class="audience-card" data-astro-cid-ijmr2pup>
+                    <h3 class="feature-title card-title" data-astro-cid-ijmr2pup>Passionate Photographers</h3>
+                    <p class="feature-description card-body" data-astro-cid-ijmr2pup>
+                        You want a better way to work through large shoots, compare similar frames, and keep the best images. PhotoCuller gives you focus peaking, side-by-side compare, and smart stacking so the best shots surface faster.
+                    </p>
+                </article>
+                <article class="audience-card" data-astro-cid-ijmr2pup>
+                    <h3 class="feature-title card-title" data-astro-cid-ijmr2pup>Working Photographers</h3>
+                    <p class="feature-description card-body" data-astro-cid-ijmr2pup>
+                        You need to ingest from multiple SD cards, apply IPTC metadata, and set up repeatable delivery workflows. PhotoCuller covers the session from card to handoff.
+                    </p>
+                </article>
+            </div>
+        </div>
+    </section>
+    <section class="steps-section landing-section" id="session" data-astro-cid-oxn5q4ar>
+        <div class="steps-container section-shell-wide" data-astro-cid-oxn5q4ar>
+            <h2 class="section-headline section-title" data-astro-cid-oxn5q4ar>
+                One session. <span class="accent-text" data-astro-cid-oxn5q4ar>Three steps.</span> </h2>
+            <p class="section-description section-subtitle" data-astro-cid-oxn5q4ar>
+                PhotoCuller is designed around a single review session. Open a folder or ingest a card, make your decisions, route the output, move on.
+            </p>
+            <div class="steps-list" data-astro-cid-oxn5q4ar>
+                <article class="step-row" data-astro-cid-oxn5q4ar>
+                    <div class="step-copy" data-astro-cid-oxn5q4ar> <span class="step-badge" data-astro-cid-oxn5q4ar>1</span>
+                        <h3 data-astro-cid-oxn5q4ar>Ingest</h3>
+                        <p data-astro-cid-oxn5q4ar>
+                            Plug in an SD card and PhotoCuller can detect it automatically. Choose a destination template, apply an optional IPTC preset, and start copying. Files appear in the grid in real time so you can begin reviewing before ingest finishes.
+                        </p>
+                    </div>
+                    <div class="step-visual" data-astro-cid-oxn5q4ar> <img src="/images/Ingest.png" alt="PhotoCuller ingest workflow" loading="lazy" data-astro-cid-oxn5q4ar> </div>
+                </article>
+                <article class="step-row step-row-flip" data-astro-cid-oxn5q4ar>
+                    <div class="step-copy" data-astro-cid-oxn5q4ar> <span class="step-badge" data-astro-cid-oxn5q4ar>2</span>
+                        <h3 data-astro-cid-oxn5q4ar>Cull</h3>
+                        <p data-astro-cid-oxn5q4ar>
+                            Grid view is built for speed. Use WASD to navigate, number keys to rate, F to flag, R to reject, and filters to narrow quickly. Loupe helps check sharpness without leaving the grid.
+                        </p>
+                    </div>
+                    <div class="step-visual" data-astro-cid-oxn5q4ar> <img src="/images/step-culling.webp" alt="PhotoCuller culling workflow in grid view" loading="lazy" data-astro-cid-oxn5q4ar> </div>
+                </article>
+                <article class="step-row" data-astro-cid-oxn5q4ar>
+                    <div class="step-copy" data-astro-cid-oxn5q4ar> <span class="step-badge" data-astro-cid-oxn5q4ar>3</span>
+                        <h3 data-astro-cid-oxn5q4ar>Deliver</h3>
+                        <p data-astro-cid-oxn5q4ar>
+                            Build workflows with filters for rating, flags, color labels, stacks, and file type, then route to folders, NAS, or Apple Photos with template-driven naming. Enable multiple workflows and execute them in one run.
+                        </p>
+                    </div>
+                    <div class="step-visual" data-astro-cid-oxn5q4ar> <img src="/images/step-deliver.webp" alt="PhotoCuller delivery workflow setup" loading="lazy" data-astro-cid-oxn5q4ar> </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    <section class="feature-tools-section landing-section" id="features-tools" data-astro-cid-lzncpbgo>
+        <div class="feature-container-lg section-shell-wide" data-astro-cid-lzncpbgo>
+            <h2 class="section-headline section-title" data-astro-cid-lzncpbgo>
+                Tools that make every <span class="accent-text" data-astro-cid-lzncpbgo>decision faster</span> </h2>
+            <p class="section-description section-subtitle" data-astro-cid-lzncpbgo>
+                Spot the sharpest frame, catch exposure issues, and narrow thousands of photos down to your best.
+            </p>
+            <div class="tools-grid" data-astro-cid-lzncpbgo>
+                <article class="feature-card feature-card--content-media card-face" data-astro-cid-lzncpbgo>
+                    <div class="feature-card-content" data-astro-cid-lzncpbgo>
+                        <h3 class="card-title" data-astro-cid-lzncpbgo>Face Panel</h3>
+                        <p class="card-body" data-astro-cid-lzncpbgo>
+                            Detect faces in the current image and review close-up crops of every detected face in one panel.
+                        </p>
+                    </div>
+                    <div class="feature-card-img feature-card-img--full-width feature-card-img--ratio-3-2" data-astro-cid-lzncpbgo> <img class="feature-card-media feature-card-media--contain" src="/images/faces-panel.webp" alt="Face Panel showing detected face crops in PhotoCuller" loading="lazy" data-astro-cid-lzncpbgo> </div>
+                </article>
+                <article class="feature-card feature-card--content-media card-focus" data-astro-cid-lzncpbgo>
+                    <div class="feature-card-content" data-astro-cid-lzncpbgo>
+                        <h3 class="card-title" data-astro-cid-lzncpbgo>Focus Peaking + Exposure Warnings</h3>
+                        <p class="card-body" data-astro-cid-lzncpbgo>
+                            Use overlays in Full View to confirm sharp focus and quickly catch blown highlights or crushed shadows.
+                        </p>
+                    </div>
+                    <div class="feature-card-img feature-card-img--full-width feature-card-img--ratio-3-2" data-astro-cid-lzncpbgo> <img class="feature-card-media feature-card-media--cover feature-card-media--top-center" src="/images/focus-peaking.webp" alt="Focus peaking and exposure warnings in PhotoCuller" loading="lazy" data-astro-cid-lzncpbgo> </div>
+                </article>
+                <article class="feature-card feature-card--content-media card-loupe" data-astro-cid-lzncpbgo>
+                    <div class="feature-card-content" data-astro-cid-lzncpbgo>
+                        <h3 class="card-title" data-astro-cid-lzncpbgo>Loupe</h3>
+                        <p class="card-body" data-astro-cid-lzncpbgo>
+                            Use a magnifier in Grid View to inspect detail without switching views.
+                        </p>
+                    </div>
+                    <div class="feature-card-img feature-card-img--full-width feature-card-img--ratio-15-16" data-astro-cid-lzncpbgo> <img class="feature-card-media feature-card-media--fill-height" src="/images/feature-loupe-square.webp" alt="Loupe tool in PhotoCuller" loading="lazy" data-astro-cid-lzncpbgo> </div>
+                </article>
+                <article class="feature-card feature-card--content-media card-grouping" data-astro-cid-lzncpbgo>
+                    <div class="feature-card-content" data-astro-cid-lzncpbgo>
+                        <h3 class="card-title" data-astro-cid-lzncpbgo>Flexible Grouping</h3>
+                        <p class="card-body" data-astro-cid-lzncpbgo>
+                            Group photos by hour, day, week, month, year, or stack to review related shots faster.
+                        </p>
+                    </div>
+                    <div class="feature-card-img feature-card-img--full-width feature-card-img--ratio-15-16" data-astro-cid-lzncpbgo> <img class="feature-card-media feature-card-media--fill-width" src="/images/grouping-portrait.webp" alt="Group by controls in PhotoCuller" loading="lazy" data-astro-cid-lzncpbgo> </div>
+                </article>
+                <article class="feature-card feature-card--content-media card-compare" data-astro-cid-lzncpbgo>
+                    <div class="feature-card-content" data-astro-cid-lzncpbgo>
+                        <h3 class="card-title" data-astro-cid-lzncpbgo>Side-by-side with synchronized zoom</h3>
+                        <p class="card-body" data-astro-cid-lzncpbgo>
+                            Compare two photos side by side and inspect the same crop area across both panels, so you can spot differences in detail.
+                        </p>
+                    </div>
+                    <div class="feature-card-img feature-card-img--full-width feature-card-img--ratio-3-2" data-astro-cid-lzncpbgo> <img class="feature-card-media feature-card-media--contain" src="/images/feature-side-by-side.webp" alt="Side-by-side compare view in PhotoCuller" loading="lazy" data-astro-cid-lzncpbgo> </div>
+                </article>
+                <article class="feature-card feature-card--content-media card-stacking" data-astro-cid-lzncpbgo>
+                    <div class="feature-card-content" data-astro-cid-lzncpbgo>
+                        <h3 class="card-title" data-astro-cid-lzncpbgo>Smart Stacking</h3>
+                        <p class="card-body" data-astro-cid-lzncpbgo>
+                            Group burst sequences and focus on top candidates with less grid clutter.
+                        </p>
+                    </div>
+                    <div class="feature-card-img feature-card-img--full-width feature-card-img--ratio-15-16" data-astro-cid-lzncpbgo> <img class="feature-card-media feature-card-media--fill-height" src="/images/stacking-square.png" alt="Smart stacking in PhotoCuller" loading="lazy" data-astro-cid-lzncpbgo> </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    <section class="feature-workflow-section landing-section" id="features-workflow" data-astro-cid-lzncpbgo>
+        <div class="feature-container-lg section-shell-wide" data-astro-cid-lzncpbgo>
+            <h2 class="section-headline section-title" data-astro-cid-lzncpbgo>
+                Workflow and metadata <span class="accent-text" data-astro-cid-lzncpbgo>controls</span> </h2>
+            <p class="section-description section-subtitle" data-astro-cid-lzncpbgo>
+                Finish the job without switching apps — apply IPTC metadata, rename files, and route output to multiple destinations in one pass.
+            </p>
+            <div class="workflow-grid" data-astro-cid-lzncpbgo>
+                <article class="feature-card feature-card--content-media card-iptc" data-astro-cid-lzncpbgo>
+                    <div class="feature-card-content" data-astro-cid-lzncpbgo>
+                        <h3 class="card-title" data-astro-cid-lzncpbgo>IPTC Templates</h3>
+                        <p class="card-body" data-astro-cid-lzncpbgo>
+                            Apply reusable IPTC presets with merge modes and session variables.
+                        </p>
+                    </div>
+                    <div class="feature-card-img feature-card-img--full-width feature-card-img--ratio-281-238" data-astro-cid-lzncpbgo> <img class="feature-card-media feature-card-media--cover feature-card-media--top-center" src="/images/iptc-editing.png" alt="IPTC template editor in PhotoCuller" loading="lazy" data-astro-cid-lzncpbgo> </div>
+                </article>
+                <article class="feature-card feature-card--content-media card-route" data-astro-cid-lzncpbgo>
+                    <div class="feature-card-content" data-astro-cid-lzncpbgo>
+                        <h3 class="card-title" data-astro-cid-lzncpbgo>Multi-destination Workflows</h3>
+                        <p class="card-body" data-astro-cid-lzncpbgo>
+                            Run multiple workflows in one pass with separate filters, destinations, and IPTC settings.
+                        </p>
+                    </div>
+                    <div class="feature-card-img feature-card-img--full-width" data-astro-cid-lzncpbgo> <img src="/images/workflow-in-progress.png" alt="Multi-destination workflows in PhotoCuller" loading="lazy" data-astro-cid-lzncpbgo> </div>
+                </article>
+                <article class="feature-card feature-card--content-media card-code" data-astro-cid-lzncpbgo>
+                    <div class="feature-card-content" data-astro-cid-lzncpbgo>
+                        <h3 class="card-title" data-astro-cid-lzncpbgo>Code Replacements</h3>
+                        <p class="card-body" data-astro-cid-lzncpbgo>
+                            Expand short codes into full values inside supported template and metadata fields.
+                        </p>
+                    </div>
+                    <div class="feature-card-img feature-card-img--full-width feature-card-img--ratio-281-238" data-astro-cid-lzncpbgo> <img class="feature-card-media feature-card-media--cover feature-card-media--top-center" src="/images/code-replacement.png" alt="PhotoCuller user interface with metadata tools" loading="lazy" data-astro-cid-lzncpbgo> </div>
+                </article>
+            </div>
+        </div>
+    </section>
+    <section class="feature-ecosystem-section landing-section" id="features-ecosystem" data-astro-cid-lzncpbgo>
+        <div class="feature-container-lg section-shell-wide ecosystem-container" data-astro-cid-lzncpbgo>
+            <h2 class="section-headline section-title" data-astro-cid-lzncpbgo>
+                Works with your <span class="accent-text" data-astro-cid-lzncpbgo>existing setup</span> </h2>
+            <p class="section-description section-subtitle" data-astro-cid-lzncpbgo>
+                PhotoCuller fits between capture and editing without forcing a new ecosystem.
+            </p>
+            <div class="ecosystem-badges" data-astro-cid-lzncpbgo>
+                <div class="ecosystem-badge" data-astro-cid-lzncpbgo>
+                    <div class="ecosystem-badge-icon" data-astro-cid-lzncpbgo> <span class="material-symbol" aria-hidden="true" data-astro-cid-lzncpbgo>photo_library</span> </div>
+                    <h3 class="card-title" data-astro-cid-lzncpbgo>Apple Photos</h3>
+                    <p class="card-body" data-astro-cid-lzncpbgo>
+                        Load Apple Photos albums as sources and route output with workflow photo-version control.
+                    </p>
+                </div>
+                <div class="ecosystem-badge" data-astro-cid-lzncpbgo>
+                    <div class="ecosystem-badge-icon" data-astro-cid-lzncpbgo> <span class="material-symbol" aria-hidden="true" data-astro-cid-lzncpbgo>dns</span> </div>
+                    <h3 class="card-title" data-astro-cid-lzncpbgo>Network locations and NAS</h3>
+                    <p class="card-body" data-astro-cid-lzncpbgo>
+                        Use mounted network locations as sources and workflow destinations in studio storage setups.
+                    </p>
+                </div>
+                <div class="ecosystem-badge" data-astro-cid-lzncpbgo>
+                    <div class="ecosystem-badge-icon" data-astro-cid-lzncpbgo> <span class="material-symbol" aria-hidden="true" data-astro-cid-lzncpbgo>open_in_new</span> </div>
+                    <h3 class="card-title" data-astro-cid-lzncpbgo>External editors</h3>
+                    <p class="card-body" data-astro-cid-lzncpbgo>
+                        Send files directly to configured editors, with RAW or JPEG preference for paired files.
+                    </p>
+                </div>
+                <div class="ecosystem-badge" data-astro-cid-lzncpbgo>
+                    <div class="ecosystem-badge-icon" data-astro-cid-lzncpbgo> <span class="material-symbol" aria-hidden="true" data-astro-cid-lzncpbgo>description</span> </div>
+                    <h3 class="card-title" data-astro-cid-lzncpbgo>XMP sidecar aware</h3>
+                    <p class="card-body" data-astro-cid-lzncpbgo>
+                        For filesystem workflows, PhotoCuller can include existing XMP sidecars, and RAW metadata writes use sidecars by default.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="built-for-mac" data-astro-cid-qiz6l356>
+        <div class="container section-shell-wide" data-astro-cid-qiz6l356>
+            <h2 class="section-headline" data-astro-cid-qiz6l356>Built for Mac.<br data-astro-cid-qiz6l356><span class="accent-text" data-astro-cid-qiz6l356>Exclusively.</span></h2>
+            <p class="section-description" data-astro-cid-qiz6l356>
+                Designed for macOS using modern Apple technologies for speed, efficiency, and a truly native experience.
+            </p>
+            <div class="tech-badges grid-cards-3" data-astro-cid-qiz6l356>
+                <div class="tech-badge" data-astro-cid-qiz6l356>
+                    <div class="badge-icon" data-astro-cid-qiz6l356> <span class="material-symbol" aria-hidden="true" data-astro-cid-qiz6l356>memory</span> </div>
+                    <h3 class="card-title" data-astro-cid-qiz6l356>Native Performance</h3>
+                    <p class="card-body" data-astro-cid-qiz6l356>Optimized for Apple Silicon. Browse thousands of RAW files with zero lag.</p>
+                </div>
+                <div class="tech-badge" data-astro-cid-qiz6l356>
+                    <div class="badge-icon" data-astro-cid-qiz6l356> <span class="material-symbol" aria-hidden="true" data-astro-cid-qiz6l356>shield_lock</span> </div>
+                    <h3 class="card-title" data-astro-cid-qiz6l356>Privacy First</h3>
+                    <p class="card-body" data-astro-cid-qiz6l356>Your photos never leave your Mac. No cloud uploads, no accounts, no tracking.</p>
+                </div>
+                <div class="tech-badge" data-astro-cid-qiz6l356>
+                    <div class="badge-icon" data-astro-cid-qiz6l356> <span class="material-symbol" aria-hidden="true" data-astro-cid-qiz6l356>wifi_off</span> </div>
+                    <h3 class="card-title" data-astro-cid-qiz6l356>Works Offline</h3>
+                    <p class="card-body" data-astro-cid-qiz6l356>No internet required. Cull your photos anywhere: on a plane, in the field, off the grid.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="testimonials-section" id="testimonials" data-astro-cid-aadlzisc>
+        <div class="container section-shell-wide" data-astro-cid-aadlzisc>
+            <h2 class="section-headline" data-astro-cid-aadlzisc>
+                What users are <span class="accent-text" data-astro-cid-aadlzisc>saying</span> </h2>
+            <p class="section-description" data-astro-cid-aadlzisc>
+                Real feedback from photographers who use PhotoCuller every day
+            </p>
+        </div>
+        <div class="testimonials-marquee" data-marquee data-astro-cid-aadlzisc> <button type="button" class="marquee-nav marquee-nav--left" data-nav-left aria-label="Scroll testimonials left" data-astro-cid-aadlzisc> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-aadlzisc> <polyline points="15 18 9 12 15 6" data-astro-cid-aadlzisc></polyline> </svg> </button>
+            <div class="testimonials-track" data-track data-astro-cid-aadlzisc> <button type="button" class="testimonial-card" data-card-index="0" aria-label="Read full testimonial from Adrian" data-astro-cid-aadlzisc> <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg> </div> <p class="quote-text" data-astro-cid-aadlzisc>I have been looking for a program which is easier to use enabling me to sort through my images after a photoshoot.
+
+I am a wildlife photographer and I often come home with many many photos and many many duplicates, which is where PhotoCuller has made sorting and culling much easier and even enjoyable.
+
+I would say to any photographer who is looking for a piece of software to give PhotoCuller a try and I guarantee they will be pleasantly surprised at the ease of use, whether they are looking for a simple way to view and cull their images or if they need to do more — PhotoCuller can do this with ease in a nice, clean, friendly interface.
+
+I did not hesitate to purchase PhotoCuller as soon as it was released. Having used the beta versions, I knew it was the piece of software I had been looking for, and since its release there have been further updates to enhance it. As far as I can see, it will go from strength to strength.</p> <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Adrian</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div> </button>
+                <button
+                    type="button" class="testimonial-card" data-card-index="1" aria-label="Read full testimonial from Rob van der Most" data-astro-cid-aadlzisc>
+                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg>                        </div>
+                    <p class="quote-text" data-astro-cid-aadlzisc>As a wildlife photographer I often go home with 4,000 to 6,000 pictures to be reviewed. With 10 to 15 pictures a second, it&#39;s easy to shoot series of 25 to 100, more or less similar, pictures of which you want to select the two
+                        or three best. Within the popular photo editors&#39; tools, this takes a lot of time, pollutes their underlying databases, and takes away the joy of taking pictures in the first place. I looked at AI photo culling tools but, today,
+                        they are great for wedding and fashion photography, but offer very limited help for wildlife. Via a post on Reddit, I read about PhotoCuller and decided to download a trial. I love this tool as it&#39;s fast, easy to understand,
+                        has no underlying database, and has great customer support. I love the possibility to compare photos zoomed in on the subject to find the best pictures from your series. PhotoCuller is customizable to your own liking and, depending
+                        on the capabilities of your hardware, tunable to find the performance optimum. On top of all this, the price is a one-time charge, so no subscriptions or auto-renewals.</p>
+                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Rob van der Most</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div>
+                    </button><button type="button" class="testimonial-card" data-card-index="2" aria-label="Read full testimonial from Andrew" data-astro-cid-aadlzisc> <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg> </div> <p class="quote-text" data-astro-cid-aadlzisc>I bought PhotoCuller because EOS Utility 3 stopped working with a wired connection to the camera, and won&#39;t ingest and file the RAWs appropriately in my import folder from an SD card.
+
+PhotoCuller does that nicely, preserving my longstanding folder hierarchy, which I can then synchronize with the NAS. It fits seamlessly into my workflow, makes it easier to sort and star photos than DxO PhotoLab, and doesn&#39;t interfere with my preferred editors.</p> <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Andrew</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div> </button>
+                    <button
+                        type="button" class="testimonial-card" data-card-index="3" aria-label="Read full testimonial from Anonymous" data-astro-cid-aadlzisc>
+                        <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg>                            </div>
+                        <p class="quote-text" data-astro-cid-aadlzisc>I used to have custom scripts to separate my fresh JPGs and RAWs into different folders, then use the JPG folder for culling because they loaded faster than the RAWs and then use a custom script to delete the RAW files for which
+                            no matching JPG could be found anymore. PhotoCuller made that a lot easier, it&#39;s so quick.</p>
+                        <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Anonymous</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div>
+                        </button><button type="button" class="testimonial-card" data-card-index="4" aria-label="Read full testimonial from Rory Sinclair" data-astro-cid-aadlzisc> <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg> </div> <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller is the app I dreamed of having at my fingertips when I built out my &#39;workflow&#39;. It&#39;s deceptively simple, but lets you build some extremely powerful workflows to suit the way you want to work.
+
+Personally I shoot RAW+JPEG but only archive the RAWs while importing selected JPEGs to my Photos library. PhotoCuller is infinitely adaptable and it was a breeze to get things working exactly the way I wanted.</p> <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Rory Sinclair</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div> </button>
+                        <button
+                            type="button" class="testimonial-card" data-card-index="5" aria-label="Read full testimonial from Christian" data-astro-cid-aadlzisc>
+                            <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg>                                </div>
+                            <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller has massively sped up my culling process. Especially when working with both RAW and JPG files, it&#39;s a real game changer and a strong helper in the first phase of my editing workflow. The export workflow is incredibly
+                                powerful, automatically organizing and moving files based on rules I define. I was also genuinely surprised by the speed, both the software itself and Jeff&#39;s responsiveness with feedback and new features.</p>
+                            <div class="card-footer"
+                                data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Christian</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div>
+                            </button><button type="button" class="testimonial-card" data-card-index="6" aria-label="Read full testimonial from Diego" data-astro-cid-aadlzisc> <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg> </div> <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller has changed the way I think about photo organization. Being able to very quickly flag, rate, and tag photos, then perform multiple different move and export actions based on them is really amazing.</p> <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Diego</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div> </button>
+                            <button
+                                type="button" class="testimonial-card" data-card-index="7" aria-label="Read full testimonial from Kajetan Jagiełka" data-astro-cid-aadlzisc>
+                                <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg>                                    </div>
+                                <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller feels like the app I would&#39;ve built myself — if only I knew how to code. It&#39;s clearly designed by someone who actually knows the struggle of picking the keepers from a mountain of shots and doesn&#39;t
+                                    want to open a full-fledged image editor just to weed out the bad snaps. It&#39;s fast, it&#39;s intuitive, and week after week it continues to roll out features I didn&#39;t know I needed but now can&#39;t imagine
+                                    living without, like the independent side-by-side view and the fact that it maintains zoom setting while scrolling through images. What started as just a &quot;better-designed tool&quot; has quickly become an indispensable
+                                    one. What impressed me the most, however, was the support. When I found a bug and reported it, I got a reply within 15 minutes. An hour later, the update was live. Imagine getting that kind of service from a AAA company.
+                                    Last but not least: the one-time payment and fair pricing is a breath of fresh air. As a hobbyist, I sometimes go a month without picking up my camera. If this was yet another subscription, I&#39;d likely have to cancel
+                                    because I couldn&#39;t justify the recurring cost.</p>
+                                <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Kajetan Jagiełka</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div>
+                                </button><button type="button" class="testimonial-card" data-card-index="8" aria-label="Read full testimonial from Andres Villamuez" data-astro-cid-aadlzisc> <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg> </div> <p class="quote-text" data-astro-cid-aadlzisc>This is the app I had been waiting for to handle my photo culling workflow.
+
+After trying Photo Mechanic, I found it to be far too expensive and unnecessarily complex for my needs. I then purchased FastRawViewer, which is easy to use and offers some nice features; however, its interface feels outdated and it receives very few updates.
+
+When PhotoCuller was released, it immediately stood out. It&#39;s fast, packed with useful features that are consistently being improved, and has a clean, modern interface. All of this comes at a price equivalent to about a week&#39;s worth of my morning coffees, which makes it an easy decision.
+
+Highly recommended for photographers looking for an efficient, well-designed culling solution.</p> <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Andres Villamuez</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div> </button>
+                                <button
+                                    type="button" class="testimonial-card" data-card-index="9" aria-label="Read full testimonial from Alexander" data-astro-cid-aadlzisc>
+                                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg>                                        </div>
+                                    <p class="quote-text" data-astro-cid-aadlzisc>I have been looking for a simple program for my simple workflow (JPEG photos only) to locally trim my library before uploading photos to the cloud. PhotoCuller has been the only program that has satisfied the ease of
+                                        use and the speed for me, and as a side bonus, even works on iCloud photos which positively surprised me!</p>
+                                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Alexander</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div>
+                                    </button><button type="button" class="testimonial-card" data-card-index="10" aria-label="Read full testimonial from Iain Dunn" data-astro-cid-aadlzisc> <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg> </div> <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller is a powerhouse. It&#39;s dramatically sped up my photo workflow, helping me cut down on cloud storage costs, and making it easy to back everything up to my NAS. I&#39;m really excited about the future development plans — it&#39;s quickly becoming the ultimate one-stop solution for photo management.</p> <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Iain Dunn</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div> </button>
+                                    <button
+                                        type="button" class="testimonial-card" data-card-index="11" aria-label="Read full testimonial from Abhijit" data-astro-cid-aadlzisc>
+                                        <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg>                                            </div>
+                                        <p class="quote-text" data-astro-cid-aadlzisc>I always used Photo Mechanic for culling but PhotoCuller is way smoother to use. I really love it. Why do I love it? It&#39;s way faster and feels more clean with its interface.</p>
+                                        <div class="card-footer" data-astro-cid-aadlzisc>
+                                        <span class="author-name" data-astro-cid-aadlzisc>Abhijit</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div>
+                                        </button><button type="button" class="testimonial-card" data-card-index="12" aria-label="Read full testimonial from Donald Rabideau" data-astro-cid-aadlzisc> <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg> </div> <p class="quote-text" data-astro-cid-aadlzisc>Ever since Apple discontinued Aperture, I have struggled to find a workflow for culling my photos that felt right. There&#39;s no shortage of image editing apps, but apps that really get culling right are scarce to nonexistent.
+
+First, it has to be lightning fast; second, it has to have a clean, logical UI. Sorting through gigabytes of photos is tedious enough without having to navigate a complex and dated user interface. Lastly, I don&#39;t want to be locked into another ecosystem, especially since they inevitably require a subscription.
+
+PhotoCuller hits the target on all of these. This is the app I&#39;ve been looking for, and I&#39;m genuinely excited to finally have a culling app I enjoy using.</p> <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Donald Rabideau</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div> </button>
+                                        <button
+                                            type="button" class="testimonial-card" data-card-index="13" aria-label="Read full testimonial from Hervé" data-astro-cid-aadlzisc>
+                                            <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg>                                                </div>
+                                            <p class="quote-text" data-astro-cid-aadlzisc>I have tried some other sorting apps. Most of them use AI to rate portraits but AI failed to discard bad shots (clipped subject or bad focus). I dismissed Photo Mechanic (overkill and too expensive for an amateur).
+                                                My most challenging shootings are sports and airshows. PhotoCuller is almost as fast as the best I&#39;ve seen. Keyboard shortcuts can be modified (I use a French keyboard). Color labels work as expected.
+                                                The price is adequate!</p>
+                                            <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Hervé</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div>
+                                            </button><button type="button" class="testimonial-card" data-card-index="14" aria-label="Read full testimonial from Hasse" data-astro-cid-aadlzisc> <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg> </div> <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller aligns perfectly with my preferred workflow. I only shoot in raw, often burst sequences that yield images that differ only slightly in composition, focus, and content. The culling of images to keep is the first processing step; the second step is the selection of the best raw photos to post-process with different tools.
+
+PhotoCuller&#39;s performance advantage enhances the workflow with its smart stacking, Loupe Zoom, image strip, and full view with side-by-side comparison features. The support of external editors or showing the browsed image in Finder guarantees a smooth integration with other tools in my workflow.
+
+Furthermore, PhotoCuller&#39;s routing support and intuitive content filtering options based on file type, camera, lens, ISO value, and standard culling metadata are valuable tools when browsing through the images.</p> <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Hasse</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div> </button>
+                                            <button
+                                                type="button" class="testimonial-card" data-card-index="0" aria-label="Read full testimonial from Adrian" data-astro-cid-aadlzisc>
+                                                <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg>                                                    </div>
+                                                <p class="quote-text" data-astro-cid-aadlzisc>I have been looking for a program which is easier to use enabling me to sort through my images after a photoshoot. I am a wildlife photographer and I often come home with many many photos and many many duplicates,
+                                                    which is where PhotoCuller has made sorting and culling much easier and even enjoyable. I would say to any photographer who is looking for a piece of software to give PhotoCuller a try and I guarantee
+                                                    they will be pleasantly surprised at the ease of use, whether they are looking for a simple way to view and cull their images or if they need to do more — PhotoCuller can do this with ease in a nice,
+                                                    clean, friendly interface. I did not hesitate to purchase PhotoCuller as soon as it was released. Having used the beta versions, I knew it was the piece of software I had been looking for, and since
+                                                    its release there have been further updates to enhance it. As far as I can see, it will go from strength to strength.</p>
+                                                <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Adrian</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div>
+                                                </button><button type="button" class="testimonial-card" data-card-index="1" aria-label="Read full testimonial from Rob van der Most" data-astro-cid-aadlzisc> <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg> </div> <p class="quote-text" data-astro-cid-aadlzisc>As a wildlife photographer I often go home with 4,000 to 6,000 pictures to be reviewed. With 10 to 15 pictures a second, it&#39;s easy to shoot series of 25 to 100, more or less similar, pictures of which you want to select the two or three best.
+
+Within the popular photo editors&#39; tools, this takes a lot of time, pollutes their underlying databases, and takes away the joy of taking pictures in the first place.
+
+I looked at AI photo culling tools but, today, they are great for wedding and fashion photography, but offer very limited help for wildlife. Via a post on Reddit, I read about PhotoCuller and decided to download a trial.
+
+I love this tool as it&#39;s fast, easy to understand, has no underlying database, and has great customer support. I love the possibility to compare photos zoomed in on the subject to find the best pictures from your series.
+
+PhotoCuller is customizable to your own liking and, depending on the capabilities of your hardware, tunable to find the performance optimum.
+
+On top of all this, the price is a one-time charge, so no subscriptions or auto-renewals.</p> <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Rob van der Most</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div> </button>
+                                                <button
+                                                    type="button" class="testimonial-card" data-card-index="2" aria-label="Read full testimonial from Andrew" data-astro-cid-aadlzisc>
+                                                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg>                                                        </div>
+                                                    <p class="quote-text" data-astro-cid-aadlzisc>I bought PhotoCuller because EOS Utility 3 stopped working with a wired connection to the camera, and won&#39;t ingest and file the RAWs appropriately in my import folder from an SD card. PhotoCuller
+                                                        does that nicely, preserving my longstanding folder hierarchy, which I can then synchronize with the NAS. It fits seamlessly into my workflow, makes it easier to sort and star photos than DxO PhotoLab,
+                                                        and doesn&#39;t interfere with my preferred editors.</p>
+                                                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Andrew</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div>
+                                                    </button><button type="button" class="testimonial-card" data-card-index="3" aria-label="Read full testimonial from Anonymous" data-astro-cid-aadlzisc> <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg> </div> <p class="quote-text" data-astro-cid-aadlzisc>I used to have custom scripts to separate my fresh JPGs and RAWs into different folders, then use the JPG folder for culling because they loaded faster than the RAWs and then use a custom script to delete the RAW files for which no matching JPG could be found anymore.
+
+PhotoCuller made that a lot easier, it&#39;s so quick.</p> <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Anonymous</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div> </button>
+                                                    <button
+                                                        type="button" class="testimonial-card" data-card-index="4" aria-label="Read full testimonial from Rory Sinclair" data-astro-cid-aadlzisc>
+                                                        <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg>                                                            </div>
+                                                        <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller is the app I dreamed of having at my fingertips when I built out my &#39;workflow&#39;. It&#39;s deceptively simple, but lets you build some extremely powerful workflows to suit the way
+                                                            you want to work. Personally I shoot RAW+JPEG but only archive the RAWs while importing selected JPEGs to my Photos library. PhotoCuller is infinitely adaptable and it was a breeze to get things
+                                                            working exactly the way I wanted.</p>
+                                                        <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Rory Sinclair</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div>
+                                                        </button><button type="button" class="testimonial-card" data-card-index="5" aria-label="Read full testimonial from Christian" data-astro-cid-aadlzisc> <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg> </div> <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller has massively sped up my culling process. Especially when working with both RAW and JPG files, it&#39;s a real game changer and a strong helper in the first phase of my editing workflow.
+
+The export workflow is incredibly powerful, automatically organizing and moving files based on rules I define. I was also genuinely surprised by the speed, both the software itself and Jeff&#39;s responsiveness with feedback and new features.</p> <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Christian</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div> </button>
+                                                        <button
+                                                            type="button" class="testimonial-card" data-card-index="6" aria-label="Read full testimonial from Diego" data-astro-cid-aadlzisc>
+                                                            <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg>                                                                </div>
+                                                            <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller has changed the way I think about photo organization. Being able to very quickly flag, rate, and tag photos, then perform multiple different move and export actions based on them
+                                                                is really amazing.</p>
+                                                            <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Diego</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div>
+                                                            </button><button type="button" class="testimonial-card" data-card-index="7" aria-label="Read full testimonial from Kajetan Jagiełka" data-astro-cid-aadlzisc> <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg> </div> <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller feels like the app I would&#39;ve built myself — if only I knew how to code. It&#39;s clearly designed by someone who actually knows the struggle of picking the keepers from a mountain of shots and doesn&#39;t want to open a full-fledged image editor just to weed out the bad snaps.
+
+It&#39;s fast, it&#39;s intuitive, and week after week it continues to roll out features I didn&#39;t know I needed but now can&#39;t imagine living without, like the independent side-by-side view and the fact that it maintains zoom setting while scrolling through images. What started as just a &quot;better-designed tool&quot; has quickly become an indispensable one.
+
+What impressed me the most, however, was the support. When I found a bug and reported it, I got a reply within 15 minutes. An hour later, the update was live. Imagine getting that kind of service from a AAA company.
+
+Last but not least: the one-time payment and fair pricing is a breath of fresh air. As a hobbyist, I sometimes go a month without picking up my camera. If this was yet another subscription, I&#39;d likely have to cancel because I couldn&#39;t justify the recurring cost.</p> <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Kajetan Jagiełka</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div> </button>
+                                                            <button
+                                                                type="button" class="testimonial-card" data-card-index="8" aria-label="Read full testimonial from Andres Villamuez" data-astro-cid-aadlzisc>
+                                                                <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg>                                                                    </div>
+                                                                <p class="quote-text" data-astro-cid-aadlzisc>This is the app I had been waiting for to handle my photo culling workflow. After trying Photo Mechanic, I found it to be far too expensive and unnecessarily complex for my needs. I then
+                                                                    purchased FastRawViewer, which is easy to use and offers some nice features; however, its interface feels outdated and it receives very few updates. When PhotoCuller was released, it
+                                                                    immediately stood out. It&#39;s fast, packed with useful features that are consistently being improved, and has a clean, modern interface. All of this comes at a price equivalent to about
+                                                                    a week&#39;s worth of my morning coffees, which makes it an easy decision. Highly recommended for photographers looking for an efficient, well-designed culling solution.</p>
+                                                                <div class="card-footer"
+                                                                    data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Andres Villamuez</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div>
+                                                                </button><button type="button" class="testimonial-card" data-card-index="9" aria-label="Read full testimonial from Alexander" data-astro-cid-aadlzisc> <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg> </div> <p class="quote-text" data-astro-cid-aadlzisc>I have been looking for a simple program for my simple workflow (JPEG photos only) to locally trim my library before uploading photos to the cloud.
+
+PhotoCuller has been the only program that has satisfied the ease of use and the speed for me, and as a side bonus, even works on iCloud photos which positively surprised me!</p> <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Alexander</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div> </button>
+                                                                <button
+                                                                    type="button" class="testimonial-card" data-card-index="10" aria-label="Read full testimonial from Iain Dunn" data-astro-cid-aadlzisc>
+                                                                    <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg>                                                                        </div>
+                                                                    <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller is a powerhouse. It&#39;s dramatically sped up my photo workflow, helping me cut down on cloud storage costs, and making it easy to back everything up to my NAS. I&#39;m really
+                                                                        excited about the future development plans — it&#39;s quickly becoming the ultimate one-stop solution for photo management.</p>
+                                                                    <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Iain Dunn</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div>
+                                                                    </button><button type="button" class="testimonial-card" data-card-index="11" aria-label="Read full testimonial from Abhijit" data-astro-cid-aadlzisc> <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg> </div> <p class="quote-text" data-astro-cid-aadlzisc>I always used Photo Mechanic for culling but PhotoCuller is way smoother to use. I really love it.
+
+Why do I love it? It&#39;s way faster and feels more clean with its interface.</p> <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Abhijit</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div> </button>
+                                                                    <button
+                                                                        type="button" class="testimonial-card" data-card-index="12" aria-label="Read full testimonial from Donald Rabideau" data-astro-cid-aadlzisc>
+                                                                        <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg>                                                                            </div>
+                                                                        <p class="quote-text" data-astro-cid-aadlzisc>Ever since Apple discontinued Aperture, I have struggled to find a workflow for culling my photos that felt right. There&#39;s no shortage of image editing apps, but apps that really
+                                                                            get culling right are scarce to nonexistent. First, it has to be lightning fast; second, it has to have a clean, logical UI. Sorting through gigabytes of photos is tedious enough
+                                                                            without having to navigate a complex and dated user interface. Lastly, I don&#39;t want to be locked into another ecosystem, especially since they inevitably require a subscription.
+                                                                            PhotoCuller hits the target on all of these. This is the app I&#39;ve been looking for, and I&#39;m genuinely excited to finally have a culling app I enjoy using.</p>
+                                                                        <div class="card-footer"
+                                                                            data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Donald Rabideau</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div>
+                                                                        </button><button type="button" class="testimonial-card" data-card-index="13" aria-label="Read full testimonial from Hervé" data-astro-cid-aadlzisc> <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg> </div> <p class="quote-text" data-astro-cid-aadlzisc>I have tried some other sorting apps. Most of them use AI to rate portraits but AI failed to discard bad shots (clipped subject or bad focus). I dismissed Photo Mechanic (overkill and too expensive for an amateur). My most challenging shootings are sports and airshows.
+
+PhotoCuller is almost as fast as the best I&#39;ve seen. Keyboard shortcuts can be modified (I use a French keyboard). Color labels work as expected. The price is adequate!</p> <div class="card-footer" data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Hervé</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div> </button>
+                                                                        <button
+                                                                            type="button" class="testimonial-card" data-card-index="14" aria-label="Read full testimonial from Hasse" data-astro-cid-aadlzisc>
+                                                                            <div class="quote-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg>                                                                                </div>
+                                                                            <p class="quote-text" data-astro-cid-aadlzisc>PhotoCuller aligns perfectly with my preferred workflow. I only shoot in raw, often burst sequences that yield images that differ only slightly in composition, focus, and content.
+                                                                                The culling of images to keep is the first processing step; the second step is the selection of the best raw photos to post-process with different tools. PhotoCuller&#39;s
+                                                                                performance advantage enhances the workflow with its smart stacking, Loupe Zoom, image strip, and full view with side-by-side comparison features. The support of external
+                                                                                editors or showing the browsed image in Finder guarantees a smooth integration with other tools in my workflow. Furthermore, PhotoCuller&#39;s routing support and intuitive
+                                                                                content filtering options based on file type, camera, lens, ISO value, and standard culling metadata are valuable tools when browsing through the images.</p>
+                                                                            <div class="card-footer"
+                                                                                data-astro-cid-aadlzisc> <span class="author-name" data-astro-cid-aadlzisc>Hasse</span> <span class="read-hint" data-astro-cid-aadlzisc>Read full</span> </div>
+                                                                            </button>
+            </div> <button type="button" class="marquee-nav marquee-nav--right" data-nav-right aria-label="Scroll testimonials right" data-astro-cid-aadlzisc> <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-astro-cid-aadlzisc> <polyline points="9 18 15 12 9 6" data-astro-cid-aadlzisc></polyline> </svg> </button>            </div>
+    </section>
+    <!-- Modal lives outside the section so it sits above everything -->
+    <div class="t-backdrop" data-t-backdrop aria-hidden="true" data-astro-cid-aadlzisc></div>
+    <div class="t-modal" data-t-modal role="dialog" aria-modal="true" aria-labelledby="t-modal-author" tabindex="-1" data-astro-cid-aadlzisc>
+        <div class="t-modal-card" data-t-card data-astro-cid-aadlzisc> <button type="button" class="t-close" data-t-close aria-label="Close" data-astro-cid-aadlzisc> <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true" data-astro-cid-aadlzisc> <line x1="18" y1="6" x2="6" y2="18" data-astro-cid-aadlzisc></line> <line x1="6" y1="6" x2="18" y2="18" data-astro-cid-aadlzisc></line> </svg> </button>
+            <div class="t-modal-icon" aria-hidden="true" data-astro-cid-aadlzisc> <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" data-astro-cid-aadlzisc> <path d="M4.583 17.321C3.553 16.227 3 15 3 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179zm10 0C13.553 16.227 13 15 13 13.011c0-3.5 2.457-6.637 6.03-8.188l.893 1.378c-3.335 1.804-3.987 4.145-4.247 5.621.537-.278 1.24-.375 1.929-.311 1.804.167 3.226 1.648 3.226 3.489a3.5 3.5 0 01-3.5 3.5c-1.073 0-2.099-.49-2.748-1.179z" data-astro-cid-aadlzisc></path> </svg>                </div>
+            <h3 id="t-modal-author" data-t-author data-astro-cid-aadlzisc></h3>
+            <p class="t-modal-quote" data-t-quote data-astro-cid-aadlzisc></p>
+        </div>
+    </div>
+    <script>
+        (function() {
+            const testimonials = [{
+                "name": "Adrian",
+                "quote": "I have been looking for a program which is easier to use enabling me to sort through my images after a photoshoot.\n\nI am a wildlife photographer and I often come home with many many photos and many many duplicates, which is where PhotoCuller has made sorting and culling much easier and even enjoyable.\n\nI would say to any photographer who is looking for a piece of software to give PhotoCuller a try and I guarantee they will be pleasantly surprised at the ease of use, whether they are looking for a simple way to view and cull their images or if they need to do more — PhotoCuller can do this with ease in a nice, clean, friendly interface.\n\nI did not hesitate to purchase PhotoCuller as soon as it was released. Having used the beta versions, I knew it was the piece of software I had been looking for, and since its release there have been further updates to enhance it. As far as I can see, it will go from strength to strength."
+            }, {
+                "name": "Rob van der Most",
+                "quote": "As a wildlife photographer I often go home with 4,000 to 6,000 pictures to be reviewed. With 10 to 15 pictures a second, it's easy to shoot series of 25 to 100, more or less similar, pictures of which you want to select the two or three best.\n\nWithin the popular photo editors' tools, this takes a lot of time, pollutes their underlying databases, and takes away the joy of taking pictures in the first place.\n\nI looked at AI photo culling tools but, today, they are great for wedding and fashion photography, but offer very limited help for wildlife. Via a post on Reddit, I read about PhotoCuller and decided to download a trial.\n\nI love this tool as it's fast, easy to understand, has no underlying database, and has great customer support. I love the possibility to compare photos zoomed in on the subject to find the best pictures from your series.\n\nPhotoCuller is customizable to your own liking and, depending on the capabilities of your hardware, tunable to find the performance optimum.\n\nOn top of all this, the price is a one-time charge, so no subscriptions or auto-renewals."
+            }, {
+                "name": "Andrew",
+                "quote": "I bought PhotoCuller because EOS Utility 3 stopped working with a wired connection to the camera, and won't ingest and file the RAWs appropriately in my import folder from an SD card.\n\nPhotoCuller does that nicely, preserving my longstanding folder hierarchy, which I can then synchronize with the NAS. It fits seamlessly into my workflow, makes it easier to sort and star photos than DxO PhotoLab, and doesn't interfere with my preferred editors."
+            }, {
+                "name": "Anonymous",
+                "quote": "I used to have custom scripts to separate my fresh JPGs and RAWs into different folders, then use the JPG folder for culling because they loaded faster than the RAWs and then use a custom script to delete the RAW files for which no matching JPG could be found anymore.\n\nPhotoCuller made that a lot easier, it's so quick."
+            }, {
+                "name": "Rory Sinclair",
+                "quote": "PhotoCuller is the app I dreamed of having at my fingertips when I built out my 'workflow'. It's deceptively simple, but lets you build some extremely powerful workflows to suit the way you want to work.\n\nPersonally I shoot RAW+JPEG but only archive the RAWs while importing selected JPEGs to my Photos library. PhotoCuller is infinitely adaptable and it was a breeze to get things working exactly the way I wanted."
+            }, {
+                "name": "Christian",
+                "quote": "PhotoCuller has massively sped up my culling process. Especially when working with both RAW and JPG files, it's a real game changer and a strong helper in the first phase of my editing workflow.\n\nThe export workflow is incredibly powerful, automatically organizing and moving files based on rules I define. I was also genuinely surprised by the speed, both the software itself and Jeff's responsiveness with feedback and new features."
+            }, {
+                "name": "Diego",
+                "quote": "PhotoCuller has changed the way I think about photo organization. Being able to very quickly flag, rate, and tag photos, then perform multiple different move and export actions based on them is really amazing."
+            }, {
+                "name": "Kajetan Jagiełka",
+                "quote": "PhotoCuller feels like the app I would've built myself — if only I knew how to code. It's clearly designed by someone who actually knows the struggle of picking the keepers from a mountain of shots and doesn't want to open a full-fledged image editor just to weed out the bad snaps.\n\nIt's fast, it's intuitive, and week after week it continues to roll out features I didn't know I needed but now can't imagine living without, like the independent side-by-side view and the fact that it maintains zoom setting while scrolling through images. What started as just a \"better-designed tool\" has quickly become an indispensable one.\n\nWhat impressed me the most, however, was the support. When I found a bug and reported it, I got a reply within 15 minutes. An hour later, the update was live. Imagine getting that kind of service from a AAA company.\n\nLast but not least: the one-time payment and fair pricing is a breath of fresh air. As a hobbyist, I sometimes go a month without picking up my camera. If this was yet another subscription, I'd likely have to cancel because I couldn't justify the recurring cost."
+            }, {
+                "name": "Andres Villamuez",
+                "quote": "This is the app I had been waiting for to handle my photo culling workflow.\n\nAfter trying Photo Mechanic, I found it to be far too expensive and unnecessarily complex for my needs. I then purchased FastRawViewer, which is easy to use and offers some nice features; however, its interface feels outdated and it receives very few updates.\n\nWhen PhotoCuller was released, it immediately stood out. It's fast, packed with useful features that are consistently being improved, and has a clean, modern interface. All of this comes at a price equivalent to about a week's worth of my morning coffees, which makes it an easy decision.\n\nHighly recommended for photographers looking for an efficient, well-designed culling solution."
+            }, {
+                "name": "Alexander",
+                "quote": "I have been looking for a simple program for my simple workflow (JPEG photos only) to locally trim my library before uploading photos to the cloud.\n\nPhotoCuller has been the only program that has satisfied the ease of use and the speed for me, and as a side bonus, even works on iCloud photos which positively surprised me!"
+            }, {
+                "name": "Iain Dunn",
+                "quote": "PhotoCuller is a powerhouse. It's dramatically sped up my photo workflow, helping me cut down on cloud storage costs, and making it easy to back everything up to my NAS. I'm really excited about the future development plans — it's quickly becoming the ultimate one-stop solution for photo management."
+            }, {
+                "name": "Abhijit",
+                "quote": "I always used Photo Mechanic for culling but PhotoCuller is way smoother to use. I really love it.\n\nWhy do I love it? It's way faster and feels more clean with its interface."
+            }, {
+                "name": "Donald Rabideau",
+                "quote": "Ever since Apple discontinued Aperture, I have struggled to find a workflow for culling my photos that felt right. There's no shortage of image editing apps, but apps that really get culling right are scarce to nonexistent.\n\nFirst, it has to be lightning fast; second, it has to have a clean, logical UI. Sorting through gigabytes of photos is tedious enough without having to navigate a complex and dated user interface. Lastly, I don't want to be locked into another ecosystem, especially since they inevitably require a subscription.\n\nPhotoCuller hits the target on all of these. This is the app I've been looking for, and I'm genuinely excited to finally have a culling app I enjoy using."
+            }, {
+                "name": "Hervé",
+                "quote": "I have tried some other sorting apps. Most of them use AI to rate portraits but AI failed to discard bad shots (clipped subject or bad focus). I dismissed Photo Mechanic (overkill and too expensive for an amateur). My most challenging shootings are sports and airshows.\n\nPhotoCuller is almost as fast as the best I've seen. Keyboard shortcuts can be modified (I use a French keyboard). Color labels work as expected. The price is adequate!"
+            }, {
+                "name": "Hasse",
+                "quote": "PhotoCuller aligns perfectly with my preferred workflow. I only shoot in raw, often burst sequences that yield images that differ only slightly in composition, focus, and content. The culling of images to keep is the first processing step; the second step is the selection of the best raw photos to post-process with different tools.\n\nPhotoCuller's performance advantage enhances the workflow with its smart stacking, Loupe Zoom, image strip, and full view with side-by-side comparison features. The support of external editors or showing the browsed image in Finder guarantees a smooth integration with other tools in my workflow.\n\nFurthermore, PhotoCuller's routing support and intuitive content filtering options based on file type, camera, lens, ISO value, and standard culling metadata are valuable tools when browsing through the images."
+            }];
+
+            function initTestimonials() {
+                var backdrop = document.querySelector("[data-t-backdrop]");
+                var modal = document.querySelector("[data-t-modal]");
+                var card = document.querySelector("[data-t-card]");
+                var closeBtn = document.querySelector("[data-t-close]");
+                var authorEl = document.querySelector("[data-t-author]");
+                var quoteEl = document.querySelector("[data-t-quote]");
+                var marquee = document.querySelector("[data-marquee]");
+                var track = document.querySelector("[data-track]");
+                var navLeft = document.querySelector("[data-nav-left]");
+                var navRight = document.querySelector("[data-nav-right]");
+
+                if (!backdrop || !modal || !card || !closeBtn || !authorEl || !quoteEl)
+                    return;
+                if (!marquee || !track) return;
+
+                // Guard against double-initialisation across page navigations
+                if (modal.dataset.tInit === "1") return;
+                modal.dataset.tInit = "1";
+
+                var lastFocused = null;
+
+                // ── Modal ──────────────────────────────────────────────
+                function openModal(index) {
+                    var t = testimonials[index];
+                    if (!t) return;
+                    authorEl.textContent = t.name;
+                    quoteEl.textContent = t.quote;
+                    lastFocused = document.activeElement;
+                    backdrop.classList.add("is-open");
+                    modal.classList.add("is-open");
+                    document.body.classList.add("modal-open");
+                    closeBtn.focus();
+
+                    if (window.posthog) {
+                        window.posthog.capture("testimonial_popup_opened", {
+                            author: t.name,
+                            page_url: window.location.pathname,
+                        });
+                    }
+                }
+
+                function closeModal() {
+                    backdrop.classList.remove("is-open");
+                    modal.classList.remove("is-open");
+                    document.body.classList.remove("modal-open");
+                    if (lastFocused) lastFocused.focus();
+                }
+
+                // ── Touch-drag-vs-click discrimination (mobile only) ──
+                var hasDragged = false;
+
+                document.querySelectorAll("[data-card-index]").forEach(function(btn) {
+                    btn.addEventListener("click", function(e) {
+                        if (hasDragged) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            hasDragged = false;
+                            return;
+                        }
+                        openModal(Number(btn.dataset.cardIndex));
+                    });
+                });
+
+                closeBtn.addEventListener("click", closeModal);
+
+                modal.addEventListener("click", function(e) {
+                    if (!card.contains(e.target)) closeModal();
+                });
+
+                document.addEventListener("keydown", function(e) {
+                    if (e.key === "Escape") closeModal();
+                });
+
+                // ── Animation constants ───────────────────────────────
+                var DURATION = 60; // seconds — must match the CSS @keyframes duration
+                var CARD_STEP = 380; // card width (360) + gap (20)
+
+                // ── Hover / focus pause (JS-based so chevrons can coexist) ──
+                var isHovering = false;
+                var isDragging = false; // for mobile touch drag
+                var isJumping = false; // for chevron animated jump
+
+                function pauseTrack() {
+                    track.style.animationPlayState = "paused";
+                }
+
+                function resumeTrack() {
+                    if (!isHovering && !isDragging && !isJumping) {
+                        track.style.animationPlayState = "running";
+                    }
+                }
+
+                marquee.addEventListener("mouseenter", function() {
+                    isHovering = true;
+                    pauseTrack();
+                });
+
+                marquee.addEventListener("mouseleave", function() {
+                    isHovering = false;
+                    resumeTrack();
+                });
+
+                marquee.addEventListener("focusin", function() {
+                    pauseTrack();
+                });
+
+                marquee.addEventListener("focusout", function(e) {
+                    if (!marquee.contains(e.relatedTarget)) {
+                        resumeTrack();
+                    }
+                });
+
+                // ── Helpers ────────────────────────────────────────────
+                function getCurrentTranslateX() {
+                    var style = window.getComputedStyle(track);
+                    var matrix = new DOMMatrix(style.transform);
+                    return matrix.m41;
+                }
+
+                function getHalfWidth() {
+                    return track.scrollWidth / 2;
+                }
+
+                function wrapX(x) {
+                    var half = getHalfWidth();
+                    x = x % half;
+                    if (x > 0) x -= half;
+                    return x;
+                }
+
+                function resumeFromPosition(x) {
+                    x = wrapX(x);
+                    var half = getHalfWidth();
+                    var progress = Math.abs(x) / half;
+                    var delay = -(progress * DURATION);
+
+                    track.style.removeProperty("transform");
+                    track.style.removeProperty("animation");
+                    track.style.removeProperty("transition");
+                    track.style.animationDelay = delay + "s";
+                    void track.offsetWidth;
+                    track.style.animationPlayState = isHovering ? "paused" : "running";
+                }
+
+                // ── Chevron nav (desktop) ─────────────────────────────
+                function jumpBy(delta) {
+                    if (isJumping) return;
+                    isJumping = true;
+
+                    var currentX = getCurrentTranslateX();
+                    var targetX = wrapX(currentX + delta);
+
+                    // 1. Freeze animation, set starting position
+                    track.style.animation = "none";
+                    track.style.transform = "translateX(" + currentX + "px)";
+                    void track.offsetWidth; // reflow so starting position is committed
+
+                    // 2. Enable transition and set target
+                    track.style.transition =
+                        "transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1)";
+                    track.style.transform = "translateX(" + targetX + "px)";
+
+                    // 3. When transition ends, hand control back to CSS animation
+                    function onEnd() {
+                        track.removeEventListener("transitionend", onEnd);
+                        isJumping = false;
+                        resumeFromPosition(targetX);
+                    }
+                    track.addEventListener("transitionend", onEnd);
+
+                    // Fallback in case transitionend doesn't fire
+                    setTimeout(function() {
+                        if (isJumping) {
+                            track.removeEventListener("transitionend", onEnd);
+                            isJumping = false;
+                            resumeFromPosition(targetX);
+                        }
+                    }, 500);
+                }
+
+                if (navLeft) {
+                    navLeft.addEventListener("click", function(e) {
+                        e.stopPropagation();
+                        jumpBy(CARD_STEP); // positive = shift track right = see earlier cards
+                    });
+                }
+
+                if (navRight) {
+                    navRight.addEventListener("click", function(e) {
+                        e.stopPropagation();
+                        jumpBy(-CARD_STEP); // negative = shift track left = see later cards
+                    });
+                }
+
+                // ── Touch drag (mobile) ───────────────────────────────
+                var dragStartX = 0;
+                var dragBaseX = 0;
+                var DRAG_THRESHOLD = 3;
+
+                function onDragStart(clientX) {
+                    isDragging = true;
+                    hasDragged = false;
+                    dragStartX = clientX;
+                    dragBaseX = getCurrentTranslateX();
+
+                    track.style.animation = "none";
+                    track.style.transform = "translateX(" + dragBaseX + "px)";
+                }
+
+                function onDragMove(clientX) {
+                    if (!isDragging) return;
+                    var delta = clientX - dragStartX;
+                    if (Math.abs(delta) > DRAG_THRESHOLD) {
+                        hasDragged = true;
+                    }
+                    var newX = wrapX(dragBaseX + delta);
+                    track.style.transform = "translateX(" + newX + "px)";
+                }
+
+                function onDragEnd() {
+                    if (!isDragging) return;
+                    isDragging = false;
+
+                    var finalX = getCurrentTranslateX();
+                    resumeFromPosition(finalX);
+
+                    setTimeout(function() {
+                        hasDragged = false;
+                    }, 0);
+                }
+
+                marquee.addEventListener(
+                    "touchstart",
+                    function(e) {
+                        if (e.touches.length !== 1) return;
+                        onDragStart(e.touches[0].clientX);
+                    }, {
+                        passive: true
+                    },
+                );
+
+                window.addEventListener(
+                    "touchmove",
+                    function(e) {
+                        if (!isDragging) return;
+                        onDragMove(e.touches[0].clientX);
+                    }, {
+                        passive: true
+                    },
+                );
+
+                window.addEventListener("touchend", function() {
+                    onDragEnd();
+                });
+
+                window.addEventListener("touchcancel", function() {
+                    onDragEnd();
+                });
+            }
+
+            initTestimonials();
+            document.addEventListener("astro:page-load", initTestimonials);
+        })();
+    </script>
+    <section class="trial-cta-section" id="trial" data-astro-cid-hkoc4sea>
+        <div class="trial-cta-container" data-astro-cid-hkoc4sea> <svg class="trial-apple-icon" viewBox="0 0 814 1000" fill="currentColor" aria-hidden="true" data-astro-cid-hkoc4sea> <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.3 134.4-316.8 266.5-316.8 70.1 0 128.4 46.4 171.5 46.4 41.3 0 106.9-49.4 185.2-49.4 29.5 0 108.1 2.6 168.5 71.9zm-234.5-172.9c31.3-36.9 53.1-88.1 53.1-139.3 0-7.1-.6-14.3-1.9-20.1-50.6 1.9-110.8 33.7-147.1 75.8-28.5 32.4-55.1 83.6-55.1 135.5 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 45.4 0 102.5-30.4 135.5-71.3z" data-astro-cid-hkoc4sea></path> </svg>
+            <h2 class="trial-headline" data-astro-cid-hkoc4sea>Try it on a real shoot</h2>
+            <p class="trial-description" data-astro-cid-hkoc4sea>
+                Free 30-day trial — no credit card, no account. Load a recent shoot and see how it feels on your own photos.
+            </p>
+            <div class="trial-buttons" data-astro-cid-hkoc4sea>
+                <div class="download-btn-wrap" data-astro-cid-sle7k2hz>
+                    <a href="/download" class="download-btn trial-download-btn" data-download-cta data-modal-text="Email me the Mac link" data-astro-cid-sle7k2hz>
+                        <div class="download-btn__comet" aria-hidden="true" data-astro-cid-sle7k2hz></div> <span class="download-btn__inner" data-astro-cid-sle7k2hz> <svg width="18" height="18" viewBox="0 0 814 1000" fill="currentColor" aria-hidden="true" data-astro-cid-sle7k2hz> <path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.3 134.4-316.8 266.5-316.8 70.1 0 128.4 46.4 171.5 46.4 41.3 0 106.9-49.4 185.2-49.4 29.5 0 108.1 2.6 168.5 71.9zm-234.5-172.9c31.3-36.9 53.1-88.1 53.1-139.3 0-7.1-.6-14.3-1.9-20.1-50.6 1.9-110.8 33.7-147.1 75.8-28.5 32.4-55.1 83.6-55.1 135.5 0 7.8 1.3 15.6 1.9 18.1 3.2.6 8.4 1.3 13.6 1.3 45.4 0 102.5-30.4 135.5-71.3z" data-astro-cid-sle7k2hz></path> </svg> <span data-download-cta-label data-astro-cid-sle7k2hz>Download for Mac</span>                        </span>
+                    </a>
+                    <p class="download-btn-meta" data-astro-cid-sle7k2hz>macOS 15 Sequoia or later &nbsp;·&nbsp; Apple Silicon</p>
+                </div> <a href="/pricing" class="trial-btn secondary" data-astro-cid-hkoc4sea> See pricing </a> </div>
+        </div>
+    </section>
+    <section class="faq-section" id="faq" data-astro-cid-al2ca2vr>
+        <div class="container section-shell-narrow" data-astro-cid-al2ca2vr>
+            <h2 class="section-headline" data-astro-cid-al2ca2vr>Questions & <span class="accent-text" data-astro-cid-al2ca2vr>Answers</span></h2>
+            <p class="section-description" data-astro-cid-al2ca2vr> Everything you need to know about PhotoCuller </p>
+            <div class="faq-list" data-astro-cid-al2ca2vr>
+                <details class="faq-item" data-astro-cid-al2ca2vr>
+                    <summary class="faq-question" data-astro-cid-al2ca2vr> <span data-astro-cid-al2ca2vr>How is PhotoCuller different from Lightroom?</span> <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-al2ca2vr> <path d="M12 5v14M5 12h14" data-astro-cid-al2ca2vr></path> </svg>                        </summary>
+                    <div class="faq-answer" data-astro-cid-al2ca2vr>
+                        <p data-astro-cid-al2ca2vr>PhotoCuller is focused purely on culling - quickly reviewing, rating, and organizing photos before editing. It&#39;s a one-time purchase with no subscription, runs completely offline, and integrates seamlessly with Apple Photos.
+                            Think of it as the fastest way to get from thousands of shots to your best selects.</p>
+                    </div>
+                </details>
+                <details class="faq-item" data-astro-cid-al2ca2vr>
+                    <summary class="faq-question" data-astro-cid-al2ca2vr> <span data-astro-cid-al2ca2vr>Does it work with Apple Photos?</span> <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-al2ca2vr> <path d="M12 5v14M5 12h14" data-astro-cid-al2ca2vr></path> </svg>                        </summary>
+                    <div class="faq-answer" data-astro-cid-al2ca2vr>
+                        <p data-astro-cid-al2ca2vr>Yes! You can load albums from your Apple Photos library, cull your shots with ratings and color labels, then route your picks back to Photos or to external drives.</p>
+                    </div>
+                </details>
+                <details class="faq-item" data-astro-cid-al2ca2vr>
+                    <summary class="faq-question" data-astro-cid-al2ca2vr> <span data-astro-cid-al2ca2vr>Can I send photos to external editors?</span> <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-al2ca2vr> <path d="M12 5v14M5 12h14" data-astro-cid-al2ca2vr></path> </svg>                        </summary>
+                    <div class="faq-answer" data-astro-cid-al2ca2vr>
+                        <p data-astro-cid-al2ca2vr>Yes. Add your preferred external editors in Settings, then open files directly from PhotoCuller. For RAW+JPEG pairs, you can choose whether to open the RAW file or the JPEG version before handing off to your editor.</p>
+                    </div>
+                </details>
+                <details class="faq-item" data-astro-cid-al2ca2vr>
+                    <summary class="faq-question" data-astro-cid-al2ca2vr> <span data-astro-cid-al2ca2vr>What file formats are supported?</span> <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-al2ca2vr> <path d="M12 5v14M5 12h14" data-astro-cid-al2ca2vr></path> </svg>                        </summary>
+                    <div class="faq-answer" data-astro-cid-al2ca2vr>
+                        <p data-astro-cid-al2ca2vr>PhotoCuller supports RAW files from most major camera brands (Canon, Nikon, Sony, Fujifilm, and more), plus JPEG, HEIC, PNG, and TIFF. It automatically detects and pairs RAW+JPEG files shot together.</p>
+                    </div>
+                </details>
+                <details class="faq-item" data-astro-cid-al2ca2vr>
+                    <summary class="faq-question" data-astro-cid-al2ca2vr> <span data-astro-cid-al2ca2vr>Can I use it completely offline?</span> <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" data-astro-cid-al2ca2vr> <path d="M12 5v14M5 12h14" data-astro-cid-al2ca2vr></path> </svg>                        </summary>
+                    <div class="faq-answer" data-astro-cid-al2ca2vr>
+                        <p data-astro-cid-al2ca2vr>Absolutely. PhotoCuller runs entirely on your Mac with no internet connection required. Your photos never leave your device - there&#39;s no cloud upload, no account needed, and no tracking.</p>
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links"> <a href="/#features-tools" class="footer-link">Features</a> <a href="/pricing" class="footer-link">Pricing</a> <a href="/docs/getting-started" class="footer-link">Docs</a> <a href="/releases" class="footer-link">Releases</a> <a href="/privacy"
+                    class="footer-link">Privacy</a> <a href="/terms" class="footer-link">Terms</a> </div>
+            <p>&copy; 2026 K-Squared Labs. Built for macOS 15+</p>
+            <p class="footer-tagline">
+                Made for photographers who value their time
+            </p>
+        </div>
+    </footer>
+    <script type="module">const t=document.querySelector(".hamburger"),n=document.querySelector(".mobile-menu"),i=document.querySelector(".mobile-menu-overlay"),c=document.querySelectorAll(".mobile-menu-link");function o(){const e=t?.classList.toggle("active");n?.classList.toggle("active"),i?.classList.toggle("active"),document.body.classList.toggle("menu-open"),t?.setAttribute("aria-expanded",e?"true":"false")}function
+        s(){t?.classList.remove("active"),n?.classList.remove("active"),i?.classList.remove("active"),document.body.classList.remove("menu-open"),t?.setAttribute("aria-expanded","false")}t?.addEventListener("click",o);i?.addEventListener("click",s);c.forEach(e=>{e.addEventListener("click",s)});document.addEventListener("keydown",e=>{e.key==="Escape"&&n?.classList.contains("active")&&s()});window.addEventListener("resize",()=>{window.innerWidth>768&&n?.classList.contains("active")&&s()});</script>
+    <script type="module" src="/_astro/Layout.astro_astro_type_script_index_1_lang.D6eIOjgr.js"></script>
+    <script type="module" src="/_astro/Layout.astro_astro_type_script_index_2_lang.A_nqLoMG.js"></script>
+    <script type="module">document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",r=>{r.preventDefault();const t=r.currentTarget.getAttribute("href");if(t){const o=document.querySelector(t);o&&o.scrollIntoView({behavior:"smooth",block:"start"})}})});const
+        c={root:null,rootMargin:"0px",threshold:.1},s=new IntersectionObserver(e=>{e.forEach(r=>{r.isIntersecting&&(r.target.classList.add("revealed"),s.unobserve(r.target))})},c);document.querySelectorAll("section").forEach(e=>{e.classList.add("reveal-on-scroll"),s.observe(e)});</script>
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"2f997c572ced49b18c6eccc0ac854322","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}'
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

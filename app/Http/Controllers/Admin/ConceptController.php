@@ -30,7 +30,7 @@ class ConceptController extends Controller
     {
         $validated = $request->validate([
             'ten_concept' => 'required|string|max:255',
-            'hinh_anh' => 'nullable|image|mimes:jpeg,png,gif,webp|max:5120',
+            'hinh_anh' => 'nullable|image|max:10240',
             'trang_thai' => 'required|integer|in:0,1',
         ]);
 
@@ -54,7 +54,7 @@ class ConceptController extends Controller
     {
         $validated = $request->validate([
             'ten_concept' => 'required|string|max:255',
-            'hinh_anh' => 'nullable|image|mimes:jpeg,png,gif,webp|max:5120',
+            'hinh_anh' => 'nullable|image|max:10240',
             'trang_thai' => 'required|integer|in:0,1',
         ]);
 
